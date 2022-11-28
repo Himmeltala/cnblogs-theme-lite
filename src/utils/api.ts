@@ -20,3 +20,9 @@ export function getDefault(page: number, getData: (str: Array<string>) => void) 
     getData(Parser.parseDefault(data));
   });
 }
+
+export function getEssay(id: number | string, getData: (str: Object) => void) {
+  axios.get(`${BASE_URL}/p/${id}.html`).then(({ data }) => {
+    getData(Parser.parseEssay(data));
+  });
+}

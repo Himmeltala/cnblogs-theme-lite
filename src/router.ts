@@ -3,7 +3,11 @@ import { createRouter, createWebHashHistory } from "vue-router";
 const routes = [
   {
     path: "/",
-    component: () => import("./fragments/Container.vue")
+    component: () => import("./fragments/Home.vue")
+  },
+  {
+    path: "/essay/:id",
+    component: () => import("./fragments/Essay.vue")
   }
 ];
 

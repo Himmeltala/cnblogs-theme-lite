@@ -7,6 +7,8 @@ import { replaceSpaceAround, replaceDefaultDesc } from "./reg";
 
 export function parseDefault(data: string): Array<string> {
   let day = $(data).find(".forFlow > .day");
+  let id = $(day).find(".postTitle > .postTitle2");
+  let idReg = /[0-9]+/g;
   let title = $(day).find(".postTitle");
   let desc = $(day).find(".c_b_p_desc");
   let postDesc = $(day).find(".postDesc").text();
@@ -23,6 +25,7 @@ export function parseDefault(data: string): Array<string> {
 
   for (let i = 0; i < $(title).length; i++) {
     essayArray[i] = {
+      id: $(id[i]).attr("href")?.match(idReg)![0],
       title: replaceSpaceAround($(title[i]).text()),
       desc: replaceSpaceAround(replaceDefaultDesc($(desc[i]).text())),
       date: date![i],
@@ -31,6 +34,18 @@ export function parseDefault(data: string): Array<string> {
       diggCount: diggCount![i]
     };
   }
-
+  // console.log(essayArray);
   return essayArray;
+}
+
+export function parseEssay(str: string): Object {
+  let body = $(str).find(".post");
+  let title = $(body).find(".postTitle > a > span").text();
+  let content = $(body).find("#cnblogs_post_body").html();
+  console.log(content);
+
+  return {
+    title: title,
+    content: content
+  };
 }
