@@ -6,6 +6,7 @@ import axios from "axios";
 import * as Parser from "./html-parser";
 
 const BASE_URL = "https://www.cnblogs.com/Enziandom";
+// const BASE_URL = "/api";
 
 /**
  * 获取首页的随笔

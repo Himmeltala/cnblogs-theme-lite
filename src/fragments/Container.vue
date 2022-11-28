@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { getDefault } from "../utils/api";
+import Card from "../components/Card.vue";
 
 let essayArr = ref<any>([]);
 
@@ -29,20 +30,22 @@ function lastPage() {
   <div class="container">
     <button @click="lastPage">上一页</button>
     <button @click="nextPage">下一页</button>
-    <div v-for="(item, index) in essayArr" :key="index" class="essay">
-      <div class="title">
-        {{ item.title }}
+    <Card v-for="(item, index) in essayArr" :key="index">
+      <div class="essay">
+        <div class="title">
+          {{ item.title }}
+        </div>
+        <div class="desc">
+          {{ item.desc }}
+        </div>
+        <div class="info">
+          <div class="date">{{ item.date }}</div>
+          <div class="view">{{ item.viewCount }}</div>
+          <div class="comm">{{ item.commCount }}</div>
+          <div class="digg">{{ item.diggCount }}</div>
+        </div>
       </div>
-      <div class="desc">
-        {{ item.desc }}
-      </div>
-      <div class="info">
-        <div class="date">{{ item.date }}</div>
-        <div class="view">{{ item.viewCount }}</div>
-        <div class="comm">{{ item.commCount }}</div>
-        <div class="digg">{{ item.diggCount }}</div>
-      </div>
-    </div>
+    </Card>
   </div>
 </template>
 
