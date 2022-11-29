@@ -1,0 +1,19 @@
+:root,
+body {
+  font-weight: 300;
+  font-family: sans-serif;
+  background-color: #191919;
+  padding: 0;
+  margin: 0;
+}
+
+code {
+  font-size: 14px;
+  font-weight: 300;
+  font-family: Hack, monospace;
+}
+
+::selection {
+  color: var(--el-text-color-primary);
+  background: var(--el-color-primary);
+}
