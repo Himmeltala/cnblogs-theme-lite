@@ -60,28 +60,29 @@ function zoomIn() {
 
 <template>
   <div class="essay">
-    <div class="title">{{ essay?.title }}</div>
-    <div class="info">
-      <div class="date">
-        <el-icon><Clock /></el-icon>
-        <span>
-          {{ essay?.date }}
-        </span>
+    <Card padding="20px 20px">
+      <div class="title">{{ essay?.title }}</div>
+      <div class="info">
+        <div class="date">
+          <el-icon><Clock /></el-icon>
+          <span>
+            {{ essay?.date }}
+          </span>
+        </div>
+        <div class="view-count">
+          <el-icon><View /></el-icon>
+          <span>{{ essay?.viewCount }}次阅读</span>
+        </div>
+        <div class="comm-count">
+          <el-icon><ChatLineSquare /></el-icon>
+          <span>{{ essay?.commCount }}条评论</span>
+        </div>
+        <div class="zoom-in" @click="zoomIn">
+          <el-icon><ZoomIn /></el-icon>
+          <span>放大</span>
+        </div>
       </div>
-      <div class="view-count">
-        <el-icon><View /></el-icon>
-        <span>{{ essay?.viewCount }}次阅读</span>
-      </div>
-      <div class="comm-count">
-        <el-icon><ChatLineSquare /></el-icon>
-        <span>{{ essay?.commCount }}条评论</span>
-      </div>
-      <div class="zoom-in" @click="zoomIn">
-        <el-icon><ZoomIn /></el-icon>
-        <span>放大</span>
-      </div>
-    </div>
-    <!-- <el-breadcrumb class="breadcrumb" :separator-icon="ArrowRight">
+      <!-- <el-breadcrumb class="breadcrumb" :separator-icon="ArrowRight">
       <el-breadcrumb-item :to="{ path: '/' }">
         <div class="crumb">
           <el-icon><House /></el-icon>
@@ -95,63 +96,64 @@ function zoomIn() {
         </div>
       </el-breadcrumb-item>
     </el-breadcrumb> -->
-    <div class="labels">
-      <div class="categories">
-        <div class="caption">分类：</div>
-        <div class="item" v-for="(item, index) in tagsCategroies.categories" :key="index">
-          <el-tag class="mx-1" effect="light" :color="item.color">
-            <span>
-              {{ item.text }}
-            </span>
-          </el-tag>
+      <div class="labels">
+        <div class="categories">
+          <div class="caption">分类：</div>
+          <div class="item" v-for="(item, index) in tagsCategroies.categories" :key="index">
+            <el-tag class="mx-1" effect="light" :color="item.color">
+              <span>
+                {{ item.text }}
+              </span>
+            </el-tag>
+          </div>
+        </div>
+        <div class="tags">
+          <div class="caption">标签：</div>
+          <div class="item" v-for="(item, index) in tagsCategroies.tags" :key="index">
+            <el-tag class="mx-1" effect="light" :color="item.color">
+              <span>
+                {{ item.text }}
+              </span>
+            </el-tag>
+          </div>
         </div>
       </div>
-      <div class="tags">
-        <div class="caption">标签：</div>
-        <div class="item" v-for="(item, index) in tagsCategroies.tags" :key="index">
-          <el-tag class="mx-1" effect="light" :color="item.color">
-            <span>
-              {{ item.text }}
-            </span>
-          </el-tag>
-        </div>
+      <div class="content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code v-html="essay?.content"></div>
+      <!-- 评论 -->
+      <div class="comment">
+        <el-input v-model="comment.body" />
+        <el-button @click="setComm">发送评论</el-button>
       </div>
-    </div>
-    <div class="content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code v-html="essay?.content"></div>
-    <!-- 评论 -->
-    <div class="comment">
-      <el-input v-model="comment.body" />
-      <el-button @click="setComm">发送评论</el-button>
-    </div>
-    <div class="comments">
-      <div class="item" v-for="(item, index) in comments" :key="index">
-        <div class="row-1">
-          <el-image class="image" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
-          <div class="col-1">
-            <div class="row-1-1">{{ item.author }}</div>
-            <div class="row-1-2">
-              <div class="layer">
-                {{ item.layer }}
+      <div class="comments">
+        <div class="item" v-for="(item, index) in comments" :key="index">
+          <div class="row-1">
+            <el-image class="image" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
+            <div class="col-1">
+              <div class="row-1-1">{{ item.author }}</div>
+              <div class="row-1-2">
+                <div class="layer">
+                  {{ item.layer }}
+                </div>
+                <div class="date">{{ item.date }}</div>
               </div>
-              <div class="date">{{ item.date }}</div>
             </div>
           </div>
-        </div>
-        <div class="row-2">
-          <div class="body">{{ item.body }}</div>
-          <div>
-            <div class="digg">
-              <el-icon><CaretTop /></el-icon>
-              <span>{{ item.digg }}</span>
-            </div>
-            <div class="burry">
-              <el-icon><CaretBottom /></el-icon>
-              <span>{{ item.burry }}</span>
+          <div class="row-2">
+            <div class="body">{{ item.body }}</div>
+            <div>
+              <div class="digg">
+                <el-icon><CaretTop /></el-icon>
+                <span>{{ item.digg }}</span>
+              </div>
+              <div class="burry">
+                <el-icon><CaretBottom /></el-icon>
+                <span>{{ item.burry }}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   </div>
 </template>
 
@@ -192,10 +194,6 @@ h6 {
 
 .essay {
   color: #a7a7a7;
-
-  .tip {
-    color: #a7a7a7;
-  }
 
   .labels {
     font-size: 14px;
@@ -249,7 +247,6 @@ h6 {
   .view-count,
   .zoom-in,
   .crumb,
-  .date,
   .comm-count {
     font-size: 14px;
     @include flex();

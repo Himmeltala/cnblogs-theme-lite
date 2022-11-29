@@ -34,8 +34,6 @@ function href(postId?: number) {
 
 <template>
   <div class="home">
-    <el-button type="primary" plain round @click="lastPage">上一页</el-button>
-    <el-button type="success" plain round @click="nextPage">下一页</el-button>
     <Card v-for="(item, index) in essayList" :key="index">
       <div class="essay">
         <div class="title" @click="href(item.postId)">
@@ -70,6 +68,8 @@ function href(postId?: number) {
         </div>
       </div>
     </Card>
+    <el-button type="primary" plain round @click="lastPage">上一页</el-button>
+    <el-button type="success" plain round @click="nextPage">下一页</el-button>
   </div>
 </template>
 

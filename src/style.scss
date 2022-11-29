@@ -5,6 +5,7 @@ body {
   background-color: #191919;
   padding: 0;
   margin: 0;
+  color: #a7a7a7;
 }
 
 #app {
@@ -20,4 +21,29 @@ code {
 ::selection {
   color: var(--el-text-color-primary);
   background: var(--el-color-primary);
+}
+
+a {
+  color: #a7a7a7;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--el-color-primary);
+}
+
+a:active {
+  color: #a7a7a7;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #a7a7a7;
 }

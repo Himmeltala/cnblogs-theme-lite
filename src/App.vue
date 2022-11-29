@@ -1,6 +1,8 @@
 <script setup lang="ts"></script>
 
 <template>
+  <GitHub />
+  <Navigator />
   <LeftSide />
   <div class="view">
     <router-view v-slot="{ Component }">
@@ -17,9 +19,11 @@
 <style scoped>
 .view {
   position: absolute;
-  left: 10vw;
-  top: 0;
-  width: 80vw;
+  left: 23.8vw;
+  top: 10vh;
+  width: 52.5vw;
+  height: 90vh;
+  overflow-x: hidden;
 }
 
 .fade-enter-active,

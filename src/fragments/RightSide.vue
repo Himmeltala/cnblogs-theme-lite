@@ -1,15 +1,17 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="right-side"></div>
+  <div class="right-side">
+    <Card> </Card>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .right-side {
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 10vw;
-  height: 100vh;
+  top: 10vh;
+  right: 10vw;
+  width: 13.5vw;
+  height: 90vh;
 }
 </style>
