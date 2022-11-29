@@ -1,34 +1,34 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { getDefault } from "../utils/api";
+import * as API from "../utils/api";
+import * as DataType from "../types/data-type";
 
 const router = useRouter();
 
-let essayArr = ref<any>([]);
-
+let essayList = ref<Array<DataType.Essay>>();
 let page = ref(1);
 
-getDefault(page.value, str => {
-  essayArr.value = str;
+API.getEssayList(page.value, (str: Array<DataType.Essay>) => {
+  essayList.value = str;
 });
 
 function nextPage() {
   page.value++;
-  getDefault(page.value, str => {
-    essayArr.value = str;
+  API.getEssayList(page.value, (str: Array<DataType.Essay>) => {
+    essayList.value = str;
   });
 }
 
 function lastPage() {
   page.value--;
-  getDefault(page.value, str => {
-    essayArr.value = str;
+  API.getEssayList(page.value, (str: Array<DataType.Essay>) => {
+    essayList.value = str;
   });
 }
 
-function href(id: string) {
-  router.push(`/essay/${id}`);
+function href(postId?: number) {
+  router.push(`/essay/${postId}`);
 }
 </script>
 
@@ -36,9 +36,9 @@ function href(id: string) {
   <div class="home">
     <el-button type="primary" plain round @click="lastPage">上一页</el-button>
     <el-button type="success" plain round @click="nextPage">下一页</el-button>
-    <Card v-for="(item, index) in essayArr" :key="index">
+    <Card v-for="(item, index) in essayList" :key="index">
       <div class="essay">
-        <div class="title" @click="href(item.id)">
+        <div class="title" @click="href(item.postId)">
           {{ item.title }}
         </div>
         <div class="desc">摘要：{{ item.desc }}</div>
@@ -51,7 +51,9 @@ function href(id: string) {
           </div>
           <div class="view">
             <el-icon><View /></el-icon>
-            <span>{{ item.viewCount }}</span>
+            <span>
+              {{ item.viewCount }}
+            </span>
           </div>
           <div class="comm">
             <el-icon><ChatLineSquare /></el-icon>

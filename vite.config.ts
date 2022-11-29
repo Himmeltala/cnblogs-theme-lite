@@ -12,11 +12,12 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()]
     }),
     Components({
-      resolvers: [ElementPlusResolver()]
+      resolvers: [ElementPlusResolver()],
+      dirs: ["./src/fragments/**", "./src/components/**"]
     })
   ],
-  base: "https://blog-static.cnblogs.com/files/blogs/666252/",
-  // base: "/",
+  // base: "https://blog-static.cnblogs.com/files/blogs/666252/",
+  base: "/",
   server: {
     proxy: {
       "/api": {

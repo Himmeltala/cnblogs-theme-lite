@@ -4,14 +4,15 @@
 
 import $ from "jquery";
 import { replaceSpaceAround, replaceDefaultDesc } from "./reg";
+import * as DataType from "../types/data-type";
 
-export function parseDefault(data: string): Array<string> {
-  let day = $(data).find(".forFlow > .day");
-  let id = $(day).find(".postTitle > .postTitle2");
+export function parseEssayList(data: string): Array<DataType.Essay> {
+  let body = $(data).find(".forFlow > .day");
+  let id = $(body).find(".postTitle > .postTitle2");
   let idReg = /[0-9]+/g;
-  let title = $(day).find(".postTitle");
-  let desc = $(day).find(".c_b_p_desc");
-  let postDesc = $(day).find(".postDesc").text();
+  let title = $(body).find(".postTitle");
+  let desc = $(body).find(".c_b_p_desc");
+  let postDesc = $(body).find(".postDesc").text();
   let dateReg = /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g;
   let date = postDesc.match(dateReg);
   let viewReg = /阅读\([0-9]+\)/g;
@@ -21,11 +22,11 @@ export function parseDefault(data: string): Array<string> {
   let diggReg = /推荐\([0-9]+\)/g;
   let diggCount = postDesc.match(diggReg);
 
-  let essayArray = <any>[];
+  let essayList: Array<DataType.Essay> = [];
 
   for (let i = 0; i < $(title).length; i++) {
-    essayArray[i] = {
-      id: $(id[i]).attr("href")?.match(idReg)![0],
+    essayList[i] = {
+      postId: parseInt($(id[i]).attr("href")!.match(idReg)![0]),
       title: replaceSpaceAround($(title[i]).text()),
       desc: replaceSpaceAround(replaceDefaultDesc($(desc[i]).text())),
       date: date![i],
@@ -34,17 +35,16 @@ export function parseDefault(data: string): Array<string> {
       diggCount: diggCount![i]
     };
   }
-  // console.log(essayArray);
-  return essayArray;
+  return essayList;
 }
 
-export function parseEssay(str: string): Object {
-  let body = $(str).find(".post");
+export function parseEssay(postId: number, data: string): DataType.Essay {
+  let body = $(data).find(".post");
   let title = $(body).find(".postTitle > a > span").text();
   let content = $(body).find("#cnblogs_post_body").html();
-  console.log(content);
 
   return {
+    postId: postId,
     title: title,
     content: content
   };
