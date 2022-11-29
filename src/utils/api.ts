@@ -63,3 +63,9 @@ export function getCommList(data: DataType.Comment, response: (res: Array<DataTy
     response(Parser.parseCommList(data));
   });
 }
+
+export function getEssayTagsAndCategories(blogId: number, postId: number, response: (res: any) => void) {
+  axios.get(`${BASE_URL}/ajax/CategoriesTags.aspx?blogId=${blogId}&postId=${postId}`).then(({ data }) => {
+    response(Parser.parseEssayTagsAndCategories(data));
+  });
+}

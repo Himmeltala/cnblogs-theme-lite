@@ -6,13 +6,17 @@ import $ from "jquery";
 import { replaceSpaceAround, replaceDefaultDesc } from "./reg";
 import * as DataType from "../types/data-type";
 
+function toDom(data: any) {
+  return new DOMParser().parseFromString(data, "text/html");
+}
+
 export function parseEssayList(data: any): Array<DataType.Essay> {
-  let body = $(data).find(".forFlow > .day");
-  let id = $(body).find(".postTitle > .postTitle2");
+  let dom = $(data).find(".forFlow > .day");
+  let id = $(dom).find(".postTitle > .postTitle2");
   let idReg = /[0-9]+/g;
-  let title = $(body).find(".postTitle");
-  let desc = $(body).find(".c_b_p_desc");
-  let postDesc = $(body).find(".postDesc").text();
+  let title = $(dom).find(".postTitle");
+  let desc = $(dom).find(".c_b_p_desc");
+  let postDesc = $(dom).find(".postDesc").text();
   let dateReg = /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g;
   let date = postDesc.match(dateReg);
   let viewReg = /阅读\([0-9]+\)/g;
@@ -39,29 +43,29 @@ export function parseEssayList(data: any): Array<DataType.Essay> {
 }
 
 export function parseEssay(postId: number, data: any): DataType.Essay {
-  let body = $(data).find(".post");
-  let title = $(body).find(".postTitle > a > span").text();
-  let content = $(body).find("#cnblogs_post_body").html();
+  let dom = $(data).find(".post");
 
   return {
     postId: postId,
-    title: title,
-    content: content
+    title: $(dom).find(".postTitle > a > span").text(),
+    content: $(dom).find("#cnblogs_post_body").html(),
+    date: $(dom).find("#post-date").text(),
+    viewCount: $(dom).find("#post_view_count").text(),
+    commCount: $(dom).find("#post_comment_count").text()
   };
 }
 
 export function parseCommList(data: any): Array<DataType.Comment> {
   let comments: Array<DataType.Comment> = [];
-  var parser = new DOMParser();
 
-  $(parser.parseFromString(data, "text/html"))
+  $(toDom(data))
     .find(".feedbackItem")
     .map((i, d) => {
       let anchor = $(d).find(".layer").attr("href")!.split("#")[1];
       comments[i] = {
+        author: $(d).find(`#a_comment_author_${anchor}`).text(),
         layer: $(d).find(".layer").text(),
         date: $(d).find(".comment_date").text(),
-        author: $(d).find(`#a_comment_author_${anchor}`).text(),
         body: $(d).find(`#comment_body_${anchor}`).find("p").text(),
         digg: replaceSpaceAround($(d).find(".comment_digg").text()),
         burry: replaceSpaceAround($(d).find(".comment_burry").text()),
@@ -70,4 +74,36 @@ export function parseCommList(data: any): Array<DataType.Comment> {
     });
 
   return comments;
+}
+
+function mixColor() {
+  let colors: Array<string> = ["#93b5cf", "#5698c3", "#2bae85", "#66c18c", "#d1c2d3", "#806d9e", "#525288", "#158bb8"];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+export function parseEssayTagsAndCategories(data: any): any {
+  let list = <any>{ tags: [], categories: [] };
+  let dom = toDom(data);
+
+  $(dom)
+    .find("#BlogPostCategory > a")
+    .map((i, d) => {
+      list.categories[i] = {
+        href: $(d).attr("href"),
+        text: $(d).text(),
+        color: mixColor()
+      };
+    });
+
+  $(dom)
+    .find("#EntryTag > a")
+    .map((i, d) => {
+      list.tags[i] = {
+        href: $(d).attr("href"),
+        text: $(d).text(),
+        color: mixColor()
+      };
+    });
+
+  return list;
 }

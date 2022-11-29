@@ -5,7 +5,9 @@
   <div class="view">
     <router-view v-slot="{ Component }">
       <Transition name="fade">
-        <component :is="Component" />
+        <KeepAlive :exclude="['Essay']">
+          <component :is="Component" />
+        </KeepAlive>
       </Transition>
     </router-view>
   </div>

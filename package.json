@@ -12,6 +12,7 @@
     "@element-plus/icons-vue": "^2.0.10",
     "axios": "^1.2.0",
     "element-plus": "^2.2.25",
+    "highlight.js": "^11.7.0",
     "jquery": "^3.6.1",
     "vue": "^3.2.41",
     "vue-router": "^4.1.6"

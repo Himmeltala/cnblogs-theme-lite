@@ -4,6 +4,8 @@ import router from "./router";
 import "./style.scss";
 import "element-plus/theme-chalk/dark/css-vars.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
+import hljs from "highlight.js";
+import "highlight.js/styles/atom-one-dark.css";
 
 // import $ from "jquery";
 // $("head").empty();
@@ -22,6 +24,14 @@ const app = createApp(App);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }
+
+app.directive("parse-code", (el, bindig) => {
+  let blocks = el.querySelectorAll("pre code");
+  let imgs = el.querySelectorAll("img");
+  blocks.forEach((block: any) => {
+    hljs.highlightBlock(block);
+  });
+});
 
 app.use(router);
 app.mount("#app");
