@@ -6,8 +6,8 @@ import axios from "axios";
 import * as Parser from "./parser";
 import * as DataType from "../types/data-type";
 
-// const BASE_URL = "https://www.cnblogs.com/Enziandom";
-const BASE_URL = "/api";
+const BASE_URL = "https://www.cnblogs.com/Enziandom";
+// const BASE_URL = "/api";
 
 /**
  * 获取首页的随笔列表
@@ -15,11 +15,11 @@ const BASE_URL = "/api";
  * default.html?page=0
  *
  * @param page 页数
- * @param getRes 获取响应的消息
+ * @param response 获取响应的消息
  */
-export function getEssayList(page: number, getRes: (str: Array<DataType.Essay>) => void) {
+export function getEssayList(page: number, response: (res: Array<DataType.Essay>) => void) {
   axios.get(`${BASE_URL}/default.html?page=${page}`).then(({ data }) => {
-    getRes(Parser.parseEssayList(data));
+    response(Parser.parseEssayList(data));
   });
 }
 
@@ -29,11 +29,11 @@ export function getEssayList(page: number, getRes: (str: Array<DataType.Essay>) 
  * p/161616.html
  *
  * @param postId 随笔 ID
- * @param getRes 获取响应的消息
+ * @param response 获取响应的消息
  */
-export function getEssay(postId: number, getRes: (str: Object) => void) {
+export function getEssay(postId: number, response: (res: DataType.Essay) => void) {
   axios.get(`${BASE_URL}/p/${postId}.html`).then(({ data }) => {
-    getRes(Parser.parseEssay(postId, data));
+    response(Parser.parseEssay(postId, data));
   });
 }
 
@@ -43,9 +43,9 @@ export function getEssay(postId: number, getRes: (str: Object) => void) {
  * /ajax/PostComment/Add.aspx
  *
  * @param data 评论实体
- * @param getRes 获取响应的消息
+ * @param response 获取响应的消息
  */
-export function setComm(data: DataType.Comment, getRes: (str: Object) => void) {
+export function setComm(data: DataType.Comment, response: (res: any) => void) {
   axios
     .post(`${BASE_URL}/ajax/PostComment/Add.aspx`, data, {
       headers: {
@@ -54,6 +54,12 @@ export function setComm(data: DataType.Comment, getRes: (str: Object) => void) {
       }
     })
     .then(res => {
-      getRes(res);
+      response(res);
     });
+}
+
+export function getCommList(data: DataType.Comment, response: (res: Array<DataType.Comment>) => void) {
+  axios.get(`${BASE_URL}/ajax/GetComments.aspx?postId=${data.postId}&pageIndex=0`).then(({ data }) => {
+    response(Parser.parseCommList(data));
+  });
 }

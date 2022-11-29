@@ -6,7 +6,7 @@ import $ from "jquery";
 import { replaceSpaceAround, replaceDefaultDesc } from "./reg";
 import * as DataType from "../types/data-type";
 
-export function parseEssayList(data: string): Array<DataType.Essay> {
+export function parseEssayList(data: any): Array<DataType.Essay> {
   let body = $(data).find(".forFlow > .day");
   let id = $(body).find(".postTitle > .postTitle2");
   let idReg = /[0-9]+/g;
@@ -38,7 +38,7 @@ export function parseEssayList(data: string): Array<DataType.Essay> {
   return essayList;
 }
 
-export function parseEssay(postId: number, data: string): DataType.Essay {
+export function parseEssay(postId: number, data: any): DataType.Essay {
   let body = $(data).find(".post");
   let title = $(body).find(".postTitle > a > span").text();
   let content = $(body).find("#cnblogs_post_body").html();
@@ -48,4 +48,26 @@ export function parseEssay(postId: number, data: string): DataType.Essay {
     title: title,
     content: content
   };
+}
+
+export function parseCommList(data: any): Array<DataType.Comment> {
+  let comments: Array<DataType.Comment> = [];
+  var parser = new DOMParser();
+
+  $(parser.parseFromString(data, "text/html"))
+    .find(".feedbackItem")
+    .map((i, d) => {
+      let anchor = $(d).find(".layer").attr("href")!.split("#")[1];
+      comments[i] = {
+        layer: $(d).find(".layer").text(),
+        date: $(d).find(".comment_date").text(),
+        author: $(d).find(`#a_comment_author_${anchor}`).text(),
+        body: $(d).find(`#comment_body_${anchor}`).find("p").text(),
+        digg: replaceSpaceAround($(d).find(".comment_digg").text()),
+        burry: replaceSpaceAround($(d).find(".comment_burry").text()),
+        avatar: replaceSpaceAround($(d).find(`#comment_${anchor}_avatar`).text())
+      };
+    });
+
+  return comments;
 }

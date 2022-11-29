@@ -8,12 +8,16 @@ const route = useRoute();
 let id: any = route.params.id;
 
 let essay = ref<DataType.Essay>();
+let comments = ref<Array<DataType.Comment>>();
 
 API.getEssay(id, (str: DataType.Essay) => {
   essay.value = str;
+  API.getCommList({ postId: id }, (str: Array<DataType.Essay>) => {
+    comments.value = str;
+  });
 });
 
-let comment = ref<DataType.Comment>({ postId: essay.value?.postId, parentCommentId: 0 });
+let comment = ref<DataType.Comment>({ postId: id, parentCommentId: 0 });
 
 function setComm() {
   API.setComm(comment.value, res => {
@@ -31,6 +35,16 @@ function setComm() {
     <div class="title">{{ essay?.title }}</div>
     <div class="content" v-html="essay?.content"></div>
     <!-- 评论 -->
+    <div class="comments">
+      <div class="item" v-for="(item, index) in comments" :key="index">
+        <div class="layer">{{ item.layer }}</div>
+        <div class="author">{{ item.author }}</div>
+        <div class="date">{{ item.date }}</div>
+        <div class="digg">{{ item.digg }}</div>
+        <div class="burry">{{ item.burry }}</div>
+        <div class="body">{{ item.body }}</div>
+      </div>
+    </div>
   </div>
 </template>
 

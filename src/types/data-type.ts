@@ -10,6 +10,12 @@ export interface Essay {
 }
 
 export interface Comment {
+  layer?: string;
+  date?: string;
+  author?: string;
+  digg?: string;
+  burry?: string;
+  avatar?: string;
   postId?: number;
   body?: string;
   parentCommentId?: number;

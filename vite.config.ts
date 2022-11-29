@@ -16,8 +16,8 @@ export default defineConfig({
       dirs: ["./src/fragments/**", "./src/components/**"]
     })
   ],
-  // base: "https://blog-static.cnblogs.com/files/blogs/666252/",
-  base: "/",
+  base: "https://blog-static.cnblogs.com/files/blogs/666252/",
+  // base: "/",
   server: {
     proxy: {
       "/api": {
@@ -30,6 +30,9 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        manualChunks(id: any) {
+          return "components";
+        },
         entryFileNames: "[name].js",
         chunkFileNames: "[name].js",
         assetFileNames: "[name].[ext]"
