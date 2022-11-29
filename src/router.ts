@@ -6,7 +6,7 @@ const routes = [
     component: () => import("./fragments/Home.vue")
   },
   {
-    path: "/essay/:id",
+    path: "/p/:id",
     component: () => import("./fragments/Essay.vue")
   }
 ];

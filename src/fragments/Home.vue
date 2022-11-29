@@ -28,7 +28,7 @@ function lastPage() {
 }
 
 function href(postId?: number) {
-  router.push(`/essay/${postId}`);
+  router.push(`/p/${postId}`);
 }
 </script>
 
