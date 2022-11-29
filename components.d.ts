@@ -12,7 +12,8 @@ declare module '@vue/runtime-core' {
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElImage: typeof import('element-plus/es')['ElImage']
     ElInput: typeof import('element-plus/es')['ElInput']
-    ElTag: typeof import('element-plus/es')['ElTag']
+    ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
+    ElSkeletonItem: typeof import('element-plus/es')['ElSkeletonItem']
     Essay: typeof import('./src/fragments/Essay.vue')['default']
     GitHub: typeof import('./src/components/GitHub.vue')['default']
     Home: typeof import('./src/fragments/Home.vue')['default']
@@ -21,5 +22,6 @@ declare module '@vue/runtime-core' {
     RightSide: typeof import('./src/fragments/RightSide.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Tag: typeof import('./src/components/Tag.vue')['default']
   }
 }

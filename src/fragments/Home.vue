@@ -6,11 +6,14 @@ import * as DataType from "../types/data-type";
 
 const router = useRouter();
 
+let essayLoading = ref(true);
+
 let essayList = ref<Array<DataType.Essay>>();
 let page = ref(1);
 
 API.getEssayList(page.value, (str: Array<DataType.Essay>) => {
   essayList.value = str;
+  essayLoading.value = false;
 });
 
 function nextPage() {
@@ -34,7 +37,24 @@ function href(postId?: number) {
 
 <template>
   <div class="home">
-    <Card v-for="(item, index) in essayList" :key="index">
+    <el-skeleton :loading="essayLoading" animated>
+      <template #template>
+        <Card v-for="item in 10" :key="item">
+          <el-skeleton-item variant="p" style="width: 60%" />
+          <div style="display: flex; align-items: center; justify-items: space-between">
+            <el-skeleton-item variant="text" style="margin-right: 16px; margin-top: 8px" />
+            <el-skeleton-item variant="text" style="margin-right: 16px; margin-top: 8px" />
+            <el-skeleton-item variant="text" style="width: 30%; margin-top: 8px" />
+          </div>
+          <el-skeleton-item variant="text" style="width: 100%; margin-top: 8px" />
+          <el-skeleton-item variant="text" style="width: 100%" />
+          <div style="display: flex; align-items: center; justify-content: flex-end; width: 100%">
+            <el-skeleton-item variant="text" style="width: 30%; margin-top: 4px" />
+          </div>
+        </Card>
+      </template>
+    </el-skeleton>
+    <Card v-for="(item, index) in essayList" :key="index" v-if="!essayLoading">
       <div class="essay">
         <div class="title" @click="href(item.postId)">
           {{ item.title }}

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import * as API from "../utils/api";
 import * as DataType from "../types/data-type";
-import { ArrowRight } from "@element-plus/icons-vue";
 
 const route = useRoute();
+const router = useRouter();
 let id: any = route.params.id;
 
 let essay = ref<DataType.Essay>();
@@ -33,12 +33,18 @@ let tagsCategroies = ref<any>({ categories: {}, tags: {} });
 //   }
 // ];
 
+let contentSkeletonLoading = ref(true);
+
 API.getEssay(id, (str: DataType.Essay) => {
   essay.value = str;
+  contentSkeletonLoading.value = true;
   API.getCommList({ postId: id }, (str: Array<DataType.Essay>) => {
+    contentSkeletonLoading.value = false;
     comments.value = str;
+    skeletonLoading.value = true;
     API.getEssayTagsAndCategories(666252, id, str => {
       tagsCategroies.value = str;
+      skeletonLoading.value = false;
     });
   });
 });
@@ -56,13 +62,22 @@ let fontSize = ref(16);
 function zoomIn() {
   fontSize.value >= 18 ? (fontSize.value = 16) : fontSize.value++;
 }
+
+let skeletonLoading = ref(true);
+
+function nav(path: string, out?: boolean) {
+  if (out) {
+    window.open(path, "__blank");
+  } else router.push(path);
+}
 </script>
 
 <template>
   <div class="essay">
     <Card padding="20px 20px">
-      <div class="title">{{ essay?.title }}</div>
-      <div class="info">
+      <el-skeleton style="margin-top: 10px" :rows="2" animated :loading="contentSkeletonLoading" />
+      <div class="title" v-if="!contentSkeletonLoading">{{ essay?.title }}</div>
+      <div class="info" v-if="!contentSkeletonLoading">
         <div class="date">
           <el-icon><Clock /></el-icon>
           <span>
@@ -82,44 +97,38 @@ function zoomIn() {
           <span>放大</span>
         </div>
       </div>
-      <!-- <el-breadcrumb class="breadcrumb" :separator-icon="ArrowRight">
-      <el-breadcrumb-item :to="{ path: '/' }">
-        <div class="crumb">
-          <el-icon><House /></el-icon>
-          <span class="tip">首页</span>
-        </div>
-      </el-breadcrumb-item>
-      <el-breadcrumb-item>
-        <div class="crumb">
-          <el-icon><Tickets /></el-icon>
-          <span class="tip">正文</span>
-        </div>
-      </el-breadcrumb-item>
-    </el-breadcrumb> -->
-      <div class="labels">
+      <el-skeleton style="margin-top: 20px" :rows="1" animated :loading="skeletonLoading" />
+      <div class="labels" v-if="!skeletonLoading">
         <div class="categories">
-          <div class="caption">分类：</div>
+          <div class="caption">
+            <el-icon><FolderOpened /></el-icon>
+            <span>分类：</span>
+          </div>
           <div class="item" v-for="(item, index) in tagsCategroies.categories" :key="index">
-            <el-tag class="mx-1" effect="light" :color="item.color">
-              <span>
-                {{ item.text }}
-              </span>
-            </el-tag>
+            <Tag :color="item.color" @click="nav(item.href, true)">
+              {{ item.text }}
+            </Tag>
           </div>
         </div>
         <div class="tags">
-          <div class="caption">标签：</div>
+          <div class="caption">
+            <el-icon><PriceTag /></el-icon>
+            <span>标签：</span>
+          </div>
           <div class="item" v-for="(item, index) in tagsCategroies.tags" :key="index">
-            <el-tag class="mx-1" effect="light" :color="item.color">
-              <span>
-                {{ item.text }}
-              </span>
-            </el-tag>
+            <Tag :color="item.color" @click="nav(item.href, true)">
+              {{ item.text }}
+            </Tag>
           </div>
         </div>
       </div>
-      <div class="content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code v-html="essay?.content"></div>
-      <!-- 评论 -->
+      <el-skeleton style="margin-top: 10px" :rows="12" animated :loading="contentSkeletonLoading" />
+      <div
+        v-if="!contentSkeletonLoading"
+        class="content"
+        :style="{ 'font-size': fontSize + 'px' }"
+        v-parse-code
+        v-html="essay?.content"></div>
       <div class="comment">
         <el-input v-model="comment.body" />
         <el-button @click="setComm">发送评论</el-button>
@@ -199,11 +208,16 @@ h6 {
     font-size: 14px;
     margin-top: 10px;
 
+    .caption {
+      @include flex();
+
+      span {
+        margin-left: 4px;
+      }
+    }
+
     .item {
       margin-right: 4px;
-      span {
-        color: #e7e7e7;
-      }
     }
 
     .item:last-child {
@@ -226,8 +240,18 @@ h6 {
   }
 
   .info {
+    font-size: 14px;
     margin-top: 10px;
     @include flex($justify: flex-start);
+
+    .date {
+      @include flex();
+    }
+
+    div > span {
+      user-select: none;
+      margin-left: 6px;
+    }
   }
 
   .breadcrumb {
