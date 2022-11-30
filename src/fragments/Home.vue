@@ -34,6 +34,14 @@ function paginationChange() {
 
 <template>
   <div class="home">
+    <div v-if="currentPage > 1" class="pagination" :style="{ 'margin-bottom': !pageCount ? 0 : 10 + 'px' }">
+      <el-pagination
+        @current-change="paginationChange"
+        v-model:current-page="currentPage"
+        v-model:page-count="pageCount"
+        :background="true"
+        layout="prev, pager, next, jumper" />
+    </div>
     <el-skeleton :loading="essayLoading" animated>
       <template #template>
         <Card v-for="item in 10" :key="item">

@@ -256,7 +256,7 @@ code {
   font-weight: 300;
   font-family: Hack, monospace;
   position: absolute;
-  right: 0;
+  right: 4px;
   top: 0;
 }
 
@@ -365,7 +365,7 @@ $comm-size-2: 16px;
 
   .labels {
     font-size: $info-size;
-    margin-top: 10px;
+    margin: 25px 0;
 
     .categories {
       margin-bottom: 8px;
