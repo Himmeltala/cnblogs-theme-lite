@@ -4,7 +4,7 @@
   <GitHub />
   <Navigator />
   <LeftSide />
-  <div class="view">
+  <div class="container">
     <router-view v-slot="{ Component }">
       <Transition name="fade">
         <KeepAlive :exclude="['Essay']">
@@ -17,7 +17,7 @@
 </template>
 
 <style scoped>
-.view {
+.container {
   position: absolute;
   left: 23.8vw;
   top: 10vh;

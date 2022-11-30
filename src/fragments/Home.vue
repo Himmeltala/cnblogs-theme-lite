@@ -55,36 +55,26 @@ function href(postId?: number) {
       </template>
     </el-skeleton>
     <Card v-for="(item, index) in essayList" :key="index" v-if="!essayLoading">
-      <div class="essay">
-        <div class="title" @click="href(item.postId)">
-          {{ item.title }}
+      <div class="title" @click="href(item.postId)">
+        {{ item.title }}
+      </div>
+      <div class="desc">摘要：{{ item.desc }}</div>
+      <div class="info">
+        <div class="date">
+          <el-icon><Clock /></el-icon>
+          <span>{{ item.date }}</span>
         </div>
-        <div class="desc">摘要：{{ item.desc }}</div>
-        <div class="info">
-          <div class="date">
-            <el-icon><Clock /></el-icon>
-            <span>
-              {{ item.date }}
-            </span>
-          </div>
-          <div class="view">
-            <el-icon><View /></el-icon>
-            <span>
-              {{ item.viewCount }}
-            </span>
-          </div>
-          <div class="comm">
-            <el-icon><ChatLineSquare /></el-icon>
-            <span>
-              {{ item.commCount }}
-            </span>
-          </div>
-          <div class="digg">
-            <el-icon><Star /></el-icon>
-            <span>
-              {{ item.diggCount }}
-            </span>
-          </div>
+        <div class="view">
+          <el-icon><View /></el-icon>
+          <span>{{ item.viewCount }}</span>
+        </div>
+        <div class="comm">
+          <el-icon><ChatLineSquare /></el-icon>
+          <span>{{ item.commCount }}</span>
+        </div>
+        <div class="digg">
+          <el-icon><Star /></el-icon>
+          <span> {{ item.diggCount }}</span>
         </div>
       </div>
     </Card>

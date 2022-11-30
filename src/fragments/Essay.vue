@@ -6,11 +6,11 @@ import * as DataType from "../types/data-type";
 
 const route = useRoute();
 const router = useRouter();
-let id: any = route.params.id;
+const postId: any = route.params.id;
 
-let essay = ref<DataType.Essay>();
+const essay = ref<DataType.Essay>();
+const tagsCategroies = ref<any>({ categories: {}, tags: {} });
 let comments = ref<Array<DataType.Comment>>();
-let tagsCategroies = ref<any>({ categories: {}, tags: {} });
 
 // comments.value = [
 //   {
@@ -33,23 +33,24 @@ let tagsCategroies = ref<any>({ categories: {}, tags: {} });
 //   }
 // ];
 
-let contentSkeletonLoading = ref(true);
+let contentLoading = ref(true);
+let tagsLoading = ref(true);
 
-API.getEssay(id, (str: DataType.Essay) => {
+API.getEssay(postId, (str: DataType.Essay) => {
   essay.value = str;
-  contentSkeletonLoading.value = true;
-  API.getCommList(id, 0, (str: Array<DataType.Essay>) => {
-    contentSkeletonLoading.value = false;
+  contentLoading.value = true;
+  API.getCommList(postId, 0, (str: Array<DataType.Essay>) => {
+    contentLoading.value = false;
     comments.value = str;
-    skeletonLoading.value = true;
-    API.getEssayTagsAndCategories(666252, id, str => {
+    tagsLoading.value = true;
+    API.getEssayTagsAndCategories(666252, postId, str => {
       tagsCategroies.value = str;
-      skeletonLoading.value = false;
+      tagsLoading.value = false;
     });
   });
 });
 
-let comment = ref<DataType.Comment>({ postId: id, parentCommentId: 0 });
+let comment = ref<DataType.Comment>({ postId, parentCommentId: 0 });
 
 function setComm() {
   API.setComm(
@@ -67,8 +68,6 @@ function zoomIn() {
   fontSize.value >= 18 ? (fontSize.value = 16) : fontSize.value++;
 }
 
-let skeletonLoading = ref(true);
-
 function nav(path: string, out?: boolean) {
   if (out) {
     window.open(path, "__blank");
@@ -79,14 +78,12 @@ function nav(path: string, out?: boolean) {
 <template>
   <div class="essay">
     <Card padding="20px 20px">
-      <el-skeleton style="margin-top: 10px" :rows="2" animated :loading="contentSkeletonLoading" />
-      <div class="title" v-if="!contentSkeletonLoading">{{ essay?.title }}</div>
-      <div class="info" v-if="!contentSkeletonLoading">
+      <el-skeleton style="margin-top: 10px" :rows="2" animated :loading="contentLoading" />
+      <div class="title" v-if="!contentLoading">{{ essay?.title }}</div>
+      <div class="info" v-if="!contentLoading">
         <div class="date">
           <el-icon><Clock /></el-icon>
-          <span>
-            {{ essay?.date }}
-          </span>
+          <span>{{ essay?.date }}</span>
         </div>
         <div class="view-count">
           <el-icon><View /></el-icon>
@@ -101,8 +98,8 @@ function nav(path: string, out?: boolean) {
           <span>放大</span>
         </div>
       </div>
-      <el-skeleton style="margin-top: 20px" :rows="1" animated :loading="skeletonLoading" />
-      <div class="labels" v-if="!skeletonLoading">
+      <el-skeleton style="margin-top: 20px" :rows="1" animated :loading="tagsLoading" />
+      <div class="labels" v-if="!tagsLoading">
         <div class="categories">
           <div class="caption">
             <el-icon><FolderOpened /></el-icon>
@@ -126,9 +123,9 @@ function nav(path: string, out?: boolean) {
           </div>
         </div>
       </div>
-      <el-skeleton style="margin-top: 10px" :rows="12" animated :loading="contentSkeletonLoading" />
+      <el-skeleton style="margin-top: 10px" :rows="12" animated :loading="contentLoading" />
       <div
-        v-if="!contentSkeletonLoading"
+        v-if="!contentLoading"
         class="content"
         :style="{ 'font-size': fontSize + 'px' }"
         v-parse-code
@@ -208,36 +205,6 @@ h6 {
 .essay {
   color: #a7a7a7;
 
-  .labels {
-    font-size: 14px;
-    margin-top: 10px;
-
-    .caption {
-      @include flex();
-
-      span {
-        margin-left: 4px;
-      }
-    }
-
-    .item {
-      margin-right: 4px;
-    }
-
-    .item:last-child {
-      margin-left: 0;
-    }
-
-    .categories {
-      margin-bottom: 4px;
-    }
-
-    .categories,
-    .tags {
-      @include flex($justify: flex-start);
-    }
-  }
-
   .title {
     word-break: break-all;
     font-size: 24px;
@@ -248,36 +215,62 @@ h6 {
     margin-top: 10px;
     @include flex($justify: flex-start);
 
-    .date {
-      @include flex();
-    }
-
     div > span {
       user-select: none;
       margin-left: 6px;
     }
+
+    .date {
+      @include flex();
+    }
+
+    .zoom-in {
+      cursor: pointer;
+    }
+
+    .date,
+    .comm-count,
+    .view-count {
+      margin-right: 10px;
+    }
+
+    .view-count,
+    .zoom-in,
+    .crumb,
+    .comm-count {
+      font-size: 14px;
+      @include flex();
+    }
   }
 
-  .breadcrumb {
-    margin-top: 10px;
-  }
-
-  .date,
-  .comm-count,
-  .view-count {
-    margin-right: 10px;
-  }
-
-  .zoom-in {
-    cursor: pointer;
-  }
-
-  .view-count,
-  .zoom-in,
-  .crumb,
-  .comm-count {
+  .labels {
     font-size: 14px;
-    @include flex();
+    margin-top: 10px;
+
+    .categories {
+      margin-bottom: 4px;
+    }
+
+    .categories,
+    .tags {
+      @include flex($justify: flex-start);
+
+      .caption {
+        @include flex();
+
+        span {
+          margin-left: 4px;
+        }
+      }
+
+      .item {
+        margin-right: 4px;
+      }
+
+      .item:last-child {
+        margin-left: 0;
+      }
+    }
   }
 
   .comments {
@@ -293,6 +286,11 @@ h6 {
       font-size: 14px;
       @include flex($justify: flex-start);
 
+      .image {
+        margin-right: 10px;
+        border-radius: 6px;
+      }
+
       .row-1-2 {
         color: var(--el-text-color-placeholder);
         margin-top: 2px;
@@ -303,11 +301,6 @@ h6 {
           @include flex($justify: flex-start);
           margin-right: 10px;
         }
-      }
-
-      .image {
-        margin-right: 10px;
-        border-radius: 6px;
       }
     }
 
