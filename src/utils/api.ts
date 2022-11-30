@@ -1,7 +1,3 @@
-/**
- * API
- */
-
 import axios from "axios";
 import * as Parser from "./parser";
 import * as DataType from "../types/data-type";
@@ -26,9 +22,7 @@ export function getEssayList(page: number, response: (res: Array<DataType.Essay>
 /**
  * 通过随笔 ID 获取随笔
  *
- * p/161616.html
- *
- * @param postId 随笔 ID
+ * @param postId 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
  * @param response 获取响应的消息
  */
 export function getEssay(postId: number, response: (res: DataType.Essay) => void) {
@@ -38,19 +32,17 @@ export function getEssay(postId: number, response: (res: DataType.Essay) => void
 }
 
 /**
- * 发送评论
- *
- * /ajax/PostComment/Add.aspx
+ * 发送随笔的评论
  *
  * @param data 评论实体
+ * @param token 发送频率必须要 token，找到标签 #antiforgery_token 来获取
  * @param response 获取响应的消息
  */
-export function setComm(data: DataType.Comment, response: (res: any) => void) {
+export function setComm(data: DataType.Comment, token: string, response: (res: any) => void) {
   axios
     .post(`${BASE_URL}/ajax/PostComment/Add.aspx`, data, {
       headers: {
-        RequestVerificationToken:
-          "CfDJ8NfDHj8mnYFAmPyhfXwJojcLmH5FQKBU6I9JmTZ7EZv8CHznhefSwrC9bhMz6MPu5L74E-gvI4nLRpIAQWlWV0QPcVyR2ZnJfuABSA3Eu6fyiYubrc5iRYfKOIffdlGAhYC0MqHM5MJsWvuE8dctwRGNzJK_XaSs8jF_tB6iujBaNMnSICsF11A9_zj8nTCNMg"
+        RequestVerificationToken: token
       }
     })
     .then(res => {
@@ -58,12 +50,26 @@ export function setComm(data: DataType.Comment, response: (res: any) => void) {
     });
 }
 
-export function getCommList(data: DataType.Comment, response: (res: Array<DataType.Comment>) => void) {
-  axios.get(`${BASE_URL}/ajax/GetComments.aspx?postId=${data.postId}&pageIndex=0`).then(({ data }) => {
+/**
+ * 获取随笔的评论列表
+ *
+ * @param postId 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
+ * @param pageIndex 1 页最多有 50 条评论
+ * @param response 获取响应的消息
+ */
+export function getCommList(postId: number, pageIndex: number, response: (res: Array<DataType.Comment>) => void) {
+  axios.get(`${BASE_URL}/ajax/GetComments.aspx?postId=${postId}&pageIndex=${pageIndex}`).then(({ data }) => {
     response(Parser.parseCommList(data));
   });
 }
 
+/**
+ * 获取随笔的标签和分类
+ *
+ * @param blogId 在头部 script 标签中获取
+ * @param postId 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
+ * @param response 获取响应的消息
+ */
 export function getEssayTagsAndCategories(blogId: number, postId: number, response: (res: any) => void) {
   axios.get(`${BASE_URL}/ajax/CategoriesTags.aspx?blogId=${blogId}&postId=${postId}`).then(({ data }) => {
     response(Parser.parseEssayTagsAndCategories(data));

@@ -38,7 +38,7 @@ let contentSkeletonLoading = ref(true);
 API.getEssay(id, (str: DataType.Essay) => {
   essay.value = str;
   contentSkeletonLoading.value = true;
-  API.getCommList({ postId: id }, (str: Array<DataType.Essay>) => {
+  API.getCommList(id, 0, (str: Array<DataType.Essay>) => {
     contentSkeletonLoading.value = false;
     comments.value = str;
     skeletonLoading.value = true;
@@ -52,9 +52,13 @@ API.getEssay(id, (str: DataType.Essay) => {
 let comment = ref<DataType.Comment>({ postId: id, parentCommentId: 0 });
 
 function setComm() {
-  API.setComm(comment.value, res => {
-    console.log(res);
-  });
+  API.setComm(
+    comment.value,
+    "CfDJ8NfDHj8mnYFAmPyhfXwJojcLmH5FQKBU6I9JmTZ7EZv8CHznhefSwrC9bhMz6MPu5L74E-gvI4nLRpIAQWlWV0QPcVyR2ZnJfuABSA3Eu6fyiYubrc5iRYfKOIffdlGAhYC0MqHM5MJsWvuE8dctwRGNzJK_XaSs8jF_tB6iujBaNMnSICsF11A9_zj8nTCNMg",
+    res => {
+      console.log(res);
+    }
+  );
 }
 
 let fontSize = ref(16);

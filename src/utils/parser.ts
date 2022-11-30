@@ -1,12 +1,8 @@
-/**
- * 解析 HTML
- */
-
 import $ from "jquery";
-import { replaceSpaceAround, replaceDefaultDesc } from "./reg";
+import * as Regular from "./regular";
 import * as DataType from "../types/data-type";
 
-function toDom(data: any) {
+function dom(data: any) {
   return new DOMParser().parseFromString(data, "text/html");
 }
 
@@ -31,8 +27,8 @@ export function parseEssayList(data: any): Array<DataType.Essay> {
   for (let i = 0; i < $(title).length; i++) {
     essayList[i] = {
       postId: parseInt($(id[i]).attr("href")!.match(idReg)![0]),
-      title: replaceSpaceAround($(title[i]).text()),
-      desc: replaceSpaceAround(replaceDefaultDesc($(desc[i]).text())),
+      title: Regular.replaceSpaceAround($(title[i]).text()),
+      desc: Regular.replaceSpaceAround(Regular.replaceDefaultDesc($(desc[i]).text())),
       date: date![i],
       viewCount: viewCount![i],
       commCount: commCount![i],
@@ -58,7 +54,7 @@ export function parseEssay(postId: number, data: any): DataType.Essay {
 export function parseCommList(data: any): Array<DataType.Comment> {
   let comments: Array<DataType.Comment> = [];
 
-  $(toDom(data))
+  $(dom(data))
     .find(".feedbackItem")
     .map((i, d) => {
       let anchor = $(d).find(".layer").attr("href")!.split("#")[1];
@@ -67,9 +63,9 @@ export function parseCommList(data: any): Array<DataType.Comment> {
         layer: $(d).find(".layer").text(),
         date: $(d).find(".comment_date").text(),
         body: $(d).find(`#comment_body_${anchor}`).find("p").text(),
-        digg: replaceSpaceAround($(d).find(".comment_digg").text()),
-        burry: replaceSpaceAround($(d).find(".comment_burry").text()),
-        avatar: replaceSpaceAround($(d).find(`#comment_${anchor}_avatar`).text())
+        digg: Regular.replaceSpaceAround($(d).find(".comment_digg").text()),
+        burry: Regular.replaceSpaceAround($(d).find(".comment_burry").text()),
+        avatar: Regular.replaceSpaceAround($(d).find(`#comment_${anchor}_avatar`).text())
       };
     });
 
@@ -83,9 +79,9 @@ function mixColor() {
 
 export function parseEssayTagsAndCategories(data: any): any {
   let list = <any>{ tags: [], categories: [] };
-  let dom = toDom(data);
+  let _dom = dom(data);
 
-  $(dom)
+  $(_dom)
     .find("#BlogPostCategory > a")
     .map((i, d) => {
       list.categories[i] = {
@@ -95,7 +91,7 @@ export function parseEssayTagsAndCategories(data: any): any {
       };
     });
 
-  $(dom)
+  $(_dom)
     .find("#EntryTag > a")
     .map((i, d) => {
       list.tags[i] = {
