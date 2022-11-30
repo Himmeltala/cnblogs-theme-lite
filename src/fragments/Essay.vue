@@ -233,6 +233,13 @@ code {
   font-size: 14px;
   font-weight: 300;
   font-family: Hack, monospace;
+  background: #2e2e2e;
+  color: var(--el-color-danger-light-3);
+  padding: 3px 6px;
+  border-radius: 6px;
+  word-break: break-all;
+  margin: 0 4px;
+  box-sizing: border-box;
 }
 
 .cust-img {
@@ -254,10 +261,46 @@ code {
 }
 
 .content {
-  p {
-    line-height: 1.8;
+  @mixin font() {
     letter-spacing: 1px;
     word-break: break-all;
+    @content;
+  }
+
+  p {
+    @include font() {
+      line-height: 1.8;
+    }
+  }
+
+  ol,
+  ul {
+    li {
+      @include font() {
+        line-height: 1.4;
+      }
+    }
+
+    li:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  table {
+    padding: 10px;
+    box-sizing: border-box;
+
+    th,
+    td {
+      padding: 8px 13px;
+      border-bottom: 1px solid var(--el-border-color-lighter);
+    }
+
+    tbody {
+      tr:nth-child(even) {
+        background-color: #2b2b2b;
+      }
+    }
   }
 }
 
