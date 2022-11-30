@@ -31,6 +31,8 @@ function search() {
       </div>
       <div class="item home" @click="nav('/')">首页</div>
       <div class="item tags" @click="nav('/')">标签</div>
+      <div class="item tags" @click="nav('https://i.cnblogs.com/posts/edit', true)">新随笔</div>
+      <div class="item tags" @click="nav('https://i.cnblogs.com/posts', true)">管理</div>
       <svg
         @click="nav('https://space.bilibili.com/7021686', true)"
         t="1669739351541"

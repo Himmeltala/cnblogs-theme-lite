@@ -34,18 +34,15 @@ let comments = ref<Array<DataType.Comment>>();
 // ];
 
 let contentLoading = ref(true);
-let tagsLoading = ref(true);
 
 API.getEssay(postId, (str: DataType.Essay) => {
   essay.value = str;
   contentLoading.value = true;
   API.getCommList(postId, 0, (str: Array<DataType.Essay>) => {
-    contentLoading.value = false;
     comments.value = str;
-    tagsLoading.value = true;
     API.getEssayTagsAndCategories(666252, postId, str => {
       tagsCategroies.value = str;
-      tagsLoading.value = false;
+      contentLoading.value = false;
     });
   });
 });
@@ -98,8 +95,7 @@ function nav(path: string, out?: boolean) {
           <span>放大</span>
         </div>
       </div>
-      <el-skeleton style="margin-top: 20px" :rows="1" animated :loading="tagsLoading" />
-      <div class="labels" v-if="!tagsLoading">
+      <div class="labels" v-if="!contentLoading">
         <div class="categories">
           <div class="caption">
             <el-icon><FolderOpened /></el-icon>
@@ -123,14 +119,14 @@ function nav(path: string, out?: boolean) {
           </div>
         </div>
       </div>
-      <el-skeleton style="margin-top: 10px" :rows="12" animated :loading="contentLoading" />
+      <el-skeleton style="margin-top: 10px" :rows="16" animated :loading="contentLoading" />
       <div
         v-if="!contentLoading"
         class="content"
         :style="{ 'font-size': fontSize + 'px' }"
         v-parse-code
         v-html="essay?.content"></div>
-      <div class="comment">
+      <div class="comment" v-if="!contentLoading">
         <el-input v-model="comment.body" />
         <el-button @click="setComm">发送评论</el-button>
       </div>
@@ -202,16 +198,22 @@ h6 {
 <style scoped lang="scss">
 @import "../scss/mixins.scss";
 
+$color: #a7a7a7;
+$title-size: 24px;
+$info-size: 14px;
+$comm-size-1: 13px;
+$comm-size-2: 16px;
+
 .essay {
-  color: #a7a7a7;
+  color: $color;
 
   .title {
     word-break: break-all;
-    font-size: 24px;
+    font-size: $title-size;
   }
 
   .info {
-    font-size: 14px;
+    font-size: $info-size;
     margin-top: 10px;
     @include flex($justify: flex-start);
 
@@ -229,26 +231,24 @@ h6 {
     }
 
     .date,
-    .comm-count,
-    .view-count {
+    .view-count,
+    .comm-count {
       margin-right: 10px;
     }
 
     .view-count,
-    .zoom-in,
-    .crumb,
-    .comm-count {
-      font-size: 14px;
+    .comm-count,
+    .zoom-in {
       @include flex();
     }
   }
 
   .labels {
-    font-size: 14px;
+    font-size: $info-size;
     margin-top: 10px;
 
     .categories {
-      margin-bottom: 4px;
+      margin-bottom: 8px;
     }
 
     .categories,
@@ -293,9 +293,9 @@ h6 {
 
       .row-1-2 {
         color: var(--el-text-color-placeholder);
-        margin-top: 2px;
-        font-size: 13px;
         @include flex($justify: flex-start);
+        font-size: $comm-size-1;
+        margin-top: 2px;
 
         .layer {
           @include flex($justify: flex-start);
@@ -308,12 +308,12 @@ h6 {
       margin-left: 55px;
 
       .body {
-        font-size: 16px;
+        font-size: $comm-size-2;
         margin: 4px 0;
       }
 
       & > div + div {
-        font-size: 13px;
+        font-size: $comm-size-1;
         @include flex($justify: flex-end);
       }
 
