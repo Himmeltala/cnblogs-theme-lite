@@ -34,7 +34,7 @@ function paginationChange() {
 
 <template>
   <div class="home">
-    <div v-if="currentPage > 1" class="pagination" :style="{ 'margin-bottom': !pageCount ? 0 : 10 + 'px' }">
+    <div class="pagination" v-if="currentPage > 1">
       <el-pagination
         @current-change="paginationChange"
         v-model:current-page="currentPage"

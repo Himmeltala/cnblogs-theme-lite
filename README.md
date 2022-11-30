@@ -1,16 +1,17 @@
-# Vue 3 + TypeScript + Vite
+# 主题 lite
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+目的是做到轻巧、快速，博客园进入一个页面，比如随笔详细页、标签页等，都是整页重新加载的，非常影响体验，而基于 Vue3 做的主题就能打破这样的局限。
 
-## Recommended IDE Setup
+基本上除了中间部分会发生变化、加载，导航栏、侧边栏都不会发生变化。因为是局部更新页面的，所以响应速度也快。
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+Element-Plus 也提供了很好的主题、样式、组件等支持。目前该项目主要是开发 API，获取博客园随笔、发送评论等，提供稳定的支持，皮肤样式都有各自的喜好，所以，非常支持二次开发，开发属于自己的皮肤，而只需要调用我提供的 API 即可，页面怎么设计、怎么来由你们自己决定。如果觉得原本的样式就可以满足了，直接拿来用即可。
 
-## Type Support For `.vue` Imports in TS
+# 运行项目
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+```bash
+npm install
+npm run dev
+npm build
+```
 
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
-
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+build 之后，dist 目录有 index.css、index.js，请上传之博客园后台文件中，获取 🔗 链接，导入到博客园样式和 JS 中。
