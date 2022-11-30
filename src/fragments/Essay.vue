@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import * as API from "../utils/api";
 import * as DataType from "../types/data-type";
+import { ArrowLeft } from "@element-plus/icons-vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -75,12 +76,12 @@ function nav(path: string, out?: boolean) {
 <template>
   <div class="essay">
     <Card class="wrap" padding="20px 20px">
-      <div class="back" @click="nav('/')">
-        <el-icon><ArrowLeftBold /></el-icon>
-        <span>返回</span>
-      </div>
       <el-skeleton style="margin-top: 10px" :rows="2" animated :loading="contentLoading" />
-      <div class="title" v-if="!contentLoading">{{ essay?.title }}</div>
+      <el-page-header v-if="!contentLoading" :icon="ArrowLeft" @back="nav('/')">
+        <template #content>
+          <div class="title" v-if="!contentLoading">{{ essay?.title }}</div>
+        </template>
+      </el-page-header>
       <div class="info" v-if="!contentLoading">
         <div class="date">
           <el-icon><Clock /></el-icon>
@@ -218,6 +219,13 @@ pre {
       width: 3px;
       height: 3px;
     }
+
+    &,
+    span {
+      line-height: 1.6;
+      letter-spacing: 0.9px;
+      word-break: break-all;
+    }
   }
 }
 
@@ -244,6 +252,18 @@ code {
   right: 0;
   top: 0;
 }
+
+.content {
+  p {
+    line-height: 1.8;
+    letter-spacing: 1px;
+    word-break: break-all;
+  }
+}
+
+.el-page-header__left {
+  margin-right: 0 !important;
+}
 </style>
 
 <style scoped lang="scss">
@@ -260,27 +280,11 @@ $comm-size-2: 16px;
 
   .wrap {
     position: relative;
-
-    .back {
-      right: 12px;
-      top: 10px;
-      position: absolute;
-      cursor: pointer;
-      @include flex();
-      transition: 0.3s;
-
-      &:hover {
-        transition: 0.3s;
-        color: var(--el-color-primary);
-      }
-
-      span {
-        font-size: 14px;
-      }
-    }
   }
 
   .title {
+    line-height: 1.3;
+    color: $color !important;
     word-break: break-all;
     font-size: $title-size;
   }
@@ -344,9 +348,6 @@ $comm-size-2: 16px;
         margin-left: 0;
       }
     }
-  }
-
-  .content {
   }
 
   .comments {

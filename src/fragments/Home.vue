@@ -146,11 +146,18 @@ $margin: 3px;
         font-size: $title-size;
         word-break: break-all;
         transition: 0.3s;
+        letter-spacing: 1px;
       }
 
       .desc {
         padding: 10px 0;
         font-size: $desc-size;
+        letter-spacing: 0.6px;
+      }
+
+      .title,
+      .desc {
+        line-height: 1.4;
       }
 
       .bottom {
