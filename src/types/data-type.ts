@@ -7,6 +7,7 @@ export interface Essay {
   viewCount?: string;
   commCount?: string;
   diggCount?: string;
+  cover?: string;
 }
 
 export interface Comment {

@@ -8,8 +8,6 @@ const BASE_URL = "/api";
 /**
  * 获取首页的随笔列表
  *
- * default.html?page=0
- *
  * @param page 页数
  * @param response 获取响应的消息
  */

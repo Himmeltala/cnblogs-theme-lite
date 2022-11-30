@@ -30,28 +30,6 @@ function changePage(flag: boolean) {
 function paginationChange() {
   changePage(false);
 }
-
-let covers = ref([
-  "http://tva1.sinaimg.cn/large/0073YlnVgy1h78k53dtekj31q9185qv6.jpg",
-  "http://tva1.sinaimg.cn/large/0073YlnVgy1h78k4iy34gj34g02i0b29.jpg",
-  "http://tva1.sinaimg.cn/large/0073YlnVgy1h78k285eaaj348s2dznpf.jpg",
-  "http://tva1.sinaimg.cn/large/0073YlnVgy1h7nhmeikjyj31e00s4u0x.jpg",
-  "http://tva1.sinaimg.cn/large/0073YlnVgy1h78kvs2pa3j331f1we4qr.jpg",
-  "http://tva1.sinaimg.cn/large/0073YlnVgy1h78jytvu6wj32p81odtdr.jpg",
-  "http://tva1.sinaimg.cn/large/0073YlnVgy1h6e7546raxj31z41400vb.jpg",
-  "http://tva1.sinaimg.cn/large/0073YlnVgy1h70g4ge139j30mm0weqfr.jpg",
-  "http://tva1.sinaimg.cn/large/0073YlnVgy1h70g4ger0qj30og0ydtmo.jpg",
-  "http://tva1.sinaimg.cn/large/0073YlnVgy1h6e73qud5tj31u00u00zq.jpg",
-  "http://tva1.sinaimg.cn/large/0073YlnVgy1h6e720k0z0j32fr1h5x6p.jpg",
-  "http://tva1.sinaimg.cn/large/0073YlnVgy1h6c0schlj6j31uo11idjl.jpg",
-  "http://tva1.sinaimg.cn/large/74944c5fgy1h5p5u79jfij22lc140jxb.jpg",
-  "http://tva1.sinaimg.cn/large/74944c5fgy1h5p5u54ocpj22lc140dnn.jpg"
-]);
-
-function mixCover() {
-  let r = Math.floor(Math.random() * covers.value.length);
-  return covers.value[r];
-}
 </script>
 
 <template>
@@ -75,8 +53,8 @@ function mixCover() {
     </el-skeleton>
     <Card class="list" v-for="(item, index) in essayList" :key="index" v-if="!essayLoading">
       <div class="show">
-        <el-image v-if="index % 2 != 0" class="cover" :src="mixCover()" fit="cover" />
-        <div class="wrap">
+        <el-image v-if="index % 2 != 0 && item.cover" class="cover" :src="item.cover" fit="cover" />
+        <div class="wrap" :class="{ 'cover-exist': item.cover ? false : true }">
           <router-link class="title" :to="'/p/' + item.postId"> {{ item.title }}</router-link>
           <div class="desc">摘要：{{ item.desc }}</div>
           <div class="bottom">
@@ -104,7 +82,7 @@ function mixCover() {
             </div>
           </div>
         </div>
-        <el-image v-if="index % 2 == 0" class="cover" :src="mixCover()" fit="cover" />
+        <el-image v-if="index % 2 == 0 && item.cover" class="cover" :src="item.cover" fit="cover" />
       </div>
     </Card>
     <div class="pagination">
@@ -137,6 +115,10 @@ $margin: 3px;
       border-radius: $border-radius;
       width: 25%;
       height: 150px;
+    }
+
+    .cover-exist {
+      width: 100% !important;
     }
 
     .wrap {

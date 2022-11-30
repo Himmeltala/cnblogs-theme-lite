@@ -2,10 +2,23 @@ import $ from "jquery";
 import * as Regular from "./regular";
 import * as DataType from "../types/data-type";
 
+/**
+ * 由于一些问题，有时候请求过来的 DOM 不是真实的 DOM，所以不能被 JQ 解析，必须先调用该函数进行转换
+ *
+ * @param data 被解析成 DOM 树的对象
+ * @returns 返回一个真实的 DOM 树
+ */
 function dom(data: any) {
   return new DOMParser().parseFromString(data, "text/html");
 }
 
+/**
+ * 解析随笔列表页面
+ *
+ * @param data dom 节点，由于这个 DOM 是真实地 DOM 树，所以不需要将其转换成 DOM
+ * @param calcPage 是否筛选出页面中的分页
+ * @returns 返回一个包含分页和随笔列表的对象
+ */
 export function parseEssayList(data: any, calcPage: boolean): { pages: string[]; list: Array<DataType.Essay> } {
   let dom = $(data).find(".forFlow > .day");
 
@@ -23,30 +36,31 @@ export function parseEssayList(data: any, calcPage: boolean): { pages: string[];
   }
 
   let id = $(dom).find(".postTitle > .postTitle2");
-  let idReg = /[0-9]+/g;
   let title = $(dom).find(".postTitle");
   let desc = $(dom).find(".c_b_p_desc");
   let postDesc = $(dom).find(".postDesc").text();
-  let dateReg = /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g;
-  let date = postDesc.match(dateReg);
-  let viewReg = /阅读\([0-9]+\)/g;
-  let viewCount = postDesc.match(viewReg);
-  let commReg = /评论\([0-9]+\)/g;
-  let commCount = postDesc.match(commReg);
-  let diggReg = /推荐\([0-9]+\)/g;
-  let diggCount = postDesc.match(diggReg);
+  let cover = $(dom).find(".desc_img");
+  let date = postDesc.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
+  let viewCount = postDesc.match(/阅读\([0-9]+\)/g);
+  let commCount = postDesc.match(/评论\([0-9]+\)/g);
+  let diggCount = postDesc.match(/推荐\([0-9]+\)/g);
 
   let list: Array<DataType.Essay> = [];
 
   $(title).each((i, elem) => {
     list[i] = {
-      postId: parseInt($(id[i]).attr("href")!.match(idReg)![0]),
+      postId: parseInt(
+        $(id[i])
+          .attr("href")!
+          .match(/[0-9]+/g)![0]
+      ),
       title: Regular.replaceSpaceAround($(title[i]).text()),
       desc: Regular.replaceSpaceAround(Regular.replaceDefaultDesc($(desc[i]).text())),
       date: date![i],
       viewCount: viewCount![i],
       commCount: commCount![i],
-      diggCount: diggCount![i]
+      diggCount: diggCount![i],
+      cover: $(cover[i]).attr("src")
     };
   });
 
@@ -56,6 +70,13 @@ export function parseEssayList(data: any, calcPage: boolean): { pages: string[];
   };
 }
 
+/**
+ * 解析随笔详细页面
+ *
+ * @param postId 随笔 ID
+ * @param data 请求响应消息，是一个 HTML，但由于一些问题，不是一个真实的 DOM 树，所以必须要先调用 dom() 函数进行转换
+ * @returns 返回随笔实体
+ */
 export function parseEssay(postId: number, data: any): DataType.Essay {
   let dom = $(data).find(".post");
 
@@ -69,6 +90,12 @@ export function parseEssay(postId: number, data: any): DataType.Essay {
   };
 }
 
+/**
+ * 解析随笔详细页面的评论列表
+ *
+ * @param data 同样的也需要先调用 dom 函数转换成 DOM 树
+ * @returns 返回评论实体列表
+ */
 export function parseCommList(data: any): Array<DataType.Comment> {
   let comments: Array<DataType.Comment> = [];
 
@@ -90,11 +117,12 @@ export function parseCommList(data: any): Array<DataType.Comment> {
   return comments;
 }
 
-function mixColor() {
-  let colors: Array<string> = ["#93b5cf", "#5698c3", "#2bae85", "#66c18c", "#d1c2d3", "#806d9e", "#525288", "#158bb8"];
-  return colors[Math.floor(Math.random() * colors.length)];
-}
-
+/**
+ * 解析随笔详细页面中的标签和分类
+ *
+ * @param data 同样的也需要先调用 dom 函数转换成 DOM 树
+ * @returns 返回一个包含了标签和分类的对象
+ */
 export function parseEssayTagsAndCategories(data: any): any {
   let list = <any>{ tags: [], categories: [] };
   let _dom = dom(data);
@@ -104,8 +132,7 @@ export function parseEssayTagsAndCategories(data: any): any {
     .map((i, d) => {
       list.categories[i] = {
         href: $(d).attr("href"),
-        text: $(d).text(),
-        color: mixColor()
+        text: $(d).text()
       };
     });
 
@@ -114,8 +141,7 @@ export function parseEssayTagsAndCategories(data: any): any {
     .map((i, d) => {
       list.tags[i] = {
         href: $(d).attr("href"),
-        text: $(d).text(),
-        color: mixColor()
+        text: $(d).text()
       };
     });
 
