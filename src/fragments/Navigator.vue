@@ -26,9 +26,7 @@ function search() {
         <el-input v-model="searchValue" placeholder="输入查询关键字" />
         <el-button @click="search" :icon="Search" />
       </div>
-      <div class="item cnblogs">
-        <a href="http://www.cnblogs.com" target="_blank">博客园</a>
-      </div>
+      <div class="item cnblogs" @click="nav('https://www.cnblogs.com', true)">博客园</div>
       <div class="item home" @click="nav('/')">首页</div>
       <div class="item tags" @click="nav('/')">标签</div>
       <div class="item tags" @click="nav('https://i.cnblogs.com/posts/edit', true)">新随笔</div>

@@ -13,9 +13,13 @@ const BASE_URL = "/api";
  * @param page 页数
  * @param response 获取响应的消息
  */
-export function getEssayList(page: number, response: (res: Array<DataType.Essay>) => void) {
+export function getEssayList(
+  page: number,
+  calcPage: boolean,
+  response: (res: { pages: string[]; list: Array<DataType.Essay> }) => void
+) {
   axios.get(`${BASE_URL}/default.html?page=${page}`).then(({ data }) => {
-    response(Parser.parseEssayList(data));
+    response(Parser.parseEssayList(data, calcPage));
   });
 }
 

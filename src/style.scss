@@ -12,12 +12,6 @@ body {
   position: relative;
 }
 
-code {
-  font-size: 14px;
-  font-weight: 300;
-  font-family: Hack, monospace;
-}
-
 ::selection {
   color: var(--el-text-color-primary);
   background: var(--el-color-primary);

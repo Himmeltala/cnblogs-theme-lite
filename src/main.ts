@@ -6,8 +6,8 @@ import "element-plus/theme-chalk/dark/css-vars.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
+import $ from "jquery";
 
-// import $ from "jquery";
 // $("head").empty();
 // $("body").empty();
 // $("body").prepend(`<div id="app"></div>`);
@@ -26,10 +26,18 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 app.directive("parse-code", (el, bindig) => {
-  let blocks = el.querySelectorAll("pre code");
-  let imgs = el.querySelectorAll("img");
-  blocks.forEach((block: any) => {
-    hljs.highlightBlock(block);
+  let blocks = $(el).find("pre code");
+  $(el)
+    .find("img")
+    .each((i, elem) => {
+      $(elem).attr("class", "cust-img");
+    });
+
+  $(blocks).each((i, elem) => {
+    $(elem)
+      .parent()
+      .prepend(`<span class="code-type">${$(elem).attr("class")?.split("language-")[1].toUpperCase()}</span>`);
+    hljs.highlightElement(elem);
   });
 });
 

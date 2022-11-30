@@ -6,8 +6,22 @@ function dom(data: any) {
   return new DOMParser().parseFromString(data, "text/html");
 }
 
-export function parseEssayList(data: any): Array<DataType.Essay> {
+export function parseEssayList(data: any, calcPage: boolean): { pages: string[]; list: Array<DataType.Essay> } {
   let dom = $(data).find(".forFlow > .day");
+
+  let pages: string[] = [];
+  if (calcPage) {
+    let pager = $(data).find("#homepage_bottom_pager > .pager > a");
+    if ($(pager).length > 1) {
+      let index = 0;
+      $(pager).each((i, elem) => {
+        if (i != 0 && i != $(pager).length - 1) {
+          pages[index++] = $(elem).text();
+        }
+      });
+    }
+  }
+
   let id = $(dom).find(".postTitle > .postTitle2");
   let idReg = /[0-9]+/g;
   let title = $(dom).find(".postTitle");
@@ -22,10 +36,10 @@ export function parseEssayList(data: any): Array<DataType.Essay> {
   let diggReg = /推荐\([0-9]+\)/g;
   let diggCount = postDesc.match(diggReg);
 
-  let essayList: Array<DataType.Essay> = [];
+  let list: Array<DataType.Essay> = [];
 
-  for (let i = 0; i < $(title).length; i++) {
-    essayList[i] = {
+  $(title).each((i, elem) => {
+    list[i] = {
       postId: parseInt($(id[i]).attr("href")!.match(idReg)![0]),
       title: Regular.replaceSpaceAround($(title[i]).text()),
       desc: Regular.replaceSpaceAround(Regular.replaceDefaultDesc($(desc[i]).text())),
@@ -34,8 +48,12 @@ export function parseEssayList(data: any): Array<DataType.Essay> {
       commCount: commCount![i],
       diggCount: diggCount![i]
     };
-  }
-  return essayList;
+  });
+
+  return {
+    pages,
+    list
+  };
 }
 
 export function parseEssay(postId: number, data: any): DataType.Essay {

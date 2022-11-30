@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import * as API from "../utils/api";
 import * as DataType from "../types/data-type";
@@ -74,7 +74,11 @@ function nav(path: string, out?: boolean) {
 
 <template>
   <div class="essay">
-    <Card padding="20px 20px">
+    <Card class="wrap" padding="20px 20px">
+      <div class="back" @click="nav('/')">
+        <el-icon><ArrowLeftBold /></el-icon>
+        <span>返回</span>
+      </div>
       <el-skeleton style="margin-top: 10px" :rows="2" animated :loading="contentLoading" />
       <div class="title" v-if="!contentLoading">{{ essay?.title }}</div>
       <div class="info" v-if="!contentLoading">
@@ -193,6 +197,53 @@ h5 {
 h6 {
   font-size: 17px !important;
 }
+
+pre {
+  border-radius: 6px;
+  position: relative;
+  box-sizing: border-box;
+
+  code {
+    border-radius: 6px;
+    background-color: #2b2b2b !important;
+
+    &::-webkit-scrollbar {
+      display: none;
+      width: 3px;
+      height: 3px;
+    }
+
+    &:hover::-webkit-scrollbar {
+      display: block;
+      width: 3px;
+      height: 3px;
+    }
+  }
+}
+
+code {
+  font-size: 14px;
+  font-weight: 300;
+  font-family: Hack, monospace;
+}
+
+.cust-img {
+  border-radius: 6px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.code-type {
+  box-sizing: border-box;
+  padding: 4px;
+  font-size: 13px;
+  color: #6d6d6d;
+  font-weight: 300;
+  font-family: Hack, monospace;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
 </style>
 
 <style scoped lang="scss">
@@ -206,6 +257,28 @@ $comm-size-2: 16px;
 
 .essay {
   color: $color;
+
+  .wrap {
+    position: relative;
+
+    .back {
+      right: 12px;
+      top: 10px;
+      position: absolute;
+      cursor: pointer;
+      @include flex();
+      transition: 0.3s;
+
+      &:hover {
+        transition: 0.3s;
+        color: var(--el-color-primary);
+      }
+
+      span {
+        font-size: 14px;
+      }
+    }
+  }
 
   .title {
     word-break: break-all;
@@ -271,6 +344,9 @@ $comm-size-2: 16px;
         margin-left: 0;
       }
     }
+  }
+
+  .content {
   }
 
   .comments {

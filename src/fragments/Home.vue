@@ -1,41 +1,56 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import * as API from "../utils/api";
 import * as DataType from "../types/data-type";
 
-const router = useRouter();
-
 let essayLoading = ref(true);
-
 let essayList = ref<Array<DataType.Essay>>();
-let page = ref(1);
+let pages = ref();
+let currentPage = ref(1);
+let pageCount = ref(0);
+let calcPage = ref(false);
 
-API.getEssayList(page.value, (str: Array<DataType.Essay>) => {
-  essayList.value = str;
+API.getEssayList(0, calcPage.value, str => {
+  essayList.value = str.list;
   essayLoading.value = false;
 });
 
-function nextPage() {
-  page.value++;
+function changePage(flag: boolean) {
+  if (flag) currentPage.value++;
   essayLoading.value = true;
-  API.getEssayList(page.value, (str: Array<DataType.Essay>) => {
-    essayList.value = str;
+  pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
+  API.getEssayList(currentPage.value, calcPage.value, str => {
+    essayList.value = str.list;
+    pages.value = str.pages;
+    if (calcPage.value) pageCount.value = parseInt(str.pages[str.pages.length - 1]);
     essayLoading.value = false;
   });
 }
 
-function lastPage() {
-  page.value--;
-  essayLoading.value = true;
-  API.getEssayList(page.value, (str: Array<DataType.Essay>) => {
-    essayList.value = str;
-    essayLoading.value = false;
-  });
+function paginationChange() {
+  changePage(false);
 }
 
-function href(postId?: number) {
-  router.push(`/p/${postId}`);
+let covers = ref([
+  "http://tva1.sinaimg.cn/large/0073YlnVgy1h78k53dtekj31q9185qv6.jpg",
+  "http://tva1.sinaimg.cn/large/0073YlnVgy1h78k4iy34gj34g02i0b29.jpg",
+  "http://tva1.sinaimg.cn/large/0073YlnVgy1h78k285eaaj348s2dznpf.jpg",
+  "http://tva1.sinaimg.cn/large/0073YlnVgy1h7nhmeikjyj31e00s4u0x.jpg",
+  "http://tva1.sinaimg.cn/large/0073YlnVgy1h78kvs2pa3j331f1we4qr.jpg",
+  "http://tva1.sinaimg.cn/large/0073YlnVgy1h78jytvu6wj32p81odtdr.jpg",
+  "http://tva1.sinaimg.cn/large/0073YlnVgy1h6e7546raxj31z41400vb.jpg",
+  "http://tva1.sinaimg.cn/large/0073YlnVgy1h70g4ge139j30mm0weqfr.jpg",
+  "http://tva1.sinaimg.cn/large/0073YlnVgy1h70g4ger0qj30og0ydtmo.jpg",
+  "http://tva1.sinaimg.cn/large/0073YlnVgy1h6e73qud5tj31u00u00zq.jpg",
+  "http://tva1.sinaimg.cn/large/0073YlnVgy1h6e720k0z0j32fr1h5x6p.jpg",
+  "http://tva1.sinaimg.cn/large/0073YlnVgy1h6c0schlj6j31uo11idjl.jpg",
+  "http://tva1.sinaimg.cn/large/74944c5fgy1h5p5u79jfij22lc140jxb.jpg",
+  "http://tva1.sinaimg.cn/large/74944c5fgy1h5p5u54ocpj22lc140dnn.jpg"
+]);
+
+function mixCover() {
+  let r = Math.floor(Math.random() * covers.value.length);
+  return covers.value[r];
 }
 </script>
 
@@ -60,11 +75,9 @@ function href(postId?: number) {
     </el-skeleton>
     <Card class="list" v-for="(item, index) in essayList" :key="index" v-if="!essayLoading">
       <div class="show">
-        <el-image v-if="index % 2 != 0" class="cover" src="/100086620_p0.png" fit="cover" />
+        <el-image v-if="index % 2 != 0" class="cover" :src="mixCover()" fit="cover" />
         <div class="wrap">
-          <div class="title" @click="href(item.postId)">
-            {{ item.title }}
-          </div>
+          <router-link class="title" :to="'/p/' + item.postId"> {{ item.title }}</router-link>
           <div class="desc">摘要：{{ item.desc }}</div>
           <div class="bottom">
             <div>
@@ -91,11 +104,19 @@ function href(postId?: number) {
             </div>
           </div>
         </div>
-        <el-image v-if="index % 2 == 0" class="cover" src="/100086620_p0.png" fit="cover" />
+        <el-image v-if="index % 2 == 0" class="cover" :src="mixCover()" fit="cover" />
       </div>
     </Card>
-    <el-button type="primary" plain round @click="lastPage">上一页</el-button>
-    <el-button type="success" plain round @click="nextPage">下一页</el-button>
+    <div class="pagination">
+      <el-pagination
+        @current-change="paginationChange"
+        v-show="pageCount"
+        v-model:current-page="currentPage"
+        v-model:page-count="pageCount"
+        :background="true"
+        layout="prev, pager, next, jumper" />
+      <el-button v-show="!pageCount" type="primary" bg text @click="changePage(true)">下一页</el-button>
+    </div>
   </div>
 </template>
 
@@ -122,14 +143,9 @@ $margin: 3px;
       width: 73%;
 
       .title {
-        cursor: pointer;
         font-size: $title-size;
         word-break: break-all;
         transition: 0.3s;
-
-        &:hover {
-          color: var(--el-color-primary);
-        }
       }
 
       .desc {
@@ -147,6 +163,7 @@ $margin: 3px;
           a {
             margin-left: $margin;
             border-bottom: 1px dotted #cccccc;
+            transition: 0.3s;
 
             &:hover {
               transition: 0.3s;
@@ -175,5 +192,10 @@ $margin: 3px;
       }
     }
   }
+}
+
+.pagination {
+  margin-bottom: 10px;
+  @include flex($justify: flex-end);
 }
 </style>
