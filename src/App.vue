@@ -5,7 +5,7 @@
     <GitHub />
     <Navigator />
     <LeftSide />
-    <div class="content">
+    <div id="app-vessel">
       <router-view v-slot="{ Component }">
         <Transition name="fade">
           <KeepAlive :exclude="['Essay']">
@@ -26,7 +26,7 @@
   position: relative;
 }
 
-.content {
+#app-vessel {
   width: 52.5vw;
   height: 90vh;
   top: 10vh;

@@ -56,13 +56,13 @@ function setComm() {
   API.setComm(comment.value, ({ data }) => {
     if (data.isSuccess) {
       ElMessage({
-        message: "你的评论正在去的路上！😀",
+        message: "你的评论已经飞走了！😀",
         grouping: true,
         type: "success"
       });
     } else {
       ElMessage({
-        message: "你的评论丢失了哦！😟",
+        message: "你的评论在原地踏步！😟",
         grouping: true,
         type: "error"
       });
@@ -84,9 +84,7 @@ function nav(path: string, out?: boolean) {
 
 function uploadImage() {
   Native.openImageUploadWindow((imgUrl: any) => {
-    console.log(imgUrl);
     comment.value.body += imgUrl;
-    console.log(comment.value.body);
   });
 }
 </script>
@@ -166,10 +164,10 @@ function uploadImage() {
               <el-icon class="upload-img" @click="uploadImage"><Picture /></el-icon>
             </el-tooltip>
           </div>
-          <div>
+          <div class="comment-textarea-box">
             <textarea id="comment-textarea" v-model="comment.body" placeholder="请发表一条友善的评论哦~😀"></textarea>
           </div>
-          <div>
+          <div class="comment-img-link-box">
             <textarea id="comment-img-link" placeholder="上传的图片链接在这里哦~" />
           </div>
           <el-button type="primary" class="btns" @click="setComm">发送评论</el-button>
@@ -205,7 +203,7 @@ function uploadImage() {
               </div>
             </div>
           </template>
-          <el-empty v-if="!comments?.length" description="没有评论哦！🤨" />
+          <el-empty v-if="!comments?.length" description="检查你是否登录或者该随笔还没有评论哦！🤨" />
         </div>
       </template>
     </Card>
@@ -450,10 +448,31 @@ $comm-size-2: 16px;
   }
 
   .comment {
+    @mixin areabox() {
+      transition: 0.3s;
+      border-radius: 8px;
+      box-sizing: border-box;
+      border: 1px solid var(--el-border-color-lighter);
+      @content;
+    }
+
+    .comment-textarea-box {
+      @include areabox() {
+        &:hover {
+          transition: 0.3s;
+          border: 1px solid var(--el-color-primary);
+        }
+      }
+    }
+
+    .comment-img-link-box {
+      @include areabox();
+    }
+
     #comment-img-link,
     #comment-textarea {
+      border: none;
       background-color: #202020;
-      border: 1px solid var(--el-border-color-lighter);
       width: 100%;
       outline: none;
       border-radius: 8px;
@@ -462,14 +481,6 @@ $comm-size-2: 16px;
       font-weight: 300;
       color: #a7a7a7;
       resize: none;
-
-      &:hover {
-        border: 1px solid var(--el-border-color-lighter);
-      }
-
-      &:focus {
-        border: 1px solid var(--el-border-color-lighter);
-      }
     }
 
     #comment-img-link {
@@ -482,7 +493,7 @@ $comm-size-2: 16px;
       padding: 10px;
       height: 300px;
       line-height: 1.3;
-      font-size: 16px;
+      font-size: 15px;
     }
 
     .menus {

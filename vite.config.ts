@@ -15,8 +15,8 @@ export default defineConfig({
       dirs: ["./src/fragments/**", "./src/components/**"]
     })
   ],
-  base: "https://blog-static.cnblogs.com/files/blogs/666252/",
-  // base: "/",
+  // base: "https://blog-static.cnblogs.com/files/blogs/666252/",
+  base: "/",
   server: {
     proxy: {
       "/api": {
