@@ -179,7 +179,7 @@ function uploadImage() {
               <div class="row-1">
                 <el-image class="image" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
                 <div class="col-1">
-                  <div class="row-1-1" @click="nav('https://www.cnblogs.com/' + item.author, true)">{{ item.author }}</div>
+                  <div class="row-1-1" @click="nav('' + item.space, true)">{{ item.author }}</div>
                   <div class="row-1-2">
                     <div class="layer">
                       {{ item.layer }}
@@ -344,6 +344,9 @@ code {
       }
     }
   }
+}
+
+.comments {
 }
 
 .el-page-header__left {
@@ -558,6 +561,10 @@ $comm-size-2: 16px;
         font-size: $comm-size-2;
         word-break: break-all;
         margin: 4px 0 8px 0;
+
+        img {
+          border-radius: 6px;
+        }
       }
 
       & > div + div {

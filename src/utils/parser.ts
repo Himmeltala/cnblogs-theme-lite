@@ -93,6 +93,8 @@ export function parseEssay(postId: number, data: any): DataType.Essay {
 /**
  * 解析随笔详细页面的评论列表
  *
+ * \(/)[a-zA-Z\d\u4e00-\u9fa5_-]{1,}(/)\g
+ *
  * @param data 同样的也需要先调用 dom 函数转换成 DOM 树
  * @returns 返回评论实体列表
  */
@@ -104,6 +106,7 @@ export function parseCommList(data: any): Array<DataType.Comment> {
     .map((i, d) => {
       let anchor = $(d).find(".layer").attr("href")!.split("#")[1];
       comments[i] = {
+        space: $(d).find(`#a_comment_author_${anchor}`).attr("href"),
         author: $(d).find(`#a_comment_author_${anchor}`).text(),
         layer: $(d).find(".layer").text(),
         date: $(d).find(".comment_date").text(),

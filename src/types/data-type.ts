@@ -11,6 +11,7 @@ export interface Essay {
 }
 
 export interface Comment {
+  space?: string;
   layer?: string;
   date?: string;
   author?: string;
