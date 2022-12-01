@@ -1,9 +1,10 @@
 import axios from "axios";
 import * as Parser from "./parser";
 import * as DataType from "../types/data-type";
+import $ from "jquery";
 
-// const BASE_URL = "https://www.cnblogs.com/Enziandom";
-const BASE_URL = "/api";
+const BASE_URL = "https://www.cnblogs.com/Enziandom";
+// const BASE_URL = "/api";
 
 /**
  * 获取首页的随笔列表
@@ -40,11 +41,11 @@ export function getEssay(postId: number, response: (res: DataType.Essay) => void
  * @param token 发送频率必须要 token，找到标签 #antiforgery_token 来获取
  * @param response 获取响应的消息
  */
-export function setComm(data: DataType.Comment, token: string, response: (res: any) => void) {
+export function setComm(data: DataType.Comment, response: (res: any) => void) {
   axios
     .post(`${BASE_URL}/ajax/PostComment/Add.aspx`, data, {
       headers: {
-        RequestVerificationToken: token
+        RequestVerificationToken: $("#antiforgery_token").attr("value")
       }
     })
     .then(res => {

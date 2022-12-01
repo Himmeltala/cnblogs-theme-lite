@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { ArrowLeft } from "@element-plus/icons-vue";
+import { ElMessage } from "element-plus";
 import * as API from "../utils/api";
 import * as DataType from "../types/data-type";
-import { ArrowLeft } from "@element-plus/icons-vue";
+import * as Native from "../utils/native";
 
 const route = useRoute();
 const router = useRouter();
@@ -34,30 +36,38 @@ let comments = ref<Array<DataType.Comment>>();
 //   }
 // ];
 
-let contentLoading = ref(true);
+let skeleton = ref(true);
 
 API.getEssay(postId, (str: DataType.Essay) => {
   essay.value = str;
-  contentLoading.value = true;
+  skeleton.value = true;
   API.getCommList(postId, 0, (str: Array<DataType.Essay>) => {
     comments.value = str;
     API.getEssayTagsAndCategories(666252, postId, str => {
       tagsCategroies.value = str;
-      contentLoading.value = false;
+      skeleton.value = false;
     });
   });
 });
 
-let comment = ref<DataType.Comment>({ postId, parentCommentId: 0 });
+let comment = ref<DataType.Comment>({ postId, parentCommentId: 0, body: "" });
 
 function setComm() {
-  API.setComm(
-    comment.value,
-    "CfDJ8NfDHj8mnYFAmPyhfXwJojcLmH5FQKBU6I9JmTZ7EZv8CHznhefSwrC9bhMz6MPu5L74E-gvI4nLRpIAQWlWV0QPcVyR2ZnJfuABSA3Eu6fyiYubrc5iRYfKOIffdlGAhYC0MqHM5MJsWvuE8dctwRGNzJK_XaSs8jF_tB6iujBaNMnSICsF11A9_zj8nTCNMg",
-    res => {
-      console.log(res);
+  API.setComm(comment.value, ({ data }) => {
+    if (data.isSuccess) {
+      ElMessage({
+        message: "你的评论正在去的路上！😀",
+        grouping: true,
+        type: "success"
+      });
+    } else {
+      ElMessage({
+        message: "你的评论丢失了哦！😟",
+        grouping: true,
+        type: "error"
+      });
     }
-  );
+  });
 }
 
 let fontSize = ref(16);
@@ -71,99 +81,129 @@ function nav(path: string, out?: boolean) {
     window.open(path, "__blank");
   } else router.push(path);
 }
+
+function uploadImage() {
+  Native.openImageUploadWindow((imgUrl: any) => {
+    console.log(imgUrl);
+    comment.value.body += imgUrl;
+    console.log(comment.value.body);
+  });
+}
 </script>
 
 <template>
   <div class="essay">
     <Card class="wrap" padding="20px 20px">
-      <el-skeleton style="margin-top: 10px" :rows="2" animated :loading="contentLoading" />
-      <el-page-header v-if="!contentLoading" :icon="ArrowLeft" @back="nav('/')">
-        <template #content>
-          <div class="title" v-if="!contentLoading">{{ essay?.title }}</div>
-        </template>
-      </el-page-header>
-      <div class="info" v-if="!contentLoading">
-        <div class="date">
-          <el-icon><Clock /></el-icon>
-          <span>{{ essay?.date }}</span>
-        </div>
-        <div class="view-count">
-          <el-icon><View /></el-icon>
-          <span>{{ essay?.viewCount }}次阅读</span>
-        </div>
-        <div class="comm-count">
-          <el-icon><ChatLineSquare /></el-icon>
-          <span>{{ essay?.commCount }}条评论</span>
-        </div>
-        <div class="zoom-in" @click="zoomIn">
-          <el-icon><ZoomIn /></el-icon>
-          <span>放大</span>
-        </div>
-      </div>
-      <div class="labels" v-if="!contentLoading">
-        <div class="categories">
-          <div class="caption">
-            <el-icon><FolderOpened /></el-icon>
-            <span>分类：</span>
+      <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="skeleton" />
+      <template v-if="!skeleton">
+        <el-page-header :icon="ArrowLeft" @back="nav('/')">
+          <template #content>
+            <div class="title">{{ essay?.title }}</div>
+          </template>
+        </el-page-header>
+        <div class="info">
+          <div class="date">
+            <el-icon><Clock /></el-icon>
+            <span>{{ essay?.date }}</span>
           </div>
-          <div class="item" v-for="(item, index) in tagsCategroies.categories" :key="index">
-            <Tag :color="item.color" @click="nav(item.href, true)">
-              {{ item.text }}
-            </Tag>
+          <div class="view-count">
+            <el-icon><View /></el-icon>
+            <span>{{ essay?.viewCount }}次阅读</span>
+          </div>
+          <div class="comm-count">
+            <el-icon><ChatLineSquare /></el-icon>
+            <span>{{ essay?.commCount }}条评论</span>
+          </div>
+          <div class="zoom-in" @click="zoomIn">
+            <el-icon><ZoomIn /></el-icon>
+            <span>放大</span>
           </div>
         </div>
-        <div class="tags">
-          <div class="caption">
-            <el-icon><PriceTag /></el-icon>
-            <span>标签：</span>
+        <div class="labels">
+          <div class="categories">
+            <div class="caption">
+              <el-icon><FolderOpened /></el-icon>
+              <span>分类：</span>
+            </div>
+            <div class="item" v-for="(item, index) in tagsCategroies.categories" :key="index">
+              <Tag :color="item.color" @click="nav(item.href, true)">
+                {{ item.text }}
+              </Tag>
+            </div>
           </div>
-          <div class="item" v-for="(item, index) in tagsCategroies.tags" :key="index">
-            <Tag :color="item.color" @click="nav(item.href, true)">
-              {{ item.text }}
-            </Tag>
+          <div class="tags">
+            <div class="caption">
+              <el-icon><PriceTag /></el-icon>
+              <span>标签：</span>
+            </div>
+            <div class="item" v-for="(item, index) in tagsCategroies.tags" :key="index">
+              <Tag :color="item.color" @click="nav(item.href, true)">
+                {{ item.text }}
+              </Tag>
+            </div>
           </div>
         </div>
-      </div>
-      <el-skeleton style="margin-top: 10px" :rows="16" animated :loading="contentLoading" />
-      <div
-        v-if="!contentLoading"
-        class="content"
-        :style="{ 'font-size': fontSize + 'px' }"
-        v-parse-code
-        v-html="essay?.content"></div>
-      <div class="comment" v-if="!contentLoading">
-        <el-input v-model="comment.body" />
-        <el-button @click="setComm">发送评论</el-button>
-      </div>
-      <div class="comments">
-        <div class="item" v-for="(item, index) in comments" :key="index">
-          <div class="row-1">
-            <el-image class="image" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
-            <div class="col-1">
-              <div class="row-1-1">{{ item.author }}</div>
-              <div class="row-1-2">
-                <div class="layer">
-                  {{ item.layer }}
+        <div class="content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code v-html="essay?.content"></div>
+        <el-divider style="margin-bottom: 10px" border-style="dashed" />
+        <div class="info-bottom">
+          <div class="date">
+            <el-icon><Clock /></el-icon>
+            <span>{{ essay?.date }}</span>
+          </div>
+          <div class="view-count">
+            <el-icon><View /></el-icon>
+            <span>{{ essay?.viewCount }}次阅读</span>
+          </div>
+          <div class="comm-count">
+            <el-icon><ChatLineSquare /></el-icon>
+            <span>{{ essay?.commCount }}条评论</span>
+          </div>
+        </div>
+        <h3>发表评论</h3>
+        <div class="comment">
+          <div>
+            <textarea id="comment-img-link" placeholder="上传的图片链接在这里哦~🔗" />
+          </div>
+          <div>
+            <textarea id="comment-textarea" v-model="comment.body" placeholder="请发表一条友善的评论哦~😀"></textarea>
+          </div>
+          <el-button type="primary" class="btns" @click="setComm">发送评论</el-button>
+          <el-button class="btns" @click="uploadImage">上传图片</el-button>
+        </div>
+        <div class="comments">
+          <h3>评论列表</h3>
+          <template v-if="comments?.length">
+            <div class="item" v-for="(item, index) in comments" :key="index">
+              <div class="row-1">
+                <el-image class="image" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
+                <div class="col-1">
+                  <div class="row-1-1" @click="nav('https://www.cnblogs.com/' + item.author, true)">{{ item.author }}</div>
+                  <div class="row-1-2">
+                    <div class="layer">
+                      {{ item.layer }}
+                    </div>
+                    <div class="date">{{ item.date }}</div>
+                  </div>
                 </div>
-                <div class="date">{{ item.date }}</div>
+              </div>
+              <div class="row-2">
+                <div class="body" v-html="item.body"></div>
+                <div>
+                  <div class="digg">
+                    <el-icon><CaretTop /></el-icon>
+                    <span>{{ item.digg }}</span>
+                  </div>
+                  <div class="burry">
+                    <el-icon><CaretBottom /></el-icon>
+                    <span>{{ item.burry }}</span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="row-2">
-            <div class="body">{{ item.body }}</div>
-            <div>
-              <div class="digg">
-                <el-icon><CaretTop /></el-icon>
-                <span>{{ item.digg }}</span>
-              </div>
-              <div class="burry">
-                <el-icon><CaretBottom /></el-icon>
-                <span>{{ item.burry }}</span>
-              </div>
-            </div>
-          </div>
+          </template>
+          <el-empty v-if="!comments?.length" description="没有评论哦！🤨" />
         </div>
-      </div>
+      </template>
     </Card>
   </div>
 </template>
@@ -332,10 +372,22 @@ $comm-size-2: 16px;
     font-size: $title-size;
   }
 
+  .info-bottom {
+    @include flex($justify: flex-end);
+  }
+
   .info {
+    @include flex($justify: flex-start);
+  }
+
+  .info,
+  .info-bottom {
     font-size: $info-size;
     margin-top: 10px;
-    @include flex($justify: flex-start);
+
+    div:last-child {
+      margin-right: 0 !important;
+    }
 
     div > span {
       user-select: none;
@@ -393,6 +445,42 @@ $comm-size-2: 16px;
     }
   }
 
+  .comment {
+    #comment-img-link,
+    #comment-textarea {
+      background-color: #202020;
+      border: 1px solid var(--el-border-color-lighter);
+      width: 100%;
+      outline: none;
+      border-radius: 8px;
+      padding: 10px;
+      box-sizing: border-box;
+      font-family: sans-serif;
+      font-weight: 300;
+      color: #a7a7a7;
+
+      &:hover {
+        border: 1px solid var(--el-border-color-lighter);
+      }
+
+      &:focus {
+        border: 1px solid var(--el-border-color-lighter);
+      }
+    }
+
+    #comment-img-link {
+      height: 40px;
+    }
+
+    #comment-textarea {
+      height: 300px;
+    }
+
+    .btns {
+      margin-top: 15px;
+    }
+  }
+
   .comments {
     .item {
       margin-bottom: 15px;
@@ -409,6 +497,16 @@ $comm-size-2: 16px;
       .image {
         margin-right: 10px;
         border-radius: 6px;
+      }
+
+      .row-1-1 {
+        cursor: pointer;
+        transition: 0.3s;
+
+        &:hover {
+          transition: 0.3s;
+          color: var(--el-color-primary);
+        }
       }
 
       .row-1-2 {

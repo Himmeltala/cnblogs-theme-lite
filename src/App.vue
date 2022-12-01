@@ -1,28 +1,37 @@
 <script setup lang="ts"></script>
 
 <template>
-  <GitHub />
-  <Navigator />
-  <LeftSide />
-  <div class="container">
-    <router-view v-slot="{ Component }">
-      <Transition name="fade">
-        <KeepAlive :exclude="['Essay']">
-          <component :is="Component" />
-        </KeepAlive>
-      </Transition>
-    </router-view>
+  <div id="app-pack">
+    <GitHub />
+    <Navigator />
+    <LeftSide />
+    <div class="content">
+      <router-view v-slot="{ Component }">
+        <Transition name="fade">
+          <KeepAlive :exclude="['Essay']">
+            <component :is="Component" />
+          </KeepAlive>
+        </Transition>
+      </router-view>
+    </div>
+    <RightSide />
   </div>
-  <RightSide />
 </template>
 
 <style scoped>
-.container {
-  position: absolute;
-  left: 23.8vw;
-  top: 10vh;
+#app-pack {
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  position: relative;
+}
+
+.content {
   width: 52.5vw;
   height: 90vh;
+  top: 10vh;
+  left: 23.8vw;
+  position: absolute;
   overflow-x: hidden;
 }
 
