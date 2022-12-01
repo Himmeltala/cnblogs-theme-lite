@@ -23,7 +23,7 @@ app.directive("parse-code", (el, bindig) => {
   $(el)
     .find("img")
     .each((i, elem) => {
-      $(elem).attr("class", "cust-img");
+      $(elem).attr("class", "essay-content-img");
     });
 
   $(blocks).each((i, elem) => {

@@ -141,7 +141,7 @@ function uploadImage() {
             </div>
           </div>
         </div>
-        <div class="content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code v-html="essay?.content"></div>
+        <div class="essay-content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code v-html="essay?.content"></div>
         <el-divider style="margin-bottom: 10px" border-style="dashed" />
         <div class="info-bottom">
           <div class="date">
@@ -158,8 +158,8 @@ function uploadImage() {
           </div>
         </div>
         <h3>发表评论</h3>
-        <div class="comment">
-          <div class="menus">
+        <div class="comment-form">
+          <div class="tools">
             <el-tooltip effect="dark" content="插入图片" placement="top-start">
               <el-icon class="upload-img" @click="uploadImage"><Picture /></el-icon>
             </el-tooltip>
@@ -170,25 +170,23 @@ function uploadImage() {
           <div class="comment-img-link-box">
             <textarea id="comment-img-link" placeholder="上传的图片链接在这里哦~" />
           </div>
-          <el-button type="primary" class="btns" @click="setComm">发送评论</el-button>
+          <el-button type="primary" class="actions" @click="setComm">发送评论</el-button>
         </div>
         <div class="comments">
           <h3>评论列表</h3>
           <template v-if="comments?.length">
             <div class="item" v-for="(item, index) in comments" :key="index">
-              <div class="row-1">
-                <el-image class="image" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
-                <div class="col-1">
-                  <div class="row-1-1" @click="nav('' + item.space, true)">{{ item.author }}</div>
-                  <div class="row-1-2">
-                    <div class="layer">
-                      {{ item.layer }}
-                    </div>
+              <div class="top">
+                <el-image class="avatar" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
+                <div>
+                  <div class="space" @click="nav('' + item.space, true)">{{ item.author }}</div>
+                  <div class="brief">
+                    <div class="layer">{{ item.layer }}</div>
                     <div class="date">{{ item.date }}</div>
                   </div>
                 </div>
               </div>
-              <div class="row-2">
+              <div class="bottom">
                 <div class="body" v-html="item.body"></div>
                 <div>
                   <div class="digg">
@@ -284,7 +282,7 @@ code {
   box-sizing: border-box;
 }
 
-.cust-img {
+.essay-content-img {
   border-radius: 6px;
   width: 100%;
   object-fit: cover;
@@ -302,16 +300,17 @@ code {
   top: 0;
 }
 
-.content {
+.essay-content {
   @mixin font() {
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
     word-break: break-all;
     @content;
   }
 
   p {
+    margin: 13px 0 !important;
     @include font() {
-      line-height: 1.8;
+      line-height: 1.5;
     }
   }
 
@@ -319,7 +318,7 @@ code {
   ul {
     li {
       @include font() {
-        line-height: 1.4;
+        line-height: 1.5;
       }
     }
 
@@ -347,6 +346,15 @@ code {
 }
 
 .comments {
+  .body {
+    img {
+      border-radius: 6px;
+    }
+
+    p {
+      margin: 13px 0 !important;
+    }
+  }
 }
 
 .el-page-header__left {
@@ -357,11 +365,18 @@ code {
 <style scoped lang="scss">
 @import "../scss/mixins.scss";
 
+/* ------global properties start------ */
+// 字体颜色
 $color: #a7a7a7;
+// 随笔标题字体
 $title-size: 24px;
+// info、labels 的字体
 $info-size: 14px;
-$comm-size-1: 13px;
-$comm-size-2: 16px;
+// 评论区个人信息字体
+$comm-brief-size: 13px;
+// 评论区的字体
+$comm-body-size: 16px;
+/* ------global properties end------ */
 
 .essay {
   color: $color;
@@ -450,29 +465,28 @@ $comm-size-2: 16px;
     }
   }
 
-  .comment {
-    @mixin areabox() {
+  .comment-form {
+    position: relative;
+
+    .comment-textarea-box {
       transition: 0.3s;
       border-radius: 8px;
       box-sizing: border-box;
       border: 1px solid var(--el-border-color-lighter);
-      @content;
-    }
 
-    .comment-textarea-box {
-      @include areabox() {
-        &:hover {
-          transition: 0.3s;
-          border: 1px solid var(--el-color-primary);
-        }
+      &:hover {
+        transition: 0.3s;
+        border: 1px solid var(--el-color-primary);
       }
     }
 
     .comment-img-link-box {
-      @include areabox();
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
 
-    #comment-img-link,
     #comment-textarea {
       border: none;
       background-color: #202020;
@@ -483,23 +497,14 @@ $comm-size-2: 16px;
       font-family: sans-serif;
       font-weight: 300;
       color: #a7a7a7;
-      resize: none;
-    }
-
-    #comment-img-link {
-      padding: 2px 10px;
-      font-size: 12px;
-      height: 25px;
-    }
-
-    #comment-textarea {
       padding: 10px;
       height: 300px;
       line-height: 1.3;
       font-size: 15px;
+      resize: none;
     }
 
-    .menus {
+    .tools {
       margin-bottom: 10px;
 
       @include flex($justify: flex-end);
@@ -508,7 +513,7 @@ $comm-size-2: 16px;
       }
     }
 
-    .btns {
+    .actions {
       margin-top: 15px;
     }
   }
@@ -522,16 +527,16 @@ $comm-size-2: 16px;
       margin-bottom: 0px;
     }
 
-    .row-1 {
+    .top {
       font-size: 14px;
       @include flex($justify: flex-start);
 
-      .image {
+      .avatar {
         margin-right: 10px;
         border-radius: 6px;
       }
 
-      .row-1-1 {
+      .space {
         cursor: pointer;
         transition: 0.3s;
 
@@ -541,10 +546,10 @@ $comm-size-2: 16px;
         }
       }
 
-      .row-1-2 {
+      .brief {
         color: var(--el-text-color-placeholder);
         @include flex($justify: flex-start);
-        font-size: $comm-size-1;
+        font-size: $comm-brief-size;
         margin-top: 2px;
 
         .layer {
@@ -554,21 +559,17 @@ $comm-size-2: 16px;
       }
     }
 
-    .row-2 {
+    .bottom {
       margin-left: 55px;
 
       .body {
-        font-size: $comm-size-2;
+        font-size: $comm-body-size;
         word-break: break-all;
         margin: 4px 0 8px 0;
-
-        img {
-          border-radius: 6px;
-        }
       }
 
       & > div + div {
-        font-size: $comm-size-1;
+        font-size: $comm-brief-size;
         @include flex($justify: flex-end);
       }
 
