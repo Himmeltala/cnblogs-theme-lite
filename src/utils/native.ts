@@ -9,13 +9,11 @@ function openWindow(n: any, t: any, i: any, r: any) {
 
 export function openImageUploadWindow(callback: any) {
   try {
-    let tmpText = $("#comment-img-link");
-    tmpText.focus(() => {
-      if (tmpText.val() != "") {
-        let url: any = tmpText.val();
-        tmpText.val("");
-        callback ? callback(url.replace("[img]", "![](").replace("[/img]", ")")) : "";
-      }
+    let imgLink = $("#comment-img-link");
+    imgLink.focus(() => {
+      let url: any = imgLink.val();
+      callback ? callback(url.replace("[img]", "![](").replace("[/img]", ")")) : "";
+      imgLink.val("");
     });
     let n =
       location.protocol +

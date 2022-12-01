@@ -2,9 +2,9 @@ import axios from "axios";
 import * as Parser from "./parser";
 import * as DataType from "../types/data-type";
 import $ from "jquery";
+import config from "../config";
 
-const BASE_URL = "https://www.cnblogs.com/Enziandom";
-// const BASE_URL = "/api";
+const BASE_URL = config.api.base;
 
 /**
  * 获取首页的随笔列表

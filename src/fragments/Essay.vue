@@ -161,14 +161,18 @@ function uploadImage() {
         </div>
         <h3>发表评论</h3>
         <div class="comment">
-          <div>
-            <textarea id="comment-img-link" placeholder="上传的图片链接在这里哦~🔗" />
+          <div class="menus">
+            <el-tooltip effect="dark" content="插入图片" placement="top-start">
+              <el-icon class="upload-img" @click="uploadImage"><Picture /></el-icon>
+            </el-tooltip>
           </div>
           <div>
             <textarea id="comment-textarea" v-model="comment.body" placeholder="请发表一条友善的评论哦~😀"></textarea>
           </div>
+          <div>
+            <textarea id="comment-img-link" placeholder="上传的图片链接在这里哦~" />
+          </div>
           <el-button type="primary" class="btns" @click="setComm">发送评论</el-button>
-          <el-button class="btns" @click="uploadImage">上传图片</el-button>
         </div>
         <div class="comments">
           <h3>评论列表</h3>
@@ -453,11 +457,11 @@ $comm-size-2: 16px;
       width: 100%;
       outline: none;
       border-radius: 8px;
-      padding: 10px;
       box-sizing: border-box;
       font-family: sans-serif;
       font-weight: 300;
       color: #a7a7a7;
+      resize: none;
 
       &:hover {
         border: 1px solid var(--el-border-color-lighter);
@@ -469,11 +473,25 @@ $comm-size-2: 16px;
     }
 
     #comment-img-link {
-      height: 40px;
+      padding: 2px 10px;
+      font-size: 12px;
+      height: 25px;
     }
 
     #comment-textarea {
+      padding: 10px;
       height: 300px;
+      line-height: 1.3;
+      font-size: 16px;
+    }
+
+    .menus {
+      margin-bottom: 10px;
+
+      @include flex($justify: flex-end);
+      .upload-img {
+        cursor: pointer;
+      }
     }
 
     .btns {
@@ -527,7 +545,8 @@ $comm-size-2: 16px;
 
       .body {
         font-size: $comm-size-2;
-        margin: 4px 0;
+        word-break: break-all;
+        margin: 4px 0 8px 0;
       }
 
       & > div + div {

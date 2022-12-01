@@ -38,12 +38,12 @@ export function parseEssayList(data: any, calcPage: boolean): { pages: string[];
   let id = $(dom).find(".postTitle > .postTitle2");
   let title = $(dom).find(".postTitle");
   let desc = $(dom).find(".c_b_p_desc");
-  let postDesc = $(dom).find(".postDesc").text();
+  let info = $(dom).find(".postDesc").text();
   let cover = $(dom).find(".desc_img");
-  let date = postDesc.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
-  let viewCount = postDesc.match(/阅读\([0-9]+\)/g);
-  let commCount = postDesc.match(/评论\([0-9]+\)/g);
-  let diggCount = postDesc.match(/推荐\([0-9]+\)/g);
+  let date = info.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
+  let viewCount = info.match(/阅读\([0-9]+\)/g);
+  let commCount = info.match(/评论\([0-9]+\)/g);
+  let diggCount = info.match(/推荐\([0-9]+\)/g);
 
   let list: Array<DataType.Essay> = [];
 
@@ -107,7 +107,7 @@ export function parseCommList(data: any): Array<DataType.Comment> {
         author: $(d).find(`#a_comment_author_${anchor}`).text(),
         layer: $(d).find(".layer").text(),
         date: $(d).find(".comment_date").text(),
-        body: $(d).find(`#comment_body_${anchor}`).find("p").text(),
+        body: $(d).find(`#comment_body_${anchor}`).html(),
         digg: Regular.replaceSpaceAround($(d).find(".comment_digg").text()),
         burry: Regular.replaceSpaceAround($(d).find(".comment_burry").text()),
         avatar: Regular.replaceSpaceAround($(d).find(`#comment_${anchor}_avatar`).text())
