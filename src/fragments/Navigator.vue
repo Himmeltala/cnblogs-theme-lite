@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { Search } from "@element-plus/icons-vue";
 
 const router = useRouter();
 
@@ -23,8 +22,11 @@ function search() {
     <div class="author" @click="nav('/')">Enziandom</div>
     <div class="menus">
       <div class="item search">
-        <el-input v-model="searchValue" placeholder="输入查询关键字" />
-        <el-button @click="search" :icon="Search" />
+        <el-input @keyup.enter="search" v-model="searchValue" class="w-50 m-2" placeholder="输入查询关键字">
+          <template #prefix>
+            <el-icon @click="search"><Search /></el-icon>
+          </template>
+        </el-input>
       </div>
       <div class="item cnblogs" @click="nav('https://www.cnblogs.com', true)">博客园</div>
       <div class="item home" @click="nav('/')">首页</div>

@@ -121,6 +121,25 @@ export function parseCommList(data: any): Array<DataType.Comment> {
 }
 
 /**
+ * 解析评论数量，官方默认一页是 50 条，pageIndex = 0 开始
+ *
+ * 50 / 50 = 1 代表刚好是一页，就还是 pageIndex = 0，100 / 50 = 2，pageIndex = 1
+ * 51 / 50 = 1.02 代表需要翻页了，向下取整数，pageIndex = 1。
+ *
+ * @param data 评论数量计数
+ * @returns 返回一共有多少个 pageIndex
+ */
+export function parseCommPages(data: any): number {
+  let pageCount = parseInt(data) / 50;
+  if (pageCount % 1 === 0) {
+    pageCount -= 1;
+  } else {
+    pageCount = Math.floor(pageCount);
+  }
+  return pageCount;
+}
+
+/**
  * 解析随笔详细页面中的标签和分类
  *
  * @param data 同样的也需要先调用 dom 函数转换成 DOM 树

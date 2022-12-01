@@ -53,6 +53,14 @@ export function setComm(data: DataType.Comment, response: (res: any) => void) {
     });
 }
 
+export function delComm(data: DataType.Comment, response: (res: any) => void) {}
+
+export function getCommCount(postId: number, response: (res: any) => void) {
+  axios.get(`${BASE_URL}/ajax/GetCommentCount.aspx?postId=${postId}`).then(({ data }) => {
+    response(Parser.parseCommPages(data));
+  });
+}
+
 /**
  * 获取随笔的评论列表
  *

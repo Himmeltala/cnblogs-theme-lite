@@ -13,6 +13,10 @@ const postId: any = route.params.id;
 
 const essay = ref<DataType.Essay>();
 const tagsCategroies = ref<any>({ categories: {}, tags: {} });
+
+let hidePagination = ref(true);
+let commCount = ref(2);
+let currentCommPage = ref(1);
 let comments = ref<Array<DataType.Comment>>();
 
 // comments.value = [
@@ -46,6 +50,10 @@ API.getEssay(postId, (str: DataType.Essay) => {
     API.getEssayTagsAndCategories(666252, postId, str => {
       tagsCategroies.value = str;
       skeleton.value = false;
+      API.getCommCount(postId, count => {
+        if (count > 0) hidePagination.value = false;
+        commCount.value = count;
+      });
     });
   });
 });
@@ -86,6 +94,12 @@ function uploadImage() {
   Native.openImageUploadWindow((imgUrl: any) => {
     comment.value.body += imgUrl;
   });
+}
+
+function paginationChange() {
+  // API.getCommList(postId, currentCommPage.value - 1, (str: Array<DataType.Essay>) => {
+  //   comments.value = str;
+  // });
 }
 </script>
 
@@ -165,10 +179,13 @@ function uploadImage() {
             </el-tooltip>
           </div>
           <div class="comment-textarea-box">
-            <textarea id="comment-textarea" v-model="comment.body" placeholder="请发表一条友善的评论哦~😀"></textarea>
+            <textarea
+              id="comment-textarea"
+              v-model="comment.body"
+              placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
           </div>
           <div class="comment-img-link-box">
-            <textarea id="comment-img-link" placeholder="上传的图片链接在这里哦~" />
+            <textarea id="comment-img-link" />
           </div>
           <el-button type="primary" class="actions" @click="setComm">发送评论</el-button>
         </div>
@@ -200,8 +217,16 @@ function uploadImage() {
                 </div>
               </div>
             </div>
+            <div class="pagination">
+              <el-pagination
+                :hide-on-single-page="hidePagination"
+                @current-change="paginationChange"
+                layout="prev, pager, next"
+                v-model:current-page="currentCommPage"
+                v-model:page-count="commCount" />
+            </div>
           </template>
-          <el-empty v-if="!comments?.length" description="检查你是否登录或者该随笔还没有评论哦！🤨" />
+          <el-empty v-if="!comments?.length" description="没有评论，来一条友善的评论吧🤨也许是你没有登录所以看不到哦~" />
         </div>
       </template>
     </Card>
@@ -581,6 +606,11 @@ $comm-body-size: 16px;
       .burry {
         @include flex();
       }
+    }
+
+    .pagination {
+      margin-top: 30px;
+      @include flex($justify: flex-end);
     }
   }
 }
