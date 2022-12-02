@@ -14,32 +14,31 @@ const postId: any = route.params.id;
 let essay = ref<DataType.Essay>();
 let tagsCategroies = ref<any>({ categories: {}, tags: {} });
 
-let hidePagination = ref(true);
 let commCount = ref(1);
 let currentCommPage = ref(1);
 let comments = ref<Array<DataType.Comment>>();
 let holeSkeleton = ref(true);
 
-comments.value = [
-  {
-    layer: "#1楼",
-    date: "2022-11-29 14:47",
-    author: "Enziandom",
-    body: "这只是一个测试评论......",
-    digg: " 支持(0) ",
-    burry: " 反对(0) ",
-    avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
-  },
-  {
-    layer: "#2楼",
-    date: "2022-11-29 15:21",
-    author: "Enziandom",
-    body: "这只是一个测试评论......",
-    digg: " 支持(0) ",
-    burry: " 反对(0) ",
-    avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
-  }
-];
+// comments.value = [
+//   {
+//     layer: "#1楼",
+//     date: "2022-11-29 14:47",
+//     author: "Enziandom",
+//     body: "这只是一个测试评论......",
+//     digg: " 支持(0) ",
+//     burry: " 反对(0) ",
+//     avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
+//   },
+//   {
+//     layer: "#2楼",
+//     date: "2022-11-29 15:21",
+//     author: "Enziandom",
+//     body: "这只是一个测试评论......",
+//     digg: " 支持(0) ",
+//     burry: " 反对(0) ",
+//     avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
+//   }
+// ];
 
 /**
  * 该页面初始化时第一时间要做的事情
@@ -47,12 +46,8 @@ comments.value = [
 API.getEssay(postId, (str: DataType.Essay) => {
   essay.value = str;
   API.getCommCount(postId, count => {
-    if (count === 1) {
-      hidePagination.value = false;
-    } else {
-      commCount.value = count;
-      currentCommPage.value = count;
-    }
+    commCount.value = count;
+    currentCommPage.value = count;
     API.getCommList(postId, count, (str: Array<DataType.Essay>) => {
       comments.value = str;
       API.getEssayTagsAndCategories(666252, postId, str => {
@@ -74,20 +69,28 @@ function setComm() {
     commBtnLoading.value = true;
     API.setComm(comment.value, ({ data }) => {
       if (data.isSuccess) {
-        ElMessage({
-          message: "你的评论已经飞走了！😀",
-          grouping: true,
-          type: "success"
-        });
         comment.value.body = "";
+        API.getCommCount(postId, count => {
+          commCount.value = count;
+          currentCommPage.value = count;
+          API.getCommList(postId, currentCommPage.value, (str: Array<DataType.Essay>) => {
+            comments.value = str;
+            commBtnLoading.value = false;
+            ElMessage({
+              message: "你的评论已经飞走了！😀",
+              grouping: true,
+              type: "success"
+            });
+          });
+        });
       } else {
         ElMessage({
           message: "你的评论在原地踏步！😟",
           grouping: true,
           type: "error"
         });
+        commBtnLoading.value = false;
       }
-      commBtnLoading.value = false;
     });
   } else {
     ElMessage({
@@ -302,9 +305,8 @@ function commUpdate() {}
                 </div>
               </div>
             </div>
-            <div class="pagination">
+            <div class="pagination" v-if="!comments?.length">
               <el-pagination
-                :hide-on-single-page="hidePagination"
                 @current-change="paginationChange"
                 layout="prev, pager, next"
                 v-model:current-page="currentCommPage"
