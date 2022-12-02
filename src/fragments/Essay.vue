@@ -11,14 +11,6 @@ const route = useRoute();
 const router = useRouter();
 const postId: any = route.params.id;
 
-const essay = ref<DataType.Essay>();
-const tagsCategroies = ref<any>({ categories: {}, tags: {} });
-
-let hidePagination = ref(true);
-let commCount = ref(1);
-let currentCommPage = ref(1);
-let comments = ref<Array<DataType.Comment>>();
-
 // comments.value = [
 //   {
 //     layer: "#1楼",
@@ -40,7 +32,14 @@ let comments = ref<Array<DataType.Comment>>();
 //   }
 // ];
 
-let skeleton = ref(true);
+let essay = ref<DataType.Essay>();
+let tagsCategroies = ref<any>({ categories: {}, tags: {} });
+
+let hidePagination = ref(true);
+let commCount = ref(1);
+let currentCommPage = ref(1);
+let comments = ref<Array<DataType.Comment>>();
+let holeSkeleton = ref(true);
 
 API.getEssay(postId, (str: DataType.Essay) => {
   essay.value = str;
@@ -55,30 +54,42 @@ API.getEssay(postId, (str: DataType.Essay) => {
       comments.value = str;
       API.getEssayTagsAndCategories(666252, postId, str => {
         tagsCategroies.value = str;
-        skeleton.value = false;
+        holeSkeleton.value = false;
       });
     });
   });
 });
 
 let comment = ref<DataType.Comment>({ postId, parentCommentId: 0, body: "" });
+let commBtnLoading = ref(false);
 
 function setComm() {
-  API.setComm(comment.value, ({ data }) => {
-    if (data.isSuccess) {
-      ElMessage({
-        message: "你的评论已经飞走了！😀",
-        grouping: true,
-        type: "success"
-      });
-    } else {
-      ElMessage({
-        message: "你的评论在原地踏步！😟",
-        grouping: true,
-        type: "error"
-      });
-    }
-  });
+  if (comment.value.body) {
+    commBtnLoading.value = true;
+    API.setComm(comment.value, ({ data }) => {
+      if (data.isSuccess) {
+        ElMessage({
+          message: "你的评论已经飞走了！😀",
+          grouping: true,
+          type: "success"
+        });
+        comment.value.body = "";
+      } else {
+        ElMessage({
+          message: "你的评论在原地踏步！😟",
+          grouping: true,
+          type: "error"
+        });
+      }
+      commBtnLoading.value = false;
+    });
+  } else {
+    ElMessage({
+      message: "评论不能为空，或字数不够",
+      grouping: true,
+      type: "error"
+    });
+  }
 }
 
 let fontSize = ref(16);
@@ -99,13 +110,13 @@ function uploadImage() {
   });
 }
 
-let commentsSkeleton = ref(false);
+let commsSkeleton = ref(false);
 
 function paginationChange() {
-  commentsSkeleton.value = true;
+  commsSkeleton.value = true;
   API.getCommList(postId, currentCommPage.value, (str: Array<DataType.Essay>) => {
     comments.value = str;
-    commentsSkeleton.value = false;
+    commsSkeleton.value = false;
   });
 }
 </script>
@@ -113,8 +124,8 @@ function paginationChange() {
 <template>
   <div class="essay">
     <Card class="wrap" padding="20px 20px">
-      <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="skeleton" />
-      <div v-if="!skeleton">
+      <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="holeSkeleton" />
+      <div v-if="!holeSkeleton">
         <el-page-header :icon="ArrowLeft" @back="nav('/')">
           <template #content>
             <div class="title">{{ essay?.title }}</div>
@@ -194,12 +205,12 @@ function paginationChange() {
           <div class="comment-img-link-box">
             <textarea id="comment-img-link" />
           </div>
-          <el-button type="primary" class="actions" @click="setComm">发送评论</el-button>
+          <el-button type="primary" :loading="commBtnLoading" class="actions" @click="setComm">发送评论</el-button>
         </div>
         <div class="essay-comments">
           <h3>评论列表</h3>
-          <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="commentsSkeleton" />
-          <div v-if="comments?.length && !commentsSkeleton">
+          <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="commsSkeleton" />
+          <div v-if="comments?.length && !commsSkeleton">
             <div class="item" v-for="(item, index) in comments" :key="index">
               <div class="top">
                 <el-image class="avatar" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />

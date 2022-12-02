@@ -31,8 +31,8 @@ app.directive("parse-code", (el, bindig) => {
   $(blocks).each((i, elem) => {
     let lang = String(
       $(elem)
-        .attr("class")!
-        .match(/(language-\w*){0,1}/g)
+        .attr("class")
+        ?.match(/(language-\w*){0,1}/g)
     )
       .split(",")[0]
       .split("-")[1]
