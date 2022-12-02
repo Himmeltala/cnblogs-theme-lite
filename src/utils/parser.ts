@@ -78,15 +78,13 @@ export function parseEssayList(data: any, calcPage: boolean): { pages: string[];
  * @returns 返回随笔实体
  */
 export function parseEssay(postId: number, data: any): DataType.Essay {
-  let dom = $(data).find(".post");
-
   return {
     postId: postId,
-    title: $(dom).find(".postTitle > a > span").text(),
-    content: $(dom).find("#cnblogs_post_body").html(),
-    date: $(dom).find("#post-date").text(),
-    viewCount: $(dom).find("#post_view_count").text(),
-    commCount: $(dom).find("#post_comment_count").text()
+    title: $(data).find(".postTitle > a > span").text(),
+    content: $(data).find("#cnblogs_post_body").html(),
+    date: $(data).find("#post-date").text(),
+    viewCount: $(data).find("#post_view_count").text(),
+    commCount: $(data).find("#post_comment_count").text()
   };
 }
 
