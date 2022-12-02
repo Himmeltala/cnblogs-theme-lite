@@ -98,7 +98,7 @@ export function parseEssay(postId: number, data: any): DataType.Essay {
  * @param data 同样的也需要先调用 dom 函数转换成 DOM 树
  * @returns 返回评论实体列表
  */
-export function parseCommList(data: any): Array<DataType.Comment> {
+export function parseCommentList(data: any): Array<DataType.Comment> {
   let comments: Array<DataType.Comment> = [];
 
   $(dom(data))
@@ -130,7 +130,7 @@ export function parseCommList(data: any): Array<DataType.Comment> {
  * @param data 评论数量计数
  * @returns 返回一共有多少个 pageIndex
  */
-export function parseCommPages(data: any): number {
+export function parseCommentPages(data: any): number {
   return Math.ceil(parseInt(data) / 50);
 }
 

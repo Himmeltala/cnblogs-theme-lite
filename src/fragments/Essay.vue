@@ -6,7 +6,6 @@ import { ElMessage } from "element-plus";
 import * as API from "../utils/api";
 import * as DataType from "../types/data-type";
 import * as Native from "../utils/native";
-import { data } from "jquery";
 
 const route = useRoute();
 const router = useRouter();
@@ -16,7 +15,7 @@ let essay = ref<DataType.Essay>();
 let tagsCategroies = ref<any>({ categories: {}, tags: {} });
 
 let commCount = ref(1);
-let currentCommPage = ref(1);
+let currCommentPage = ref(1);
 let comments = ref<Array<DataType.Comment>>();
 let holeSkeleton = ref(true);
 
@@ -46,10 +45,10 @@ comments.value = [
  */
 API.getEssay(postId, (str: DataType.Essay) => {
   essay.value = str;
-  API.getCommCount(postId, count => {
+  API.getCommentCount(postId, count => {
     commCount.value = count;
-    currentCommPage.value = count;
-    API.getCommList(postId, count, (str: Array<DataType.Essay>) => {
+    currCommentPage.value = count;
+    API.getCommentList(postId, count, (str: Array<DataType.Essay>) => {
       comments.value = str;
       API.getEssayTagsAndCategories(666252, postId, str => {
         tagsCategroies.value = str;
@@ -68,13 +67,13 @@ let commBtnLoading = ref(false);
 function setComm() {
   if (comment.value.body) {
     commBtnLoading.value = true;
-    API.setComm(comment.value, ({ data }) => {
+    API.setComment(comment.value, ({ data }) => {
       if (data.isSuccess) {
         comment.value.body = "";
-        API.getCommCount(postId, count => {
+        API.getCommentCount(postId, count => {
           commCount.value = count;
-          currentCommPage.value = count;
-          API.getCommList(postId, currentCommPage.value, (str: Array<DataType.Essay>) => {
+          currCommentPage.value = count;
+          API.getCommentList(postId, currCommentPage.value, (str: Array<DataType.Essay>) => {
             comments.value = str;
             commBtnLoading.value = false;
             ElMessage({
@@ -128,20 +127,20 @@ function nav(path: string, out?: boolean) {
  */
 function uploadImage() {
   Native.openImageUploadWindow((imgUrl: any) => {
-    comment.value.body += "\n\n" + imgUrl;
+    comment.value.body += `\n\n${imgUrl}\n\n`;
   });
 }
 
-let commsSkeleton = ref(false);
+let commentSkeleton = ref(false);
 
 /**
  *分页符改变时重新获取评论列表
  */
 function paginationChange() {
-  commsSkeleton.value = true;
-  API.getCommList(postId, currentCommPage.value, (str: Array<DataType.Essay>) => {
+  commentSkeleton.value = true;
+  API.getCommentList(postId, currCommentPage.value, (str: Array<DataType.Essay>) => {
     comments.value = str;
-    commsSkeleton.value = false;
+    commentSkeleton.value = false;
   });
 }
 
@@ -152,10 +151,10 @@ function paginationChange() {
  * @param index 评论在数组中的 index
  */
 function deleteComm(comm: DataType.Comment, index: number) {
-  API.delComm(
+  API.deleteComment(
     {
       commentId: comm.commentId,
-      pageIndex: currentCommPage.value - 1,
+      pageIndex: currCommentPage.value - 1,
       parentId: parseInt(postId)
     },
     ({ data }) => {
@@ -184,16 +183,13 @@ function updateComm(comm: DataType.Comment, index: number) {
   comm.contenteditable = !comm.contenteditable;
 
   if (comm.contenteditable) {
-    console.log(`contenteditable => ${comm.contenteditable}`);
-    API.getComm({ commentId: comm.commentId }, ({ data }) => {
-      console.log(data);
+    API.getComment({ commentId: comm.commentId }, ({ data }) => {
       comm.body = data;
     });
   }
 
   if (!comm.contenteditable) {
-    console.log(`contenteditable => ${comm.contenteditable}`);
-    API.updateComm(
+    API.updateComment(
       {
         body: comm.body,
         commentId: comm.commentId
@@ -214,6 +210,34 @@ function updateComm(comm: DataType.Comment, index: number) {
       }
     );
   }
+}
+
+/**
+ * 点赞或反对评论
+ *
+ * @param comm 评论实体
+ * @param voteType 类型，点赞？反对？
+ */
+function voteComm(comm: DataType.Comment, voteType: DataType.VoteType) {
+  API.voteComment(
+    {
+      isAbandoned: false,
+      commentId: comm.commentId,
+      postId,
+      voteType: voteType
+    },
+    ajax => {
+      if (ajax.isSuccess) {
+        if (voteType == "Bury") comm.burry = comm.burry! + 1;
+        else comm.digg = comm.digg! + 1;
+      }
+      ElMessage({
+        message: ajax.message,
+        grouping: true,
+        type: ajax.isSuccess ? "success" : "error"
+      });
+    }
+  );
 }
 </script>
 
@@ -305,8 +329,8 @@ function updateComm(comm: DataType.Comment, index: number) {
         </div>
         <div class="essay-comments">
           <h3>评论列表</h3>
-          <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="commsSkeleton" />
-          <div v-if="comments?.length && !commsSkeleton">
+          <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="commentSkeleton" />
+          <div v-if="comments?.length && !commentSkeleton">
             <div class="item" v-for="(item, index) in comments" :key="index">
               <div class="top">
                 <el-image class="avatar" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
@@ -327,11 +351,11 @@ function updateComm(comm: DataType.Comment, index: number) {
                     placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
                 </div>
                 <div>
-                  <div class="digg actions">
+                  <div class="digg actions" @click="voteComm(item, 'Digg')">
                     <el-icon><CaretTop /></el-icon>
                     <span>{{ item.digg }}</span>
                   </div>
-                  <div class="burry actions">
+                  <div class="burry actions" @click="voteComm(item, 'Bury')">
                     <el-icon><CaretBottom /></el-icon>
                     <span>{{ item.burry }}</span>
                   </div>
@@ -356,7 +380,7 @@ function updateComm(comm: DataType.Comment, index: number) {
               <el-pagination
                 @current-change="paginationChange"
                 layout="prev, pager, next"
-                v-model:current-page="currentCommPage"
+                v-model:current-page="currCommentPage"
                 v-model:page-count="commCount" />
             </div>
           </div>

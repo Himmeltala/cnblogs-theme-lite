@@ -26,9 +26,14 @@ export interface Comment {
   pageIndex?: number;
 }
 
-export interface CnBlogCommType {
+export type VoteType = "Bury" | "Digg";
+
+export interface CnBlogComment {
   commentId?: number;
   body?: string;
+  isAbandoned?: boolean;
+  postId?: number;
+  voteType?: VoteType;
   parentId?: number;
   pageIndex?: number;
 }

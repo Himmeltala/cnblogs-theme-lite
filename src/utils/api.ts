@@ -1,6 +1,16 @@
+/**
+ * 提供可用的基础 API
+ *
+ * @author Enziandom
+ * @since 1.0
+ * @date 2022 年 12 月 1 日
+ * @url https://www.cnblogs.com/enziandom/#/
+ */
+
 import axios from "axios";
 import * as Parser from "./parser";
 import * as DataType from "../types/data-type";
+import * as HttpType from "../types/http-type";
 import $ from "jquery";
 import config from "../config";
 
@@ -59,7 +69,7 @@ function sendPost(url: string, data: any, response: (res: any) => void) {
  * @param data 评论实体
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
-export function setComm(data: DataType.Comment, response: (res: any) => void) {
+export function setComment(data: DataType.Comment, response: (res: any) => void) {
   sendPost(`${BASE_URL}/ajax/PostComment/Add.aspx`, data, response);
 }
 
@@ -69,28 +79,28 @@ export function setComm(data: DataType.Comment, response: (res: any) => void) {
  * @param data 评论实体
  * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
-export function delComm(data: DataType.CnBlogCommType, response: (res: any) => void) {
+export function deleteComment(data: DataType.CnBlogComment, response: (res: any) => void) {
   sendPost(`${BASE_URL}/ajax/comment/DeleteComment.aspx`, data, response);
 }
 
 /**
  *  通过 ID 获取单个评论
  *
- * @param data 评论实体，对应博客园默认的评论字段，需要传递一个包含评论 ID 的实体
+ * @param comment 评论实体，对应博客园默认的评论字段，需要传递一个包含评论 ID 的实体
  * @param response 获取响应的消息——该实体类与 DataType 中定义的评论实体类字段不一致。返回一个 axios 中 data 部分消息
  */
-export function getComm(data: DataType.CnBlogCommType, response: (res: any) => void) {
-  sendPost(`${BASE_URL}/ajax/comment/GetCommentBody.aspx`, data, response);
+export function getComment(comment: DataType.CnBlogComment, response: (res: any) => void) {
+  sendPost(`${BASE_URL}/ajax/comment/GetCommentBody.aspx`, comment, response);
 }
 
 /**
  * 修改评论
  *
- * @param data 评论实体，对应博客园默认的评论字段，需要传递一个包含评论 ID、评论内容的实体
+ * @param comment 评论实体，对应博客园默认的评论字段，需要传递一个包含评论 ID、评论内容的实体
  * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
-export function updateComm(data: DataType.CnBlogCommType, response: (res: any) => void) {
-  sendPost(`${BASE_URL}/ajax/PostComment/Update.aspx`, data, response);
+export function updateComment(comment: DataType.CnBlogComment, response: (res: any) => void) {
+  sendPost(`${BASE_URL}/ajax/PostComment/Update.aspx`, comment, response);
 }
 
 /**
@@ -99,9 +109,21 @@ export function updateComm(data: DataType.CnBlogCommType, response: (res: any) =
  * @param postId 随笔 ID
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
-export function getCommCount(postId: number, response: (res: any) => void) {
+export function getCommentCount(postId: number, response: (res: any) => void) {
   axios.get(`${BASE_URL}/ajax/GetCommentCount.aspx?postId=${postId}`).then(({ data }) => {
-    response(Parser.parseCommPages(data));
+    response(Parser.parseCommentPages(data));
+  });
+}
+
+/**
+ * 点赞或反对评论
+ *
+ * @param data 被操作的评论的实体，需要 isAbandoned、postId、voteType 三个字段，其中 voteType 请见 DataType.VoteType，只有两种类型。
+ * @param response 获取响应的消息，返回一个 axios 的完整消息
+ */
+export function voteComment(data: DataType.CnBlogComment, response: (ajax: HttpType.AjaxType) => void) {
+  sendPost(`${BASE_URL}/ajax/vote/comment`, data, ({ data }) => {
+    response(data);
   });
 }
 
@@ -112,9 +134,9 @@ export function getCommCount(postId: number, response: (res: any) => void) {
  * @param pageIndex 1 页最多有 50 条评论
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
-export function getCommList(postId: number, pageIndex: number, response: (res: Array<DataType.Comment>) => void) {
+export function getCommentList(postId: number, pageIndex: number, response: (res: Array<DataType.Comment>) => void) {
   axios.get(`${BASE_URL}/ajax/GetComments.aspx?postId=${postId}&pageIndex=${pageIndex}`).then(({ data }) => {
-    response(Parser.parseCommList(data));
+    response(Parser.parseCommentList(data));
   });
 }
 
