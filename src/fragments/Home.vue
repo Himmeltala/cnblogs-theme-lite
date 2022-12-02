@@ -59,7 +59,7 @@ function paginationChange() {
         </Card>
       </template>
     </el-skeleton>
-    <Card class="list" v-for="(item, index) in essayList" :key="index" v-if="!essayLoading">
+    <Card class="list" v-for="(item, index) in essayList" :key="index" v-if="!essayLoading" :width="'auto'">
       <div class="show">
         <el-image v-if="index % 2 != 0 && item.cover" class="cover" :src="item.cover" fit="cover" />
         <div class="wrap" :class="{ 'cover-exist': item.cover ? false : true }">
@@ -116,6 +116,13 @@ $bottom-size: 14px;
 $margin: 3px;
 
 .list {
+  padding: 20px 20px;
+  margin: 12px 5px 12px 5px;
+
+  &:first-child {
+    margin: 0px 5px 0px 5px !important;
+  }
+
   .show {
     @include flex($justify: space-between, $wrap: nowrap);
 
@@ -140,7 +147,8 @@ $margin: 3px;
       }
 
       .desc {
-        padding: 10px 0;
+        color: #878787;
+        padding: 10px 0 25px 0;
         font-size: $desc-size;
         letter-spacing: 0.6px;
       }
@@ -170,6 +178,7 @@ $margin: 3px;
         }
 
         .info {
+          color: #989898;
           @include flex($justify: flex-start);
 
           & > div {
