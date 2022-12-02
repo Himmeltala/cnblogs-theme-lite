@@ -11,27 +11,6 @@ const route = useRoute();
 const router = useRouter();
 const postId: any = route.params.id;
 
-// comments.value = [
-//   {
-//     layer: "#1楼",
-//     date: "2022-11-29 14:47",
-//     author: "Enziandom",
-//     body: "这只是一个测试评论......",
-//     digg: " 支持(0) ",
-//     burry: " 反对(0) ",
-//     avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
-//   },
-//   {
-//     layer: "#2楼",
-//     date: "2022-11-29 15:21",
-//     author: "Enziandom",
-//     body: "这只是一个测试评论......",
-//     digg: " 支持(0) ",
-//     burry: " 反对(0) ",
-//     avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
-//   }
-// ];
-
 let essay = ref<DataType.Essay>();
 let tagsCategroies = ref<any>({ categories: {}, tags: {} });
 
@@ -41,6 +20,30 @@ let currentCommPage = ref(1);
 let comments = ref<Array<DataType.Comment>>();
 let holeSkeleton = ref(true);
 
+comments.value = [
+  {
+    layer: "#1楼",
+    date: "2022-11-29 14:47",
+    author: "Enziandom",
+    body: "这只是一个测试评论......",
+    digg: " 支持(0) ",
+    burry: " 反对(0) ",
+    avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
+  },
+  {
+    layer: "#2楼",
+    date: "2022-11-29 15:21",
+    author: "Enziandom",
+    body: "这只是一个测试评论......",
+    digg: " 支持(0) ",
+    burry: " 反对(0) ",
+    avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
+  }
+];
+
+/**
+ * 该页面初始化时第一时间要做的事情
+ */
 API.getEssay(postId, (str: DataType.Essay) => {
   essay.value = str;
   API.getCommCount(postId, count => {
@@ -63,6 +66,9 @@ API.getEssay(postId, (str: DataType.Essay) => {
 let comment = ref<DataType.Comment>({ postId, parentCommentId: 0, body: "" });
 let commBtnLoading = ref(false);
 
+/**
+ * 添加一条评论
+ */
 function setComm() {
   if (comment.value.body) {
     commBtnLoading.value = true;
@@ -94,24 +100,39 @@ function setComm() {
 
 let fontSize = ref(16);
 
+/**
+ * 缩放随笔文章区域的字体大小
+ */
 function zoomIn() {
   fontSize.value >= 18 ? (fontSize.value = 16) : fontSize.value++;
 }
 
+/**
+ * 导航
+ *
+ * @param path 导航地址，可以是 router 地址也可以是外部 url 地址
+ * @param out 当是外部 url 地址时，必须设置为 true
+ */
 function nav(path: string, out?: boolean) {
   if (out) {
     window.open(path, "__blank");
   } else router.push(path);
 }
 
+/**
+ * 编辑评论点击上传照片
+ */
 function uploadImage() {
   Native.openImageUploadWindow((imgUrl: any) => {
-    comment.value.body += imgUrl;
+    comment.value.body += "\n\n" + imgUrl;
   });
 }
 
 let commsSkeleton = ref(false);
 
+/**
+ *分页符改变时重新获取评论列表
+ */
 function paginationChange() {
   commsSkeleton.value = true;
   API.getCommList(postId, currentCommPage.value, (str: Array<DataType.Essay>) => {
@@ -119,6 +140,43 @@ function paginationChange() {
     commsSkeleton.value = false;
   });
 }
+
+/**
+ * 删除评论
+ *
+ * @param comm 评论实体
+ * @param index 评论在数组中的 index
+ */
+function commDelete(comm: DataType.Comment, index: number) {
+  API.delComm(
+    {
+      commentId: comm.commentId,
+      pageIndex: currentCommPage.value - 1,
+      parentId: parseInt(postId)
+    },
+    ({ data }) => {
+      if (data) {
+        comments.value?.splice(index, 1);
+        ElMessage({
+          message: "评论删除成功！",
+          grouping: true,
+          type: "success"
+        });
+      } else {
+        ElMessage({
+          message: "这可能不是你的评论哦~",
+          grouping: true,
+          type: "error"
+        });
+      }
+    }
+  );
+}
+
+/**
+ * 修改评论
+ */
+function commUpdate() {}
 </script>
 
 <template>
@@ -225,13 +283,21 @@ function paginationChange() {
               <div class="bottom">
                 <div class="body" v-html="item.body" v-parse-code="false"></div>
                 <div>
-                  <div class="digg">
+                  <div class="digg actions">
                     <el-icon><CaretTop /></el-icon>
                     <span>{{ item.digg }}</span>
                   </div>
-                  <div class="burry">
+                  <div class="burry actions">
                     <el-icon><CaretBottom /></el-icon>
                     <span>{{ item.burry }}</span>
+                  </div>
+                  <div class="delete actions" @click="commDelete(item, index)">
+                    <el-icon><Delete /></el-icon>
+                    <span>删除</span>
+                  </div>
+                  <div class="update actions" @click="commUpdate">
+                    <el-icon><EditPen /></el-icon>
+                    <span>修改</span>
                   </div>
                 </div>
               </div>
@@ -625,17 +691,34 @@ $comm-body-size: 16px;
       }
 
       & > div + div {
+        cursor: pointer;
         font-size: $comm-brief-size;
         @include flex($justify: flex-end);
-      }
 
-      .digg {
-        margin-right: 6px;
-      }
+        @mixin actions-hover() {
+          transition: 0.3s;
 
-      .digg,
-      .burry {
-        @include flex();
+          &:hover {
+            transition: 0.3s;
+            color: var(--el-color-primary);
+          }
+        }
+
+        .actions {
+          margin-right: 15px;
+
+          &:last-child {
+            margin-right: 0 !important;
+          }
+        }
+
+        .delete,
+        .update,
+        .digg,
+        .burry {
+          @include flex();
+          @include actions-hover();
+        }
       }
     }
 

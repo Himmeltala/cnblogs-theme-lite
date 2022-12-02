@@ -11,6 +11,7 @@ export interface Essay {
 }
 
 export interface Comment {
+  commentId?: number;
   space?: string;
   layer?: string;
   date?: string;
@@ -21,4 +22,5 @@ export interface Comment {
   postId?: number;
   body?: string;
   parentCommentId?: number;
+  pageIndex?: number;
 }

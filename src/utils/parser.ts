@@ -106,6 +106,7 @@ export function parseCommList(data: any): Array<DataType.Comment> {
     .map((i, d) => {
       let anchor = $(d).find(".layer").attr("href")!.split("#")[1];
       comments[i] = {
+        commentId: parseInt(anchor),
         space: $(d).find(`#a_comment_author_${anchor}`).attr("href"),
         author: $(d).find(`#a_comment_author_${anchor}`).text(),
         layer: $(d).find(".layer").text(),

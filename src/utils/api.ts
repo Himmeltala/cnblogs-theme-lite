@@ -35,15 +35,15 @@ export function getEssay(postId: number, response: (res: DataType.Essay) => void
 }
 
 /**
- * 发送随笔的评论
+ * 发送 post 请求必须要 token，找到标签 #antiforgery_token 来获取
  *
- * @param data 评论实体
- * @param token 发送频率必须要 token，找到标签 #antiforgery_token 来获取
- * @param response 获取响应的消息
+ * @param url 请求路径
+ * @param data 请求实体
+ * @param response 响应回调
  */
-export function setComm(data: DataType.Comment, response: (res: any) => void) {
+function sendPost(url: string, data: any, response: (res: any) => void) {
   axios
-    .post(`${BASE_URL}/ajax/PostComment/Add.aspx`, data, {
+    .post(url, data, {
       headers: {
         RequestVerificationToken: $("#antiforgery_token").attr("value")
       }
@@ -53,8 +53,32 @@ export function setComm(data: DataType.Comment, response: (res: any) => void) {
     });
 }
 
-export function delComm(data: DataType.Comment, response: (res: any) => void) {}
+/**
+ * 发送随笔的评论
+ *
+ * @param data 评论实体
+ * @param response 获取响应的消息
+ */
+export function setComm(data: DataType.Comment, response: (res: any) => void) {
+  sendPost(`${BASE_URL}/ajax/PostComment/Add.aspx`, data, response);
+}
 
+/**
+ * 删除其中一条评论
+ *
+ * @param data 评论实体
+ * @param response 获取响应的消息
+ */
+export function delComm(data: any, response: (res: any) => void) {
+  sendPost(`${BASE_URL}/ajax/comment/DeleteComment.aspx`, data, response);
+}
+
+/**
+ * 获取评论计数
+ *
+ * @param postId 随笔 ID
+ * @param response 获取响应的消息
+ */
 export function getCommCount(postId: number, response: (res: any) => void) {
   axios.get(`${BASE_URL}/ajax/GetCommentCount.aspx?postId=${postId}`).then(({ data }) => {
     response(Parser.parseCommPages(data));
