@@ -63,20 +63,13 @@ export function setComm(data: DataType.Comment, response: (res: any) => void) {
   sendPost(`${BASE_URL}/ajax/PostComment/Add.aspx`, data, response);
 }
 
-interface CnBlogCommType {
-  commentId?: number;
-  body?: string;
-  parentId?: number;
-  pageIndex?: number;
-}
-
 /**
  * 删除其中一条评论
  *
  * @param data 评论实体
  * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
-export function delComm(data: CnBlogCommType, response: (res: any) => void) {
+export function delComm(data: DataType.CnBlogCommType, response: (res: any) => void) {
   sendPost(`${BASE_URL}/ajax/comment/DeleteComment.aspx`, data, response);
 }
 
@@ -86,7 +79,7 @@ export function delComm(data: CnBlogCommType, response: (res: any) => void) {
  * @param data 评论实体，对应博客园默认的评论字段，需要传递一个包含评论 ID 的实体
  * @param response 获取响应的消息——该实体类与 DataType 中定义的评论实体类字段不一致。返回一个 axios 中 data 部分消息
  */
-export function getComm(data: CnBlogCommType, response: (res: { data: CnBlogCommType }) => void) {
+export function getComm(data: DataType.CnBlogCommType, response: (res: any) => void) {
   sendPost(`${BASE_URL}/ajax/comment/GetCommentBody.aspx`, data, response);
 }
 
@@ -96,7 +89,7 @@ export function getComm(data: CnBlogCommType, response: (res: { data: CnBlogComm
  * @param data 评论实体，对应博客园默认的评论字段，需要传递一个包含评论 ID、评论内容的实体
  * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
-export function updateComm(data: CnBlogCommType, response: (res: any) => void) {
+export function updateComm(data: DataType.CnBlogCommType, response: (res: any) => void) {
   sendPost(`${BASE_URL}/ajax/PostComment/Update.aspx`, data, response);
 }
 

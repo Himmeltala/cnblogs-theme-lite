@@ -6,6 +6,7 @@ import { ElMessage } from "element-plus";
 import * as API from "../utils/api";
 import * as DataType from "../types/data-type";
 import * as Native from "../utils/native";
+import { data } from "jquery";
 
 const route = useRoute();
 const router = useRouter();
@@ -176,27 +177,40 @@ function deleteComm(comm: DataType.Comment, index: number) {
   );
 }
 
-let editCommBodyHtml = ref();
-
-function commentChange(e: any) {
-  editCommBodyHtml.value = e.target.innerHTML;
-}
-
 /**
  * 修改评论
  */
 function updateComm(comm: DataType.Comment, index: number) {
   comm.contenteditable = !comm.contenteditable;
-  comm.body = editCommBodyHtml.value;
+
+  if (comm.contenteditable) {
+    console.log(`contenteditable => ${comm.contenteditable}`);
+    API.getComm({ commentId: comm.commentId }, ({ data }) => {
+      console.log(data);
+      comm.body = data;
+    });
+  }
 
   if (!comm.contenteditable) {
+    console.log(`contenteditable => ${comm.contenteditable}`);
     API.updateComm(
       {
         body: comm.body,
         commentId: comm.commentId
       },
       ({ data }) => {
-        console.log(data.isSuccess);
+        if (data.isSuccess) {
+          ElMessage({
+            message: "评论修改成功！",
+            type: "success"
+          });
+        } else {
+          ElMessage({
+            message: "这可能不是你的评论哦~",
+            grouping: true,
+            type: "error"
+          });
+        }
       }
     );
   }
@@ -305,13 +319,13 @@ function updateComm(comm: DataType.Comment, index: number) {
                 </div>
               </div>
               <div class="bottom">
-                <div
-                  class="body"
-                  @keyup="commentChange"
-                  :contenteditable="item.contenteditable"
-                  :class="{ 'essay-comment-editable': item.contenteditable }"
-                  v-html="item.body"
-                  v-parse-code="false"></div>
+                <div class="body" v-show="!item.contenteditable" v-html="item.body" v-parse-code="false"></div>
+                <div class="comment-textarea-box">
+                  <textarea
+                    v-show="item.contenteditable"
+                    v-model="item.body"
+                    placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
+                </div>
                 <div>
                   <div class="digg actions">
                     <el-icon><CaretTop /></el-icon>
@@ -331,8 +345,8 @@ function updateComm(comm: DataType.Comment, index: number) {
                       <span>编辑</span>
                     </div>
                     <div v-else>
-                      <el-icon><Close /></el-icon>
-                      <span>取消编辑</span>
+                      <el-icon><CircleCheck /></el-icon>
+                      <span>完成</span>
                     </div>
                   </div>
                 </div>
@@ -442,7 +456,7 @@ code {
 
 .cust-img {
   border-radius: 6px;
-  width: 100%;
+  max-width: 100%;
   object-fit: cover;
 }
 
@@ -506,32 +520,12 @@ code {
   .bottom {
     img {
       border-radius: 6px;
+      max-width: 100%;
     }
 
     p {
       margin: 13px 0 !important;
     }
-  }
-}
-
-.essay-comment-editable {
-  border: none;
-  background-color: #202020;
-  outline: none;
-  border-radius: 8px;
-  box-sizing: border-box;
-  font-family: sans-serif;
-  font-weight: 300;
-  padding: 10px;
-  height: 300px;
-  line-height: 1.3;
-  font-size: 15px;
-  transition: 0.3s;
-  border: 1px solid var(--el-border-color-lighter);
-
-  &:hover {
-    transition: 0.3s;
-    border: 1px solid var(--el-color-primary);
   }
 }
 
@@ -643,29 +637,21 @@ $comm-body-size: 16px;
     }
   }
 
-  .comment-form {
-    position: relative;
+  @mixin textarea-style($box: yes, $height: 300px) {
+    transition: 0.3s;
+    border-radius: 8px;
+    box-sizing: border-box;
 
-    .comment-textarea-box {
-      transition: 0.3s;
-      border-radius: 8px;
-      box-sizing: border-box;
+    @if $box == yes {
       border: 1px solid var(--el-border-color-lighter);
-
-      &:hover {
-        transition: 0.3s;
-        border: 1px solid var(--el-color-primary);
-      }
     }
 
-    .comment-img-link-box {
-      opacity: 0;
-      position: absolute;
-      top: 0;
-      left: 0;
+    &:hover {
+      transition: 0.3s;
+      border: 1px solid var(--el-color-primary);
     }
 
-    #comment-textarea {
+    textarea {
       border: none;
       background-color: #202020;
       width: 100%;
@@ -676,10 +662,25 @@ $comm-body-size: 16px;
       font-weight: 300;
       color: #a7a7a7;
       padding: 10px;
-      height: 300px;
+      height: $height;
       line-height: 1.3;
       font-size: 15px;
       resize: none;
+    }
+  }
+
+  .comment-form {
+    position: relative;
+
+    .comment-img-link-box {
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .comment-textarea-box {
+      @include textarea-style($box: yes);
     }
 
     .tools {
@@ -746,7 +747,11 @@ $comm-body-size: 16px;
         margin: 4px 0 8px 0;
       }
 
-      & > div + div {
+      .comment-textarea-box {
+        @include textarea-style($box: no, $height: 150px);
+      }
+
+      & > div + div + div {
         cursor: pointer;
         font-size: $comm-brief-size;
         @include flex($justify: flex-end);

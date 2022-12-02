@@ -25,3 +25,10 @@ export interface Comment {
   parentCommentId?: number;
   pageIndex?: number;
 }
+
+export interface CnBlogCommType {
+  commentId?: number;
+  body?: string;
+  parentId?: number;
+  pageIndex?: number;
+}
