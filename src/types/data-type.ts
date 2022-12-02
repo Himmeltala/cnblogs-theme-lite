@@ -11,6 +11,7 @@ export interface Essay {
 }
 
 export interface Comment {
+  contenteditable?: boolean;
   commentId?: number;
   space?: string;
   layer?: string;

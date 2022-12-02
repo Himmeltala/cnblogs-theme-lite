@@ -19,26 +19,26 @@ let currentCommPage = ref(1);
 let comments = ref<Array<DataType.Comment>>();
 let holeSkeleton = ref(true);
 
-// comments.value = [
-//   {
-//     layer: "#1楼",
-//     date: "2022-11-29 14:47",
-//     author: "Enziandom",
-//     body: "这只是一个测试评论......",
-//     digg: " 支持(0) ",
-//     burry: " 反对(0) ",
-//     avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
-//   },
-//   {
-//     layer: "#2楼",
-//     date: "2022-11-29 15:21",
-//     author: "Enziandom",
-//     body: "这只是一个测试评论......",
-//     digg: " 支持(0) ",
-//     burry: " 反对(0) ",
-//     avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
-//   }
-// ];
+comments.value = [
+  {
+    layer: "#1楼",
+    date: "2022-11-29 14:47",
+    author: "Enziandom",
+    body: "这只是一个测试评论......",
+    digg: " 支持(0) ",
+    burry: " 反对(0) ",
+    avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
+  },
+  {
+    layer: "#2楼",
+    date: "2022-11-29 15:21",
+    author: "Enziandom",
+    body: "这只是一个测试评论......",
+    digg: " 支持(0) ",
+    burry: " 反对(0) ",
+    avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
+  }
+];
 
 /**
  * 该页面初始化时第一时间要做的事情
@@ -150,7 +150,7 @@ function paginationChange() {
  * @param comm 评论实体
  * @param index 评论在数组中的 index
  */
-function commDelete(comm: DataType.Comment, index: number) {
+function deleteComm(comm: DataType.Comment, index: number) {
   API.delComm(
     {
       commentId: comm.commentId,
@@ -176,10 +176,31 @@ function commDelete(comm: DataType.Comment, index: number) {
   );
 }
 
+let editCommBodyHtml = ref();
+
+function commentChange(e: any) {
+  editCommBodyHtml.value = e.target.innerHTML;
+}
+
 /**
  * 修改评论
  */
-function commUpdate() {}
+function updateComm(comm: DataType.Comment, index: number) {
+  comm.contenteditable = !comm.contenteditable;
+  comm.body = editCommBodyHtml.value;
+
+  if (!comm.contenteditable) {
+    API.updateComm(
+      {
+        body: comm.body,
+        commentId: comm.commentId
+      },
+      ({ data }) => {
+        console.log(data.isSuccess);
+      }
+    );
+  }
+}
 </script>
 
 <template>
@@ -284,7 +305,13 @@ function commUpdate() {}
                 </div>
               </div>
               <div class="bottom">
-                <div class="body" v-html="item.body" v-parse-code="false"></div>
+                <div
+                  class="body"
+                  @keyup="commentChange"
+                  :contenteditable="item.contenteditable"
+                  :class="{ 'essay-comment-editable': item.contenteditable }"
+                  v-html="item.body"
+                  v-parse-code="false"></div>
                 <div>
                   <div class="digg actions">
                     <el-icon><CaretTop /></el-icon>
@@ -294,13 +321,19 @@ function commUpdate() {}
                     <el-icon><CaretBottom /></el-icon>
                     <span>{{ item.burry }}</span>
                   </div>
-                  <div class="delete actions" @click="commDelete(item, index)">
+                  <div class="delete actions" @click="deleteComm(item, index)">
                     <el-icon><Delete /></el-icon>
                     <span>删除</span>
                   </div>
-                  <div class="update actions" @click="commUpdate">
-                    <el-icon><EditPen /></el-icon>
-                    <span>修改</span>
+                  <div class="update actions" @click="updateComm(item, index)">
+                    <div v-if="!item.contenteditable">
+                      <el-icon><EditPen /></el-icon>
+                      <span>编辑</span>
+                    </div>
+                    <div v-else>
+                      <el-icon><Close /></el-icon>
+                      <span>取消编辑</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -478,6 +511,27 @@ code {
     p {
       margin: 13px 0 !important;
     }
+  }
+}
+
+.essay-comment-editable {
+  border: none;
+  background-color: #202020;
+  outline: none;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-family: sans-serif;
+  font-weight: 300;
+  padding: 10px;
+  height: 300px;
+  line-height: 1.3;
+  font-size: 15px;
+  transition: 0.3s;
+  border: 1px solid var(--el-border-color-lighter);
+
+  &:hover {
+    transition: 0.3s;
+    border: 1px solid var(--el-color-primary);
   }
 }
 
@@ -716,6 +770,7 @@ $comm-body-size: 16px;
 
         .delete,
         .update,
+        .update > div,
         .digg,
         .burry {
           @include flex();
