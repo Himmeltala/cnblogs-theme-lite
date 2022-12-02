@@ -123,20 +123,13 @@ export function parseCommList(data: any): Array<DataType.Comment> {
 /**
  * 解析评论数量，官方默认一页是 50 条，pageIndex = 0 开始
  *
- * 50 / 50 = 1 代表刚好是一页，就还是 pageIndex = 0，100 / 50 = 2，pageIndex = 1
- * 51 / 50 = 1.02 代表需要翻页了，向下取整数，pageIndex = 1。
+ * 40 / 50 = 0.8 意思还是第一页，100 / 50 = 2，刚好第二页，因此除了之后是一个向上取整的
  *
  * @param data 评论数量计数
  * @returns 返回一共有多少个 pageIndex
  */
 export function parseCommPages(data: any): number {
-  let pageCount = parseInt(data) / 50;
-  if (pageCount % 1 === 0) {
-    pageCount -= 1;
-  } else {
-    pageCount = Math.floor(pageCount);
-  }
-  return pageCount;
+  return Math.ceil(parseInt(data) / 50);
 }
 
 /**

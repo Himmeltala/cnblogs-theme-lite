@@ -15,7 +15,7 @@ const essay = ref<DataType.Essay>();
 const tagsCategroies = ref<any>({ categories: {}, tags: {} });
 
 let hidePagination = ref(true);
-let commCount = ref(2);
+let commCount = ref(1);
 let currentCommPage = ref(1);
 let comments = ref<Array<DataType.Comment>>();
 
@@ -44,15 +44,18 @@ let skeleton = ref(true);
 
 API.getEssay(postId, (str: DataType.Essay) => {
   essay.value = str;
-  skeleton.value = true;
-  API.getCommList(postId, 0, (str: Array<DataType.Essay>) => {
-    comments.value = str;
-    API.getEssayTagsAndCategories(666252, postId, str => {
-      tagsCategroies.value = str;
-      skeleton.value = false;
-      API.getCommCount(postId, count => {
-        if (count > 0) hidePagination.value = false;
-        commCount.value = count;
+  API.getCommCount(postId, count => {
+    if (count === 1) {
+      hidePagination.value = false;
+    } else {
+      commCount.value = count;
+      currentCommPage.value = count;
+    }
+    API.getCommList(postId, count, (str: Array<DataType.Essay>) => {
+      comments.value = str;
+      API.getEssayTagsAndCategories(666252, postId, str => {
+        tagsCategroies.value = str;
+        skeleton.value = false;
       });
     });
   });
@@ -96,10 +99,14 @@ function uploadImage() {
   });
 }
 
+let commentsSkeleton = ref(false);
+
 function paginationChange() {
-  // API.getCommList(postId, currentCommPage.value - 1, (str: Array<DataType.Essay>) => {
-  //   comments.value = str;
-  // });
+  commentsSkeleton.value = true;
+  API.getCommList(postId, currentCommPage.value, (str: Array<DataType.Essay>) => {
+    comments.value = str;
+    commentsSkeleton.value = false;
+  });
 }
 </script>
 
@@ -191,7 +198,8 @@ function paginationChange() {
         </div>
         <div class="essay-comments">
           <h3>评论列表</h3>
-          <div v-if="comments?.length">
+          <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="commentsSkeleton" />
+          <div v-if="comments?.length && !commentsSkeleton">
             <div class="item" v-for="(item, index) in comments" :key="index">
               <div class="top">
                 <el-image class="avatar" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
