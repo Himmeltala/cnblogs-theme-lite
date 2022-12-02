@@ -107,7 +107,7 @@ function paginationChange() {
   <div class="essay">
     <Card class="wrap" padding="20px 20px">
       <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="skeleton" />
-      <template v-if="!skeleton">
+      <div v-if="!skeleton">
         <el-page-header :icon="ArrowLeft" @back="nav('/')">
           <template #content>
             <div class="title">{{ essay?.title }}</div>
@@ -155,7 +155,7 @@ function paginationChange() {
             </div>
           </div>
         </div>
-        <div class="essay-content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code v-html="essay?.content"></div>
+        <div class="essay-content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code="true" v-html="essay?.content"></div>
         <el-divider style="margin-bottom: 10px" border-style="dashed" />
         <div class="info-bottom">
           <div class="date">
@@ -189,9 +189,9 @@ function paginationChange() {
           </div>
           <el-button type="primary" class="actions" @click="setComm">发送评论</el-button>
         </div>
-        <div class="comments">
+        <div class="essay-comments">
           <h3>评论列表</h3>
-          <template v-if="comments?.length">
+          <div v-if="comments?.length">
             <div class="item" v-for="(item, index) in comments" :key="index">
               <div class="top">
                 <el-image class="avatar" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
@@ -204,7 +204,7 @@ function paginationChange() {
                 </div>
               </div>
               <div class="bottom">
-                <div class="body" v-html="item.body"></div>
+                <div class="body" v-html="item.body" v-parse-code="false"></div>
                 <div>
                   <div class="digg">
                     <el-icon><CaretTop /></el-icon>
@@ -225,10 +225,10 @@ function paginationChange() {
                 v-model:current-page="currentCommPage"
                 v-model:page-count="commCount" />
             </div>
-          </template>
+          </div>
           <el-empty v-if="!comments?.length" description="没有评论，来一条友善的评论吧🤨也许是你没有登录所以看不到哦~" />
         </div>
-      </template>
+      </div>
     </Card>
   </div>
 </template>
@@ -270,6 +270,7 @@ pre {
   box-sizing: border-box;
 
   code {
+    margin: 0 !important;
     border-radius: 6px;
     background-color: #2b2b2b !important;
 
@@ -287,8 +288,8 @@ pre {
 
     &,
     span {
-      line-height: 1.6;
-      letter-spacing: 0.9px;
+      line-height: 1.2;
+      letter-spacing: 1px;
       word-break: break-all;
     }
   }
@@ -307,12 +308,6 @@ code {
   box-sizing: border-box;
 }
 
-.essay-content-img {
-  border-radius: 6px;
-  width: 100%;
-  object-fit: cover;
-}
-
 .code-type {
   box-sizing: border-box;
   padding: 4px;
@@ -325,11 +320,28 @@ code {
   top: 0;
 }
 
+.cust-img {
+  border-radius: 6px;
+  width: 100%;
+  object-fit: cover;
+}
+
 .essay-content {
   @mixin font() {
     letter-spacing: 1.2px;
     word-break: break-all;
     @content;
+  }
+
+  a {
+    padding-bottom: 1px;
+    border-bottom: 1px dotted #a7a7a7;
+    transition: 0.3s;
+
+    &:hover {
+      transition: 0.3s;
+      border-bottom: 1px dotted var(--el-color-primary);
+    }
   }
 
   p {
@@ -370,8 +382,8 @@ code {
   }
 }
 
-.comments {
-  .body {
+.essay-comments {
+  .bottom {
     img {
       border-radius: 6px;
     }
@@ -387,7 +399,7 @@ code {
 }
 </style>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "../scss/mixins.scss";
 
 /* ------global properties start------ */
@@ -543,7 +555,7 @@ $comm-body-size: 16px;
     }
   }
 
-  .comments {
+  .essay-comments {
     .item {
       margin-bottom: 15px;
     }

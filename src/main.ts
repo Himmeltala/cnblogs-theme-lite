@@ -20,16 +20,25 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 app.directive("parse-code", (el, bindig) => {
   let blocks = $(el).find("pre code");
-  $(el)
-    .find("img")
-    .each((i, elem) => {
-      $(elem).attr("class", "essay-content-img");
-    });
+  if (bindig.value) {
+    $(el)
+      .find("img")
+      .each((i, elem) => {
+        $(elem).attr("class", "cust-img");
+      });
+  }
 
   $(blocks).each((i, elem) => {
-    $(elem)
-      .parent()
-      .prepend(`<span class="code-type">${$(elem).attr("class")?.split("language-")[1].toUpperCase()}</span>`);
+    let lang = String(
+      $(elem)
+        .attr("class")!
+        .match(/(language-\w*){0,1}/g)
+    )
+      .split(",")[0]
+      .split("-")[1]
+      .toUpperCase();
+
+    $(elem).parent().prepend(`<span class="code-type">${lang}</span>`);
     hljs.highlightElement(elem);
   });
 });
