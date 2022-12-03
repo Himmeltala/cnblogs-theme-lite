@@ -32,39 +32,12 @@ let commentForm = ref<DataType.Comment>({ postId: props.postId, parentCommentId:
 let btnLoading = ref(false);
 let comments = ref<Array<DataType.Comment>>();
 let commentCount = ref(1);
-let currentPage = ref(1);
+let currentIndex = ref(1);
 let skeleton = ref(false);
-
-comments.value = [
-  {
-    commentId: 1,
-    layer: "#1楼",
-    date: "2022-11-29 14:47",
-    author: "Enziandom",
-    body: "这只是一个测试评论......",
-    contenteditable: false,
-    replayContenteditable: false,
-    digg: " 支持(0) ",
-    bury: " 反对(0) ",
-    avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
-  },
-  {
-    commentId: 2,
-    layer: "#2楼",
-    date: "2022-11-29 15:21",
-    contenteditable: false,
-    replayContenteditable: false,
-    author: "Enziandom",
-    body: "这只是一个测试评论......",
-    digg: " 支持(0) ",
-    bury: " 反对(0) ",
-    avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
-  }
-];
 
 Api.getCommentCount(props.postId, count => {
   commentCount.value = count;
-  currentPage.value = count;
+  currentIndex.value = count;
   skeleton.value = true;
   Api.getCommentList(props.postId, count, (str: Array<DataType.Essay>) => {
     comments.value = str;
@@ -80,7 +53,7 @@ function uploadImage() {
 
 function paginationChange() {
   skeleton.value = true;
-  Api.getCommentList(props.postId, currentPage.value, (str: Array<DataType.Essay>) => {
+  Api.getCommentList(props.postId, currentIndex.value, (str: Array<DataType.Essay>) => {
     comments.value = str;
     skeleton.value = false;
   });
@@ -94,9 +67,9 @@ function insertComment() {
         commentForm.value.body = "";
         Api.getCommentCount(props.postId, count => {
           commentCount.value = count;
-          currentPage.value = count;
-          Api.getCommentList(props.postId, currentPage.value, (str: Array<DataType.Essay>) => {
-            comments.value = str;
+          currentIndex.value = count;
+          Api.getCommentList(props.postId, currentIndex.value, (res: Array<DataType.Essay>) => {
+            comments.value = res;
             btnLoading.value = false;
             ElMessage({
               message: "你的评论已经飞走了！😀",
@@ -133,7 +106,7 @@ function deleteComment(comment: DataType.Comment, index: number) {
   Api.deleteComment(
     {
       commentId: comment.commentId,
-      pageIndex: currentPage.value - 1,
+      pageIndex: currentIndex.value - 1,
       parentId: props.postId
     },
     ({ data }) => {
@@ -161,17 +134,12 @@ function deleteComment(comment: DataType.Comment, index: number) {
  * @param comment 评论实体
  */
 function updateComment(comment: DataType.Comment) {
-  comment.contenteditable = !comment.contenteditable;
+  comment.updateEditable = !comment.updateEditable;
 
-  if (comment.replayContenteditable) comment.replayContenteditable = false;
+  if (comment.replayEditable) comment.replayEditable = false;
+  if (comment.updateEditable) Api.getComment({ commentId: comment.commentId }, ({ data }) => comment.body = data);
 
-  if (comment.contenteditable) {
-    Api.getComment({ commentId: comment.commentId }, ({ data }) => {
-      comment.body = data;
-    });
-  }
-
-  if (!comment.contenteditable) {
+  if (!comment.updateEditable) {
     Api.updateComment(
       {
         body: comment.body,
@@ -233,15 +201,14 @@ let lastReplayComment = ref();
  * @param comment 传递一个自定义的博客评论实体，传送数据时需要对应博客园的实体字段，即 CnBlogComment。
  */
 function replayComment(comment: DataType.Comment) {
-  console.log(comment);
-  comment.replayContenteditable = !comment.replayContenteditable;
+  comment.replayEditable = !comment.replayEditable;
   if (lastReplayComment.value && lastReplayComment.value.commentId !== comment.commentId) {
     lastReplayComment.value.replayContenteditable = false;
     lastReplayComment.value = null;
   }
-  if (comment.contenteditable) comment.contenteditable = false;
+  if (comment.updateEditable) comment.updateEditable = false;
 
-  if (!comment.replayContenteditable) {
+  if (!comment.replayEditable) {
     Api.replayComment({
       body: replayCommentBody.value,
       postId: props.postId,
@@ -250,9 +217,9 @@ function replayComment(comment: DataType.Comment) {
       if (ajax.isSuccess) {
         Api.getCommentCount(props.postId, count => {
           commentCount.value = count;
-          currentPage.value = count;
-          Api.getCommentList(props.postId, currentPage.value, (str: Array<DataType.Essay>) => {
-            comments.value = str;
+          currentIndex.value = count;
+          Api.getCommentList(props.postId, currentIndex.value, (res: Array<DataType.Essay>) => {
+            comments.value = res;
             ElMessage({
               message: "回复成功！😀",
               grouping: true,
@@ -289,12 +256,11 @@ function replayComment(comment: DataType.Comment) {
       </div>
       <div class="edit-area">
         <textarea
-          id="comment-textarea"
           v-model="commentForm.body"
           placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
       </div>
-      <div class="img-link">
-        <textarea id="comment-img-link" />
+      <div class="img-link__packer">
+        <textarea id="img-link" />
       </div>
       <el-button type="primary" :loading="btnLoading" class="upload" @click="insertComment">发送评论
       </el-button>
@@ -314,16 +280,16 @@ function replayComment(comment: DataType.Comment) {
           </div>
         </div>
         <div class="bottom">
-          <div class="content" v-show="!item.contenteditable" v-html="item.body" v-parse-code="false"></div>
+          <div class="content" v-show="!item.updateEditable" v-html="item.body" v-parse-code="false"></div>
           <div class="edit-area">
             <textarea
-              v-show="item.contenteditable"
+              v-show="item.updateEditable"
               v-model="item.body"
               placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
           </div>
           <div class="replay-area">
             <textarea
-              v-show="item.replayContenteditable"
+              v-show="item.replayEditable"
               v-model="replayCommentBody"
               placeholder="请回复一条友善的评论，支持 Markdown 语法" />
           </div>
@@ -353,7 +319,7 @@ function replayComment(comment: DataType.Comment) {
               <span>删除</span>
             </div>
             <div class="update actions" @click="updateComment(item)">
-              <div v-if="!item.contenteditable">
+              <div v-if="!item.updateEditable">
                 <el-icon>
                   <EditPen />
                 </el-icon>
@@ -373,7 +339,7 @@ function replayComment(comment: DataType.Comment) {
         <el-pagination
           @current-change="paginationChange"
           layout="prev, pager, next"
-          v-model:current-page="currentPage"
+          v-model:current-page="currentIndex"
           v-model:page-count="commentCount" />
       </div>
     </div>
@@ -435,7 +401,7 @@ function replayComment(comment: DataType.Comment) {
   margin-bottom: 50px;
   position: relative;
 
-  .img-link {
+  .img-link__packer {
     opacity: 0;
     position: absolute;
     top: 0;

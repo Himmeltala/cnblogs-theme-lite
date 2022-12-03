@@ -28,9 +28,7 @@ export function parseEssayList(strDom: any, calcPage: boolean): { pages: string[
     if ($(pager).length > 1) {
       let index = 0;
       $(pager).each((i, elem) => {
-        if (i != 0 && i != $(pager).length - 1) {
-          pages[index++] = $(elem).text();
-        }
+        if (i != 0 && i != $(pager).length - 1) pages[index++] = $(elem).text();
       });
     }
   }
@@ -102,8 +100,8 @@ export function parseCommentList(data: any): Array<DataType.Comment> {
     .map((i, d) => {
       let anchor = $(d).find(".layer").attr("href")!.split("#")[1];
       comments[i] = {
-        contenteditable: false,
-        replayContenteditable: false,
+        updateEditable: false,
+        replayEditable: false,
         commentId: parseInt(anchor),
         space: $(d).find(`#a_comment_author_${anchor}`).attr("href"),
         author: $(d).find(`#a_comment_author_${anchor}`).text(),

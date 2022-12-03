@@ -21,8 +21,8 @@ export interface Essay {
 
 export interface Comment {
   // 评论是否可以被编辑，默认是 false
-  contenteditable?: boolean;
-  replayContenteditable?: boolean;
+  updateEditable?: boolean;
+  replayEditable?: boolean;
   // 评论 ID
   commentId?: number;
   // 个人主页地址

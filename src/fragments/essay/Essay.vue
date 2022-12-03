@@ -20,10 +20,10 @@ let holeSkeleton = ref(true);
 /**
  * 该页面初始化时第一时间要做的事情
  */
-API.getEssay(postId, (str) => {
-  essay.value = str;
-  API.getEssayTagsAndCategories(666252, postId, str => {
-    tagsCategories.value = str;
+API.getEssay(postId, (res) => {
+  essay.value = res;
+  API.getEssayTagsAndCategories(666252, postId, res => {
+    tagsCategories.value = res;
     holeSkeleton.value = false;
     API.getPrevNext(postId, str => {
       prevNext.value = str;
@@ -74,7 +74,7 @@ function voteEssay(voteType: DataType.VoteType) {
 
 <template>
   <div class="essay">
-    <Card class="pack" padding="20px 20px">
+    <Card class="essay__packer" padding="20px 20px">
       <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="holeSkeleton" />
       <div v-if="!holeSkeleton">
         <el-page-header :icon="ArrowLeft" @back="nav('/')">
@@ -82,7 +82,7 @@ function voteEssay(voteType: DataType.VoteType) {
             <div class="title">{{ essay?.title }}</div>
           </template>
         </el-page-header>
-        <div class="info">
+        <div class="head-info">
           <div class="date">
             <el-icon>
               <Clock />
@@ -145,7 +145,7 @@ function voteEssay(voteType: DataType.VoteType) {
         <div class="essay-content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code="true"
              v-html="essay?.content"></div>
         <el-divider style="margin-bottom: 10px" border-style="dashed" />
-        <div class="info-bottom">
+        <div class="tail-info">
           <div class="date">
             <el-icon>
               <Clock />
@@ -186,7 +186,7 @@ function voteEssay(voteType: DataType.VoteType) {
             </el-button
             >
           </div>
-          <div class="burry">
+          <div class="bury">
             <el-button style="color: #a7a7a7" :icon="CaretBottom" plain @click="voteEssay('Bury')"
             >反对 {{ essayVote?.buryCount }}
             </el-button
@@ -357,21 +357,15 @@ code {
 <style lang="scss">
 @import "../../scss/mixins";
 
-/* ------global properties start------ */
-// 字体颜色
 $color: #a7a7a7;
-// 随笔标题字体
 $title-size: 26px;
-// 评论区个人信息字体
 $comm-brief-size: 13px;
-// 评论区的字体
 $comm-body-size: 16px;
-/* ------global properties end------ */
 
 .essay {
   color: $color;
 
-  .pack {
+  .essay__packer {
     position: relative;
   }
 
@@ -382,7 +376,41 @@ $comm-body-size: 16px;
     font-size: $title-size;
   }
 
-  .info-bottom {
+  .head-info {
+    @include flex($justify: flex-start);
+  }
+
+  .labels {
+    font-size: 16px;
+    margin: 25px 0;
+
+    .categories {
+      margin-bottom: 8px;
+    }
+
+    .categories,
+    .tags {
+      @include flex($justify: flex-start);
+
+      .caption {
+        @include flex();
+
+        span {
+          margin-left: 4px;
+        }
+      }
+
+      .item {
+        margin-right: 4px;
+      }
+
+      .item:last-child {
+        margin-left: 0;
+      }
+    }
+  }
+
+  .tail-info {
     @include flex($justify: flex-end);
   }
 
@@ -429,12 +457,7 @@ $comm-body-size: 16px;
     }
   }
 
-  .info {
-    @include flex($justify: flex-start);
-  }
-
-  .info,
-  .info-bottom {
+  .head-info, .tail-info {
     font-size: 14px;
     margin-top: 10px;
 
@@ -472,38 +495,8 @@ $comm-body-size: 16px;
     }
   }
 
-  .info, .labels, .info-bottom, .prev-next {
+  .head-info, .labels, .tail-info, .prev-next {
     color: #878787;
-  }
-
-  .labels {
-    font-size: 16px;
-    margin: 25px 0;
-
-    .categories {
-      margin-bottom: 8px;
-    }
-
-    .categories,
-    .tags {
-      @include flex($justify: flex-start);
-
-      .caption {
-        @include flex();
-
-        span {
-          margin-left: 4px;
-        }
-      }
-
-      .item {
-        margin-right: 4px;
-      }
-
-      .item:last-child {
-        margin-left: 0;
-      }
-    }
   }
 
 }
