@@ -3,22 +3,22 @@ import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ArrowLeft, CaretBottom, CaretTop } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
-import * as API from "../utils/api";
-import * as DataType from "../types/data-type";
-import * as Native from "../utils/native";
+import * as API from "../../utils/api";
+import * as DataType from "../../types/data-type";
+import * as Native from "../../utils/native";
 
 const route = useRoute();
 const router = useRouter();
 const postId: any = route.params.id;
 
 let essay = ref<DataType.Essay>();
-let tagsCategroies = ref<any>({ categories: {}, tags: {} });
-
-let commCount = ref(1);
-let currCommentPage = ref(1);
 let comments = ref<Array<DataType.Comment>>();
-let prevNext = ref();
+let prevNext = ref<DataType.PrevNext>();
 let essayVote = ref<DataType.CnBlogEssayVote>();
+let tagsCategories = ref<any>({ categories: {}, tags: {} });
+
+let commentCount = ref(1);
+let currCommentPage = ref(1);
 let holeSkeleton = ref(true);
 
 comments.value = [
@@ -28,7 +28,7 @@ comments.value = [
     author: "Enziandom",
     body: "这只是一个测试评论......",
     digg: " 支持(0) ",
-    burry: " 反对(0) ",
+    bury: " 反对(0) ",
     avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
   },
   {
@@ -37,7 +37,7 @@ comments.value = [
     author: "Enziandom",
     body: "这只是一个测试评论......",
     digg: " 支持(0) ",
-    burry: " 反对(0) ",
+    bury: " 反对(0) ",
     avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
   }
 ];
@@ -48,12 +48,12 @@ comments.value = [
 API.getEssay(postId, (str: DataType.Essay) => {
   essay.value = str;
   API.getCommentCount(postId, count => {
-    commCount.value = count;
+    commentCount.value = count;
     currCommentPage.value = count;
     API.getCommentList(postId, count, (str: Array<DataType.Essay>) => {
       comments.value = str;
       API.getEssayTagsAndCategories(666252, postId, str => {
-        tagsCategroies.value = str;
+        tagsCategories.value = str;
         holeSkeleton.value = false;
         API.getPrevNext(postId, str => {
           prevNext.value = str;
@@ -67,23 +67,23 @@ API.getEssay(postId, (str: DataType.Essay) => {
 });
 
 let comment = ref<DataType.Comment>({ postId, parentCommentId: 0, body: "" });
-let commBtnLoading = ref(false);
+let commentBtnLoading = ref(false);
 
 /**
  * 添加一条评论
  */
 function setComm() {
   if (comment.value.body) {
-    commBtnLoading.value = true;
+    commentBtnLoading.value = true;
     API.setComment(comment.value, ({ data }) => {
       if (data.isSuccess) {
         comment.value.body = "";
         API.getCommentCount(postId, count => {
-          commCount.value = count;
+          commentCount.value = count;
           currCommentPage.value = count;
           API.getCommentList(postId, currCommentPage.value, (str: Array<DataType.Essay>) => {
             comments.value = str;
-            commBtnLoading.value = false;
+            commentBtnLoading.value = false;
             ElMessage({
               message: "你的评论已经飞走了！😀",
               grouping: true,
@@ -97,7 +97,7 @@ function setComm() {
           grouping: true,
           type: "error"
         });
-        commBtnLoading.value = false;
+        commentBtnLoading.value = false;
       }
     });
   } else {
@@ -109,13 +109,10 @@ function setComm() {
   }
 }
 
-let fontSize = ref(16);
+let fontSize = ref(17);
 
-/**
- * 缩放随笔文章区域的字体大小
- */
 function zoomIn() {
-  fontSize.value >= 18 ? (fontSize.value = 16) : fontSize.value++;
+  fontSize.value >= 19 ? (fontSize.value = 17) : fontSize.value++;
 }
 
 /**
@@ -130,9 +127,6 @@ function nav(path: string, out?: boolean) {
   } else router.push(path);
 }
 
-/**
- * 编辑评论点击上传照片
- */
 function uploadImage() {
   Native.openImageUploadWindow((imgUrl: any) => {
     comment.value.body += `\n\n${imgUrl}\n\n`;
@@ -141,9 +135,6 @@ function uploadImage() {
 
 let commentSkeleton = ref(false);
 
-/**
- *分页符改变时重新获取评论列表
- */
 function paginationChange() {
   commentSkeleton.value = true;
   API.getCommentList(postId, currCommentPage.value, (str: Array<DataType.Essay>) => {
@@ -187,20 +178,20 @@ function deleteComm(comm: DataType.Comment, index: number) {
 /**
  * 修改评论
  */
-function updateComm(comm: DataType.Comment, index: number) {
-  comm.contenteditable = !comm.contenteditable;
+function updateComm(comment: DataType.Comment, index: number) {
+  comment.contenteditable = !comment.contenteditable;
 
-  if (comm.contenteditable) {
-    API.getComment({ commentId: comm.commentId }, ({ data }) => {
-      comm.body = data;
+  if (comment.contenteditable) {
+    API.getComment({ commentId: comment.commentId }, ({ data }) => {
+      comment.body = data;
     });
   }
 
-  if (!comm.contenteditable) {
+  if (!comment.contenteditable) {
     API.updateComment(
       {
-        body: comm.body,
-        commentId: comm.commentId
+        body: comment.body,
+        commentId: comment.commentId
       },
       ({ data }) => {
         if (data.isSuccess) {
@@ -223,21 +214,21 @@ function updateComm(comm: DataType.Comment, index: number) {
 /**
  * 点赞或反对评论
  *
- * @param comm 评论实体
+ * @param comment 评论实体
  * @param voteType 类型，点赞？反对？
  */
-function voteComm(comm: DataType.Comment, voteType: DataType.VoteType) {
+function voteComm(comment: DataType.Comment, voteType: DataType.VoteType) {
   API.voteComment(
     {
       isAbandoned: false,
-      commentId: comm.commentId,
+      commentId: comment.commentId,
       postId,
       voteType: voteType
     },
     ajax => {
       if (ajax.isSuccess) {
-        if (voteType == "Bury") comm.burry = comm.burry! + 1;
-        else comm.digg = comm.digg! + 1;
+        if (voteType == "Bury") comment.bury = comment.bury! + 1;
+        else comment.digg = comment.digg! + 1;
       }
       ElMessage({
         message: ajax.message,
@@ -248,6 +239,11 @@ function voteComm(comm: DataType.Comment, voteType: DataType.VoteType) {
   );
 }
 
+/**
+ * 点赞或反对随笔
+ *
+ * @param voteType 类型，点赞？反对？
+ */
 function voteEssay(voteType: DataType.VoteType) {
   API.voteEssay({ postId: postId, isAbandoned: false, voteType: voteType }, ajax => {
     if (ajax.isSuccess) {
@@ -265,7 +261,7 @@ function voteEssay(voteType: DataType.VoteType) {
 
 <template>
   <div class="essay">
-    <Card class="wrap" padding="20px 20px">
+    <Card class="pack" padding="20px 20px">
       <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="holeSkeleton" />
       <div v-if="!holeSkeleton">
         <el-page-header :icon="ArrowLeft" @back="nav('/')">
@@ -275,33 +271,45 @@ function voteEssay(voteType: DataType.VoteType) {
         </el-page-header>
         <div class="info">
           <div class="date">
-            <el-icon><Clock /></el-icon>
+            <el-icon>
+              <Clock />
+            </el-icon>
             <span>{{ essay?.date }}</span>
           </div>
           <div class="view-count">
-            <el-icon><View /></el-icon>
+            <el-icon>
+              <View />
+            </el-icon>
             <span>{{ essay?.viewCount }}次阅读</span>
           </div>
           <div class="comm-count">
-            <el-icon><ChatLineSquare /></el-icon>
+            <el-icon>
+              <ChatLineSquare />
+            </el-icon>
             <span>{{ essay?.commCount }}条评论</span>
           </div>
           <div class="zoom-in" @click="zoomIn">
-            <el-icon><ZoomIn /></el-icon>
+            <el-icon>
+              <ZoomIn />
+            </el-icon>
             <span>放大</span>
           </div>
           <div class="edit-essay" @click="nav('https://i.cnblogs.com/EditPosts.aspx?postid=' + postId, true)">
-            <el-icon><EditPen /></el-icon>
+            <el-icon>
+              <EditPen />
+            </el-icon>
             <span>编辑</span>
           </div>
         </div>
         <div class="labels">
           <div class="categories">
             <div class="caption">
-              <el-icon><FolderOpened /></el-icon>
+              <el-icon>
+                <FolderOpened />
+              </el-icon>
               <span>分类：</span>
             </div>
-            <div class="item" v-for="(item, index) in tagsCategroies.categories" :key="index">
+            <div class="item" v-for="(item, index) in tagsCategories.categories" :key="index">
               <Tag :color="item.color" @click="nav(item.href, true)">
                 {{ item.text }}
               </Tag>
@@ -309,51 +317,66 @@ function voteEssay(voteType: DataType.VoteType) {
           </div>
           <div class="tags">
             <div class="caption">
-              <el-icon><PriceTag /></el-icon>
+              <el-icon>
+                <PriceTag />
+              </el-icon>
               <span>标签：</span>
             </div>
-            <div class="item" v-for="(item, index) in tagsCategroies.tags" :key="index">
+            <div class="item" v-for="(item, index) in tagsCategories.tags" :key="index">
               <Tag :color="item.color" @click="nav(item.href, true)">
                 {{ item.text }}
               </Tag>
             </div>
           </div>
         </div>
-        <div class="essay-content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code="true" v-html="essay?.content"></div>
+        <div class="essay-content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code="true"
+             v-html="essay?.content"></div>
         <el-divider style="margin-bottom: 10px" border-style="dashed" />
         <div class="info-bottom">
           <div class="date">
-            <el-icon><Clock /></el-icon>
+            <el-icon>
+              <Clock />
+            </el-icon>
             <span>{{ essay?.date }}</span>
           </div>
           <div class="view-count">
-            <el-icon><View /></el-icon>
+            <el-icon>
+              <View />
+            </el-icon>
             <span>{{ essay?.viewCount }}次阅读</span>
           </div>
           <div class="comm-count">
-            <el-icon><ChatLineSquare /></el-icon>
+            <el-icon>
+              <ChatLineSquare />
+            </el-icon>
             <span>{{ essay?.commCount }}条评论</span>
           </div>
         </div>
         <div class="prev-next">
           <div class="prev" v-if="prevNext.prev.href">
-            <el-icon><DArrowLeft /></el-icon>
+            <el-icon>
+              <DArrowLeft />
+            </el-icon>
             <a :href="prevNext.prev.href">上一篇：{{ prevNext.prev.text }}</a>
           </div>
           <div class="next" v-if="prevNext.next.href">
-            <el-icon><DArrowRight /></el-icon>
+            <el-icon>
+              <DArrowRight />
+            </el-icon>
             <a :href="prevNext.next.href">下一篇：{{ prevNext.next.text }}</a>
           </div>
         </div>
         <div class="vote-essay">
           <div class="digg">
             <el-button style="color: #a7a7a7" :icon="CaretTop" plain @click="voteEssay('Digg')"
-              >点赞 {{ essayVote?.diggCount }}</el-button
+            >点赞 {{ essayVote?.diggCount }}
+            </el-button
             >
           </div>
           <div class="burry">
             <el-button style="color: #a7a7a7" :icon="CaretBottom" plain @click="voteEssay('Bury')"
-              >反对 {{ essayVote?.buryCount }}</el-button
+            >反对 {{ essayVote?.buryCount }}
+            </el-button
             >
           </div>
         </div>
@@ -361,7 +384,9 @@ function voteEssay(voteType: DataType.VoteType) {
         <div class="comment-form">
           <div class="tools">
             <el-tooltip effect="dark" content="插入图片" placement="top-start">
-              <el-icon class="upload-img" @click="uploadImage"><Picture /></el-icon>
+              <el-icon class="upload-img" @click="uploadImage">
+                <Picture />
+              </el-icon>
             </el-tooltip>
           </div>
           <div class="comment-textarea-box">
@@ -373,7 +398,7 @@ function voteEssay(voteType: DataType.VoteType) {
           <div class="comment-img-link-box">
             <textarea id="comment-img-link" />
           </div>
-          <el-button type="primary" :loading="commBtnLoading" class="actions" @click="setComm">发送评论</el-button>
+          <el-button type="primary" :loading="commentBtnLoading" class="actions" @click="setComm">发送评论</el-button>
         </div>
         <div class="essay-comments">
           <h3>评论列表</h3>
@@ -400,24 +425,34 @@ function voteEssay(voteType: DataType.VoteType) {
                 </div>
                 <div>
                   <div class="digg actions" @click="voteComm(item, 'Digg')">
-                    <el-icon><CaretTop /></el-icon>
+                    <el-icon>
+                      <CaretTop />
+                    </el-icon>
                     <span>{{ item.digg }}</span>
                   </div>
                   <div class="burry actions" @click="voteComm(item, 'Bury')">
-                    <el-icon><CaretBottom /></el-icon>
-                    <span>{{ item.burry }}</span>
+                    <el-icon>
+                      <CaretBottom />
+                    </el-icon>
+                    <span>{{ item.bury }}</span>
                   </div>
                   <div class="delete actions" @click="deleteComm(item, index)">
-                    <el-icon><Delete /></el-icon>
+                    <el-icon>
+                      <Delete />
+                    </el-icon>
                     <span>删除</span>
                   </div>
                   <div class="update actions" @click="updateComm(item, index)">
                     <div v-if="!item.contenteditable">
-                      <el-icon><EditPen /></el-icon>
+                      <el-icon>
+                        <EditPen />
+                      </el-icon>
                       <span>编辑</span>
                     </div>
                     <div v-else>
-                      <el-icon><CircleCheck /></el-icon>
+                      <el-icon>
+                        <CircleCheck />
+                      </el-icon>
                       <span>完成</span>
                     </div>
                   </div>
@@ -429,7 +464,7 @@ function voteEssay(voteType: DataType.VoteType) {
                 @current-change="paginationChange"
                 layout="prev, pager, next"
                 v-model:current-page="currCommentPage"
-                v-model:page-count="commCount" />
+                v-model:page-count="commentCount" />
             </div>
           </div>
           <el-empty v-if="!comments?.length" description="没有评论，来一条友善的评论吧🤨也许是你没有登录所以看不到哦~" />
@@ -476,6 +511,7 @@ pre {
   box-sizing: border-box;
 
   code {
+    font-size: 15px;
     margin: 0 !important;
     border-radius: 6px;
     background-color: #2b2b2b !important;
@@ -495,7 +531,7 @@ pre {
     &,
     span {
       line-height: 1.4;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       word-break: break-all;
     }
   }
@@ -504,7 +540,7 @@ pre {
 code {
   font-size: 14px;
   font-weight: 300;
-  font-family: Hack, monospace;
+  font-family: font1;
   background: #2e2e2e;
   color: var(--el-color-danger-light-3);
   padding: 3px 6px;
@@ -607,15 +643,13 @@ code {
 </style>
 
 <style lang="scss">
-@import "../scss/mixins.scss";
+@import "../../scss/mixins";
 
 /* ------global properties start------ */
 // 字体颜色
 $color: #a7a7a7;
 // 随笔标题字体
-$title-size: 24px;
-// info、labels 的字体
-$info-size: 14px;
+$title-size: 26px;
 // 评论区个人信息字体
 $comm-brief-size: 13px;
 // 评论区的字体
@@ -625,7 +659,7 @@ $comm-body-size: 16px;
 .essay {
   color: $color;
 
-  .wrap {
+  .pack {
     position: relative;
   }
 
@@ -642,7 +676,7 @@ $comm-body-size: 16px;
 
   .prev-next {
     margin: 25px 0;
-    font-size: 13px;
+    font-size: 15px;
 
     @mixin hover {
       transition: 0.3s;
@@ -654,6 +688,7 @@ $comm-body-size: 16px;
     }
 
     a {
+      color: #878787;
       @include hover();
       margin-left: 6px;
     }
@@ -688,7 +723,7 @@ $comm-body-size: 16px;
 
   .info,
   .info-bottom {
-    font-size: $info-size;
+    font-size: 14px;
     margin-top: 10px;
 
     div:last-child {
@@ -725,8 +760,12 @@ $comm-body-size: 16px;
     }
   }
 
+  .info, .labels, .info-bottom, .prev-next {
+    color: #878787;
+  }
+
   .labels {
-    font-size: $info-size;
+    font-size: 16px;
     margin: 25px 0;
 
     .categories {
@@ -776,7 +815,7 @@ $comm-body-size: 16px;
       outline: none;
       border-radius: 8px;
       box-sizing: border-box;
-      font-family: sans-serif;
+      font-family: font1;
       font-weight: 300;
       color: #a7a7a7;
       padding: 10px;
@@ -805,6 +844,7 @@ $comm-body-size: 16px;
       margin-bottom: 10px;
 
       @include flex($justify: flex-end);
+
       .upload-img {
         cursor: pointer;
       }

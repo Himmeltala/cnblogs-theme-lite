@@ -21,7 +21,6 @@ defineProps({
 <style scoped lang="scss">
 .card {
   box-sizing: border-box;
-  color: #a7a7a7;
   background-color: #252525;
   border-radius: 6px;
 }

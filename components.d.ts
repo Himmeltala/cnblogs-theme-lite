@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Card: typeof import('./src/components/Card.vue')['default']
+    Comments: typeof import('./src/fragments/essay/Comments.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElDivider: typeof import('element-plus/es')['ElDivider']
     ElEmpty: typeof import('element-plus/es')['ElEmpty']
@@ -20,7 +21,7 @@ declare module '@vue/runtime-core' {
     ElSkeletonItem: typeof import('element-plus/es')['ElSkeletonItem']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
-    Essay: typeof import('./src/fragments/Essay.vue')['default']
+    Essay: typeof import('./src/fragments/essay/Essay.vue')['default']
     GitHub: typeof import('./src/components/GitHub.vue')['default']
     Home: typeof import('./src/fragments/Home.vue')['default']
     LeftSide: typeof import('./src/fragments/LeftSide.vue')['default']

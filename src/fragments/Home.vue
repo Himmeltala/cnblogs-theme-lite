@@ -3,7 +3,7 @@ import { ref } from "vue";
 import * as API from "../utils/api";
 import * as DataType from "../types/data-type";
 
-let essayLoading = ref(true);
+let listLoading = ref(true);
 let essayList = ref<Array<DataType.Essay>>();
 let pages = ref();
 let currentPage = ref(1);
@@ -12,18 +12,18 @@ let calcPage = ref(false);
 
 API.getEssayList(0, calcPage.value, str => {
   essayList.value = str.list;
-  essayLoading.value = false;
+  listLoading.value = false;
 });
 
 function changePage(flag: boolean) {
   if (flag) currentPage.value++;
-  essayLoading.value = true;
+  listLoading.value = true;
   pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
   API.getEssayList(currentPage.value, calcPage.value, str => {
     essayList.value = str.list;
     pages.value = str.pages;
     if (calcPage.value) pageCount.value = parseInt(str.pages[str.pages.length - 1]);
-    essayLoading.value = false;
+    listLoading.value = false;
   });
 }
 
@@ -36,14 +36,15 @@ function paginationChange() {
   <div class="home">
     <div class="personal">
       <div class="mask"></div>
-      <img loading="lazy" src="https://img2.baidu.com/it/u=3208290999,1116912473&fm=253&fmt=auto&app=120&f=JPEG?w=862&h=500" />
+      <img loading="lazy"
+           src="https://img2.baidu.com/it/u=3208290999,1116912473&fm=253&fmt=auto&app=120&f=JPEG?w=862&h=500" />
       <div class="panel">
-        <!-- src="https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/1934022/t_221121082134_QQ%E5%9B%BE%E7%89%8720221121162116.jpg"></el-image> -->
+        <!-- src="https://img0.baidu.com/it/u=2322283728,1741375128&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1670173200&t=aaf09069779fc719038c5290a6b5bdf0" /> -->
         <div class="row-1">
           <el-image
             style="width: 80px; height: 80px; border-radius: 50px"
             fit="cover"
-            src="https://img0.baidu.com/it/u=2322283728,1741375128&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1670173200&t=aaf09069779fc719038c5290a6b5bdf0" />
+            src="https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/1934022/t_221121082134_QQ%E5%9B%BE%E7%89%8720221121162116.jpg"></el-image>
           <div class="info">
             <div class="username">
               <span class="text">Enziandom</span>
@@ -51,7 +52,7 @@ function paginationChange() {
                 <el-tag type="success" effect="plain" round> 摸鱼中... </el-tag>
               </span>
             </div>
-            <div class="siganture">个签：Time tick away, dream faded away!</div>
+            <div class="signature">个签：Time tick away, dream faded away!</div>
           </div>
         </div>
         <div class="right-top">
@@ -69,11 +70,11 @@ function paginationChange() {
         :background="true"
         layout="prev, pager, next, jumper" />
     </div>
-    <el-skeleton :loading="essayLoading" animated>
+    <el-skeleton style="margin-top: 10px" :loading="listLoading" animated>
       <template #template>
         <Card v-for="item in 10" :key="item">
           <el-skeleton-item variant="p" style="width: 60%" />
-          <div style="display: flex; align-items: center; justify-items: space-between">
+          <div style="display: flex; align-items: center">
             <el-skeleton-item variant="text" style="margin-right: 16px; margin-top: 8px" />
             <el-skeleton-item variant="text" style="margin-right: 16px; margin-top: 8px" />
             <el-skeleton-item variant="text" style="width: 30%; margin-top: 8px" />
@@ -86,38 +87,52 @@ function paginationChange() {
         </Card>
       </template>
     </el-skeleton>
-    <Card class="list" v-for="(item, index) in essayList" :key="index" v-if="!essayLoading" :width="'auto'">
-      <div class="show">
-        <el-image v-if="index % 2 != 0 && item.cover" class="cover" :src="item.cover" fit="cover" />
-        <div class="wrap" :class="{ 'cover-exist': item.cover ? false : true }">
-          <router-link class="title" :to="'/p/' + item.postId"> {{ item.title }}</router-link>
-          <div class="desc">摘要：{{ item.desc }}</div>
-          <div class="bottom">
-            <div>
-              <el-icon><CaretRight /></el-icon>
-              <router-link :to="'/p/' + item.postId">阅读全文</router-link>
+    <Card class="essay" v-for="(item, index) in essayList" :key="index" v-if="!listLoading" :width="'auto'">
+      <div class="vessel">
+        <div class="pack">
+          <div class="header">
+            <el-image v-if="index % 2 !== 0 && item.cover" class="cover" :src="item.cover" fit="cover" />
+            <div class="header__middle" :class="{ 'cover-exist': !item.cover }">
+              <router-link class="title" :to="'/p/' + item.postId"> {{ item.title }}</router-link>
+              <div class="desc">摘要：{{ item.desc }}</div>
             </div>
+            <el-image v-if="index % 2 === 0 && item.cover" class="cover" :src="item.cover" fit="cover" />
+          </div>
+          <div class="browse">
+            <el-icon>
+              <CaretRight />
+            </el-icon>
+            <router-link :to="'/p/' + item.postId">阅读全文</router-link>
+          </div>
+          <div class="bottom">
             <div class="info">
               <div class="date">
-                <el-icon><Clock /></el-icon>
+                <el-icon>
+                  <Clock />
+                </el-icon>
                 <span>{{ item.date }}</span>
               </div>
               <div class="view">
-                <el-icon><View /></el-icon>
+                <el-icon>
+                  <View />
+                </el-icon>
                 <span>{{ item.viewCount }}</span>
               </div>
               <div class="comm">
-                <el-icon><ChatLineSquare /></el-icon>
+                <el-icon>
+                  <ChatLineSquare />
+                </el-icon>
                 <span>{{ item.commCount }}</span>
               </div>
               <div class="digg">
-                <el-icon><Star /></el-icon>
+                <el-icon>
+                  <Star />
+                </el-icon>
                 <span> {{ item.diggCount }}</span>
               </div>
             </div>
           </div>
         </div>
-        <el-image v-if="index % 2 == 0 && item.cover" class="cover" :src="item.cover" fit="cover" />
       </div>
     </Card>
     <div class="pagination">
@@ -128,7 +143,8 @@ function paginationChange() {
         v-model:page-count="pageCount"
         :background="true"
         layout="prev, pager, next, jumper" />
-      <el-button style="margin-right: 5px" v-show="!pageCount" type="primary" bg text @click="changePage(true)">下一页</el-button>
+      <el-button style="margin-right: 5px" v-show="!pageCount" type="primary" bg text @click="changePage(true)">下一页
+      </el-button>
     </div>
   </div>
 </template>
@@ -137,9 +153,9 @@ function paginationChange() {
 @import "../scss/mixins.scss";
 
 $border-radius: 6px;
-$title-size: 19px;
-$desc-size: 15px;
-$bottom-size: 14px;
+$title-size: 22px;
+$desc-size: 18px;
+$bottom-size: 16px;
 $margin: 3px;
 
 .personal {
@@ -189,8 +205,8 @@ $margin: 3px;
           }
         }
 
-        .siganture {
-          font-size: 14px;
+        .signature {
+          font-size: 15px;
         }
       }
     }
@@ -215,15 +231,15 @@ $margin: 3px;
   }
 }
 
-.list {
+.essay {
   padding: 20px 20px;
   margin: 12px 5px 12px 5px;
 
   &:first-child {
-    margin: 0px 5px 0px 5px !important;
+    margin: 0 5px 0 5px !important;
   }
 
-  .show {
+  .vessel {
     @include flex($justify: space-between, $wrap: nowrap);
 
     .cover {
@@ -232,50 +248,63 @@ $margin: 3px;
       height: 150px;
     }
 
-    .cover-exist {
-      width: 100% !important;
-    }
-
-    .wrap {
-      width: 73%;
-
-      .title {
-        font-size: $title-size;
-        word-break: break-all;
-        transition: 0.3s;
-        letter-spacing: 1px;
+    .pack {
+      .cover-exist {
+        width: 100% !important;
       }
 
-      .desc {
-        color: #878787;
-        padding: 10px 0 25px 0;
-        font-size: $desc-size;
-        letter-spacing: 0.6px;
+      .header {
+        @include flex($justify: space-between);
+
+        .header__middle {
+          width: 73%;
+
+          .title {
+            font-size: $title-size;
+            word-break: break-all;
+            transition: 0.3s;
+            letter-spacing: 1px;
+          }
+
+          .desc {
+            color: #878787;
+            padding: 10px 0 25px 0;
+            font-size: $desc-size;
+            letter-spacing: 0.6px;
+          }
+
+          .title,
+          .desc {
+            line-height: 1.4;
+          }
+        }
+
+        .cover {
+          border-radius: $border-radius;
+          width: 25%;
+          height: 160px;
+        }
       }
 
-      .title,
-      .desc {
-        line-height: 1.4;
+      .browse {
+        @include flex($justify: flex-start);
+        margin-bottom: 15px;
+
+        a {
+          margin-left: $margin;
+          border-bottom: 1px dotted #cccccc;
+          transition: 0.3s;
+
+          &:hover {
+            transition: 0.3s;
+            border-bottom: 1px dotted var(--el-color-primary);
+          }
+        }
       }
 
       .bottom {
         font-size: $bottom-size;
-        @include flex($justify: space-between);
-
-        & > div {
-          @include flex();
-
-          a {
-            margin-left: $margin;
-            border-bottom: 1px dotted #cccccc;
-            transition: 0.3s;
-
-            &:hover {
-              transition: 0.3s;
-              border-bottom: 1px dotted var(--el-color-primary);
-            }
-          }
-        }
+        @include flex($justify: flex-end);
 
         .info {
           color: #989898;

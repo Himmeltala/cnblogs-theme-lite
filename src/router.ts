@@ -7,7 +7,7 @@ const routes = [
   },
   {
     path: "/p/:id",
-    component: () => import("./fragments/Essay.vue")
+    component: () => import("./fragments/essay/Essay.vue")
   }
 ];
 

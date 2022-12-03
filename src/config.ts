@@ -13,8 +13,6 @@ const config = {
     $("body").append(`<div id="app"></div>`);
     $("head > link").remove();
     $("head").prepend(`
-      <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css" />
-      <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack-subset.css" />
       <link rel="stylesheet" href="https://blog-static.cnblogs.com/files/blogs/666252/index.css" />
     `);
     $("html").attr("class", "dark");

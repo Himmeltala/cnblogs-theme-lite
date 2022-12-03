@@ -1,17 +1,18 @@
+@font-face {
+  font-family: font1;
+  // src: url("https://statics-1303923190.cos.ap-chengdu.myqcloud.com/font-1.ttf");
+  src: url("/font-1.ttf");
+}
+
 :root,
 body {
   font-weight: 300;
-  font-family: sans-serif;
+  font-family: font1;
   background-color: #191919;
   padding: 0;
   margin: 0;
   color: #a7a7a7;
   overflow: hidden;
-}
-
-@font-face {
-  font-family: font1;
-  src: url("/font-1.ttf");
 }
 
 #app {
@@ -49,4 +50,14 @@ a:active {
 
 ::-webkit-scrollbar-thumb {
   background-color: #a7a7a7;
+}
+
+.el-button {
+  span {
+    font-family: font1;
+  }
+}
+
+.el-input__inner {
+  font-family: font1;
 }

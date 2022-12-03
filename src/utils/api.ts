@@ -1,5 +1,5 @@
 /**
- * 提供可用的基础 API
+ * 提供对接博客园各种可用的基础 API
  *
  * @author Enziandom
  * @since 1.0
@@ -8,10 +8,10 @@
  */
 
 import axios from "axios";
+import $ from "jquery";
 import * as Parser from "./parser";
 import * as DataType from "../types/data-type";
 import * as HttpType from "../types/http-type";
-import $ from "jquery";
 import config from "../config";
 
 const BASE_URL = config.api.base;
@@ -19,8 +19,10 @@ const BASE_URL = config.api.base;
 /**
  * 获取首页的随笔列表
  *
- * @param page 页数
- * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
+ * @param page 页数，从 1 开始
+ * @param calcPage 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
+ * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
+ * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
 export function getEssayList(
   page: number,
@@ -154,11 +156,12 @@ export function getEssayTagsAndCategories(blogId: number, postId: number, respon
 }
 
 /**
- * 获取上下篇
+ * 获取随笔的上下篇
  *
- * ajax/post/prevnext?postId=16851727
+ * @param postId 随笔 ID
+ * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
-export function getPrevNext(postId: number, response: (res: any) => void) {
+export function getPrevNext(postId: number, response: (res: DataType.PrevNext) => void) {
   axios.get(`${BASE_URL}/ajax/post/prevnext?postId=${postId}`).then(({ data }) => {
     response(Parser.parsePrevNext(data));
   });
@@ -166,8 +169,6 @@ export function getPrevNext(postId: number, response: (res: any) => void) {
 
 /**
  * 点赞或反对随笔
- *
- * /ajax/vote/blogpost
  *
  * @param data 随笔实体，需要传递一个包含 isAbandoned、postId、voteType 的官方随笔实体
  * @param response 获取响应的消息，返回一个 axios 的完整消息
@@ -181,13 +182,11 @@ export function voteEssay(data: DataType.CnBlogEssay, response: (ajax: HttpType.
 /**
  * 获取随笔点赞和反对的数据
  *
- * /ajax/GetPostStat
- *
- * @param param 传递一个数组，数组第一个就是 postId 的值
+ * @param data 传递一个数组，数组第一个就是 postId 的值
  * @param response 获取响应的消息，返回一个 axios 的 data 部分
  */
-export function getEssayVote(param: any[], response: (res: Array<DataType.CnBlogEssayVote>) => void) {
-  sendPost(`${BASE_URL}/ajax/GetPostStat`, param, ({ data }) => {
+export function getEssayVote(data: any[], response: (ajax: Array<DataType.CnBlogEssayVote>) => void) {
+  sendPost(`${BASE_URL}/ajax/GetPostStat`, data, ({ data }) => {
     response(data);
   });
 }

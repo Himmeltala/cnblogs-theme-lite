@@ -14,7 +14,6 @@ defineProps({
 
 <style scoped lang="scss">
 .tag {
-  color: #a7a7a7;
   box-sizing: border-box;
   padding: 3px 6px;
   border-radius: 6px;

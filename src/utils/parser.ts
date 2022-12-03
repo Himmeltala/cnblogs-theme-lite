@@ -8,23 +8,23 @@ import * as DataType from "../types/data-type";
  * @param data 被解析成 DOM 树的对象
  * @returns 返回一个真实的 DOM 树
  */
-function dom(data: any) {
+function parseStrToDom(data: any) {
   return new DOMParser().parseFromString(data, "text/html");
 }
 
 /**
  * 解析随笔列表页面
  *
- * @param data dom 节点，由于这个 DOM 是真实地 DOM 树，所以不需要将其转换成 DOM
- * @param calcPage 是否筛选出页面中的分页
- * @returns 返回一个包含分页和随笔列表的对象
+ * @param strDom 不知道什么原因，该接口获取到传递下来的 DOM 是能够被 jQuery 解析的，所以不需要调用 parseStrToDom 函数。
+ * @param calcPage 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
+ * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
  */
-export function parseEssayList(data: any, calcPage: boolean): { pages: string[]; list: Array<DataType.Essay> } {
-  let dom = $(data).find(".forFlow > .day");
+export function parseEssayList(strDom: any, calcPage: boolean): { pages: string[]; list: Array<DataType.Essay> } {
+  let dom = $(strDom).find(".forFlow > .day");
 
   let pages: string[] = [];
   if (calcPage) {
-    let pager = $(data).find("#homepage_bottom_pager > .pager > a");
+    let pager = $(strDom).find("#homepage_bottom_pager > .pager > a");
     if ($(pager).length > 1) {
       let index = 0;
       $(pager).each((i, elem) => {
@@ -47,7 +47,7 @@ export function parseEssayList(data: any, calcPage: boolean): { pages: string[];
 
   let list: Array<DataType.Essay> = [];
 
-  $(title).each((i, elem) => {
+  $(title).each((i) => {
     list[i] = {
       postId: parseInt(
         $(id[i])
@@ -75,7 +75,6 @@ export function parseEssayList(data: any, calcPage: boolean): { pages: string[];
  *
  * @param postId 随笔 ID
  * @param data 请求响应消息，是一个 HTML，但由于一些问题，不是一个真实的 DOM 树，所以必须要先调用 dom() 函数进行转换
- * @returns 返回随笔实体
  */
 export function parseEssay(postId: number, data: any): DataType.Essay {
   return {
@@ -94,12 +93,11 @@ export function parseEssay(postId: number, data: any): DataType.Essay {
  * \(/)[a-zA-Z\d\u4e00-\u9fa5_-]{1,}(/)\g
  *
  * @param data 同样的也需要先调用 dom 函数转换成 DOM 树
- * @returns 返回评论实体列表
  */
 export function parseCommentList(data: any): Array<DataType.Comment> {
   let comments: Array<DataType.Comment> = [];
 
-  $(dom(data))
+  $(parseStrToDom(data))
     .find(".feedbackItem")
     .map((i, d) => {
       let anchor = $(d).find(".layer").attr("href")!.split("#")[1];
@@ -112,7 +110,7 @@ export function parseCommentList(data: any): Array<DataType.Comment> {
         date: $(d).find(".comment_date").text(),
         body: $(d).find(`#comment_body_${anchor}`).html(),
         digg: Regular.replaceSpaceAround($(d).find(".comment_digg").text()),
-        burry: Regular.replaceSpaceAround($(d).find(".comment_burry").text()),
+        bury: Regular.replaceSpaceAround($(d).find(".comment_burry").text()),
         avatar: Regular.replaceSpaceAround($(d).find(`#comment_${anchor}_avatar`).text())
       };
     });
@@ -136,11 +134,10 @@ export function parseCommentPages(data: any): number {
  * 解析随笔详细页面中的标签和分类
  *
  * @param data 同样的也需要先调用 dom 函数转换成 DOM 树
- * @returns 返回一个包含了标签和分类的对象
  */
 export function parseEssayTagsAndCategories(data: any): any {
   let list = <any>{ tags: [], categories: [] };
-  let _dom = dom(data);
+  let _dom = parseStrToDom(data);
 
   $(_dom)
     .find("#BlogPostCategory > a")
@@ -167,29 +164,28 @@ export function parseEssayTagsAndCategories(data: any): any {
  * 解析上下篇随笔
  *
  * @param data 同样的也需要先调用 dom 函数转换成 DOM 树
- * @returns 返回一个包含了标签和分类的对象
  */
-export function parsePrevNext(data: any): any {
-  let _dom = dom(data);
+export function parsePrevNext(data: any): DataType.PrevNext {
+  let _dom = parseStrToDom(data);
 
-  let r = { prev: {}, next: {} };
+  let prevNext = { prev: {}, next: {} };
 
   $(_dom)
     .find("a")
     .each((i, e) => {
       let prefix = $(e).text().trim();
       if (prefix == "«") {
-        r["prev"] = {
+        prevNext["prev"] = {
           text: $(e).next("a").text(),
           href: $(e).next("a").attr("href")
         };
       } else if (prefix == "»") {
-        r["next"] = {
+        prevNext["next"] = {
           text: $(e).next("a").text(),
           href: $(e).next("a").attr("href")
         };
       }
     });
 
-  return r;
+  return prevNext;
 }

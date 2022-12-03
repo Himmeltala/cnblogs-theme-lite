@@ -7,12 +7,12 @@ function openWindow(n: any, t: any, i: any, r: any) {
   e!.focus();
 }
 
-export function openImageUploadWindow(callback: any) {
+export function openImageUploadWindow(afterUpload: any) {
   try {
     let imgLink = $("#comment-img-link");
     imgLink.focus(() => {
       let url: any = imgLink.val();
-      callback ? callback(url.replace("[img]", "![](").replace("[/img]", ")")) : "";
+      afterUpload ? afterUpload(url.replace("[img]", "![](").replace("[/img]", ")")) : "";
       imgLink.val("");
     });
     let n =

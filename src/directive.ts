@@ -2,10 +2,10 @@ import hljs from "highlight.js";
 import $ from "jquery";
 
 export default class Directive {
-  private app;
+  private Vue;
 
-  constructor(app: any) {
-    this.app = app;
+  constructor(Vue: any) {
+    this.Vue = Vue;
   }
 
   mathJax(MathJax: any) {
@@ -18,7 +18,7 @@ export default class Directive {
   }
 
   parseCode() {
-    this.app.directive("parse-code", (el: any, bindig: any) => {
+    this.Vue.directive("parse-code", (el: any, bindig: any) => {
       let blocks = $(el).find("pre code");
 
       $(blocks).each((i, elem) => {
