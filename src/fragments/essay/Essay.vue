@@ -5,109 +5,34 @@ import { ArrowLeft, CaretBottom, CaretTop } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import * as API from "../../utils/api";
 import * as DataType from "../../types/data-type";
-import * as Native from "../../utils/native";
 
 const route = useRoute();
 const router = useRouter();
 const postId: any = route.params.id;
 
 let essay = ref<DataType.Essay>();
-let comments = ref<Array<DataType.Comment>>();
-let prevNext = ref<DataType.PrevNext>();
+let prevNext = ref({ prev: {}, next: {} });
 let essayVote = ref<DataType.CnBlogEssayVote>();
 let tagsCategories = ref<any>({ categories: {}, tags: {} });
 
-let commentCount = ref(1);
-let currCommentPage = ref(1);
 let holeSkeleton = ref(true);
-
-comments.value = [
-  {
-    layer: "#1楼",
-    date: "2022-11-29 14:47",
-    author: "Enziandom",
-    body: "这只是一个测试评论......",
-    digg: " 支持(0) ",
-    bury: " 反对(0) ",
-    avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
-  },
-  {
-    layer: "#2楼",
-    date: "2022-11-29 15:21",
-    author: "Enziandom",
-    body: "这只是一个测试评论......",
-    digg: " 支持(0) ",
-    bury: " 反对(0) ",
-    avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
-  }
-];
 
 /**
  * 该页面初始化时第一时间要做的事情
  */
-API.getEssay(postId, (str: DataType.Essay) => {
+API.getEssay(postId, (str) => {
   essay.value = str;
-  API.getCommentCount(postId, count => {
-    commentCount.value = count;
-    currCommentPage.value = count;
-    API.getCommentList(postId, count, (str: Array<DataType.Essay>) => {
-      comments.value = str;
-      API.getEssayTagsAndCategories(666252, postId, str => {
-        tagsCategories.value = str;
-        holeSkeleton.value = false;
-        API.getPrevNext(postId, str => {
-          prevNext.value = str;
-          API.getEssayVote([postId], res => {
-            essayVote.value = res[0];
-          });
-        });
+  API.getEssayTagsAndCategories(666252, postId, str => {
+    tagsCategories.value = str;
+    holeSkeleton.value = false;
+    API.getPrevNext(postId, str => {
+      prevNext.value = str;
+      API.getEssayVote([postId], res => {
+        essayVote.value = res[0];
       });
     });
   });
 });
-
-let comment = ref<DataType.Comment>({ postId, parentCommentId: 0, body: "" });
-let commentBtnLoading = ref(false);
-
-/**
- * 添加一条评论
- */
-function setComm() {
-  if (comment.value.body) {
-    commentBtnLoading.value = true;
-    API.setComment(comment.value, ({ data }) => {
-      if (data.isSuccess) {
-        comment.value.body = "";
-        API.getCommentCount(postId, count => {
-          commentCount.value = count;
-          currCommentPage.value = count;
-          API.getCommentList(postId, currCommentPage.value, (str: Array<DataType.Essay>) => {
-            comments.value = str;
-            commentBtnLoading.value = false;
-            ElMessage({
-              message: "你的评论已经飞走了！😀",
-              grouping: true,
-              type: "success"
-            });
-          });
-        });
-      } else {
-        ElMessage({
-          message: "你的评论在原地踏步！😟",
-          grouping: true,
-          type: "error"
-        });
-        commentBtnLoading.value = false;
-      }
-    });
-  } else {
-    ElMessage({
-      message: "评论不能为空，或字数不够",
-      grouping: true,
-      type: "error"
-    });
-  }
-}
 
 let fontSize = ref(17);
 
@@ -125,118 +50,6 @@ function nav(path: string, out?: boolean) {
   if (out) {
     window.open(path, "__blank");
   } else router.push(path);
-}
-
-function uploadImage() {
-  Native.openImageUploadWindow((imgUrl: any) => {
-    comment.value.body += `\n\n${imgUrl}\n\n`;
-  });
-}
-
-let commentSkeleton = ref(false);
-
-function paginationChange() {
-  commentSkeleton.value = true;
-  API.getCommentList(postId, currCommentPage.value, (str: Array<DataType.Essay>) => {
-    comments.value = str;
-    commentSkeleton.value = false;
-  });
-}
-
-/**
- * 删除评论
- *
- * @param comm 评论实体
- * @param index 评论在数组中的 index
- */
-function deleteComm(comm: DataType.Comment, index: number) {
-  API.deleteComment(
-    {
-      commentId: comm.commentId,
-      pageIndex: currCommentPage.value - 1,
-      parentId: parseInt(postId)
-    },
-    ({ data }) => {
-      if (data) {
-        comments.value?.splice(index, 1);
-        ElMessage({
-          message: "评论删除成功！",
-          grouping: true,
-          type: "success"
-        });
-      } else {
-        ElMessage({
-          message: "这可能不是你的评论哦~",
-          grouping: true,
-          type: "error"
-        });
-      }
-    }
-  );
-}
-
-/**
- * 修改评论
- */
-function updateComm(comment: DataType.Comment, index: number) {
-  comment.contenteditable = !comment.contenteditable;
-
-  if (comment.contenteditable) {
-    API.getComment({ commentId: comment.commentId }, ({ data }) => {
-      comment.body = data;
-    });
-  }
-
-  if (!comment.contenteditable) {
-    API.updateComment(
-      {
-        body: comment.body,
-        commentId: comment.commentId
-      },
-      ({ data }) => {
-        if (data.isSuccess) {
-          ElMessage({
-            message: "评论修改成功！",
-            type: "success"
-          });
-        } else {
-          ElMessage({
-            message: "这可能不是你的评论哦~",
-            grouping: true,
-            type: "error"
-          });
-        }
-      }
-    );
-  }
-}
-
-/**
- * 点赞或反对评论
- *
- * @param comment 评论实体
- * @param voteType 类型，点赞？反对？
- */
-function voteComm(comment: DataType.Comment, voteType: DataType.VoteType) {
-  API.voteComment(
-    {
-      isAbandoned: false,
-      commentId: comment.commentId,
-      postId,
-      voteType: voteType
-    },
-    ajax => {
-      if (ajax.isSuccess) {
-        if (voteType == "Bury") comment.bury = comment.bury! + 1;
-        else comment.digg = comment.digg! + 1;
-      }
-      ElMessage({
-        message: ajax.message,
-        grouping: true,
-        type: ajax.isSuccess ? "success" : "error"
-      });
-    }
-  );
 }
 
 /**
@@ -380,95 +193,7 @@ function voteEssay(voteType: DataType.VoteType) {
             >
           </div>
         </div>
-        <h3>发表评论</h3>
-        <div class="comment-form">
-          <div class="tools">
-            <el-tooltip effect="dark" content="插入图片" placement="top-start">
-              <el-icon class="upload-img" @click="uploadImage">
-                <Picture />
-              </el-icon>
-            </el-tooltip>
-          </div>
-          <div class="comment-textarea-box">
-            <textarea
-              id="comment-textarea"
-              v-model="comment.body"
-              placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
-          </div>
-          <div class="comment-img-link-box">
-            <textarea id="comment-img-link" />
-          </div>
-          <el-button type="primary" :loading="commentBtnLoading" class="actions" @click="setComm">发送评论</el-button>
-        </div>
-        <div class="essay-comments">
-          <h3>评论列表</h3>
-          <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="commentSkeleton" />
-          <div v-if="comments?.length && !commentSkeleton">
-            <div class="item" v-for="(item, index) in comments" :key="index">
-              <div class="top">
-                <el-image class="avatar" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
-                <div>
-                  <div class="space" @click="nav('' + item.space, true)">{{ item.author }}</div>
-                  <div class="brief">
-                    <div class="layer">{{ item.layer }}</div>
-                    <div class="date">{{ item.date }}</div>
-                  </div>
-                </div>
-              </div>
-              <div class="bottom">
-                <div class="body" v-show="!item.contenteditable" v-html="item.body" v-parse-code="false"></div>
-                <div class="comment-textarea-box">
-                  <textarea
-                    v-show="item.contenteditable"
-                    v-model="item.body"
-                    placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
-                </div>
-                <div>
-                  <div class="digg actions" @click="voteComm(item, 'Digg')">
-                    <el-icon>
-                      <CaretTop />
-                    </el-icon>
-                    <span>{{ item.digg }}</span>
-                  </div>
-                  <div class="burry actions" @click="voteComm(item, 'Bury')">
-                    <el-icon>
-                      <CaretBottom />
-                    </el-icon>
-                    <span>{{ item.bury }}</span>
-                  </div>
-                  <div class="delete actions" @click="deleteComm(item, index)">
-                    <el-icon>
-                      <Delete />
-                    </el-icon>
-                    <span>删除</span>
-                  </div>
-                  <div class="update actions" @click="updateComm(item, index)">
-                    <div v-if="!item.contenteditable">
-                      <el-icon>
-                        <EditPen />
-                      </el-icon>
-                      <span>编辑</span>
-                    </div>
-                    <div v-else>
-                      <el-icon>
-                        <CircleCheck />
-                      </el-icon>
-                      <span>完成</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="pagination" v-if="!comments?.length">
-              <el-pagination
-                @current-change="paginationChange"
-                layout="prev, pager, next"
-                v-model:current-page="currCommentPage"
-                v-model:page-count="commentCount" />
-            </div>
-          </div>
-          <el-empty v-if="!comments?.length" description="没有评论，来一条友善的评论吧🤨也许是你没有登录所以看不到哦~" />
-        </div>
+        <Comments :post-id="postId" />
       </div>
     </Card>
   </div>
@@ -624,19 +349,6 @@ code {
   }
 }
 
-.essay-comments {
-  .bottom {
-    img {
-      border-radius: 6px;
-      max-width: 100%;
-    }
-
-    p {
-      margin: 13px 0 !important;
-    }
-  }
-}
-
 .el-page-header__left {
   margin-right: 0 !important;
 }
@@ -676,7 +388,7 @@ $comm-body-size: 16px;
 
   .prev-next {
     margin: 25px 0;
-    font-size: 15px;
+    font-size: 16px;
 
     @mixin hover {
       transition: 0.3s;
@@ -794,160 +506,5 @@ $comm-body-size: 16px;
     }
   }
 
-  @mixin textarea-style($box: yes, $height: 300px) {
-    transition: 0.3s;
-    border-radius: 8px;
-    box-sizing: border-box;
-
-    @if $box == yes {
-      border: 1px solid var(--el-border-color-lighter);
-    }
-
-    &:hover {
-      transition: 0.3s;
-      border: 1px solid var(--el-color-primary);
-    }
-
-    textarea {
-      border: none;
-      background-color: #202020;
-      width: 100%;
-      outline: none;
-      border-radius: 8px;
-      box-sizing: border-box;
-      font-family: font1;
-      font-weight: 300;
-      color: #a7a7a7;
-      padding: 10px;
-      height: $height;
-      line-height: 1.3;
-      font-size: 15px;
-      resize: none;
-    }
-  }
-
-  .comment-form {
-    position: relative;
-
-    .comment-img-link-box {
-      opacity: 0;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
-    .comment-textarea-box {
-      @include textarea-style($box: yes);
-    }
-
-    .tools {
-      margin-bottom: 10px;
-
-      @include flex($justify: flex-end);
-
-      .upload-img {
-        cursor: pointer;
-      }
-    }
-
-    .actions {
-      margin-top: 15px;
-    }
-  }
-
-  .essay-comments {
-    margin-top: 35px;
-
-    .item {
-      margin-bottom: 15px;
-    }
-
-    .item:last-child {
-      margin-bottom: 0px;
-    }
-
-    .top {
-      font-size: 14px;
-      @include flex($justify: flex-start);
-
-      .avatar {
-        margin-right: 10px;
-        border-radius: 6px;
-      }
-
-      .space {
-        cursor: pointer;
-        transition: 0.3s;
-
-        &:hover {
-          transition: 0.3s;
-          color: var(--el-color-primary);
-        }
-      }
-
-      .brief {
-        color: var(--el-text-color-placeholder);
-        @include flex($justify: flex-start);
-        font-size: $comm-brief-size;
-        margin-top: 2px;
-
-        .layer {
-          @include flex($justify: flex-start);
-          margin-right: 10px;
-        }
-      }
-    }
-
-    .bottom {
-      margin-left: 55px;
-
-      .body {
-        font-size: $comm-body-size;
-        word-break: break-all;
-        margin: 4px 0 8px 0;
-      }
-
-      .comment-textarea-box {
-        @include textarea-style($box: no, $height: 150px);
-      }
-
-      & > div + div + div {
-        cursor: pointer;
-        font-size: $comm-brief-size;
-        @include flex($justify: flex-end);
-
-        @mixin actions-hover() {
-          transition: 0.3s;
-
-          &:hover {
-            transition: 0.3s;
-            color: var(--el-color-primary);
-          }
-        }
-
-        .actions {
-          margin-right: 15px;
-
-          &:last-child {
-            margin-right: 0 !important;
-          }
-        }
-
-        .delete,
-        .update,
-        .update > div,
-        .digg,
-        .burry {
-          @include flex();
-          @include actions-hover();
-        }
-      }
-    }
-
-    .pagination {
-      margin-top: 30px;
-      @include flex($justify: flex-end);
-    }
-  }
 }
 </style>

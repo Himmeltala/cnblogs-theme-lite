@@ -111,7 +111,7 @@ export function updateComment(comment: DataType.CnBlogComment, response: (res: a
  * @param postId 随笔 ID
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
-export function getCommentCount(postId: number, response: (res: any) => void) {
+export function getCommentCount(postId: number | string, response: (res: any) => void) {
   axios.get(`${BASE_URL}/ajax/GetCommentCount.aspx?postId=${postId}`).then(({ data }) => {
     response(Parser.parseCommentPages(data));
   });
@@ -136,7 +136,7 @@ export function voteComment(data: DataType.CnBlogComment, response: (ajax: HttpT
  * @param pageIndex 1 页最多有 50 条评论
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
-export function getCommentList(postId: number, pageIndex: number, response: (res: Array<DataType.Comment>) => void) {
+export function getCommentList(postId: number | string, pageIndex: number, response: (res: Array<DataType.Comment>) => void) {
   axios.get(`${BASE_URL}/ajax/GetComments.aspx?postId=${postId}&pageIndex=${pageIndex}`).then(({ data }) => {
     response(Parser.parseCommentList(data));
   });
