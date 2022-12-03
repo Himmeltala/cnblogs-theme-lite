@@ -22,6 +22,7 @@ export interface Essay {
 export interface Comment {
   // 评论是否可以被编辑，默认是 false
   contenteditable?: boolean;
+  replayContenteditable?: boolean;
   // 评论 ID
   commentId?: number;
   // 个人主页地址
@@ -67,6 +68,7 @@ export interface CnBlogComment extends CnBlogRestriction {
   body?: string;
   parentId?: number;
   pageIndex?: number;
+  parentCommentId?: number;
 }
 
 export interface CnBlogEssay extends CnBlogRestriction {

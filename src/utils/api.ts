@@ -130,6 +130,18 @@ export function voteComment(data: DataType.CnBlogComment, response: (ajax: HttpT
 }
 
 /**
+ * 回复一条评论
+ *
+ * @param data 博客园原有的评论实体，需要 body、parentCommentId、postId。parentCommentId 就是回复的那一条的 ID。
+ * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。这里需要获取 AjaxType。利用其中的 isSuccess 查看是否回复成功。
+ */
+export function replayComment(data: DataType.CnBlogComment, response: (ajax: HttpType.AjaxType) => void) {
+  sendPost(`${BASE_URL}/ajax/PostComment/Add.aspx`, data, ({ data }) => {
+    response(data);
+  });
+}
+
+/**
  * 获取随笔的评论列表
  *
  * @param postId 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId

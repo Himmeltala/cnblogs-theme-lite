@@ -37,17 +37,23 @@ let skeleton = ref(false);
 
 comments.value = [
   {
+    commentId: 1,
     layer: "#1楼",
     date: "2022-11-29 14:47",
     author: "Enziandom",
     body: "这只是一个测试评论......",
+    contenteditable: false,
+    replayContenteditable: false,
     digg: " 支持(0) ",
     bury: " 反对(0) ",
     avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
   },
   {
+    commentId: 2,
     layer: "#2楼",
     date: "2022-11-29 15:21",
+    contenteditable: false,
+    replayContenteditable: false,
     author: "Enziandom",
     body: "这只是一个测试评论......",
     digg: " 支持(0) ",
@@ -157,6 +163,8 @@ function deleteComment(comment: DataType.Comment, index: number) {
 function updateComment(comment: DataType.Comment) {
   comment.contenteditable = !comment.contenteditable;
 
+  if (comment.replayContenteditable) comment.replayContenteditable = false;
+
   if (comment.contenteditable) {
     Api.getComment({ commentId: comment.commentId }, ({ data }) => {
       comment.body = data;
@@ -193,7 +201,7 @@ function updateComment(comment: DataType.Comment) {
  * @param comment 评论实体
  * @param voteType 类型，点赞？反对？
  */
-function voteComm(comment: DataType.Comment, voteType: DataType.VoteType) {
+function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
   Api.voteComment(
     {
       isAbandoned: false,
@@ -213,6 +221,58 @@ function voteComm(comment: DataType.Comment, voteType: DataType.VoteType) {
       });
     }
   );
+}
+
+
+let replayCommentBody = ref("");
+let lastReplayComment = ref();
+
+/**
+ * 回复一条评论
+ *
+ * @param comment 传递一个自定义的博客评论实体，传送数据时需要对应博客园的实体字段，即 CnBlogComment。
+ */
+function replayComment(comment: DataType.Comment) {
+  console.log(comment);
+  comment.replayContenteditable = !comment.replayContenteditable;
+  if (lastReplayComment.value && lastReplayComment.value.commentId !== comment.commentId) {
+    lastReplayComment.value.replayContenteditable = false;
+    lastReplayComment.value = null;
+  }
+  if (comment.contenteditable) comment.contenteditable = false;
+
+  if (!comment.replayContenteditable) {
+    Api.replayComment({
+      body: replayCommentBody.value,
+      postId: props.postId,
+      parentCommentId: comment.commentId
+    }, ajax => {
+      if (ajax.isSuccess) {
+        Api.getCommentCount(props.postId, count => {
+          commentCount.value = count;
+          currentPage.value = count;
+          Api.getCommentList(props.postId, currentPage.value, (str: Array<DataType.Essay>) => {
+            comments.value = str;
+            ElMessage({
+              message: "回复成功！😀",
+              grouping: true,
+              type: "success"
+            });
+          });
+        });
+      } else {
+        ElMessage({
+          message: "回复失败！",
+          grouping: true,
+          type: "error"
+        });
+      }
+    });
+  } else {
+    replayCommentBody.value = "";
+    replayCommentBody.value += `回复 ${comment.layer} [@${comment.author}](${comment.space})\n\n`;
+  }
+  lastReplayComment.value = comment;
 }
 </script>
 
@@ -259,16 +319,28 @@ function voteComm(comment: DataType.Comment, voteType: DataType.VoteType) {
             <textarea
               v-show="item.contenteditable"
               v-model="item.body"
-              placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法" />
+              placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
+          </div>
+          <div class="replay-area">
+            <textarea
+              v-show="item.replayContenteditable"
+              v-model="replayCommentBody"
+              placeholder="请回复一条友善的评论，支持 Markdown 语法" />
           </div>
           <div>
-            <div class="digg actions" @click="voteComm(item, 'Digg')">
+            <div class="replay actions" @click="replayComment(item)">
+              <el-icon>
+                <CaretTop />
+              </el-icon>
+              <span>回复</span>
+            </div>
+            <div class="digg actions" @click="voteComment(item, 'Digg')">
               <el-icon>
                 <CaretTop />
               </el-icon>
               <span>{{ item.digg }}</span>
             </div>
-            <div class="bury actions" @click="voteComm(item, 'Bury')">
+            <div class="bury actions" @click="voteComment(item, 'Bury')">
               <el-icon>
                 <CaretBottom />
               </el-icon>
@@ -442,7 +514,8 @@ function voteComm(comment: DataType.Comment, voteType: DataType.VoteType) {
       margin: 4px 0 12px 0;
     }
 
-    .edit-area {
+    .edit-area, .replay-area {
+      margin-bottom: 15px;
       @include textarea-style($box: no, $height: 150px);
     }
 
@@ -469,6 +542,7 @@ function voteComm(comment: DataType.Comment, voteType: DataType.VoteType) {
       }
 
       .delete,
+      .replay,
       .update,
       .update > div,
       .digg,
