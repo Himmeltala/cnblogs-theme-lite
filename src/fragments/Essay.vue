@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { ArrowLeft } from "@element-plus/icons-vue";
+import { ArrowLeft, CaretBottom, CaretTop } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import * as API from "../utils/api";
 import * as DataType from "../types/data-type";
@@ -17,6 +17,7 @@ let tagsCategroies = ref<any>({ categories: {}, tags: {} });
 let commCount = ref(1);
 let currCommentPage = ref(1);
 let comments = ref<Array<DataType.Comment>>();
+let prevNext = ref();
 let holeSkeleton = ref(true);
 
 comments.value = [
@@ -52,7 +53,10 @@ API.getEssay(postId, (str: DataType.Essay) => {
       comments.value = str;
       API.getEssayTagsAndCategories(666252, postId, str => {
         tagsCategroies.value = str;
-        holeSkeleton.value = false;
+        API.getPrevNext(postId, str => {
+          prevNext.value = str;
+          holeSkeleton.value = false;
+        });
       });
     });
   });
@@ -239,6 +243,18 @@ function voteComm(comm: DataType.Comment, voteType: DataType.VoteType) {
     }
   );
 }
+
+function voteEssay(voteType: DataType.VoteType) {
+  API.voteEssay({ postId: postId, isAbandoned: false, voteType: voteType }, ajax => {
+    if (ajax.isSuccess) {
+    }
+    ElMessage({
+      message: ajax.message,
+      grouping: true,
+      type: ajax.isSuccess ? "success" : "error"
+    });
+  });
+}
 </script>
 
 <template>
@@ -267,6 +283,10 @@ function voteComm(comm: DataType.Comment, voteType: DataType.VoteType) {
           <div class="zoom-in" @click="zoomIn">
             <el-icon><ZoomIn /></el-icon>
             <span>放大</span>
+          </div>
+          <div class="edit-essay" @click="nav('https://i.cnblogs.com/EditPosts.aspx?postid=' + postId, true)">
+            <el-icon><EditPen /></el-icon>
+            <span>编辑</span>
           </div>
         </div>
         <div class="labels">
@@ -307,6 +327,24 @@ function voteComm(comm: DataType.Comment, voteType: DataType.VoteType) {
           <div class="comm-count">
             <el-icon><ChatLineSquare /></el-icon>
             <span>{{ essay?.commCount }}条评论</span>
+          </div>
+        </div>
+        <div class="prev-next">
+          <div class="prev" v-if="prevNext.prev.href">
+            <el-icon><DArrowLeft /></el-icon>
+            <a :href="prevNext.prev.href">上一篇：{{ prevNext.prev.text }}</a>
+          </div>
+          <div class="next" v-if="prevNext.next.href">
+            <el-icon><DArrowRight /></el-icon>
+            <a :href="prevNext.next.href">下一篇：{{ prevNext.next.text }}</a>
+          </div>
+        </div>
+        <div class="vote-essay">
+          <div class="digg">
+            <el-button :icon="CaretTop" plain @click="voteEssay('Digg')">点赞</el-button>
+          </div>
+          <div class="burry">
+            <el-button :icon="CaretBottom" plain @click="voteEssay('Bury')">反对</el-button>
           </div>
         </div>
         <h3>发表评论</h3>
@@ -592,6 +630,48 @@ $comm-body-size: 16px;
     @include flex($justify: flex-end);
   }
 
+  .prev-next {
+    margin: 25px 0;
+    font-size: 13px;
+
+    @mixin hover {
+      transition: 0.3s;
+
+      &:hover {
+        transition: 0.3s;
+        color: var(--el-color-primary);
+      }
+    }
+
+    a {
+      @include hover();
+      margin-left: 6px;
+    }
+
+    .prev,
+    .next {
+      @include flex($justify: flex-start);
+    }
+
+    .prev {
+      @include hover();
+    }
+
+    .next {
+      @include hover();
+      margin-top: 10px;
+    }
+  }
+
+  .vote-essay {
+    @include flex($justify: flex-end);
+    margin: 35px 0;
+
+    .digg {
+      margin-right: 30px;
+    }
+  }
+
   .info {
     @include flex($justify: flex-start);
   }
@@ -614,18 +694,22 @@ $comm-body-size: 16px;
       @include flex();
     }
 
+    .edit-essay,
     .zoom-in {
       cursor: pointer;
     }
 
     .date,
     .view-count,
+    .edit-essay,
+    .zoom-in,
     .comm-count {
       margin-right: 10px;
     }
 
     .view-count,
     .comm-count,
+    .edit-essay,
     .zoom-in {
       @include flex();
     }
@@ -722,6 +806,8 @@ $comm-body-size: 16px;
   }
 
   .essay-comments {
+    margin-top: 35px;
+
     .item {
       margin-bottom: 15px;
     }

@@ -152,3 +152,28 @@ export function getEssayTagsAndCategories(blogId: number, postId: number, respon
     response(Parser.parseEssayTagsAndCategories(data));
   });
 }
+
+/**
+ * 获取上下篇
+ *
+ * ajax/post/prevnext?postId=16851727
+ */
+export function getPrevNext(postId: number, response: (res: any) => void) {
+  axios.get(`${BASE_URL}/ajax/post/prevnext?postId=${postId}`).then(({ data }) => {
+    response(Parser.parsePrevNext(data));
+  });
+}
+
+/**
+ * 点赞或反对随笔
+ *
+ * /ajax/vote/blogpost
+ *
+ * @param data 随笔实体，需要传递一个包含 isAbandoned、postId、voteType 的官方随笔实体
+ * @param response 获取响应的消息，返回一个 axios 的完整消息
+ */
+export function voteEssay(data: DataType.CnBlogEssay, response: (ajax: HttpType.AjaxType) => void) {
+  sendPost(`${BASE_URL}/ajax/vote/blogpost`, data, ({ data }) => {
+    response(data);
+  });
+}

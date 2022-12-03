@@ -9,8 +9,6 @@ export default class Directive {
   }
 
   mathJax(MathJax: any) {
-    console.log(MathJax);
-
     if (!MathJax) this.mathJax(MathJax);
     MathJax.startup.promise
       .then(() => {

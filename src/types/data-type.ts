@@ -28,12 +28,17 @@ export interface Comment {
 
 export type VoteType = "Bury" | "Digg";
 
-export interface CnBlogComment {
-  commentId?: number;
-  body?: string;
+interface CnBlogRestriction {
   isAbandoned?: boolean;
   postId?: number;
   voteType?: VoteType;
+}
+
+export interface CnBlogComment extends CnBlogRestriction {
+  commentId?: number;
+  body?: string;
   parentId?: number;
   pageIndex?: number;
 }
+
+export interface CnBlogEssay extends CnBlogRestriction {}

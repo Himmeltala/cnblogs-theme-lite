@@ -162,3 +162,34 @@ export function parseEssayTagsAndCategories(data: any): any {
 
   return list;
 }
+
+/**
+ * 解析上下篇随笔
+ *
+ * @param data 同样的也需要先调用 dom 函数转换成 DOM 树
+ * @returns 返回一个包含了标签和分类的对象
+ */
+export function parsePrevNext(data: any): any {
+  let _dom = dom(data);
+
+  let r = { prev: {}, next: {} };
+
+  $(_dom)
+    .find("a")
+    .each((i, e) => {
+      let prefix = $(e).text().trim();
+      if (prefix == "«") {
+        r["prev"] = {
+          text: $(e).next("a").text(),
+          href: $(e).next("a").attr("href")
+        };
+      } else if (prefix == "»") {
+        r["next"] = {
+          text: $(e).next("a").text(),
+          href: $(e).next("a").attr("href")
+        };
+      }
+    });
+
+  return r;
+}
