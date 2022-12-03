@@ -161,7 +161,7 @@ export function getEssayTagsAndCategories(blogId: number, postId: number, respon
  * @param postId 随笔 ID
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
-export function getPrevNext(postId: number, response: (res: DataType.PrevNext) => void) {
+export function getPrevNext(postId: number | string, response: (res: any) => void) {
   axios.get(`${BASE_URL}/ajax/post/prevnext?postId=${postId}`).then(({ data }) => {
     response(Parser.parsePrevNext(data));
   });

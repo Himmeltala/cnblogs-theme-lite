@@ -8,7 +8,7 @@ import * as Api from "../../utils/api";
 
 const props = defineProps({
   postId: {
-    type: [Number, String],
+    type: Number,
     required: true
   }
 });
@@ -61,7 +61,7 @@ Api.getCommentCount(props.postId, count => {
   currentPage.value = count;
   skeleton.value = true;
   Api.getCommentList(props.postId, count, (str: Array<DataType.Essay>) => {
-    // comments.value = str;
+    comments.value = str;
     skeleton.value = false;
   });
 });

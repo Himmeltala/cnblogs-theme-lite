@@ -165,7 +165,7 @@ export function parseEssayTagsAndCategories(data: any): any {
  *
  * @param data 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parsePrevNext(data: any): DataType.PrevNext {
+export function parsePrevNext(data: any): any {
   let _dom = parseStrToDom(data);
 
   let prevNext = { prev: {}, next: {} };

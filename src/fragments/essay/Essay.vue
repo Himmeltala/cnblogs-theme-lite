@@ -11,7 +11,7 @@ const router = useRouter();
 const postId: any = route.params.id;
 
 let essay = ref<DataType.Essay>();
-let prevNext = ref({ prev: {}, next: {} });
+let prevNext = ref<any>();
 let essayVote = ref<DataType.CnBlogEssayVote>();
 let tagsCategories = ref<any>({ categories: {}, tags: {} });
 
@@ -166,13 +166,13 @@ function voteEssay(voteType: DataType.VoteType) {
           </div>
         </div>
         <div class="prev-next">
-          <div class="prev" v-if="prevNext.prev.href">
+          <div class="prev" v-if="prevNext?.prev?.href">
             <el-icon>
               <DArrowLeft />
             </el-icon>
             <a :href="prevNext.prev.href">上一篇：{{ prevNext.prev.text }}</a>
           </div>
-          <div class="next" v-if="prevNext.next.href">
+          <div class="next" v-if="prevNext?.next?.href">
             <el-icon>
               <DArrowRight />
             </el-icon>
@@ -193,7 +193,7 @@ function voteEssay(voteType: DataType.VoteType) {
             >
           </div>
         </div>
-        <Comments :post-id="postId" />
+        <Comments :post-id="parseInt(postId)" />
       </div>
     </Card>
   </div>
