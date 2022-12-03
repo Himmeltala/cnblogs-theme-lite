@@ -18,6 +18,7 @@ let commCount = ref(1);
 let currCommentPage = ref(1);
 let comments = ref<Array<DataType.Comment>>();
 let prevNext = ref();
+let essayVote = ref<DataType.CnBlogEssayVote>();
 let holeSkeleton = ref(true);
 
 comments.value = [
@@ -53,9 +54,12 @@ API.getEssay(postId, (str: DataType.Essay) => {
       comments.value = str;
       API.getEssayTagsAndCategories(666252, postId, str => {
         tagsCategroies.value = str;
+        holeSkeleton.value = false;
         API.getPrevNext(postId, str => {
           prevNext.value = str;
-          holeSkeleton.value = false;
+          API.getEssayVote([postId], res => {
+            essayVote.value = res[0];
+          });
         });
       });
     });
@@ -247,6 +251,8 @@ function voteComm(comm: DataType.Comment, voteType: DataType.VoteType) {
 function voteEssay(voteType: DataType.VoteType) {
   API.voteEssay({ postId: postId, isAbandoned: false, voteType: voteType }, ajax => {
     if (ajax.isSuccess) {
+      if (voteType == "Bury") essayVote.value!.buryCount = essayVote.value!.buryCount! + 1;
+      else essayVote.value!.diggCount = essayVote.value!.diggCount! + 1;
     }
     ElMessage({
       message: ajax.message,
@@ -341,10 +347,14 @@ function voteEssay(voteType: DataType.VoteType) {
         </div>
         <div class="vote-essay">
           <div class="digg">
-            <el-button :icon="CaretTop" plain @click="voteEssay('Digg')">点赞</el-button>
+            <el-button style="color: #a7a7a7" :icon="CaretTop" plain @click="voteEssay('Digg')"
+              >点赞 {{ essayVote?.diggCount }}</el-button
+            >
           </div>
           <div class="burry">
-            <el-button :icon="CaretBottom" plain @click="voteEssay('Bury')">反对</el-button>
+            <el-button style="color: #a7a7a7" :icon="CaretBottom" plain @click="voteEssay('Bury')"
+              >反对 {{ essayVote?.buryCount }}</el-button
+            >
           </div>
         </div>
         <h3>发表评论</h3>

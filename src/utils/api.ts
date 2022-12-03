@@ -177,3 +177,17 @@ export function voteEssay(data: DataType.CnBlogEssay, response: (ajax: HttpType.
     response(data);
   });
 }
+
+/**
+ * 获取随笔点赞和反对的数据
+ *
+ * /ajax/GetPostStat
+ *
+ * @param param 传递一个数组，数组第一个就是 postId 的值
+ * @param response 获取响应的消息，返回一个 axios 的 data 部分
+ */
+export function getEssayVote(param: any[], response: (res: Array<DataType.CnBlogEssayVote>) => void) {
+  sendPost(`${BASE_URL}/ajax/GetPostStat`, param, ({ data }) => {
+    response(data);
+  });
+}

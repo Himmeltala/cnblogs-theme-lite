@@ -42,3 +42,11 @@ export interface CnBlogComment extends CnBlogRestriction {
 }
 
 export interface CnBlogEssay extends CnBlogRestriction {}
+
+export interface CnBlogEssayVote {
+  buryCount?: number;
+  diggCount?: number;
+  feedbackCount?: number;
+  postId?: number;
+  viewCount?: number;
+}
