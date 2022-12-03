@@ -10,7 +10,7 @@ const config = {
     $("#highlighter-theme-atom-one-dark").remove();
     $("#top_nav").remove();
     $("#home").remove();
-    $("body").prepend(`<div id="app"></div>`);
+    $("body").append(`<div id="app"></div>`);
     $("head > link").remove();
     $("head").prepend(`
       <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css" />

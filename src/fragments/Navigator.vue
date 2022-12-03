@@ -106,9 +106,10 @@ svg {
   }
 
   .author {
+    font-family: font1;
     @include flex();
     font-weight: 400;
-    font-size: 22px;
+    font-size: 30px;
     @include mouse-hover();
   }
 

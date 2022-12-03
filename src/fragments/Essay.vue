@@ -494,7 +494,7 @@ pre {
 
     &,
     span {
-      line-height: 1.2;
+      line-height: 1.4;
       letter-spacing: 1px;
       word-break: break-all;
     }
