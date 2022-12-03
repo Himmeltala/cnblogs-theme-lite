@@ -18,20 +18,29 @@ let category = ref();
 let categoryId: any = route.params.id;
 let page: any = route.params.page;
 
+function sorterStart(categoryId: any, index: any, calcPage: boolean) {
+  if (categoryId) {
+    Api.getCategories(categoryId, calcPage, index, res => {
+      essayList.value = res.list;
+      pages.value = res.pages;
+      category.value = res.category;
+      if (calcPage) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
+      loading.value = false;
+    });
+  } else {
+    Api.getEssayList(index, calcPage, res => {
+      essayList.value = res.list;
+      pages.value = res.pages;
+      if (calcPage) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
+      loading.value = false;
+    });
+  }
+}
+
 if (categoryId) {
-  calcPage.value = true;
-  Api.getCategories(categoryId, calcPage.value, page, res => {
-    essayList.value = res.list;
-    pages.value = res.pages;
-    category.value = res.category;
-    if (calcPage.value) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
-    loading.value = false;
-  });
+  sorterStart(categoryId, page, true);
 } else {
-  Api.getEssayList(0, calcPage.value, res => {
-    essayList.value = res.list;
-    loading.value = false;
-  });
+  sorterStart(false, 0, false);
 }
 
 /**
@@ -51,43 +60,13 @@ function floatSorterChange(direction: "left" | "right") {
   if (direction === "right") currentIndex.value++;
   else if (direction === "left") currentIndex.value--;
   pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
-  if (categoryId) {
-    Api.getCategories(categoryId, calcPage.value, currentIndex.value, res => {
-      essayList.value = res.list;
-      pages.value = res.pages;
-      category.value = res.category;
-      if (calcPage.value) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
-      loading.value = false;
-    });
-  } else {
-    Api.getEssayList(currentIndex.value, calcPage.value, res => {
-      essayList.value = res.list;
-      pages.value = res.pages;
-      if (calcPage.value) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
-      loading.value = false;
-    });
-  }
+  sorterStart(categoryId, currentIndex.value, calcPage.value);
 }
 
 function fixedSorterChange() {
   loading.value = true;
   pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
-  if (categoryId) {
-    Api.getCategories(categoryId, calcPage.value, currentIndex.value, res => {
-      essayList.value = res.list;
-      pages.value = res.pages;
-      category.value = res.category;
-      if (calcPage.value) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
-      loading.value = false;
-    });
-  } else {
-    Api.getEssayList(currentIndex.value, calcPage.value, res => {
-      essayList.value = res.list;
-      pages.value = res.pages;
-      if (calcPage.value) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
-      loading.value = false;
-    });
-  }
+  sorterStart(categoryId, currentIndex.value, calcPage.value);
 }
 </script>
 
