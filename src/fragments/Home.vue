@@ -52,7 +52,7 @@ function floatSorterChange(direction: "left" | "right") {
   else if (direction === "left") currentIndex.value--;
   pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
   if (categoryId) {
-    Api.getCategories(categoryId, calcPage.value, page, res => {
+    Api.getCategories(categoryId, calcPage.value, currentIndex.value, res => {
       essayList.value = res.list;
       pages.value = res.pages;
       category.value = res.category;
@@ -73,7 +73,7 @@ function fixedSorterChange() {
   loading.value = true;
   pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
   if (categoryId) {
-    Api.getCategories(categoryId, calcPage.value, page, res => {
+    Api.getCategories(categoryId, calcPage.value, currentIndex.value, res => {
       essayList.value = res.list;
       pages.value = res.pages;
       category.value = res.category;
