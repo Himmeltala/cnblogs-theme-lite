@@ -34,7 +34,7 @@ API.getEssay(postId, (res) => {
   });
 });
 
-let fontSize = ref(17);
+let fontSize = ref(18);
 
 function zoomIn() {
   fontSize.value >= 19 ? (fontSize.value = 17) : fontSize.value++;

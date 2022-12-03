@@ -126,7 +126,7 @@ function fixedSorterChange() {
           <div class="header">
             <el-image v-if="index % 2 !== 0 && item.cover" class="cover" :src="item.cover" fit="cover" />
             <div class="header__middle" :class="{ 'cover-exist': !item.cover }">
-              <div class="title" @click="nav('/p/' + item.postId)">{{ item.title }}</div>
+              <div class="title" @click="nav('/e/' + item.postId)">{{ item.title }}</div>
               <div class="desc">摘要：{{ item.desc }}</div>
             </div>
             <el-image v-if="index % 2 === 0 && item.cover" class="cover" :src="item.cover" fit="cover" />
@@ -135,7 +135,7 @@ function fixedSorterChange() {
             <el-icon>
               <CaretRight />
             </el-icon>
-            <router-link :to="'/p/' + item.postId">阅读全文</router-link>
+            <router-link :to="'/e/' + item.postId">阅读全文</router-link>
           </div>
           <div class="bottom">
             <div class="prime__packer">

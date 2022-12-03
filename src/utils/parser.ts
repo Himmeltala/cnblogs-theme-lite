@@ -15,16 +15,16 @@ function parseStrToDom(data: any) {
 /**
  * 解析随笔列表页面
  *
- * @param strDom 不知道什么原因，该接口获取到传递下来的 DOM 是能够被 jQuery 解析的，所以不需要调用 parseStrToDom 函数。
+ * @param realDOM 不知道什么原因，该接口获取到传递下来的 DOM 是能够被 jQuery 解析的，所以不需要调用 parseStrToDom 函数。
  * @param calcPage 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
  * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
  */
-export function parseEssayList(strDom: any, calcPage: boolean): { pages: string[]; list: Array<DataType.Essay> } {
-  let dom = $(strDom).find(".forFlow > .day");
+export function parseEssayList(realDOM: any, calcPage: boolean): { pages: string[]; list: Array<DataType.Essay> } {
+  let packer = $(realDOM).find(".forFlow > .day");
 
   let pages: string[] = [];
   if (calcPage) {
-    let pager = $(strDom).find("#homepage_bottom_pager > .pager > a");
+    let pager = $(realDOM).find("#homepage_bottom_pager > .pager > a");
     if ($(pager).length > 1) {
       let index = 0;
       $(pager).each((i, elem) => {
@@ -33,11 +33,11 @@ export function parseEssayList(strDom: any, calcPage: boolean): { pages: string[
     }
   }
 
-  let id = $(dom).find(".postTitle > .postTitle2");
-  let title = $(dom).find(".postTitle");
-  let desc = $(dom).find(".c_b_p_desc");
-  let info = $(dom).find(".postDesc").text();
-  let cover = $(dom).find(".desc_img");
+  let id = $(packer).find(".postTitle > .postTitle2");
+  let title = $(packer).find(".postTitle");
+  let desc = $(packer).find(".c_b_p_desc");
+  let info = $(packer).find(".postDesc").text();
+  let cover = $(packer).find(".desc_img");
   let date = info.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
   let viewCount = info.match(/阅读\([0-9]+\)/g);
   let commCount = info.match(/评论\([0-9]+\)/g);
@@ -72,16 +72,16 @@ export function parseEssayList(strDom: any, calcPage: boolean): { pages: string[
  * 解析随笔详细页面
  *
  * @param postId 随笔 ID
- * @param data 请求响应消息，是一个 HTML，但由于一些问题，不是一个真实的 DOM 树，所以必须要先调用 dom() 函数进行转换
+ * @param realDOM 请求响应消息
  */
-export function parseEssay(postId: number, data: any): DataType.Essay {
+export function parseEssay(postId: number, realDOM: any): DataType.Essay {
   return {
     postId: postId,
-    title: $(data).find(".postTitle > a > span").text(),
-    content: $(data).find("#cnblogs_post_body").html(),
-    date: $(data).find("#post-date").text(),
-    viewCount: $(data).find("#post_view_count").text(),
-    commCount: $(data).find("#post_comment_count").text()
+    title: $(realDOM).find(".postTitle > a > span").text(),
+    content: $(realDOM).find("#cnblogs_post_body").html(),
+    date: $(realDOM).find("#post-date").text(),
+    viewCount: $(realDOM).find("#post_view_count").text(),
+    commCount: $(realDOM).find("#post_comment_count").text()
   };
 }
 
@@ -90,27 +90,27 @@ export function parseEssay(postId: number, data: any): DataType.Essay {
  *
  * \(/)[a-zA-Z\d\u4e00-\u9fa5_-]{1,}(/)\g
  *
- * @param data 同样的也需要先调用 dom 函数转换成 DOM 树
+ * @param strDOM 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parseCommentList(data: any): Array<DataType.Comment> {
+export function parseCommentList(strDOM: any): Array<DataType.Comment> {
   let comments: Array<DataType.Comment> = [];
 
-  $(parseStrToDom(data))
+  $(parseStrToDom(strDOM))
     .find(".feedbackItem")
-    .map((i, d) => {
-      let anchor = $(d).find(".layer").attr("href")!.split("#")[1];
+    .map((i, elem) => {
+      let anchor = $(elem).find(".layer").attr("href")!.split("#")[1];
       comments[i] = {
         updateEditable: false,
         replayEditable: false,
         commentId: parseInt(anchor),
-        space: $(d).find(`#a_comment_author_${anchor}`).attr("href"),
-        author: $(d).find(`#a_comment_author_${anchor}`).text(),
-        layer: $(d).find(".layer").text(),
-        date: $(d).find(".comment_date").text(),
-        body: $(d).find(`#comment_body_${anchor}`).html(),
-        digg: Regular.replaceSpaceAround($(d).find(".comment_digg").text()),
-        bury: Regular.replaceSpaceAround($(d).find(".comment_burry").text()),
-        avatar: Regular.replaceSpaceAround($(d).find(`#comment_${anchor}_avatar`).text())
+        space: $(elem).find(`#a_comment_author_${anchor}`).attr("href"),
+        author: $(elem).find(`#a_comment_author_${anchor}`).text(),
+        layer: $(elem).find(".layer").text(),
+        date: $(elem).find(".comment_date").text(),
+        body: $(elem).find(`#comment_body_${anchor}`).html(),
+        digg: Regular.replaceSpaceAround($(elem).find(".comment_digg").text()),
+        bury: Regular.replaceSpaceAround($(elem).find(".comment_burry").text()),
+        avatar: Regular.replaceSpaceAround($(elem).find(`#comment_${anchor}_avatar`).text())
       };
     });
 
@@ -122,21 +122,21 @@ export function parseCommentList(data: any): Array<DataType.Comment> {
  *
  * 40 / 50 = 0.8 意思还是第一页，100 / 50 = 2，刚好第二页，因此除了之后是一个向上取整的
  *
- * @param data 评论数量计数
+ * @param json 评论数量计数
  * @returns 返回一共有多少个 pageIndex
  */
-export function parseCommentPages(data: any): number {
-  return Math.ceil(parseInt(data) / 50);
+export function parseCommentPages(json: any): number {
+  return Math.ceil(parseInt(json) / 50);
 }
 
 /**
  * 解析随笔详细页面中的标签和分类
  *
- * @param data 同样的也需要先调用 dom 函数转换成 DOM 树
+ * @param strDOM 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parseEssayTagsAndCategories(data: any): any {
+export function parseEssayTagsAndCategories(strDOM: any): any {
   let list = <any>{ tags: [], categories: [] };
-  let _dom = parseStrToDom(data);
+  let _dom = parseStrToDom(strDOM);
 
   $(_dom)
     .find("#BlogPostCategory > a")
@@ -162,10 +162,10 @@ export function parseEssayTagsAndCategories(data: any): any {
 /**
  * 解析上下篇随笔
  *
- * @param data 同样的也需要先调用 dom 函数转换成 DOM 树
+ * @param strDOM 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parsePrevNext(data: any): any {
-  let _dom = parseStrToDom(data);
+export function parsePrevNext(strDOM: any): any {
+  let _dom = parseStrToDom(strDOM);
 
   let prevNext = { prev: {}, next: {} };
 

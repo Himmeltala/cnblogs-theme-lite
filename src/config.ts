@@ -2,8 +2,12 @@ import $ from "jquery";
 
 const config = {
   api: {
-    // base: "/api"
-    base: "https://www.cnblogs.com/Enziandom"
+    base: "/api"
+    // base: "https://www.cnblogs.com/Enziandom"
+  },
+  router: {
+    // space: "/Enziandom"
+    space: ""
   },
   init: () => {
     $("#hljs-script").remove();

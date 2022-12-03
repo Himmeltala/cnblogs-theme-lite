@@ -35,12 +35,39 @@ let commentCount = ref(1);
 let currentIndex = ref(1);
 let skeleton = ref(false);
 
+comments.value = [
+  {
+    commentId: 1,
+    layer: "#1楼",
+    date: "2022-11-29 14:47",
+    author: "Enziandom",
+    body: "这只是一个测试评论......",
+    updateEditable: false,
+    replayEditable: false,
+    digg: " 支持(0) ",
+    bury: " 反对(0) ",
+    avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
+  },
+  {
+    commentId: 2,
+    layer: "#2楼",
+    date: "2022-11-29 15:21",
+    updateEditable: false,
+    replayEditable: false,
+    author: "Enziandom",
+    body: "这只是一个测试评论......",
+    digg: " 支持(0) ",
+    bury: " 反对(0) ",
+    avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
+  }
+];
+
 Api.getCommentCount(props.postId, count => {
   commentCount.value = count;
   currentIndex.value = count;
   skeleton.value = true;
-  Api.getCommentList(props.postId, count, (str: Array<DataType.Essay>) => {
-    comments.value = str;
+  Api.getCommentList(props.postId, count, (res: Array<DataType.Essay>) => {
+    comments.value = res;
     skeleton.value = false;
   });
 });
@@ -53,8 +80,8 @@ function uploadImage() {
 
 function paginationChange() {
   skeleton.value = true;
-  Api.getCommentList(props.postId, currentIndex.value, (str: Array<DataType.Essay>) => {
-    comments.value = str;
+  Api.getCommentList(props.postId, currentIndex.value, (res: Array<DataType.Essay>) => {
+    comments.value = res;
     skeleton.value = false;
   });
 }
@@ -295,10 +322,18 @@ function replayComment(comment: DataType.Comment) {
           </div>
           <div>
             <div class="replay actions" @click="replayComment(item)">
-              <el-icon>
-                <CaretTop />
-              </el-icon>
-              <span>回复</span>
+              <div v-if="!item.replayEditable">
+                <el-icon>
+                  <ChatRound />
+                </el-icon>
+                <span>回复</span>
+              </div>
+              <div v-else>
+                <el-icon>
+                  <Check />
+                </el-icon>
+                <span>完成</span>
+              </div>
             </div>
             <div class="digg actions" @click="voteComment(item, 'Digg')">
               <el-icon>
@@ -507,6 +542,7 @@ function replayComment(comment: DataType.Comment) {
         }
       }
 
+      .replay > div,
       .delete,
       .replay,
       .update,
