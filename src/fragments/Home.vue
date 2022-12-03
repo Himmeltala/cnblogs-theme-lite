@@ -34,7 +34,34 @@ function paginationChange() {
 
 <template>
   <div class="home">
-    <div class="pagination" v-if="currentPage > 1">
+    <div class="personal">
+      <div class="mask"></div>
+      <img loading="lazy" src="https://img2.baidu.com/it/u=3208290999,1116912473&fm=253&fmt=auto&app=120&f=JPEG?w=862&h=500" />
+      <div class="panel">
+        <!-- src="https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/1934022/t_221121082134_QQ%E5%9B%BE%E7%89%8720221121162116.jpg"></el-image> -->
+        <div class="row-1">
+          <el-image
+            style="width: 80px; height: 80px; border-radius: 50px"
+            fit="cover"
+            src="https://img0.baidu.com/it/u=2322283728,1741375128&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1670173200&t=aaf09069779fc719038c5290a6b5bdf0" />
+          <div class="info">
+            <div class="username">
+              <span class="text">Enziandom</span>
+              <span class="tag">
+                <el-tag type="success" effect="plain" round> 摸鱼中... </el-tag>
+              </span>
+            </div>
+            <div class="siganture">个签：Time tick away, dream faded away!</div>
+          </div>
+        </div>
+        <div class="right-top">
+          <div>QQ：1282957580</div>
+          <div>Email：enziandom@qq.com</div>
+          <div>公司：中二病会社</div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination pg-top" v-if="currentPage > 1">
       <el-pagination
         @current-change="paginationChange"
         v-model:current-page="currentPage"
@@ -101,7 +128,7 @@ function paginationChange() {
         v-model:page-count="pageCount"
         :background="true"
         layout="prev, pager, next, jumper" />
-      <el-button v-show="!pageCount" type="primary" bg text @click="changePage(true)">下一页</el-button>
+      <el-button style="margin-right: 5px" v-show="!pageCount" type="primary" bg text @click="changePage(true)">下一页</el-button>
     </div>
   </div>
 </template>
@@ -114,6 +141,79 @@ $title-size: 19px;
 $desc-size: 15px;
 $bottom-size: 14px;
 $margin: 3px;
+
+.personal {
+  // padding: 20px 20px;
+  margin: 0 5px 0 5px;
+  position: relative;
+  width: 100%;
+  height: 150px;
+  border-radius: 6px;
+
+  .mask,
+  .panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+  }
+
+  .mask {
+    backdrop-filter: saturate(50%) blur(1px);
+    background: rgba(36, 36, 36, 0.6);
+  }
+
+  .panel {
+    font-family: font1;
+    color: #bcbcbc;
+    padding: 15px;
+    box-sizing: border-box;
+    font-weight: 400;
+    z-index: 999;
+
+    .row-1 {
+      @include flex($justify: flex-start);
+
+      .info {
+        margin-left: 15px;
+
+        .username {
+          margin-bottom: 4px;
+          font-size: 20px;
+          @include flex($justify: flex-start);
+
+          .text {
+            margin-right: 10px;
+          }
+        }
+
+        .siganture {
+          font-size: 14px;
+        }
+      }
+    }
+
+    .right-top {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 15px;
+
+      div {
+        margin-bottom: 4px;
+      }
+    }
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    object-fit: cover;
+  }
+}
 
 .list {
   padding: 20px 20px;
@@ -203,5 +303,9 @@ $margin: 3px;
 .pagination {
   margin-bottom: 10px;
   @include flex($justify: flex-end);
+}
+
+.pg-top {
+  margin-top: 10px;
 }
 </style>

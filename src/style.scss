@@ -9,6 +9,11 @@ body {
   overflow: hidden;
 }
 
+@font-face {
+  font-family: font1;
+  src: url("/font-1.ttf");
+}
+
 #app {
   width: 100vw;
   height: 100vh;
