@@ -16,43 +16,36 @@ let calcPage = ref(false);
 let category = ref();
 
 let categoryId: any = route.params.id;
-let page: any = route.params.page;
+let categoryPage: any = route.params.page;
 
-function sorterStart(categoryId: any, index: any, calcPage: boolean) {
+function sorterStart(categoryId: any, index: number, calc: boolean) {
   if (categoryId) {
-    Api.getCategories(categoryId, calcPage, index, res => {
+    Api.getCategories(categoryId, calc, index, res => {
+      category.value = res.category;
       essayList.value = res.list;
       pages.value = res.pages;
-      category.value = res.category;
-      if (calcPage) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
+      if (calc) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
       loading.value = false;
     });
   } else {
-    Api.getEssayList(index, calcPage, res => {
+    Api.getEssayList(index, calc, res => {
       essayList.value = res.list;
       pages.value = res.pages;
-      if (calcPage) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
+      if (calc) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
       loading.value = false;
     });
   }
 }
 
 if (categoryId) {
-  sorterStart(categoryId, page, true);
+  sorterStart(categoryId, categoryPage, true);
 } else {
   sorterStart(false, 0, false);
 }
 
-/**
- * 导航
- *
- * @param path 导航地址，可以是 router 地址也可以是外部 url 地址
- * @param out 当是外部 url 地址时，必须设置为 true
- */
 function nav(path: string, out?: boolean) {
-  if (out) {
-    window.open(path, "__blank");
-  } else router.push(path);
+  if (out) window.open(path, "__blank");
+  else router.push(path);
 }
 
 function floatSorterChange(direction: "left" | "right") {

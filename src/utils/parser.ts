@@ -190,6 +190,12 @@ export function parsePrevNext(strDOM: any): any {
   return prevNext;
 }
 
+/**
+ * 解析分类列表页面
+ *
+ * @param realDOM 真实 DOM
+ * @param calcPage 是否计算页数
+ */
 export function parseCategoryList(realDOM: any, calcPage: boolean): { pages: string[]; category?: string; list: Array<DataType.Essay> } {
   let packer = $(realDOM).find(".entrylistItem");
 

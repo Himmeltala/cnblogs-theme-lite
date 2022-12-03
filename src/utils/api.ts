@@ -206,11 +206,12 @@ export function getEssayVote(data: any[], response: (ajax: Array<DataType.CnBlog
 
 
 /**
- * https://www.cnblogs.com/Enziandom/category/2111689.html
- * @param id
- * @param calcPage
- * @param page
- * @param response
+ * 获取分类列表
+ *
+ * @param id 分类列表 id
+ * @param calcPage 是否计算页数？参考 getEssayList 函数对其详细的售卖
+ * @param page 页数
+ * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
 export function getCategories(id: any, calcPage: boolean, page: number, response: (res: { pages: string[]; category?: string; list: Array<DataType.Essay> }) => void) {
   axios.get(`${BASE_URL}/category/${id}.html?page=${page}`).then(({ data }) => {

@@ -28,12 +28,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   if (to.name === RouteType.HOME) {
     let redirection = redirect(window.location.href);
-    console.log(redirection);
     if (redirection?.type && redirection.type === RouteType.ESSAY) {
       window.history.pushState("", "", reinstallUrl(redirection, config));
       next({ name: RouteType.ESSAY, params: { id: redirection.text } });
     } else if (redirection?.type && redirection.type === RouteType.CATEGORY) {
-      console.log('enter category page');
       window.history.pushState("", "", reinstallUrl(redirection, config));
       next({ name: RouteType.CATEGORY, params: { id: redirection.id, page: redirection.page } });
     } else {
