@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import * as Api from "../utils/api";
 import * as DataType from "../types/data-type";
 
 const router = useRouter();
+const route = useRoute();
 
 let loading = ref(true);
 let essayList = ref<Array<DataType.Essay>>();
@@ -12,11 +13,26 @@ let pages = ref();
 let currentIndex = ref(1);
 let pageCount = ref(0);
 let calcPage = ref(false);
+let category = ref();
 
-Api.getEssayList(0, calcPage.value, res => {
-  essayList.value = res.list;
-  loading.value = false;
-});
+let categoryId: any = route.params.id;
+let page: any = route.params.page;
+
+if (categoryId) {
+  calcPage.value = true;
+  Api.getCategories(categoryId, calcPage.value, page, res => {
+    essayList.value = res.list;
+    pages.value = res.pages;
+    category.value = res.category;
+    if (calcPage.value) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
+    loading.value = false;
+  });
+} else {
+  Api.getEssayList(0, calcPage.value, res => {
+    essayList.value = res.list;
+    loading.value = false;
+  });
+}
 
 /**
  * 导航
@@ -35,23 +51,43 @@ function floatSorterChange(direction: "left" | "right") {
   if (direction === "right") currentIndex.value++;
   else if (direction === "left") currentIndex.value--;
   pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
-  Api.getEssayList(currentIndex.value, calcPage.value, res => {
-    essayList.value = res.list;
-    pages.value = res.pages;
-    if (calcPage.value) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
-    loading.value = false;
-  });
+  if (categoryId) {
+    Api.getCategories(categoryId, calcPage.value, page, res => {
+      essayList.value = res.list;
+      pages.value = res.pages;
+      category.value = res.category;
+      if (calcPage.value) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
+      loading.value = false;
+    });
+  } else {
+    Api.getEssayList(currentIndex.value, calcPage.value, res => {
+      essayList.value = res.list;
+      pages.value = res.pages;
+      if (calcPage.value) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
+      loading.value = false;
+    });
+  }
 }
 
 function fixedSorterChange() {
   loading.value = true;
   pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
-  Api.getEssayList(currentIndex.value, calcPage.value, res => {
-    essayList.value = res.list;
-    pages.value = res.pages;
-    if (calcPage.value) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
-    loading.value = false;
-  });
+  if (categoryId) {
+    Api.getCategories(categoryId, calcPage.value, page, res => {
+      essayList.value = res.list;
+      pages.value = res.pages;
+      category.value = res.category;
+      if (calcPage.value) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
+      loading.value = false;
+    });
+  } else {
+    Api.getEssayList(currentIndex.value, calcPage.value, res => {
+      essayList.value = res.list;
+      pages.value = res.pages;
+      if (calcPage.value) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
+      loading.value = false;
+    });
+  }
 }
 </script>
 
@@ -120,6 +156,7 @@ function fixedSorterChange() {
         </el-icon>
       </el-tooltip>
     </div>
+    <div class="category" v-if="category">{{ category }}</div>
     <Card class="essay" v-for="(item, index) in essayList" :key="index" v-if="!loading" :width="'auto'">
       <div class="essay__vessel">
         <div class="packer">
@@ -305,6 +342,11 @@ $margin: 3px;
     border-radius: 6px;
     object-fit: cover;
   }
+}
+
+.category {
+  font-size: 20px;
+  margin: 10px 20px;
 }
 
 .essay {

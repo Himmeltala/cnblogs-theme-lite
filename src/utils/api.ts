@@ -13,6 +13,7 @@ import * as Parser from "./parser";
 import * as DataType from "../types/data-type";
 import * as HttpType from "../types/http-type";
 import config from "../config";
+import { parseCategoryList } from "./parser";
 
 const BASE_URL = config.api.base;
 
@@ -200,5 +201,19 @@ export function voteEssay(data: DataType.CnBlogEssay, response: (ajax: HttpType.
 export function getEssayVote(data: any[], response: (ajax: Array<DataType.CnBlogEssayVote>) => void) {
   sendPost(`${BASE_URL}/ajax/GetPostStat`, data, ({ data }) => {
     response(data);
+  });
+}
+
+
+/**
+ * https://www.cnblogs.com/Enziandom/category/2111689.html
+ * @param id
+ * @param calcPage
+ * @param page
+ * @param response
+ */
+export function getCategories(id: any, calcPage: boolean, page: number, response: (res: { pages: string[]; category?: string; list: Array<DataType.Essay> }) => void) {
+  axios.get(`${BASE_URL}/category/${id}.html?page=${page}`).then(({ data }) => {
+    response(Parser.parseCategoryList(data, calcPage));
   });
 }

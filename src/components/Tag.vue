@@ -15,7 +15,7 @@ defineProps({
 <style scoped lang="scss">
 .tag {
   box-sizing: border-box;
-  padding: 3px 6px;
+  padding: 6px 8px;
   border-radius: 6px;
   font-size: 12px;
   transition: 0.3s;

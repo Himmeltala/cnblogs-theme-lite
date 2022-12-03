@@ -19,7 +19,7 @@ function parseStrToDom(data: any) {
  * @param calcPage 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
  * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
  */
-export function parseEssayList(realDOM: any, calcPage: boolean): { pages: string[]; list: Array<DataType.Essay> } {
+export function parseEssayList(realDOM: any, calcPage: boolean): { pages: string[]; category?: string; list: Array<DataType.Essay> } {
   let packer = $(realDOM).find(".forFlow > .day");
 
   let pages: string[] = [];
@@ -64,7 +64,8 @@ export function parseEssayList(realDOM: any, calcPage: boolean): { pages: string
 
   return {
     pages,
-    list
+    list,
+    category: $(realDOM).find(".entrylistTitle").text()
   };
 }
 
@@ -187,4 +188,54 @@ export function parsePrevNext(strDOM: any): any {
     });
 
   return prevNext;
+}
+
+export function parseCategoryList(realDOM: any, calcPage: boolean): { pages: string[]; category?: string; list: Array<DataType.Essay> } {
+  let packer = $(realDOM).find(".entrylistItem");
+
+  let pages: string[] = [];
+  if (calcPage) {
+    let pager = $($(realDOM).find(".pager")[0]).find("a");
+    if ($(pager).length > 1) {
+      let index = 0;
+      $(pager).each((i, elem) => {
+        if (i != 0 && i != $(pager).length - 1) pages[index++] = $(elem).text();
+      });
+    }
+  }
+
+  let id = $(packer).find(".entrylistItemTitle");
+  let title = $(packer).find(".entrylistItemTitle > span");
+  let desc = $(packer).find(".c_b_p_desc");
+  let cover = $(packer).find(".desc_img");
+  let info = $(packer).find(".entrylistItemPostDesc").text();
+  let date = info.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
+  let viewCount = info.match(/阅读\([0-9]+\)/g);
+  let commCount = info.match(/评论\([0-9]+\)/g);
+  let diggCount = info.match(/推荐\([0-9]+\)/g);
+
+  let list: Array<DataType.Essay> = [];
+
+  $(title).each((i) => {
+    list[i] = {
+      postId: parseInt(
+        $(id[i])
+          .attr("href")!
+          .match(/[0-9]+/g)![0]
+      ),
+      title: $(title[i]).text(),
+      desc: $(desc[i]).text(),
+      date: date![i],
+      viewCount: viewCount![i],
+      commCount: commCount![i],
+      diggCount: diggCount![i],
+      cover: $(cover[i]).attr("src")
+    };
+  });
+
+  return {
+    pages,
+    list,
+    category: $(realDOM).find(".entrylistTitle").text()
+  };
 }

@@ -1,17 +1,22 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { redirect, RouteType } from "./utils/redirector";
+import { redirect, reinstallUrl, RouteType } from "./utils/redirector";
 import config from "./config";
 
 const routes = [
   {
-    name: "Home",
+    name: RouteType.HOME,
     path: "/",
     component: () => import("./fragments/Home.vue")
   },
   {
-    name: "Essay",
+    name: RouteType.ESSAY,
     path: "/e/:id",
     component: () => import("./fragments/essay/Essay.vue")
+  },
+  {
+    name: RouteType.CATEGORY,
+    path: "/c/:id/:page",
+    component: () => import("./fragments/Home.vue")
   }
 ];
 
@@ -21,12 +26,16 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name === "Home") {
+  if (to.name === RouteType.HOME) {
     let redirection = redirect(window.location.href);
+    console.log(redirection);
     if (redirection?.type && redirection.type === RouteType.ESSAY) {
-      let url = `${window.location.protocol}//${window.location.host}${config.router.space}/#/e/${redirection.text}`;
-      window.history.pushState("", "", url);
+      window.history.pushState("", "", reinstallUrl(redirection, config));
       next({ name: RouteType.ESSAY, params: { id: redirection.text } });
+    } else if (redirection?.type && redirection.type === RouteType.CATEGORY) {
+      console.log('enter category page');
+      window.history.pushState("", "", reinstallUrl(redirection, config));
+      next({ name: RouteType.CATEGORY, params: { id: redirection.id, page: redirection.page } });
     } else {
       next();
     }
