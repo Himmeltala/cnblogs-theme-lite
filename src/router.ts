@@ -1,22 +1,21 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { redirect, reinstallUrl, RouteType } from "./utils/redirector";
-import config from "./config";
+import { redirect, reinstallUrl, RouteName } from "./utils/redirector";
 
 const routes = [
   {
-    name: RouteType.HOME,
+    name: RouteName.HOME,
     path: "/",
-    component: () => import("./fragments/Home.vue")
+    component: () => import("./fragments/Common.vue")
   },
   {
-    name: RouteType.ESSAY,
+    name: RouteName.ESSAY,
     path: "/e/:id",
     component: () => import("./fragments/essay/Essay.vue")
   },
   {
-    name: RouteType.CATEGORY,
+    name: RouteName.CATEGORY,
     path: "/c/:id/:page",
-    component: () => import("./fragments/Home.vue")
+    component: () => import("./fragments/Common.vue")
   }
 ];
 
@@ -26,14 +25,14 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name === RouteType.HOME) {
-    let redirection = redirect(window.location.href);
-    if (redirection?.type && redirection.type === RouteType.ESSAY) {
-      window.history.pushState("", "", reinstallUrl(redirection, config));
-      next({ name: RouteType.ESSAY, params: { id: redirection.text } });
-    } else if (redirection?.type && redirection.type === RouteType.CATEGORY) {
-      window.history.pushState("", "", reinstallUrl(redirection, config));
-      next({ name: RouteType.CATEGORY, params: { id: redirection.id, page: redirection.page } });
+  if (to.name === RouteName.HOME) {
+    let url = redirect(window.location.href);
+    if (url?.type && url.type === RouteName.ESSAY) {
+      window.history.pushState("", "", reinstallUrl(url));
+      next({ name: RouteName.ESSAY, params: { id: url.text } });
+    } else if (url?.type && url.type === RouteName.CATEGORY) {
+      window.history.pushState("", "", reinstallUrl(url));
+      next({ name: RouteName.CATEGORY, params: { id: url.id, page: url.page } });
     } else {
       next();
     }

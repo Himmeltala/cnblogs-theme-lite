@@ -134,7 +134,7 @@ function fixedSorterChange() {
         <div class="packer">
           <div class="header">
             <el-image v-if="index % 2 !== 0 && item.cover" class="cover" :src="item.cover" fit="cover" />
-            <div class="header__middle" :class="{ 'cover-exist': !item.cover }">
+            <div class="header__middle" :class="{ 'nocover': !item.cover }">
               <div class="title" @click="nav('/e/' + item.postId)">{{ item.title }}</div>
               <div class="desc">摘要：{{ item.desc }}</div>
             </div>
@@ -339,7 +339,7 @@ $margin: 3px;
     }
 
     .packer {
-      .cover-exist {
+      .nocover {
         width: 100% !important;
       }
 
@@ -384,7 +384,7 @@ $margin: 3px;
 
       .browse {
         @include flex($justify: flex-start);
-        margin-bottom: 15px;
+        margin: 15px 0;
 
         a {
           margin-left: $margin;
