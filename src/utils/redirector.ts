@@ -3,12 +3,14 @@ import config from "../config";
 export enum RouteName {
   ESSAY = "Essay",
   HOME = "Home",
-  CATEGORY = "Category"
+  CATEGORY = "Category",
+  TAG_PAGE = "TagPage"
 }
 
 const Reg = {
   ESSAY: /\/p\/\d+/g,
-  CATEGORY: /\/category\/\d+/g
+  CATEGORY: /\/category\/\d+/g,
+  TAG_PAGE: /\/tag\/([\d\w\s\u4e00-\u9fa5])+/g
 };
 
 export function redirect(href: string): any {
@@ -24,9 +26,15 @@ export function redirect(href: string): any {
       page: page ? page : "1",
       id: String(href.match(Reg.CATEGORY)).split("/")[2].split(",")[0]
     };
+  } else if (Reg.TAG_PAGE.test(href)) {
+    console.log(String(href.match(Reg.TAG_PAGE)).split("/"));
+    return {
+      type: RouteName.TAG_PAGE,
+      tagName: String(href.match(Reg.TAG_PAGE)).split("/")[2]
+    };
   }
 }
 
 export function reinstallUrl(redirection: any): string {
-  return `${window.location.protocol}//${window.location.host}${config.router.space}/#/e/${redirection.text}`;
+  return `${window.location.protocol}//${window.location.host}${config.router.space}/#/${redirection}`;
 }

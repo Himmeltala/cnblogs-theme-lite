@@ -217,3 +217,9 @@ export function getCategories(id: any, calcPage: boolean, page: number, response
     response(Parser.parseCategoryList(data, calcPage));
   });
 }
+
+export function getTagPageList(tagName: string, response: (res: DataType.TagPage) => void) {
+  axios.get(`${BASE_URL}/tag/${tagName}`).then(({ data }) => {
+    response(Parser.parseTagPageList(data));
+  });
+}

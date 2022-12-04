@@ -52,8 +52,8 @@ export function parseEssayList(realDOM: any, calcPage: boolean): { pages: string
           .attr("href")!
           .match(/[0-9]+/g)![0]
       ),
-      title: Regular.replaceSpaceAround($(title[i]).text()),
-      desc: Regular.replaceSpaceAround(Regular.replaceDefaultDesc($(desc[i]).text())),
+      title: $(title[i]).text().trim(),
+      desc: Regular.replaceDefaultDesc($(desc[i]).text()).trim(),
       date: date![i],
       viewCount: viewCount![i],
       commCount: commCount![i],
@@ -109,9 +109,9 @@ export function parseCommentList(strDOM: any): Array<DataType.Comment> {
         layer: $(elem).find(".layer").text(),
         date: $(elem).find(".comment_date").text(),
         body: $(elem).find(`#comment_body_${anchor}`).html(),
-        digg: Regular.replaceSpaceAround($(elem).find(".comment_digg").text()),
-        bury: Regular.replaceSpaceAround($(elem).find(".comment_burry").text()),
-        avatar: Regular.replaceSpaceAround($(elem).find(`#comment_${anchor}_avatar`).text())
+        digg: $(elem).find(".comment_digg").text().trim(),
+        bury: $(elem).find(".comment_burry").text().trim(),
+        avatar: $(elem).find(`#comment_${anchor}_avatar`).text().trim()
       };
     });
 
@@ -243,5 +243,34 @@ export function parseCategoryList(realDOM: any, calcPage: boolean): { pages: str
     pages,
     list,
     category: $(realDOM).find(".entrylistTitle").text()
+  };
+}
+
+export function parseTagPageList(realDom: any): DataType.TagPage {
+  let title = $(realDom).find(".PostList > .postTitl2 > a");
+  let desc = $(realDom).find(".PostList > .postDesc2");
+  let tagTitle = $(realDom).find(".PostListTitle").text().trim();
+
+  let list: any = [];
+
+  $(title).each((i, e) => {
+    list[i] = {
+      id: parseInt(
+        $(e)
+          .attr("href")!
+          .match(/[0-9]+/g)![0]
+      ),
+      title: $(e).text().trim(),
+      href: $(e).attr("href"),
+      date: $(desc[i]).text().match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g)![0],
+      viewCount: $(desc[i]).find(".post-view-count").text().split(":")[1],
+      commCount: $(desc[i]).find(".post-comment-count").text().split(":")[1],
+      diggCount: $(desc[i]).find(".post-digg-count").text().split(":")[1]
+    };
+  });
+
+  return {
+    list,
+    title: tagTitle
   };
 }

@@ -8,12 +8,15 @@ defineProps({
   },
   height: {
     default: "100%"
+  },
+  margin: {
+    default: "0"
   }
 });
 </script>
 
 <template>
-  <div class="card" :style="{ padding: padding, width: width, height: height }">
+  <div class="card" :style="{ padding: padding, width: width, height: height, margin: margin }">
     <slot />
   </div>
 </template>

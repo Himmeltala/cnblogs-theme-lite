@@ -6,3 +6,13 @@
   flex-wrap: $wrap;
   flex-direction: $row;
 }
+
+@mixin ahover() {
+  transition: 0.3s;
+
+  &:hover {
+    transition: 0.3s;
+    color: var(--el-color-primary);
+    @content
+  }
+}

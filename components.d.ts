@@ -23,12 +23,15 @@ declare module '@vue/runtime-core' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     Essay: typeof import('./src/fragments/essay/Essay.vue')['default']
+    EssayBottomData: typeof import('./src/components/EssayBottomData.vue')['default']
     GitHub: typeof import('./src/components/GitHub.vue')['default']
     LeftSide: typeof import('./src/fragments/LeftSide.vue')['default']
+    MyTags: typeof import('./src/fragments/MyTags.vue')['default']
     Navigator: typeof import('./src/fragments/Navigator.vue')['default']
     RightSide: typeof import('./src/fragments/RightSide.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Tag: typeof import('./src/components/Tag.vue')['default']
+    TagPage: typeof import('./src/fragments/TagPage.vue')['default']
   }
 }

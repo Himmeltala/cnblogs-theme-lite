@@ -86,7 +86,7 @@ export interface CnBlogEssayVote {
   viewCount?: number;
 }
 
-export interface PrevNext {
-  prev?: { text?: string; href?: string; };
-  next?: { text?: string; href?: string; };
+export interface TagPage {
+  title: string;
+  list: Array<{ id: string; title: string; href: string; date: string; viewCount: string; commCount: string; diggCount: string }>;
 }

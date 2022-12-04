@@ -102,14 +102,15 @@ function fixedSorterChange() {
     </div>
     <el-skeleton style="margin-top: 10px" :loading="loading" animated>
       <template #template>
-        <Card v-for="item in 10" :key="item">
+        <Card v-for="item in 10" :key="item" width="auto" padding="15px 25px"
+              margin="12px 10px 12px 10px">
           <el-skeleton-item variant="p" style="width: 60%" />
           <div style="display: flex; align-items: center">
             <el-skeleton-item variant="text" style="margin-right: 16px; margin-top: 8px" />
             <el-skeleton-item variant="text" style="margin-right: 16px; margin-top: 8px" />
             <el-skeleton-item variant="text" style="width: 30%; margin-top: 8px" />
           </div>
-          <el-skeleton-item variant="text" style="width: 100%; margin-top: 8px" />
+          <el-skeleton-item v-for="i in 6" :key="i" variant="text" style="width: 100%; margin-top: 8px" />
           <el-skeleton-item variant="text" style="width: 100%" />
           <div style="display: flex; align-items: center; justify-content: flex-end; width: 100%">
             <el-skeleton-item variant="text" style="width: 30%; margin-top: 4px" />
@@ -129,7 +130,8 @@ function fixedSorterChange() {
       </el-tooltip>
     </div>
     <div class="category" v-if="category">{{ category }}</div>
-    <Card class="essay" v-for="(item, index) in essayList" :key="index" v-if="!loading" :width="'auto'">
+    <Card class="essay" v-for="(item, index) in essayList" :key="index" v-if="!loading" width="auto" padding="15px 25px"
+          margin="12px 10px 12px 10px">
       <div class="essay__vessel">
         <div class="packer">
           <div class="header">
@@ -147,32 +149,11 @@ function fixedSorterChange() {
             <router-link :to="'/e/' + item.postId">阅读全文</router-link>
           </div>
           <div class="bottom">
-            <div class="prime__packer">
-              <div class="date">
-                <el-icon>
-                  <Clock />
-                </el-icon>
-                <span>{{ item.date }}</span>
-              </div>
-              <div class="view">
-                <el-icon>
-                  <View />
-                </el-icon>
-                <span>{{ item.viewCount }}</span>
-              </div>
-              <div class="comm">
-                <el-icon>
-                  <ChatLineSquare />
-                </el-icon>
-                <span>{{ item.commCount }}</span>
-              </div>
-              <div class="digg">
-                <el-icon>
-                  <Star />
-                </el-icon>
-                <span> {{ item.diggCount }}</span>
-              </div>
-            </div>
+            <EssayBottomData
+              :data="{date: item.date,
+               viewCount: item.viewCount,
+                commCount: item.commCount,
+                 diggCount: item.diggCount}" />
           </div>
         </div>
       </div>
@@ -353,8 +334,8 @@ $margin: 3px;
             cursor: pointer;
             font-size: $title-size;
             word-break: break-all;
-            transition: 0.3s;
             letter-spacing: 1px;
+            transition: 0.3s;
 
             &:hover {
               color: var(--el-color-primary);
@@ -401,25 +382,6 @@ $margin: 3px;
       .bottom {
         font-size: $bottom-size;
         @include flex($justify: flex-end);
-
-        .prime__packer {
-          color: #989898;
-          @include flex($justify: flex-start);
-
-          & > div {
-            @include flex($justify: space-between);
-
-            & > i {
-              margin-right: $margin;
-            }
-          }
-
-          .date,
-          .view,
-          .comm {
-            margin-right: 10px;
-          }
-        }
       }
     }
   }
