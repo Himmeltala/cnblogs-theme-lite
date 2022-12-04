@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onActivated, onDeactivated, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import * as Api from "../utils/api";
 import * as DataType from "../types/data-type";
@@ -31,18 +31,23 @@ function fetchData(categoryId: any, index: number, calc: boolean) {
     Api.getEssayList(index, calc, res => {
       essayList.value = res.list;
       pages.value = res.pages;
-      console.log(res);
       if (calc) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
       loading.value = false;
     });
   }
 }
 
-if (categoryId) {
-  fetchData(categoryId, categoryPage, true);
-} else {
-  fetchData(false, 0, false);
-}
+onActivated(() => {
+  if (categoryId) {
+    fetchData(categoryId, categoryPage, true);
+  } else {
+    fetchData(false, 1, false);
+  }
+})
+
+onDeactivated(() => {
+  console.log('onDeactivated');
+})
 
 function nav(path: string, out?: boolean) {
   if (out) window.open(path, "__blank");
@@ -139,7 +144,7 @@ function fixedSorterChange() {
             <el-image v-if="index % 2 !== 0 && item.cover" class="cover" :src="item.cover" fit="cover" />
             <div class="header__middle" :class="{ 'nocover': !item.cover }">
               <div class="title" @click="nav('/e/' + item.postId)">{{ item.title }}</div>
-              <div class="desc">摘要：{{ item.desc }}</div>
+              <div class="desc">{{ item.desc }}</div>
             </div>
             <el-image v-if="index % 2 === 0 && item.cover" class="cover" :src="item.cover" fit="cover" />
           </div>

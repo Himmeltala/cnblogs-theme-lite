@@ -123,7 +123,7 @@ function voteEssay(voteType: DataType.VoteType) {
               <span>分类：</span>
             </div>
             <div class="item" v-for="(item, index) in tagsCategories.categories" :key="index">
-              <Tag :color="item.color" @click="nav(item.href, true)">
+              <Tag :color="item.color" @click="nav('/c/' + item.href + '/1')">
                 {{ item.text }}
               </Tag>
             </div>
@@ -136,14 +136,14 @@ function voteEssay(voteType: DataType.VoteType) {
               <span>标签：</span>
             </div>
             <div class="item" v-for="(item, index) in tagsCategories.tags" :key="index">
-              <Tag :color="item.color" @click="nav(item.href, true)">
+              <Tag :color="item.color" @click="nav('/t/' + item.text)">
                 {{ item.text }}
               </Tag>
             </div>
           </div>
         </div>
         <div class="essay-content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code="true"
-             v-html="essay?.content"></div>
+             v-html="essay?.content" />
         <el-divider style="margin-bottom: 10px" border-style="dashed" />
         <div class="tail-info">
           <div class="date">

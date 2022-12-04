@@ -21,13 +21,13 @@ Api.getTagPageList(String(route.params.tagName), res => {
     <div class="taglist">
       <Card class="item" v-for="(item, index) in taglist" :key="index" width="48.7%" height="auto" margin="5px">
         <div class="name">
-          <a :href="item.href">{{ item.title }}</a>
+          <router-link :to="{path: '/e', params: {id: item.id}}">{{ item.title }}</router-link>
         </div>
         <div class="browse">
           <el-icon>
             <CaretRight />
           </el-icon>
-          <a :href="item.href">阅读全文</a>
+          <router-link :to="{path: '/e', params: {id: item.id}}">阅读全文</router-link>
         </div>
         <div class="desc">
           <EssayBottomData :data="{

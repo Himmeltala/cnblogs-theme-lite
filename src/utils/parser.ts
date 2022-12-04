@@ -1,5 +1,5 @@
 import $ from "jquery";
-import * as Regular from "./regular";
+import * as TextUtils from "./regular";
 import * as DataType from "../types/data-type";
 
 /**
@@ -20,8 +20,6 @@ function parseStrToDom(data: any) {
  * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
  */
 export function parseEssayList(realDOM: any, calcPage: boolean): { pages: string[]; category?: string; list: Array<DataType.Essay> } {
-  let packer = $(realDOM).find(".forFlow > .day");
-
   let pages: string[] = [];
   if (calcPage) {
     let pager = $(realDOM).find("#homepage_bottom_pager > .pager > a");
@@ -33,32 +31,28 @@ export function parseEssayList(realDOM: any, calcPage: boolean): { pages: string
     }
   }
 
-  let id = $(packer).find(".postTitle > .postTitle2");
-  let title = $(packer).find(".postTitle");
-  let desc = $(packer).find(".c_b_p_desc");
-  let info = $(packer).find(".postDesc").text();
-  let date = info.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
-  let viewCount = info.match(/阅读\([0-9]+\)/g);
-  let commCount = info.match(/评论\([0-9]+\)/g);
-  let diggCount = info.match(/推荐\([0-9]+\)/g);
+  let id = $(realDOM).find(".postTitle2");
+  let title = $(realDOM).find(".postTitle");
+  let describe = $(realDOM).find(".c_b_p_desc");
+  let record = $(realDOM).find(".postDesc").text();
+  let date = record.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
+  let view = record.match(/阅读\([0-9]+\)/g);
+  let comm = record.match(/评论\([0-9]+\)/g);
+  let digg = record.match(/推荐\([0-9]+\)/g);
 
   let list: Array<DataType.Essay> = [];
 
-  $(packer).each((i, e) => {
-    let cover = $(e).find(".c_b_p_desc > .desc_img").attr("src");
+  $(describe).each((i, e) => {
+    let cover = $(e).find(".desc_img").attr("src");
 
     list[i] = {
-      postId: parseInt(
-        $(id[i])
-          .attr("href")!
-          .match(/[0-9]+/g)![0]
-      ),
+      postId: parseInt($(id[i]).attr("href")!.match(/[0-9]+/g)![0]),
       title: $(title[i]).text().trim(),
-      desc: Regular.replaceDefaultDesc($(desc[i]).text()).trim(),
+      desc: TextUtils.regTrim($(describe[i]).text(), [/阅读全文/g]),
       date: date![i],
-      viewCount: viewCount![i],
-      commCount: commCount![i],
-      diggCount: diggCount![i],
+      viewCount: view![i],
+      commCount: comm![i],
+      diggCount: digg![i],
       cover: cover ? cover : ""
     };
   });
@@ -144,7 +138,7 @@ export function parseEssayTagsAndCategories(strDOM: any): any {
     .find("#BlogPostCategory > a")
     .map((i, d) => {
       list.categories[i] = {
-        href: $(d).attr("href"),
+        href: $(d).attr("href")!.match(/\/category\/\d+/g)![0].split("/")[2].split(",")[0],
         text: $(d).text()
       };
     });
@@ -153,7 +147,6 @@ export function parseEssayTagsAndCategories(strDOM: any): any {
     .find("#EntryTag > a")
     .map((i, d) => {
       list.tags[i] = {
-        href: $(d).attr("href"),
         text: $(d).text()
       };
     });
@@ -198,9 +191,9 @@ export function parsePrevNext(strDOM: any): any {
  * @param calcPage 是否计算页数
  */
 export function parseCategoryList(realDOM: any, calcPage: boolean): { pages: string[]; category?: string; list: Array<DataType.Essay> } {
-  let packer = $(realDOM).find(".entrylistItem");
-
+  let dom = $(realDOM).find(".entrylistItem");
   let pages: string[] = [];
+
   if (calcPage) {
     let pager = $($(realDOM).find(".pager")[0]).find("a");
     if ($(pager).length > 1) {
@@ -211,32 +204,28 @@ export function parseCategoryList(realDOM: any, calcPage: boolean): { pages: str
     }
   }
 
-  let id = $(packer).find(".entrylistItemTitle");
-  let title = $(packer).find(".entrylistItemTitle > span");
-  let desc = $(packer).find(".c_b_p_desc");
-  let info = $(packer).find(".entrylistItemPostDesc").text();
-  let date = info.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
-  let viewCount = info.match(/阅读\([0-9]+\)/g);
-  let commCount = info.match(/评论\([0-9]+\)/g);
-  let diggCount = info.match(/推荐\([0-9]+\)/g);
+  let id = $(dom).find(".entrylistItemTitle");
+  let title = $(dom).find(".entrylistItemTitle > span");
+  let describe = $(dom).find(".c_b_p_desc");
+  let record = $(dom).find(".entrylistItemPostDesc").text();
+  let date = record.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
+  let view = record.match(/阅读\([0-9]+\)/g);
+  let comm = record.match(/评论\([0-9]+\)/g);
+  let digg = record.match(/推荐\([0-9]+\)/g);
 
   let list: Array<DataType.Essay> = [];
 
-  $(packer).each((i, e) => {
+  $(dom).each((i, e) => {
     let cover = $(e).find(".c_b_p_desc > .desc_img").attr("src");
 
     list[i] = {
-      postId: parseInt(
-        $(id[i])
-          .attr("href")!
-          .match(/[0-9]+/g)![0]
-      ),
+      postId: parseInt($(id[i]).attr("href")!.match(/[0-9]+/g)![0]),
       title: $(title[i]).text(),
-      desc: $(desc[i]).text(),
+      desc: $(describe[i]).text(),
       date: date![i],
-      viewCount: viewCount![i],
-      commCount: commCount![i],
-      diggCount: diggCount![i],
+      viewCount: view![i],
+      commCount: comm![i],
+      diggCount: digg![i],
       cover: cover ? cover : ""
     };
   });
@@ -250,24 +239,19 @@ export function parseCategoryList(realDOM: any, calcPage: boolean): { pages: str
 
 export function parseTagPageList(realDom: any): DataType.TagPage {
   let title = $(realDom).find(".PostList > .postTitl2 > a");
-  let desc = $(realDom).find(".PostList > .postDesc2");
+  let describe = $(realDom).find(".PostList > .postDesc2");
   let tagTitle = $(realDom).find(".PostListTitle").text().trim();
-
   let list: any = [];
 
   $(title).each((i, e) => {
     list[i] = {
-      id: parseInt(
-        $(e)
-          .attr("href")!
-          .match(/[0-9]+/g)![0]
-      ),
+      id: parseInt($(e).attr("href")!.match(/[0-9]+/g)![0]),
       title: $(e).text().trim(),
       href: $(e).attr("href"),
-      date: $(desc[i]).text().match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g)![0],
-      viewCount: $(desc[i]).find(".post-view-count").text().split(":")[1],
-      commCount: $(desc[i]).find(".post-comment-count").text().split(":")[1],
-      diggCount: $(desc[i]).find(".post-digg-count").text().split(":")[1]
+      date: $(describe[i]).text().match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g)![0],
+      viewCount: $(describe[i]).find(".post-view-count").text().split(":")[1],
+      commCount: $(describe[i]).find(".post-comment-count").text().split(":")[1],
+      diggCount: $(describe[i]).find(".post-digg-count").text().split(":")[1]
     };
   });
 
