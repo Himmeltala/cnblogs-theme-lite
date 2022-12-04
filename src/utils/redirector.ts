@@ -10,7 +10,7 @@ export enum RouteName {
 const Reg = {
   ESSAY: /\/p\/\d+/g,
   CATEGORY: /\/category\/\d+/g,
-  TAG_PAGE: /\/tag\/([\d\w\s\u4e00-\u9fa5])+/g
+  TAG_PAGE: /\/tag\/[\d\w\s\u4e00-\u9fa5\n]+/g
 };
 
 export function redirect(href: string): any {
@@ -27,10 +27,9 @@ export function redirect(href: string): any {
       id: String(href.match(Reg.CATEGORY)).split("/")[2].split(",")[0]
     };
   } else if (Reg.TAG_PAGE.test(href)) {
-    console.log(String(href.match(Reg.TAG_PAGE)).split("/"));
     return {
       type: RouteName.TAG_PAGE,
-      tagName: String(href.match(Reg.TAG_PAGE)).split("/")[2]
+      tagName: decodeURI(href).match(Reg.TAG_PAGE)![0].split("/")[2]
     };
   }
 }

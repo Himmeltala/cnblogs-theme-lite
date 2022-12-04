@@ -40,7 +40,6 @@ router.beforeEach((to, from, next) => {
       next({ name: RouteName.CATEGORY, params: { id: url.id, page: url.page } });
     } else if (url?.type && url.type === RouteName.TAG_PAGE) {
       window.history.pushState("", "", reinstallUrl(`t/${url.tagName}`));
-      console.log(url);
       next({ name: RouteName.TAG_PAGE, params: { tagName: url.tagName } });
     } else {
       next();
