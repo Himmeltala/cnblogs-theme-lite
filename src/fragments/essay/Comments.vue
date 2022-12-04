@@ -16,12 +16,6 @@ const props = defineProps({
 const route = useRoute();
 const router = useRouter();
 
-/**
- * 导航
- *
- * @param path 导航地址，可以是 router 地址也可以是外部 url 地址
- * @param out 当是外部 url 地址时，必须设置为 true
- */
 function nav(path: string, out?: boolean) {
   if (out) {
     window.open(path, "__blank");
@@ -32,45 +26,60 @@ let commentForm = ref<DataType.Comment>({ postId: props.postId, parentCommentId:
 let btnLoading = ref(false);
 let comments = ref<Array<DataType.Comment>>();
 let commentCount = ref(1);
-let currentIndex = ref(1);
-let skeleton = ref(false);
+let currentIndex = ref(0);
+let skeleton = ref(true);
 
-comments.value = [
-  {
-    commentId: 1,
-    layer: "#1楼",
-    date: "2022-11-29 14:47",
-    author: "Enziandom",
-    body: "这只是一个测试评论......",
-    updateEditable: false,
-    replayEditable: false,
-    digg: " 支持(0) ",
-    bury: " 反对(0) ",
-    avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
-  },
-  {
-    commentId: 2,
-    layer: "#2楼",
-    date: "2022-11-29 15:21",
-    updateEditable: false,
-    replayEditable: false,
-    author: "Enziandom",
-    body: "这只是一个测试评论......",
-    digg: " 支持(0) ",
-    bury: " 反对(0) ",
-    avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
+interface Legal {
+  message?: string;
+
+  success?: (res: any) => void;
+}
+
+interface Illegal {
+  message?: string;
+
+  error?: () => void;
+}
+
+function fetchComment(f: boolean, y?: Legal, n?: Illegal, bf?: Function) {
+  if (f) {
+    if (bf) bf();
+    Api.getCommentCount(props.postId, count => {
+      commentCount.value = count;
+      currentIndex.value = count;
+      Api.getCommentList(props.postId, currentIndex.value, (res: Array<DataType.Essay>) => {
+        if (y && y.success) {
+          y.success(res);
+          if (y.message) {
+            ElMessage({
+              message: y.message,
+              grouping: true,
+              type: "success"
+            });
+          }
+        }
+      });
+    });
+  } else {
+    if (n && n.error) {
+      n.error();
+      if (n.message) {
+        ElMessage({
+          message: n.message,
+          grouping: true,
+          type: "error"
+        });
+      }
+    }
   }
-];
+}
 
-Api.getCommentCount(props.postId, count => {
-  commentCount.value = count;
-  currentIndex.value = count;
-  skeleton.value = true;
-  Api.getCommentList(props.postId, count, (res: Array<DataType.Essay>) => {
+fetchComment(true, {
+  message: "", success: (res) => {
     comments.value = res;
     skeleton.value = false;
-  });
-});
+  }
+}, undefined, undefined);
 
 function uploadImage() {
   Native.openImageUploadWindow((imgUrl: any) => {
@@ -90,33 +99,21 @@ function insertComment() {
   if (commentForm.value.body) {
     btnLoading.value = true;
     Api.setComment(commentForm.value, ({ data }) => {
-      if (data.isSuccess) {
-        commentForm.value.body = "";
-        Api.getCommentCount(props.postId, count => {
-          commentCount.value = count;
-          currentIndex.value = count;
-          Api.getCommentList(props.postId, currentIndex.value, (res: Array<DataType.Essay>) => {
+      fetchComment(data.isSuccess, {
+          message: "你的评论传达成功！😀",
+          success(res: any) {
             comments.value = res;
             btnLoading.value = false;
-            ElMessage({
-              message: "你的评论已经飞走了！😀",
-              grouping: true,
-              type: "success"
-            });
-          });
-        });
-      } else {
-        ElMessage({
-          message: "你的评论在原地踏步！😟",
-          grouping: true,
-          type: "error"
-        });
-        btnLoading.value = false;
-      }
+          }
+        }, {
+          message: "你的评论似乎没有发出去！😑",
+          error: () => btnLoading.value = false
+        }, () => commentForm.value.body = ""
+      );
     });
   } else {
     ElMessage({
-      message: "评论不能为空，或字数不够",
+      message: "评论不能为空，或字数不够⚠️",
       grouping: true,
       type: "error"
     });
@@ -146,7 +143,7 @@ function deleteComment(comment: DataType.Comment, index: number) {
         });
       } else {
         ElMessage({
-          message: "这可能不是你的评论哦~",
+          message: "这可能不是你的评论哦！",
           grouping: true,
           type: "error"
         });
@@ -162,7 +159,6 @@ function deleteComment(comment: DataType.Comment, index: number) {
  */
 function updateComment(comment: DataType.Comment) {
   comment.updateEditable = !comment.updateEditable;
-
   if (comment.replayEditable) comment.replayEditable = false;
   if (comment.updateEditable) Api.getComment({ commentId: comment.commentId }, ({ data }) => comment.body = data);
 
@@ -218,7 +214,6 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
   );
 }
 
-
 let replayCommentBody = ref("");
 let lastReplayComment = ref();
 
@@ -229,10 +224,7 @@ let lastReplayComment = ref();
  */
 function replayComment(comment: DataType.Comment) {
   comment.replayEditable = !comment.replayEditable;
-  if (lastReplayComment.value && lastReplayComment.value.commentId !== comment.commentId) {
-    lastReplayComment.value.replayContenteditable = false;
-    lastReplayComment.value = null;
-  }
+  if (lastReplayComment.value && lastReplayComment.value.commentId !== comment.commentId) lastReplayComment.value.replayEditable = false;
   if (comment.updateEditable) comment.updateEditable = false;
 
   if (!comment.replayEditable) {
@@ -240,27 +232,13 @@ function replayComment(comment: DataType.Comment) {
       body: replayCommentBody.value,
       postId: props.postId,
       parentCommentId: comment.commentId
-    }, ajax => {
-      if (ajax.isSuccess) {
-        Api.getCommentCount(props.postId, count => {
-          commentCount.value = count;
-          currentIndex.value = count;
-          Api.getCommentList(props.postId, currentIndex.value, (res: Array<DataType.Essay>) => {
-            comments.value = res;
-            ElMessage({
-              message: "回复成功！😀",
-              grouping: true,
-              type: "success"
-            });
-          });
-        });
-      } else {
-        ElMessage({
-          message: "回复失败！",
-          grouping: true,
-          type: "error"
-        });
-      }
+    }, (ajax: any) => {
+      fetchComment(ajax.isSuccess, {
+        message: "回复成功！😀",
+        success: res => comments.value = res
+      }, {
+        message: "回复失败！😑"
+      });
     });
   } else {
     replayCommentBody.value = "";

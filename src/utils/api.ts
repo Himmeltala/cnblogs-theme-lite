@@ -13,7 +13,6 @@ import * as Parser from "./parser";
 import * as DataType from "../types/data-type";
 import * as HttpType from "../types/http-type";
 import config from "../config";
-import { parseCategoryList } from "./parser";
 
 const BASE_URL = config.api.base;
 
