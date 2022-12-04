@@ -18,7 +18,7 @@ let category = ref();
 let categoryId: any = route.params.id;
 let categoryPage: any = route.params.page;
 
-function sorterStart(categoryId: any, index: number, calc: boolean) {
+function fetchData(categoryId: any, index: number, calc: boolean) {
   if (categoryId) {
     Api.getCategories(categoryId, calc, index, res => {
       category.value = res.category;
@@ -31,6 +31,7 @@ function sorterStart(categoryId: any, index: number, calc: boolean) {
     Api.getEssayList(index, calc, res => {
       essayList.value = res.list;
       pages.value = res.pages;
+      console.log(res);
       if (calc) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
       loading.value = false;
     });
@@ -38,9 +39,9 @@ function sorterStart(categoryId: any, index: number, calc: boolean) {
 }
 
 if (categoryId) {
-  sorterStart(categoryId, categoryPage, true);
+  fetchData(categoryId, categoryPage, true);
 } else {
-  sorterStart(false, 0, false);
+  fetchData(false, 0, false);
 }
 
 function nav(path: string, out?: boolean) {
@@ -53,13 +54,13 @@ function floatSorterChange(direction: "left" | "right") {
   if (direction === "right") currentIndex.value++;
   else if (direction === "left") currentIndex.value--;
   pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
-  sorterStart(categoryId, currentIndex.value, calcPage.value);
+  fetchData(categoryId, currentIndex.value, calcPage.value);
 }
 
 function fixedSorterChange() {
   loading.value = true;
   pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
-  sorterStart(categoryId, currentIndex.value, calcPage.value);
+  fetchData(categoryId, currentIndex.value, calcPage.value);
 }
 </script>
 

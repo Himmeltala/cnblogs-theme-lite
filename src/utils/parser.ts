@@ -37,7 +37,6 @@ export function parseEssayList(realDOM: any, calcPage: boolean): { pages: string
   let title = $(packer).find(".postTitle");
   let desc = $(packer).find(".c_b_p_desc");
   let info = $(packer).find(".postDesc").text();
-  let cover = $(packer).find(".desc_img");
   let date = info.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
   let viewCount = info.match(/阅读\([0-9]+\)/g);
   let commCount = info.match(/评论\([0-9]+\)/g);
@@ -45,7 +44,9 @@ export function parseEssayList(realDOM: any, calcPage: boolean): { pages: string
 
   let list: Array<DataType.Essay> = [];
 
-  $(title).each((i) => {
+  $(packer).each((i, e) => {
+    let cover = $(e).find(".c_b_p_desc > .desc_img").attr("src");
+
     list[i] = {
       postId: parseInt(
         $(id[i])
@@ -58,7 +59,7 @@ export function parseEssayList(realDOM: any, calcPage: boolean): { pages: string
       viewCount: viewCount![i],
       commCount: commCount![i],
       diggCount: diggCount![i],
-      cover: $(cover[i]).attr("src")
+      cover: cover ? cover : ""
     };
   });
 
@@ -213,7 +214,6 @@ export function parseCategoryList(realDOM: any, calcPage: boolean): { pages: str
   let id = $(packer).find(".entrylistItemTitle");
   let title = $(packer).find(".entrylistItemTitle > span");
   let desc = $(packer).find(".c_b_p_desc");
-  let cover = $(packer).find(".desc_img");
   let info = $(packer).find(".entrylistItemPostDesc").text();
   let date = info.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
   let viewCount = info.match(/阅读\([0-9]+\)/g);
@@ -222,7 +222,9 @@ export function parseCategoryList(realDOM: any, calcPage: boolean): { pages: str
 
   let list: Array<DataType.Essay> = [];
 
-  $(title).each((i) => {
+  $(packer).each((i, e) => {
+    let cover = $(e).find(".c_b_p_desc > .desc_img").attr("src");
+
     list[i] = {
       postId: parseInt(
         $(id[i])
@@ -235,7 +237,7 @@ export function parseCategoryList(realDOM: any, calcPage: boolean): { pages: str
       viewCount: viewCount![i],
       commCount: commCount![i],
       diggCount: diggCount![i],
-      cover: $(cover[i]).attr("src")
+      cover: cover ? cover : ""
     };
   });
 
