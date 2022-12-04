@@ -202,14 +202,10 @@ $margin: 3px;
     background-color: #3c3c3c;
     z-index: 999;
     cursor: pointer;
-    @include flex();
-    transition: 0.3s;
     opacity: 0.6;
-
-    &:hover {
+    @include flex();
+    @include ahover() {
       opacity: 1;
-      transition: 0.3s;
-      background-color: var(--el-color-primary);
     }
   }
 
@@ -334,14 +330,9 @@ $margin: 3px;
           .title {
             cursor: pointer;
             font-size: $title-size;
-            word-break: break-all;
             letter-spacing: 1px;
-            transition: 0.3s;
 
-            &:hover {
-              color: var(--el-color-primary);
-              transition: 0.3s;
-            }
+            @include ahover();
           }
 
           .desc {
@@ -353,6 +344,7 @@ $margin: 3px;
 
           .title,
           .desc {
+            word-break: break-all;
             line-height: 1.4;
           }
         }
@@ -371,10 +363,8 @@ $margin: 3px;
         a {
           margin-left: $margin;
           border-bottom: 1px dotted #cccccc;
-          transition: 0.3s;
 
-          &:hover {
-            transition: 0.3s;
+          @include ahover() {
             border-bottom: 1px dotted var(--el-color-primary);
           }
         }

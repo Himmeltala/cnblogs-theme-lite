@@ -79,6 +79,7 @@ Api.getTagPageList(String(route.params.tagName), res => {
       }
 
       .desc {
+        word-break: break-all;
         margin-top: 20px;
       }
     }

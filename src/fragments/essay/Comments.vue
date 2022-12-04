@@ -379,7 +379,6 @@ function replayComment(comment: DataType.Comment) {
 @import "../../scss/mixins";
 
 @mixin textarea-style($box: yes, $height: 300px) {
-  transition: 0.3s;
   border-radius: 8px;
   box-sizing: border-box;
 
@@ -387,8 +386,7 @@ function replayComment(comment: DataType.Comment) {
     border: 1px solid var(--el-border-color-lighter);
   }
 
-  &:hover {
-    transition: 0.3s;
+  @include ahover() {
     border: 1px solid var(--el-color-primary);
   }
 
@@ -462,12 +460,8 @@ function replayComment(comment: DataType.Comment) {
     .space {
       font-size: 18px;
       cursor: pointer;
-      transition: 0.3s;
 
-      &:hover {
-        transition: 0.3s;
-        color: var(--el-color-primary);
-      }
+      @include ahover();
     }
 
     .brief {
@@ -503,15 +497,6 @@ function replayComment(comment: DataType.Comment) {
       font-size: 14px;
       @include flex($justify: flex-end);
 
-      @mixin actions-hover() {
-        transition: 0.3s;
-
-        &:hover {
-          transition: 0.3s;
-          color: var(--el-color-primary);
-        }
-      }
-
       .actions {
         margin-right: 15px;
 
@@ -528,7 +513,7 @@ function replayComment(comment: DataType.Comment) {
       .digg,
       .bury {
         @include flex();
-        @include actions-hover();
+        @include ahover();
       }
     }
   }

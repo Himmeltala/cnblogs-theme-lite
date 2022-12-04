@@ -200,6 +200,8 @@ function voteEssay(voteType: DataType.VoteType) {
 </template>
 
 <style lang="scss">
+@import "../../scss/mixins";
+
 h1,
 h2,
 h3 {
@@ -303,10 +305,8 @@ code {
   a {
     padding-bottom: 1px;
     border-bottom: 1px dotted #a7a7a7;
-    transition: 0.3s;
 
-    &:hover {
-      transition: 0.3s;
+    @include ahover() {
       border-bottom: 1px dotted var(--el-color-primary);
     }
   }
@@ -418,19 +418,10 @@ $comm-body-size: 16px;
     margin: 25px 0;
     font-size: 16px;
 
-    @mixin hover {
-      transition: 0.3s;
-
-      &:hover {
-        transition: 0.3s;
-        color: var(--el-color-primary);
-      }
-    }
-
     a {
       color: #878787;
-      @include hover();
       margin-left: 6px;
+      @include ahover();
     }
 
     .prev,
@@ -439,11 +430,11 @@ $comm-body-size: 16px;
     }
 
     .prev {
-      @include hover();
+      @include ahover();
     }
 
     .next {
-      @include hover();
+      @include ahover();
       margin-top: 10px;
     }
   }
