@@ -1,3 +1,12 @@
+/**
+ * 提供解析博客园 HTML 或字符 HTML 的各种基础 API
+ *
+ * @author Enziandom
+ * @since 1.0
+ * @date 2022 年 12 月 1 日
+ * @url https://www.cnblogs.com/enziandom/#/
+ */
+
 import $ from "jquery";
 import * as TextUtils from "./regular";
 import * as DataType from "../types/data-type";
@@ -259,4 +268,60 @@ export function parseTagPageList(realDom: any): DataType.TagPage {
     list,
     text: tagTitle
   };
+}
+
+export function parseSideCategories(strDom: string): any {
+  let dom = parseStrToDom(strDom);
+  let list: any = { categories: [], tags: [] };
+
+  let tagLi = $(dom).find("#sidebar_toptags ul li > a");
+  for (let i = 0; i < 21; i++) {
+    let uri = $(tagLi[i]).attr("href");
+    if (uri) {
+      let tag = decodeURI(uri).match(/\/tag\/[\d\w\s\u4e00-\u9fa5\n]+/g);
+      if (tag) {
+        list.tags[i] = {
+          id: tag[0].split("/")[2],
+          text: $(tagLi[i]).text()
+        };
+      }
+    }
+  }
+
+  let li = $(dom).find("#sidebar_postcategory > ul > li > a");
+  $(li).each((i, e) => {
+    list.categories.push({ id: $(e).attr("href")!.match(/[0-9]+/g)![0], text: $(e).text() });
+  });
+
+  return list;
+}
+
+export function parseSideBlogerInfo(strDom: string): Array<DataType.BlogerInfo> {
+  let list: Array<DataType.BlogerInfo> = [];
+  let a = $(strDom).find("#profile_block > a");
+  $(a).each((i, e) => {
+    list.push({ text: $(e).text().trim(), href: $(e).attr("href")! });
+  });
+  return list;
+}
+
+export function parseBlogInfo(strDom: string): any {
+  let list = <any>[];
+  $(parseStrToDom(strDom)).find("span").each((i, d) => {
+    if ($(d).attr("id")) {
+      list.push(TextUtils.regTrim($(d).text(), [/\n+/g]));
+    }
+  });
+  return list;
+}
+
+export function parseSideBlogTopList(strDom: string): any {
+  let list = <any>[];
+  $(parseStrToDom(strDom)).find("#TopViewPostsBlock ul > li > a").each((i, e) => {
+    list.push({
+      id: $(e).attr("href")?.match(/\/p\/\d+/g)![0].split("/")[2],
+      text: TextUtils.regTrim($(e).text().trim(), [/\n+/g])
+    });
+  });
+  return list;
 }

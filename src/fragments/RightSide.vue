@@ -2,12 +2,13 @@
 
 <template>
   <div class="right-side">
-    <Card> </Card>
+    <Card></Card>
   </div>
 </template>
 
 <style scoped lang="scss">
 .right-side {
+  color: #878787;
   position: absolute;
   top: 10vh;
   right: 10vw;

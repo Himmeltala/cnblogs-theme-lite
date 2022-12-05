@@ -1,6 +1,6 @@
 import $ from "jquery";
 
-const DEV_EN: "dev" | "pro" = "dev";
+const DEV_EN: "dev" | "pro" = "pro";
 
 function devEnv(env: "dev" | "pro") {
   return env === "dev";

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, ref } from "vue";
+import { PropType, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import * as Api from "../utils/api";
 import * as DataType from "../types/data-type";
@@ -11,10 +11,10 @@ const props = defineProps({
     required: true
   },
   categoryId: {
-    type: Object as PropType<any>
+    type: String
   },
   categoryPage: {
-    type: Object as PropType<any>
+    type: String
   }
 });
 
@@ -28,8 +28,12 @@ let currentIndex = ref(1);
 let pageCount = ref(0);
 let calcPage = ref(false);
 
-// 获取的非随笔数据存储到pinia中，每次进入这个组件都要判断是否有，没有就发送亲求，有就不发送
-function fetchData(categoryId: any, index: number, calc: boolean, complete: Function) {
+watch(() => props.categoryId, () => {
+  loading.value = true;
+  fetchData(props.categoryId, 1, true);
+});
+
+function fetchData(categoryId: any, index: number, calc: boolean, complete?: Function) {
   if (categoryId) {
     Api.getCategories(categoryId, calc, index, res => {
       categories.value = res.category;
@@ -37,7 +41,7 @@ function fetchData(categoryId: any, index: number, calc: boolean, complete: Func
       pages.value = res.pages;
       if (calc) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
       loading.value = false;
-      complete();
+      if (complete) complete();
     });
   } else {
     Api.getEssayList(index, calc, res => {
@@ -45,13 +49,13 @@ function fetchData(categoryId: any, index: number, calc: boolean, complete: Func
       pages.value = res.pages;
       if (calc) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
       loading.value = false;
-      complete();
+      if (complete) complete();
     });
   }
 }
 
 if (props.type === "Category") {
-  fetchData(props.categoryId, props.categoryPage, true, () => {
+  fetchData(props.categoryId, parseInt(props.categoryPage!), true, () => {
     manageLoader();
   });
 } else if (props.type === "Home") {
@@ -109,7 +113,7 @@ function fixedSorterChange() {
         </div>
       </div>
     </div>
-    <div class="pagination pg-top" v-if="currentIndex > 1">
+    <div class="pagination pg-top" v-if="currentIndex > 1 && pageCount > 1">
       <el-pagination
         @current-change="fixedSorterChange"
         v-model:current-page="currentIndex"
@@ -175,7 +179,8 @@ function fixedSorterChange() {
         </div>
       </div>
     </Card>
-    <div class="right-sorter float-sorter" @click="floatSorterChange('right')">
+    <div class="right-sorter float-sorter" v-if="(pageCount > 1 || pageCount === 0) && currentIndex !== pageCount"
+         @click="floatSorterChange('right')">
       <el-tooltip
         effect="dark"
         content="下一页"
@@ -186,7 +191,7 @@ function fixedSorterChange() {
         </el-icon>
       </el-tooltip>
     </div>
-    <div class="pagination">
+    <div class="pagination" v-if="pageCount > 1">
       <el-pagination
         @current-change="fixedSorterChange"
         v-show="pageCount"

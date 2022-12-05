@@ -18,7 +18,7 @@ export default class Directive {
   }
 
   parseCode() {
-    this.Vue.directive("parse-code", (el: any, bindig: any) => {
+    this.Vue.directive("parse-code", (el: any, binding: any) => {
       let blocks = $(el).find("pre code");
 
       $(blocks).each((i, elem) => {
@@ -31,7 +31,7 @@ export default class Directive {
         hljs.highlightElement(elem);
       });
 
-      if (bindig.value) {
+      if (binding.value) {
         $(el)
           .find("img")
           .each((i, elem) => {

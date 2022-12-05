@@ -100,7 +100,12 @@ export interface TagPage {
 /**
  * 侧边栏部分，随笔分类
  */
-export interface SideCategory {
+export interface SideColumn {
   id: string;
   text: string;
+}
+
+export interface BlogerInfo {
+  text: string;
+  href: string;
 }

@@ -13,6 +13,7 @@ import * as Parser from "./parser";
 import * as DataType from "../types/data-type";
 import * as HttpType from "../types/http-type";
 import config from "../config";
+import { BlogerInfo } from "../types/data-type";
 
 const BASE_URL = config.api.base;
 
@@ -221,5 +222,29 @@ export function getCategories(id: any, calcPage: boolean, page: number, response
 export function getTagPageList(tag: string, response: (res: DataType.TagPage) => void) {
   axios.get(`${BASE_URL}/tag/${tag}`).then(({ data }) => {
     response(Parser.parseTagPageList(data));
+  });
+}
+
+export function getSideCategories(response: (res: any) => void) {
+  axios.get(`${BASE_URL}/ajax/sidecolumn.aspx`).then(({ data }) => {
+    response(Parser.parseSideCategories(data));
+  });
+}
+
+export function getSideBlogerInfo(response: (res: Array<DataType.BlogerInfo>) => void) {
+  axios.get(`${BASE_URL}/ajax/news.aspx`).then(({ data }) => {
+    response(Parser.parseSideBlogerInfo(data));
+  });
+}
+
+export function getSideBlogInfo(response: (res: any) => void) {
+  axios.get(`${BASE_URL}/ajax/blogStats`).then(({ data }) => {
+    response(Parser.parseBlogInfo(data));
+  });
+}
+
+export function getSideTopList(response: (res: any) => void) {
+  axios.get(`${BASE_URL}/ajax/TopLists.aspx`).then(({ data }) => {
+    response(Parser.parseSideBlogTopList(data));
   });
 }

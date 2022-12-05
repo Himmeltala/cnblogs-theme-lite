@@ -33,7 +33,7 @@ Api.getEssay(postId, (res) => {
   });
 });
 
-let fontSize = ref(19);
+let fontSize = ref(17);
 
 function zoomIn() {
   fontSize.value >= 24 ? (fontSize.value = 16) : fontSize.value++;
@@ -256,7 +256,7 @@ pre {
 code {
   font-size: 14px;
   font-weight: 300;
-  font-family: font1;
+  font-family: sans-serif, monospace;
   background: #2e2e2e;
   color: var(--el-color-danger-light-3);
   padding: 3px 6px;
@@ -272,7 +272,7 @@ code {
   font-size: 13px;
   color: #6d6d6d;
   font-weight: 300;
-  font-family: Hack, monospace;
+  font-family: sans-serif, monospace;
   position: absolute;
   right: 4px;
   top: 0;
@@ -285,6 +285,8 @@ code {
 }
 
 .essay-content {
+  font-family: sans-serif, monospace;
+
   @mixin font() {
     letter-spacing: 1.2px;
     word-break: break-all;

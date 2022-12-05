@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import * as Api from "../utils/api";
 
@@ -8,10 +8,21 @@ const router = useRouter();
 
 let taglist = ref();
 let tagname = "";
+let loading = ref(true);
+
+watch(route, () => {
+  loading.value = true;
+  Api.getTagPageList(String(route.params.tag), res => {
+    tagname = res.text;
+    taglist.value = res.list;
+    loading.value = false;
+  });
+});
 
 Api.getTagPageList(String(route.params.tag), res => {
   tagname = res.text;
   taglist.value = res.list;
+  loading.value = false;
 });
 </script>
 
@@ -19,7 +30,12 @@ Api.getTagPageList(String(route.params.tag), res => {
   <div class="tagpage">
     <div class="tagname">{{ tagname }}</div>
     <div class="taglist">
-      <Card class="item" v-for="(item, index) in taglist" :key="index" width="auto" height="auto" margin="5px">
+      <Card v-if="loading" class="item" v-for="item in 10" :key="item" width="auto" height="auto"
+            margin="5px">
+        <el-skeleton animated :loading="loading"></el-skeleton>
+      </Card>
+      <Card v-if="!loading" class="item" v-for="(item, index) in taglist" :key="index" width="auto" height="auto"
+            margin="5px">
         <div class="name">
           <router-link :to="'/e/' + item.id">{{ item.title }}</router-link>
         </div>

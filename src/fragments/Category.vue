@@ -1,11 +1,19 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from "_vue-router@4.1.6@vue-router";
+import { useRoute, useRouter } from "vue-router";
+import { ref, watch } from "vue";
 
 const router = useRouter();
 const route = useRoute();
+let categoryId = ref<string>();
+let categoryPage = ref<string>();
 
-let categoryId: any = route.params.id;
-let categoryPage: any = route.params.page;
+categoryId.value = route.params.id as string;
+categoryPage.value = route.params.page as string;
+
+watch(route, () => {
+  categoryId.value = route.params.id as string;
+  categoryPage.value = route.params.page as string;
+});
 </script>
 
 <template>

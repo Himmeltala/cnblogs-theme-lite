@@ -33,7 +33,11 @@ declare module '@vue/runtime-core' {
     RightSide: typeof import('./src/fragments/RightSide.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SideItem: typeof import('./src/components/SideItem.vue')['default']
     Tag: typeof import('./src/components/Tag.vue')['default']
     TagPage: typeof import('./src/fragments/TagPage.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
