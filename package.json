@@ -19,6 +19,7 @@
     "element-plus": "^2.2.25",
     "highlight.js": "^11.7.0",
     "jquery": "^3.6.1",
+    "pinia": "^2.0.27",
     "vue": "^3.2.41",
     "vue-router": "^4.1.6"
   },

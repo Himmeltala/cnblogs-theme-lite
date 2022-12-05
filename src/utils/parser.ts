@@ -46,14 +46,14 @@ export function parseEssayList(realDOM: any, calcPage: boolean): { pages: string
     let cover = $(e).find(".desc_img").attr("src");
 
     list[i] = {
-      postId: parseInt($(id[i]).attr("href")!.match(/[0-9]+/g)![0]),
-      title: $(title[i]).text().trim(),
+      id: parseInt($(id[i]).attr("href")!.match(/[0-9]+/g)![0]),
+      text: $(title[i]).text().trim(),
       desc: TextUtils.regTrim($(describe[i]).text(), [/阅读全文/g]),
       date: date![i],
-      viewCount: view![i],
-      commCount: comm![i],
-      diggCount: digg![i],
-      cover: cover ? cover : ""
+      view: view![i],
+      comm: comm![i],
+      digg: digg![i],
+      surface: cover ? cover : ""
     };
   });
 
@@ -72,12 +72,12 @@ export function parseEssayList(realDOM: any, calcPage: boolean): { pages: string
  */
 export function parseEssay(postId: number, realDOM: any): DataType.Essay {
   return {
-    postId: postId,
-    title: $(realDOM).find(".postTitle > a > span").text(),
+    id: postId,
+    text: $(realDOM).find(".postTitle > a > span").text(),
     content: $(realDOM).find("#cnblogs_post_body").html(),
     date: $(realDOM).find("#post-date").text(),
-    viewCount: $(realDOM).find("#post_view_count").text(),
-    commCount: $(realDOM).find("#post_comment_count").text()
+    view: $(realDOM).find("#post_view_count").text(),
+    comm: $(realDOM).find("#post_comment_count").text()
   };
 }
 
@@ -103,7 +103,7 @@ export function parseCommentList(strDOM: any): Array<DataType.Comment> {
         author: $(elem).find(`#a_comment_author_${anchor}`).text(),
         layer: $(elem).find(".layer").text(),
         date: $(elem).find(".comment_date").text(),
-        body: $(elem).find(`#comment_body_${anchor}`).html(),
+        content: $(elem).find(`#comment_body_${anchor}`).html(),
         digg: $(elem).find(".comment_digg").text().trim(),
         bury: $(elem).find(".comment_burry").text().trim(),
         avatar: $(elem).find(`#comment_${anchor}_avatar`).text().trim()
@@ -219,14 +219,14 @@ export function parseCategoryList(realDOM: any, calcPage: boolean): { pages: str
     let cover = $(e).find(".c_b_p_desc > .desc_img").attr("src");
 
     list[i] = {
-      postId: parseInt($(id[i]).attr("href")!.match(/[0-9]+/g)![0]),
-      title: $(title[i]).text(),
+      id: parseInt($(id[i]).attr("href")!.match(/[0-9]+/g)![0]),
+      text: $(title[i]).text(),
       desc: $(describe[i]).text(),
       date: date![i],
-      viewCount: view![i],
-      commCount: comm![i],
-      diggCount: digg![i],
-      cover: cover ? cover : ""
+      view: view![i],
+      comm: comm![i],
+      digg: digg![i],
+      surface: cover ? cover : ""
     };
   });
 
@@ -257,6 +257,6 @@ export function parseTagPageList(realDom: any): DataType.TagPage {
 
   return {
     list,
-    title: tagTitle
+    text: tagTitle
   };
 }

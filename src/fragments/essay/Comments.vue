@@ -22,7 +22,7 @@ function nav(path: string, out?: boolean) {
   } else router.push(path);
 }
 
-let form = ref<DataType.Comment>({ postId: props.postId, parentCommentId: 0, body: "" });
+let form = ref<DataType.Comment>({ postId: props.postId, parentCommentId: 0, content: "" });
 let loading = ref(false);
 let comments = ref<Array<DataType.Comment>>();
 let commentCount = ref(1);
@@ -77,7 +77,7 @@ fetchComment(true, {
 }, undefined, undefined);
 
 function uploadImage() {
-  Native.openImageUploadWindow((imgUrl: any) => form.value.body += `\n\n${imgUrl}\n\n`);
+  Native.openImageUploadWindow((imgUrl: any) => form.value.content += `\n\n${imgUrl}\n\n`);
 }
 
 function paginationChange() {
@@ -90,9 +90,13 @@ function paginationChange() {
 }
 
 function insertComment() {
-  if (form.value.body) {
+  if (form.value.content) {
     loading.value = true;
-    Api.setComment(form.value, ({ data }) => {
+    Api.setComment({
+      postId: form.value.postId,
+      body: form.value.content,
+      parentCommentId: form.value.parentCommentId
+    }, ({ data }) => {
       fetchComment(data.isSuccess, {
           message: "你的评论传达成功！😀",
           success(res: any) {
@@ -102,7 +106,7 @@ function insertComment() {
         }, {
           message: "你的评论似乎没有发出去！😑",
           error: () => loading.value = false
-        }, () => form.value.body = ""
+        }, () => form.value.content = ""
       );
     });
   } else {
@@ -143,12 +147,12 @@ function deleteComment(comment: DataType.Comment, index: number) {
 function updateComment(comment: DataType.Comment) {
   comment.updateEditable = !comment.updateEditable;
   if (comment.replayEditable) comment.replayEditable = false;
-  if (comment.updateEditable) Api.getComment({ commentId: comment.commentId }, ({ data }) => comment.body = data);
+  if (comment.updateEditable) Api.getComment({ commentId: comment.commentId }, ({ data }) => comment.content = data);
 
   if (!comment.updateEditable) {
     Api.updateComment(
       {
-        body: comment.body,
+        body: comment.content,
         commentId: comment.commentId
       },
       ({ data }) => {
@@ -233,7 +237,7 @@ function replayComment(comment: DataType.Comment) {
       </div>
       <div class="edit-area">
         <textarea
-          v-model="form.body"
+          v-model="form.content"
           placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
       </div>
       <div class="img-link__packer">
@@ -257,11 +261,11 @@ function replayComment(comment: DataType.Comment) {
           </div>
         </div>
         <div class="bottom">
-          <div class="content" v-show="!item.updateEditable" v-html="item.body" v-parse-code="false"></div>
+          <div class="content" v-show="!item.updateEditable" v-html="item.content" v-parse-code="false"></div>
           <div class="edit-area">
             <textarea
               v-show="item.updateEditable"
-              v-model="item.body"
+              v-model="item.content"
               placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
           </div>
           <div class="replay-area">

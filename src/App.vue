@@ -2,7 +2,7 @@
 
 <template>
   <div id="app-pack">
-<!--    <GitHub />-->
+    <GitHub />
     <Navigator />
     <LeftSide />
     <div id="app-vessel">

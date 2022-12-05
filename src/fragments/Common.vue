@@ -28,7 +28,8 @@ let currentIndex = ref(1);
 let pageCount = ref(0);
 let calcPage = ref(false);
 
-function fetchData(categoryId: any, index: number, calc: boolean) {
+// 获取的非随笔数据存储到pinia中，每次进入这个组件都要判断是否有，没有就发送亲求，有就不发送
+function fetchData(categoryId: any, index: number, calc: boolean, complete: Function) {
   if (categoryId) {
     Api.getCategories(categoryId, calc, index, res => {
       categories.value = res.category;
@@ -36,7 +37,7 @@ function fetchData(categoryId: any, index: number, calc: boolean) {
       pages.value = res.pages;
       if (calc) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
       loading.value = false;
-      manageLoader();
+      complete();
     });
   } else {
     Api.getEssayList(index, calc, res => {
@@ -44,15 +45,19 @@ function fetchData(categoryId: any, index: number, calc: boolean) {
       pages.value = res.pages;
       if (calc) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
       loading.value = false;
-      manageLoader();
+      complete();
     });
   }
 }
 
 if (props.type === "Category") {
-  fetchData(props.categoryId, props.categoryPage, true);
+  fetchData(props.categoryId, props.categoryPage, true, () => {
+    manageLoader();
+  });
 } else if (props.type === "Home") {
-  fetchData(false, 1, false);
+  fetchData(false, 1, false, () => {
+    manageLoader();
+  });
 }
 
 function nav(path: string, out?: boolean) {
@@ -147,25 +152,25 @@ function fixedSorterChange() {
       <div class="essay__vessel">
         <div class="packer">
           <div class="header">
-            <el-image v-if="index % 2 !== 0 && item.cover" class="cover" :src="item.cover" fit="cover" />
-            <div class="header__middle" :class="{ 'nocover': !item.cover }">
-              <div class="title" @click="nav('/e/' + item.postId)">{{ item.title }}</div>
+            <el-image v-if="index % 2 !== 0 && item.surface" class="cover" :src="item.surface" fit="cover" />
+            <div class="header__middle" :class="{ 'nocover': !item.surface }">
+              <div class="title" @click="nav('/e/' + item.id)">{{ item.text }}</div>
               <div class="desc">{{ item.desc }}</div>
             </div>
-            <el-image v-if="index % 2 === 0 && item.cover" class="cover" :src="item.cover" fit="cover" />
+            <el-image v-if="index % 2 === 0 && item.surface" class="cover" :src="item.surface" fit="cover" />
           </div>
           <div class="browse">
             <el-icon>
               <CaretRight />
             </el-icon>
-            <router-link :to="'/e/' + item.postId">阅读全文</router-link>
+            <router-link :to="'/e/' + item.id">阅读全文</router-link>
           </div>
           <div class="bottom">
             <EssayBottomData
               :data="{date: item.date,
-               viewCount: item.viewCount,
-                commCount: item.commCount,
-                 diggCount: item.diggCount}" />
+               view: item.view,
+                comm: item.comm,
+                 digg: item.digg}" />
           </div>
         </div>
       </div>

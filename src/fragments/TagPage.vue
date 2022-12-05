@@ -9,8 +9,8 @@ const router = useRouter();
 let taglist = ref();
 let tagname = "";
 
-Api.getTagPageList(String(route.params.tagName), res => {
-  tagname = res.title;
+Api.getTagPageList(String(route.params.tag), res => {
+  tagname = res.text;
   taglist.value = res.list;
 });
 </script>
@@ -32,9 +32,9 @@ Api.getTagPageList(String(route.params.tagName), res => {
         <div class="desc">
           <EssayBottomData :data="{
             date: item.date,
-            viewCount: item.viewCount,
-            commCount: item.commCount,
-            diggCount: item.diggCount
+            view: item.view,
+            comm: item.comm,
+            digg: item.digg
           }" />
         </div>
       </Card>

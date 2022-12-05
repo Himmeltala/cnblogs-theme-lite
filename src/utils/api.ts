@@ -68,21 +68,21 @@ function sendPost(url: string, data: any, response: (res: any) => void) {
 /**
  * 发送随笔的评论
  *
- * @param data 评论实体
+ * @param comment 评论实体
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
-export function setComment(data: DataType.Comment, response: (res: any) => void) {
-  sendPost(`${BASE_URL}/ajax/PostComment/Add.aspx`, data, response);
+export function setComment(comment: DataType.BlogComment, response: (res: any) => void) {
+  sendPost(`${BASE_URL}/ajax/PostComment/Add.aspx`, comment, response);
 }
 
 /**
  * 删除其中一条评论
  *
- * @param data 评论实体
+ * @param comment 评论实体
  * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
-export function deleteComment(data: DataType.CnBlogComment, response: (res: any) => void) {
-  sendPost(`${BASE_URL}/ajax/comment/DeleteComment.aspx`, data, response);
+export function deleteComment(comment: DataType.BlogComment, response: (res: any) => void) {
+  sendPost(`${BASE_URL}/ajax/comment/DeleteComment.aspx`, comment, response);
 }
 
 /**
@@ -91,7 +91,7 @@ export function deleteComment(data: DataType.CnBlogComment, response: (res: any)
  * @param comment 评论实体，对应博客园默认的评论字段，需要传递一个包含评论 ID 的实体
  * @param response 获取响应的消息——该实体类与 DataType 中定义的评论实体类字段不一致。返回一个 axios 中 data 部分消息
  */
-export function getComment(comment: DataType.CnBlogComment, response: (res: any) => void) {
+export function getComment(comment: DataType.BlogComment, response: (res: any) => void) {
   sendPost(`${BASE_URL}/ajax/comment/GetCommentBody.aspx`, comment, response);
 }
 
@@ -101,7 +101,7 @@ export function getComment(comment: DataType.CnBlogComment, response: (res: any)
  * @param comment 评论实体，对应博客园默认的评论字段，需要传递一个包含评论 ID、评论内容的实体
  * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
-export function updateComment(comment: DataType.CnBlogComment, response: (res: any) => void) {
+export function updateComment(comment: DataType.BlogComment, response: (res: any) => void) {
   sendPost(`${BASE_URL}/ajax/PostComment/Update.aspx`, comment, response);
 }
 
@@ -120,11 +120,11 @@ export function getCommentCount(postId: number | string, response: (res: any) =>
 /**
  * 点赞或反对评论
  *
- * @param data 被操作的评论的实体，需要 isAbandoned、postId、voteType 三个字段，其中 voteType 请见 DataType.VoteType，只有两种类型。
+ * @param comment 被操作的评论的实体，需要 isAbandoned、postId、voteType 三个字段，其中 voteType 请见 DataType.VoteType，只有两种类型。
  * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
-export function voteComment(data: DataType.CnBlogComment, response: (ajax: HttpType.AjaxType) => void) {
-  sendPost(`${BASE_URL}/ajax/vote/comment`, data, ({ data }) => {
+export function voteComment(comment: DataType.BlogComment, response: (ajax: HttpType.AjaxType) => void) {
+  sendPost(`${BASE_URL}/ajax/vote/comment`, comment, ({ data }) => {
     response(data);
   });
 }
@@ -132,11 +132,11 @@ export function voteComment(data: DataType.CnBlogComment, response: (ajax: HttpT
 /**
  * 回复一条评论
  *
- * @param data 博客园原有的评论实体，需要 body、parentCommentId、postId。parentCommentId 就是回复的那一条的 ID。
+ * @param comment 博客园原有的评论实体，需要 body、parentCommentId、postId。parentCommentId 就是回复的那一条的 ID。
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。这里需要获取 AjaxType。利用其中的 isSuccess 查看是否回复成功。
  */
-export function replayComment(data: DataType.CnBlogComment, response: (ajax: HttpType.AjaxType) => void) {
-  sendPost(`${BASE_URL}/ajax/PostComment/Add.aspx`, data, ({ data }) => {
+export function replayComment(comment: DataType.BlogComment, response: (ajax: HttpType.AjaxType) => void) {
+  sendPost(`${BASE_URL}/ajax/PostComment/Add.aspx`, comment, ({ data }) => {
     response(data);
   });
 }
@@ -185,7 +185,7 @@ export function getPrevNext(postId: number | string, response: (res: any) => voi
  * @param data 随笔实体，需要传递一个包含 isAbandoned、postId、voteType 的官方随笔实体
  * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
-export function voteEssay(data: DataType.CnBlogEssay, response: (ajax: HttpType.AjaxType) => void) {
+export function voteEssay(data: DataType.BlogEssay, response: (ajax: HttpType.AjaxType) => void) {
   sendPost(`${BASE_URL}/ajax/vote/blogpost`, data, ({ data }) => {
     response(data);
   });
@@ -197,7 +197,7 @@ export function voteEssay(data: DataType.CnBlogEssay, response: (ajax: HttpType.
  * @param data 传递一个数组，数组第一个就是 postId 的值
  * @param response 获取响应的消息，返回一个 axios 的 data 部分
  */
-export function getEssayVote(data: any[], response: (ajax: Array<DataType.CnBlogEssayVote>) => void) {
+export function getEssayVote(data: any[], response: (ajax: Array<DataType.BlogEssayVote>) => void) {
   sendPost(`${BASE_URL}/ajax/GetPostStat`, data, ({ data }) => {
     response(data);
   });
@@ -218,8 +218,8 @@ export function getCategories(id: any, calcPage: boolean, page: number, response
   });
 }
 
-export function getTagPageList(tagName: string, response: (res: DataType.TagPage) => void) {
-  axios.get(`${BASE_URL}/tag/${tagName}`).then(({ data }) => {
+export function getTagPageList(tag: string, response: (res: DataType.TagPage) => void) {
+  axios.get(`${BASE_URL}/tag/${tag}`).then(({ data }) => {
     response(Parser.parseTagPageList(data));
   });
 }

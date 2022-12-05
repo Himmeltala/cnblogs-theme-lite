@@ -19,7 +19,7 @@ const routes = [
   },
   {
     name: RouteName.TAG_PAGE,
-    path: "/t/:tagName",
+    path: "/t/:tag",
     component: () => import("./fragments/TagPage.vue")
   }
 ];
@@ -44,8 +44,8 @@ router.beforeEach((to, from, next) => {
       window.history.pushState("", "", reinstallUrl(`c/${url.id}/${url.page}`));
       next({ name: RouteName.CATEGORY, params: { id: url.id, page: url.page } });
     } else if (allocateUrl(url, RouteName.TAG_PAGE)) {
-      window.history.pushState("", "", reinstallUrl(`t/${url.tagName}`));
-      next({ name: RouteName.TAG_PAGE, params: { tagName: url.tagName } });
+      window.history.pushState("", "", reinstallUrl(`t/${url.tag}`));
+      next({ name: RouteName.TAG_PAGE, params: { tag: url.tag } });
     } else {
       next();
     }

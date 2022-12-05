@@ -5,9 +5,9 @@ defineProps({
   data: {
     type: Object as PropType<{
       date: string;
-      viewCount: string;
-      commCount: string;
-      diggCount: string;
+      view: string;
+      comm: string;
+      digg: string;
     }>,
     required: true
   }
@@ -26,19 +26,19 @@ defineProps({
       <el-icon>
         <View />
       </el-icon>
-      <span>{{ data.viewCount }}</span>
+      <span>{{ data.view }}</span>
     </div>
     <div class="comm">
       <el-icon>
         <ChatLineSquare />
       </el-icon>
-      <span>{{ data.commCount }}</span>
+      <span>{{ data.comm }}</span>
     </div>
     <div class="digg">
       <el-icon>
         <Star />
       </el-icon>
-      <span> {{ data.diggCount }}</span>
+      <span> {{ data.digg }}</span>
     </div>
   </div>
 </template>

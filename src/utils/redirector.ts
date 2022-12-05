@@ -29,7 +29,7 @@ export function redirect(href: string): any {
   } else if (Reg.TAG_PAGE.test(href)) {
     return {
       type: RouteName.TAG_PAGE,
-      tagName: decodeURI(href).match(Reg.TAG_PAGE)![0].split("/")[2]
+      tag: decodeURI(href).match(Reg.TAG_PAGE)![0].split("/")[2]
     };
   }
 }

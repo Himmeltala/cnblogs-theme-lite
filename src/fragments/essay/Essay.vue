@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ArrowLeft, CaretBottom, CaretTop } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
-import * as API from "../../utils/api";
+import * as Api from "../../utils/api";
 import * as DataType from "../../types/data-type";
 import { manageLoader } from "../../utils/loader";
 
@@ -13,19 +13,19 @@ const postId: any = route.params.id;
 
 let essay = ref<DataType.Essay>();
 let prevNext = ref<any>();
-let essayVote = ref<DataType.CnBlogEssayVote>();
+let essayVote = ref<DataType.BlogEssayVote>();
 let tagscatoies = ref<any>({ categories: {}, tags: {} });
 
 let holeSkeleton = ref(true);
 
-API.getEssay(postId, (res) => {
+Api.getEssay(postId, (res) => {
   essay.value = res;
-  API.getEssayTagsAndCategories(666252, postId, res => {
+  Api.getEssayTagsAndCategories(666252, postId, res => {
     tagscatoies.value = res;
     holeSkeleton.value = false;
-    API.getPrevNext(postId, str => {
-      prevNext.value = str;
-      API.getEssayVote([postId], res => {
+    Api.getPrevNext(postId, res => {
+      prevNext.value = res;
+      Api.getEssayVote([postId], res => {
         essayVote.value = res[0];
         manageLoader();
       });
@@ -45,7 +45,7 @@ function nav(path: string, out?: boolean) {
 }
 
 function voteEssay(voteType: DataType.VoteType) {
-  API.voteEssay({ postId: postId, isAbandoned: false, voteType: voteType }, ajax => {
+  Api.voteEssay({ postId, isAbandoned: false, voteType }, ajax => {
     if (ajax.isSuccess) {
       if (voteType == "Bury") essayVote.value!.buryCount = essayVote.value!.buryCount! + 1;
       else essayVote.value!.diggCount = essayVote.value!.diggCount! + 1;
@@ -66,7 +66,7 @@ function voteEssay(voteType: DataType.VoteType) {
       <div v-if="!holeSkeleton">
         <el-page-header :icon="ArrowLeft" @back="nav('/')">
           <template #content>
-            <div class="title">{{ essay?.title }}</div>
+            <div class="title">{{ essay?.text }}</div>
           </template>
         </el-page-header>
         <div class="head-info">
@@ -80,13 +80,13 @@ function voteEssay(voteType: DataType.VoteType) {
             <el-icon>
               <View />
             </el-icon>
-            <span>{{ essay?.viewCount }}次阅读</span>
+            <span>{{ essay?.view }}次阅读</span>
           </div>
           <div class="comm-count">
             <el-icon>
               <ChatLineSquare />
             </el-icon>
-            <span>{{ essay?.commCount }}条评论</span>
+            <span>{{ essay?.comm }}条评论</span>
           </div>
           <div class="zoom-in" @click="zoomIn">
             <el-icon>
@@ -143,13 +143,13 @@ function voteEssay(voteType: DataType.VoteType) {
             <el-icon>
               <View />
             </el-icon>
-            <span>{{ essay?.viewCount }}次阅读</span>
+            <span>{{ essay?.view }}次阅读</span>
           </div>
           <div class="comm-count">
             <el-icon>
               <ChatLineSquare />
             </el-icon>
-            <span>{{ essay?.commCount }}条评论</span>
+            <span>{{ essay?.comm }}条评论</span>
           </div>
         </div>
         <div class="prev-next">

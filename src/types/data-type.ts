@@ -1,8 +1,8 @@
 export interface Essay {
   // 随笔 ID
-  postId?: number;
+  id?: number;
   // 随笔标题
-  title?: string;
+  text?: string;
   // 随笔内容
   content?: string;
   // 随笔摘要
@@ -10,18 +10,19 @@ export interface Essay {
   // 随笔发表日期
   date?: string;
   // 随笔阅读数量
-  viewCount?: string;
+  view?: string;
   // 随笔评论数量
-  commCount?: string;
+  comm?: string;
   // 随笔点赞数量
-  diggCount?: string;
+  digg?: string;
   // 随笔封面
-  cover?: string;
+  surface?: string;
 }
 
 export interface Comment {
   // 评论是否可以被编辑，默认是 false
   updateEditable?: boolean;
+  // 回复是否可以被编辑，默认是 false
   replayEditable?: boolean;
   // 评论 ID
   commentId?: number;
@@ -42,7 +43,7 @@ export interface Comment {
   // 随笔 ID
   postId?: number;
   // 评论内容
-  body?: string;
+  content?: string;
   // 回复评论 ID
   parentCommentId?: number;
   // 当前评论所在评论列表的页数
@@ -54,7 +55,7 @@ export type VoteType = "Bury" | "Digg";
 /**
  * 博客园评论和随笔的基础字段，一般是调用接口之后返回过来的字段
  */
-interface CnBlogRestriction {
+interface BlogRestriction {
   isAbandoned?: boolean;
   postId?: number;
   voteType?: VoteType;
@@ -63,18 +64,23 @@ interface CnBlogRestriction {
 /**
  * 博客园评论实体，区别于上面定义的评论实体，这个实体是根据博客园的数据库字段而来
  */
-export interface CnBlogComment extends CnBlogRestriction {
+export interface BlogComment extends BlogRestriction {
+  // 评论 ID
   commentId?: number;
+  // 评论内容
   body?: string;
+  // 回复的评论 ID
   parentId?: number;
+  // 当前页面的 index
   pageIndex?: number;
+  // 回复评论的 ID
   parentCommentId?: number;
 }
 
-export interface CnBlogEssay extends CnBlogRestriction {
+export interface BlogEssay extends BlogRestriction {
 }
 
-export interface CnBlogEssayVote {
+export interface BlogEssayVote {
   // 反对数量
   buryCount?: number;
   // 点赞数量
@@ -87,6 +93,14 @@ export interface CnBlogEssayVote {
 }
 
 export interface TagPage {
-  title: string;
-  list: Array<{ id: string; title: string; href: string; date: string; viewCount: string; commCount: string; diggCount: string }>;
+  text: string;
+  list: Array<{ id: string; title: string; href: string; date: string; view: string; comm: string; digg: string }>;
+}
+
+/**
+ * 侧边栏部分，随笔分类
+ */
+export interface SideCategory {
+  id: string;
+  text: string;
 }
