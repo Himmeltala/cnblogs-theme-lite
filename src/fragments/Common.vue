@@ -3,6 +3,7 @@ import { PropType, ref } from "vue";
 import { useRouter } from "vue-router";
 import * as Api from "../utils/api";
 import * as DataType from "../types/data-type";
+import { manageLoader } from "../utils/loader";
 
 const props = defineProps({
   type: {
@@ -35,6 +36,7 @@ function fetchData(categoryId: any, index: number, calc: boolean) {
       pages.value = res.pages;
       if (calc) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
       loading.value = false;
+      manageLoader();
     });
   } else {
     Api.getEssayList(index, calc, res => {
@@ -42,12 +44,16 @@ function fetchData(categoryId: any, index: number, calc: boolean) {
       pages.value = res.pages;
       if (calc) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
       loading.value = false;
+      manageLoader();
     });
   }
 }
 
-if (props.type === "Category") fetchData(props.categoryId, props.categoryPage, true);
-else if (props.type === "Home") fetchData(false, 1, false);
+if (props.type === "Category") {
+  fetchData(props.categoryId, props.categoryPage, true);
+} else if (props.type === "Home") {
+  fetchData(false, 1, false);
+}
 
 function nav(path: string, out?: boolean) {
   if (out) window.open(path, "__blank");

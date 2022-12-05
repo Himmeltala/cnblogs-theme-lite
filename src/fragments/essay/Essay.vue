@@ -5,6 +5,7 @@ import { ArrowLeft, CaretBottom, CaretTop } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import * as API from "../../utils/api";
 import * as DataType from "../../types/data-type";
+import { manageLoader } from "../../utils/loader";
 
 const route = useRoute();
 const router = useRouter();
@@ -24,7 +25,10 @@ API.getEssay(postId, (res) => {
     holeSkeleton.value = false;
     API.getPrevNext(postId, str => {
       prevNext.value = str;
-      API.getEssayVote([postId], res => essayVote.value = res[0]);
+      API.getEssayVote([postId], res => {
+        essayVote.value = res[0];
+        manageLoader();
+      });
     });
   });
 });

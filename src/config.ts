@@ -1,24 +1,20 @@
 import $ from "jquery";
 
+const DEV_EN: "dev" | "pro" = "pro";
+
+function devEnv(env: "dev" | "pro") {
+  return env === "dev";
+}
+
 const config = {
   api: {
-    // base: "/api"
-    base: "https://www.cnblogs.com/Enziandom"
+    base: devEnv(DEV_EN) ? "/api" : "https://www.cnblogs.com/Enziandom"
   },
   router: {
-    space: "/Enziandom"
-    // space: ""
+    space: devEnv(DEV_EN) ? "" : "/Enziandom"
   },
   init: () => {
-    $("#hljs-script").remove();
-    $("#highlighter-theme-atom-one-dark").remove();
-    $("#top_nav").remove();
-    $("#home").remove();
     $("body").append(`<div id="app"></div>`);
-    $("head > link").remove();
-    $("head").prepend(`
-      <link rel="stylesheet" href="https://blog-static.cnblogs.com/files/blogs/666252/index.css" />
-    `);
     $("html").attr("class", "dark");
   }
 };

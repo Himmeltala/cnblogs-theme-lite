@@ -22,11 +22,7 @@ export default class Directive {
       let blocks = $(el).find("pre code");
 
       $(blocks).each((i, elem) => {
-        let lang = String(
-          $(elem)
-            .attr("class")
-            ?.match(/(language-\w*){0,1}/g)
-        )
+        let lang = String($(elem).attr("class")?.match(/(language-\w*){0,1}/g))
           .split(",")[0]
           .split("-")[1]
           .toUpperCase();
