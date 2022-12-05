@@ -19,7 +19,7 @@ Api.getTagPageList(String(route.params.tagName), res => {
   <div class="tagpage">
     <div class="tagname">{{ tagname }}</div>
     <div class="taglist">
-      <Card class="item" v-for="(item, index) in taglist" :key="index" width="48.7%" height="auto" margin="5px">
+      <Card class="item" v-for="(item, index) in taglist" :key="index" width="auto" height="auto" margin="5px">
         <div class="name">
           <router-link :to="'/e/' + item.id">{{ item.title }}</router-link>
         </div>
@@ -55,6 +55,8 @@ Api.getTagPageList(String(route.params.tagName), res => {
     @include flex($justify: space-between, $items: stretch, $content: stretch);
 
     .item {
+      flex: 1 1 40%;
+
       .name {
         font-size: 20px;
         word-break: break-all;

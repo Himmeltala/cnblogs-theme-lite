@@ -22,43 +22,38 @@ function nav(path: string, out?: boolean) {
   } else router.push(path);
 }
 
-let commentForm = ref<DataType.Comment>({ postId: props.postId, parentCommentId: 0, body: "" });
-let btnLoading = ref(false);
+let form = ref<DataType.Comment>({ postId: props.postId, parentCommentId: 0, body: "" });
+let loading = ref(false);
 let comments = ref<Array<DataType.Comment>>();
 let commentCount = ref(1);
 let currentIndex = ref(0);
 let skeleton = ref(true);
 
-interface Legal {
-  message?: string;
-
-  success?: (res: any) => void;
-}
-
-interface Illegal {
-  message?: string;
-
-  error?: () => void;
-}
-
-function fetchComment(f: boolean, y?: Legal, n?: Illegal, bf?: Function) {
+function fetchComment(f: boolean, y?: {
+  message?: string,
+  success?: (res: any) => void
+}, n?: {
+  message?: string,
+  error?: () => void
+}, bf?: Function) {
   if (f) {
     if (bf) bf();
     Api.getCommentCount(props.postId, count => {
       commentCount.value = count;
       currentIndex.value = count;
-      Api.getCommentList(props.postId, currentIndex.value, (res: Array<DataType.Essay>) => {
-        if (y && y.success) {
-          y.success(res);
-          if (y.message) {
-            ElMessage({
-              message: y.message,
-              grouping: true,
-              type: "success"
-            });
+      Api.getCommentList(props.postId, currentIndex.value,
+        (res: Array<DataType.Essay>) => {
+          if (y && y.success) {
+            y.success(res);
+            if (y.message) {
+              ElMessage({
+                message: y.message,
+                grouping: true,
+                type: "success"
+              });
+            }
           }
-        }
-      });
+        });
     });
   } else {
     if (n && n.error) {
@@ -82,33 +77,32 @@ fetchComment(true, {
 }, undefined, undefined);
 
 function uploadImage() {
-  Native.openImageUploadWindow((imgUrl: any) => {
-    commentForm.value.body += `\n\n${imgUrl}\n\n`;
-  });
+  Native.openImageUploadWindow((imgUrl: any) => form.value.body += `\n\n${imgUrl}\n\n`);
 }
 
 function paginationChange() {
   skeleton.value = true;
-  Api.getCommentList(props.postId, currentIndex.value, (res: Array<DataType.Essay>) => {
-    comments.value = res;
-    skeleton.value = false;
-  });
+  Api.getCommentList(props.postId, currentIndex.value,
+    (res: Array<DataType.Essay>) => {
+      comments.value = res;
+      skeleton.value = false;
+    });
 }
 
 function insertComment() {
-  if (commentForm.value.body) {
-    btnLoading.value = true;
-    Api.setComment(commentForm.value, ({ data }) => {
+  if (form.value.body) {
+    loading.value = true;
+    Api.setComment(form.value, ({ data }) => {
       fetchComment(data.isSuccess, {
           message: "你的评论传达成功！😀",
           success(res: any) {
             comments.value = res;
-            btnLoading.value = false;
+            loading.value = false;
           }
         }, {
           message: "你的评论似乎没有发出去！😑",
-          error: () => btnLoading.value = false
-        }, () => commentForm.value.body = ""
+          error: () => loading.value = false
+        }, () => form.value.body = ""
       );
     });
   } else {
@@ -120,12 +114,6 @@ function insertComment() {
   }
 }
 
-/**
- * 删除评论
- *
- * @param comment 评论实体
- * @param index 评论在数组中的 index
- */
 function deleteComment(comment: DataType.Comment, index: number) {
   Api.deleteComment(
     {
@@ -152,11 +140,6 @@ function deleteComment(comment: DataType.Comment, index: number) {
   );
 }
 
-/**
- * 更新评论
- *
- * @param comment 评论实体
- */
 function updateComment(comment: DataType.Comment) {
   comment.updateEditable = !comment.updateEditable;
   if (comment.replayEditable) comment.replayEditable = false;
@@ -186,12 +169,6 @@ function updateComment(comment: DataType.Comment) {
   }
 }
 
-/**
- * 点赞或反对评论
- *
- * @param comment 评论实体
- * @param voteType 类型，点赞？反对？
- */
 function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
   Api.voteComment(
     {
@@ -217,11 +194,6 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
 let replayCommentBody = ref("");
 let lastReplayComment = ref();
 
-/**
- * 回复一条评论
- *
- * @param comment 传递一个自定义的博客评论实体，传送数据时需要对应博客园的实体字段，即 CnBlogComment。
- */
 function replayComment(comment: DataType.Comment) {
   comment.replayEditable = !comment.replayEditable;
   if (lastReplayComment.value && lastReplayComment.value.commentId !== comment.commentId) lastReplayComment.value.replayEditable = false;
@@ -261,13 +233,13 @@ function replayComment(comment: DataType.Comment) {
       </div>
       <div class="edit-area">
         <textarea
-          v-model="commentForm.body"
+          v-model="form.body"
           placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
       </div>
       <div class="img-link__packer">
         <textarea id="img-link" />
       </div>
-      <el-button type="primary" :loading="btnLoading" class="upload" @click="insertComment">发送评论
+      <el-button type="primary" :loading="loading" class="upload" @click="insertComment">发送评论
       </el-button>
     </div>
     <h3>评论列表</h3>
@@ -497,23 +469,16 @@ function replayComment(comment: DataType.Comment) {
       font-size: 14px;
       @include flex($justify: flex-end);
 
+      .replay > div,
+      .update > div,
       .actions {
         margin-right: 15px;
+        @include flex();
+        @include ahover();
 
         &:last-child {
           margin-right: 0 !important;
         }
-      }
-
-      .replay > div,
-      .delete,
-      .replay,
-      .update,
-      .update > div,
-      .digg,
-      .bury {
-        @include flex();
-        @include ahover();
       }
     }
   }

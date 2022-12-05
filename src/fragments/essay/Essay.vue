@@ -13,23 +13,18 @@ const postId: any = route.params.id;
 let essay = ref<DataType.Essay>();
 let prevNext = ref<any>();
 let essayVote = ref<DataType.CnBlogEssayVote>();
-let tagsCategories = ref<any>({ categories: {}, tags: {} });
+let tagscatoies = ref<any>({ categories: {}, tags: {} });
 
 let holeSkeleton = ref(true);
 
-/**
- * 该页面初始化时第一时间要做的事情
- */
 API.getEssay(postId, (res) => {
   essay.value = res;
   API.getEssayTagsAndCategories(666252, postId, res => {
-    tagsCategories.value = res;
+    tagscatoies.value = res;
     holeSkeleton.value = false;
     API.getPrevNext(postId, str => {
       prevNext.value = str;
-      API.getEssayVote([postId], res => {
-        essayVote.value = res[0];
-      });
+      API.getEssayVote([postId], res => essayVote.value = res[0]);
     });
   });
 });
@@ -40,23 +35,11 @@ function zoomIn() {
   fontSize.value >= 24 ? (fontSize.value = 16) : fontSize.value++;
 }
 
-/**
- * 导航
- *
- * @param path 导航地址，可以是 router 地址也可以是外部 url 地址
- * @param out 当是外部 url 地址时，必须设置为 true
- */
 function nav(path: string, out?: boolean) {
-  if (out) {
-    window.open(path, "__blank");
-  } else router.push(path);
+  if (out) window.open(path, "__blank");
+  else router.push(path);
 }
 
-/**
- * 点赞或反对随笔
- *
- * @param voteType 类型，点赞？反对？
- */
 function voteEssay(voteType: DataType.VoteType) {
   API.voteEssay({ postId: postId, isAbandoned: false, voteType: voteType }, ajax => {
     if (ajax.isSuccess) {
@@ -122,7 +105,7 @@ function voteEssay(voteType: DataType.VoteType) {
               </el-icon>
               <span>分类：</span>
             </div>
-            <div class="item" v-for="(item, index) in tagsCategories.categories" :key="index">
+            <div class="item" v-for="(item, index) in tagscatoies.categories" :key="index">
               <Tag :color="item.color" @click="nav('/c/' + item.href + '/1')">
                 {{ item.text }}
               </Tag>
@@ -135,7 +118,7 @@ function voteEssay(voteType: DataType.VoteType) {
               </el-icon>
               <span>标签：</span>
             </div>
-            <div class="item" v-for="(item, index) in tagsCategories.tags" :key="index">
+            <div class="item" v-for="(item, index) in tagscatoies.tags" :key="index">
               <Tag :color="item.color" @click="nav('/t/' + item.text)">
                 {{ item.text }}
               </Tag>

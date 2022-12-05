@@ -46,11 +46,8 @@ function fetchData(categoryId: any, index: number, calc: boolean) {
   }
 }
 
-if (props.type === "Category") {
-  fetchData(props.categoryId, props.categoryPage, true);
-} else if (props.type === "Home") {
-  fetchData(false, 1, false);
-}
+if (props.type === "Category") fetchData(props.categoryId, props.categoryPage, true);
+else if (props.type === "Home") fetchData(false, 1, false);
 
 function nav(path: string, out?: boolean) {
   if (out) window.open(path, "__blank");
