@@ -5,7 +5,7 @@ const routes = [
   {
     name: RouteName.HOME,
     path: "/",
-    component: () => import("./fragments/Common.vue")
+    component: () => import("./fragments/Home.vue")
   },
   {
     name: RouteName.ESSAY,
@@ -15,7 +15,7 @@ const routes = [
   {
     name: RouteName.CATEGORY,
     path: "/c/:id/:page",
-    component: () => import("./fragments/Common.vue")
+    component: () => import("./fragments/Category.vue")
   },
   {
     name: RouteName.TAG_PAGE,

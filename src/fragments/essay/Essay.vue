@@ -34,10 +34,10 @@ API.getEssay(postId, (res) => {
   });
 });
 
-let fontSize = ref(18);
+let fontSize = ref(19);
 
 function zoomIn() {
-  fontSize.value >= 19 ? (fontSize.value = 17) : fontSize.value++;
+  fontSize.value >= 24 ? (fontSize.value = 16) : fontSize.value++;
 }
 
 /**
@@ -144,7 +144,7 @@ function voteEssay(voteType: DataType.VoteType) {
         </div>
         <div class="essay-content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code="true"
              v-html="essay?.content" />
-        <el-divider style="margin-bottom: 10px" border-style="dashed" />
+        <el-divider style="margin: 50px 0 0 30px" border-style="dashed" />
         <div class="tail-info">
           <div class="date">
             <el-icon>
@@ -238,6 +238,8 @@ pre {
   box-sizing: border-box;
 
   code {
+    font-family: Consolas, monospace;
+    font-weight: 300;
     font-size: 15px;
     margin: 0 !important;
     border-radius: 6px;
@@ -258,7 +260,7 @@ pre {
     &,
     span {
       line-height: 1.4;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.4px;
       word-break: break-all;
     }
   }
@@ -358,9 +360,6 @@ code {
 @import "../../scss/mixins";
 
 $color: #a7a7a7;
-$title-size: 26px;
-$comm-brief-size: 13px;
-$comm-body-size: 16px;
 
 .essay {
   color: $color;
@@ -373,7 +372,7 @@ $comm-body-size: 16px;
     line-height: 1.3;
     color: $color !important;
     word-break: break-all;
-    font-size: $title-size;
+    font-size: 27px;
   }
 
   .head-info {
@@ -415,8 +414,8 @@ $comm-body-size: 16px;
   }
 
   .prev-next {
-    margin: 25px 0;
     font-size: 16px;
+    margin-top: 40px;
 
     a {
       color: #878787;
@@ -450,7 +449,7 @@ $comm-body-size: 16px;
 
   .head-info, .tail-info {
     font-size: 14px;
-    margin-top: 10px;
+    margin-top: 20px;
 
     div:last-child {
       margin-right: 0 !important;

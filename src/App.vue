@@ -8,7 +8,7 @@
     <div id="app-vessel">
       <router-view v-slot="{ Component }">
         <Transition name="fade">
-          <KeepAlive :exclude="['Essay']">
+          <KeepAlive :exclude="['Essay', 'Category', 'MyTags', 'TagPage']">
             <component :is="Component" />
           </KeepAlive>
         </Transition>

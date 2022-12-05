@@ -1,35 +1,44 @@
 <script setup lang="ts">
-import { onActivated, onDeactivated, ref } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { PropType, ref } from "vue";
+import { useRouter } from "vue-router";
 import * as Api from "../utils/api";
 import * as DataType from "../types/data-type";
 
+const props = defineProps({
+  type: {
+    type: String as PropType<"Category" | "Home">,
+    required: true
+  },
+  categoryId: {
+    type: Object as PropType<any>
+  },
+  categoryPage: {
+    type: Object as PropType<any>
+  }
+});
+
 const router = useRouter();
-const route = useRoute();
 
 let loading = ref(true);
-let essayList = ref<Array<DataType.Essay>>();
+let essays = ref<Array<DataType.Essay>>();
+let categories = ref();
 let pages = ref();
 let currentIndex = ref(1);
 let pageCount = ref(0);
 let calcPage = ref(false);
-let category = ref();
-
-let categoryId: any = route.params.id;
-let categoryPage: any = route.params.page;
 
 function fetchData(categoryId: any, index: number, calc: boolean) {
   if (categoryId) {
     Api.getCategories(categoryId, calc, index, res => {
-      category.value = res.category;
-      essayList.value = res.list;
+      categories.value = res.category;
+      essays.value = res.list;
       pages.value = res.pages;
       if (calc) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
       loading.value = false;
     });
   } else {
     Api.getEssayList(index, calc, res => {
-      essayList.value = res.list;
+      essays.value = res.list;
       pages.value = res.pages;
       if (calc) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
       loading.value = false;
@@ -37,17 +46,11 @@ function fetchData(categoryId: any, index: number, calc: boolean) {
   }
 }
 
-onActivated(() => {
-  if (categoryId) {
-    fetchData(categoryId, categoryPage, true);
-  } else {
-    fetchData(false, 1, false);
-  }
-})
-
-onDeactivated(() => {
-  console.log('onDeactivated');
-})
+if (props.type === "Category") {
+  fetchData(props.categoryId, props.categoryPage, true);
+} else if (props.type === "Home") {
+  fetchData(false, 1, false);
+}
 
 function nav(path: string, out?: boolean) {
   if (out) window.open(path, "__blank");
@@ -59,18 +62,18 @@ function floatSorterChange(direction: "left" | "right") {
   if (direction === "right") currentIndex.value++;
   else if (direction === "left") currentIndex.value--;
   pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
-  fetchData(categoryId, currentIndex.value, calcPage.value);
+  fetchData(props.categoryId, currentIndex.value, calcPage.value);
 }
 
 function fixedSorterChange() {
   loading.value = true;
   pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
-  fetchData(categoryId, currentIndex.value, calcPage.value);
+  fetchData(props.categoryId, currentIndex.value, calcPage.value);
 }
 </script>
 
 <template>
-  <div class="home">
+  <div class="common">
     <div class="resume">
       <div class="modal"></div>
       <img loading="lazy"
@@ -135,8 +138,8 @@ function fixedSorterChange() {
         </el-icon>
       </el-tooltip>
     </div>
-    <div class="category" v-if="category">{{ category }}</div>
-    <Card class="essay" v-for="(item, index) in essayList" :key="index" v-if="!loading" width="auto" padding="15px 25px"
+    <div class="category" v-if="categories">{{ categories }}</div>
+    <Card class="essay" v-for="(item, index) in essays" :key="index" v-if="!loading" width="auto" padding="15px 25px"
           margin="12px 10px 12px 10px">
       <div class="essay__vessel">
         <div class="packer">
@@ -196,7 +199,7 @@ $desc-size: 17px;
 $bottom-size: 16px;
 $margin: 3px;
 
-.home {
+.common {
   position: relative;
 
   .float-sorter {
