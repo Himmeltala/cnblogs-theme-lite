@@ -115,7 +115,12 @@ export interface LiteConfigType {
   blogId?: number;
   isLogined?: boolean;
   isBlogOwner?: boolean;
+  leftSide?: {
+    avatar?: string;
+    signature?: string;
+  },
   board?: {
+    color?: string;
     height?: string;
     display?: boolean; signature?: string;
     bg?: string; blur?: string;
@@ -128,8 +133,6 @@ export interface LiteConfigType {
     };
     floating?: { label?: string; text?: string; }[];
   },
-  navor?: { displayName?: boolean; displaySearch?: boolean; navs?: { href?: string; text?: string; svg?: string; img?: string; }[] }
+  navor?: { header?: string; displaySearch?: boolean; navs?: { href: string; text: string; svg?: string; img?: string; }[] }
   github?: string;
-  gitee?: string;
-  bilibili?: string;
 }

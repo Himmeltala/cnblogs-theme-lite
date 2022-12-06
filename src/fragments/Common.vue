@@ -219,7 +219,7 @@ $border-radius: 6px;
 
 .category {
   font-size: 20px;
-  margin: 10px 20px;
+  margin: 10px 12px;
 }
 
 .essay {
@@ -253,7 +253,7 @@ $border-radius: 6px;
 
             .title {
               cursor: pointer;
-              font-size: 22px;
+              font-size: 20px;
               letter-spacing: 1px;
 
               @include ahover();
@@ -261,7 +261,7 @@ $border-radius: 6px;
 
             .desc {
               color: #878787;
-              padding: 10px 0 25px 0;
+              padding: 10px 0 15px 0;
               font-size: 17px;
               letter-spacing: 0.6px;
             }
@@ -281,6 +281,7 @@ $border-radius: 6px;
         }
 
         .browse {
+          font-size: 14px;
           @include flex($justify: flex-start);
           margin: 15px 0;
 
@@ -295,7 +296,7 @@ $border-radius: 6px;
         }
 
         .bottom {
-          font-size: 16px;
+          font-size: 14px;
           @include flex($justify: flex-end);
         }
       }

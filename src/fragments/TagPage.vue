@@ -83,6 +83,7 @@ Api.getTagPageList(String(route.params.tag), res => {
       }
 
       .browse {
+        font-size: 14px;
         margin-top: 20px;
         @include flex($justify: flex-start);
 
@@ -97,6 +98,7 @@ Api.getTagPageList(String(route.params.tag), res => {
       }
 
       .desc {
+        font-size: 14px;
         word-break: break-all;
         margin-top: 20px;
       }

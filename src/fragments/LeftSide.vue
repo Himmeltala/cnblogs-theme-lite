@@ -2,7 +2,9 @@
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import * as Api from "../utils/api";
+import Config from "../config";
 
+const sideConfig = Config.__LITE_CONFIG__.leftSide;
 const route = useRoute();
 const router = useRouter();
 
@@ -40,6 +42,10 @@ Api.getSideBlogerInfo(res => {
       <Card padding="1px 20px">
         <SideItem class="bloger" text="博客信息">
           <div class="bloger__packer">
+            <div v-if="sideConfig?.avatar" class="avatar">
+              <img alt="FAILED" style="width: 80px; height: 80px; border-radius: 50px"
+                   :src="sideConfig?.avatar" />
+            </div>
             <div class="item" v-for="(item, index) in bloger" :key="index">
               <div class="text" @click="nav(item.href, true)">
                 <div v-if="index === 0">
@@ -71,6 +77,7 @@ Api.getSideBlogerInfo(res => {
             <div class="bloger-data">
               <span v-for="(item, index) in blogInfo" :key="index">{{ item }}</span>
             </div>
+            <div v-if="sideConfig?.signature" class="signature" v-html="sideConfig.signature" />
           </div>
         </SideItem>
         <SideItem class="my-essay" text="我的随笔">
@@ -84,7 +91,9 @@ Api.getSideBlogerInfo(res => {
           <div class="my-tags__packer">
             <div class="item" v-for="(item, index) in tags" :key="index">
               <div class="text" @click="nav('/t/' + item.id)">
-                {{ item.text }}
+                <Tag>
+                  {{ item.text }}
+                </Tag>
               </div>
             </div>
           </div>
@@ -140,17 +149,28 @@ Api.getSideBlogerInfo(res => {
   }
 
   .bloger {
+    .avatar {
+      margin: 20px 0;
+      @include flex();
+    }
+
     .bloger-data {
+      font-size: 14px;
       margin-top: 30px;
       letter-spacing: 1px;
       line-height: 1.4;
+    }
+
+    .signature {
+      margin-top: 20px;
+      text-align: center;
     }
   }
 
   .my-essay, .bloger, .my-tags, .my-toplist {
     .item {
+      font-size: 14px;
       word-break: break-all;
-      margin: 15px 0;
 
       .text {
         cursor: pointer;
@@ -167,9 +187,21 @@ Api.getSideBlogerInfo(res => {
     }
   }
 
-  .my-tags {
+  .bloger {
     .item {
       margin: 10px 0;
+    }
+  }
+
+  .my-essay, .my-toplist {
+    .item {
+      margin: 15px 0;
+    }
+  }
+
+  .my-tags {
+    .item {
+      margin: 5px 0;
     }
   }
 }

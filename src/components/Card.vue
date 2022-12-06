@@ -4,17 +4,20 @@ defineProps({
     default: "10px 20px"
   },
   width: {
-    default: "100%"
+    default: ""
   },
   height: {
     default: "100%"
   },
-  margin: {}
+  margin: {
+    default: ""
+  }
 });
 </script>
 
 <template>
-  <div class="card" :style="{ padding: padding, width: width, height: height, 'margin': margin ? margin : '' }">
+  <div class="card"
+       :style="{ padding: padding, 'width': width ? width : '', height: height, 'margin': margin ? margin : '' }">
     <slot />
   </div>
 </template>

@@ -17,9 +17,8 @@ const route = useRoute();
 const router = useRouter();
 
 function nav(path: string, out?: boolean) {
-  if (out) {
-    window.open(path, "__blank");
-  } else router.push(path);
+  if (out) window.open(path, "__blank");
+  else router.push(path);
 }
 
 let form = ref<DataType.Comment>({ postId: props.postId, parentCommentId: 0, content: "" });
@@ -367,6 +366,7 @@ function replayComment(comment: DataType.Comment) {
   }
 
   textarea {
+    font-family: sans-serif;
     border: none;
     background-color: #202020;
     width: 100%;
@@ -420,7 +420,7 @@ function replayComment(comment: DataType.Comment) {
   }
 
   .item:last-child {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 
   .header {

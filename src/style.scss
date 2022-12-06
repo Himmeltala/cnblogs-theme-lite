@@ -1,6 +1,7 @@
 :root,
 body {
   font-weight: 300;
+  font-family: sans-serif;
   background-color: #191919;
   padding: 0;
   margin: 0;
@@ -47,8 +48,10 @@ a:active {
 
 .el-button {
   span {
+    font-family: sans-serif;
   }
 }
 
 .el-input__inner {
+  font-family: sans-serif;
 }

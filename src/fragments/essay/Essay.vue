@@ -61,7 +61,7 @@ function voteEssay(voteType: DataType.VoteType) {
 
 <template>
   <div class="essay">
-    <Card class="essay__packer" padding="20px 20px">
+    <Card class="essay__packer" padding="20px 20px" margin="0 10px 12px 10px">
       <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="holeSkeleton" />
       <div v-if="!holeSkeleton">
         <el-page-header :icon="ArrowLeft" @back="nav('/')">
@@ -225,7 +225,7 @@ pre {
   box-sizing: border-box;
 
   code {
-    font-family: Consolas, monospace;
+    font-family: Consolas, serif;
     font-weight: 300;
     font-size: 15px;
     margin: 0 !important;
@@ -246,17 +246,17 @@ pre {
 
     &,
     span {
-      line-height: 1.4;
-      letter-spacing: 1.4px;
+      line-height: 1.3;
+      letter-spacing: 1px;
       word-break: break-all;
     }
   }
 }
 
 code {
+  font-family: Consolas, serif;
   font-size: 14px;
   font-weight: 300;
-  font-family: sans-serif, monospace;
   background: #2e2e2e;
   color: var(--el-color-danger-light-3);
   padding: 3px 6px;
@@ -272,7 +272,7 @@ code {
   font-size: 13px;
   color: #6d6d6d;
   font-weight: 300;
-  font-family: sans-serif, monospace;
+  font-family: sans-serif;
   position: absolute;
   right: 4px;
   top: 0;
@@ -285,8 +285,6 @@ code {
 }
 
 .essay-content {
-  font-family: sans-serif, monospace;
-
   @mixin font() {
     letter-spacing: 1.2px;
     word-break: break-all;

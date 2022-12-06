@@ -15,10 +15,8 @@ defineProps({
 
 <style scoped lang="scss">
 h3 {
-  display: block;
   margin: 20px 0;
   font-size: 20px;
-  font-weight: inherit;
   text-align: left;
   border-left: 4px solid var(--el-color-primary);
   border-radius: 4px;

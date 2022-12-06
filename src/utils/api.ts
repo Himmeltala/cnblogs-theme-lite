@@ -13,7 +13,6 @@ import * as Parser from "./parser";
 import * as DataType from "../types/data-type";
 import * as HttpType from "../types/http-type";
 import Config from "../config";
-import { BlogerInfo } from "../types/data-type";
 
 const BASE_URL = Config.api.base;
 

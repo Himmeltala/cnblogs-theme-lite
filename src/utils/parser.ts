@@ -258,9 +258,9 @@ export function parseTagPageList(realDom: any): DataType.TagPage {
       title: $(e).text().trim(),
       href: $(e).attr("href"),
       date: $(describe[i]).text().match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g)![0],
-      viewCount: $(describe[i]).find(".post-view-count").text().split(":")[1],
-      commCount: $(describe[i]).find(".post-comment-count").text().split(":")[1],
-      diggCount: $(describe[i]).find(".post-digg-count").text().split(":")[1]
+      view: $(describe[i]).find(".post-view-count").text().split(":")[1],
+      comm: $(describe[i]).find(".post-comment-count").text().split(":")[1],
+      digg: $(describe[i]).find(".post-digg-count").text().split(":")[1]
     };
   });
 

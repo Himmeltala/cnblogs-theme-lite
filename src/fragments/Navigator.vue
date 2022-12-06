@@ -16,14 +16,13 @@ function search() {
   window.open(`https://zzk.cnblogs.com/s?w=blog:${Config.__LITE_CONFIG__.blogName}%${input.value}`, "__blank");
 }
 
-let navor = Config.__LITE_CONFIG__.navor;
+const navor = Config.__LITE_CONFIG__.navor;
 </script>
 
 <template>
   <div class="navigator"
-       :style="{'justify-content': navor?.displayName ? 'space-between': 'flex-end'}">
-    <div v-show="navor?.displayName" class="author" @click="nav('/')">
-      {{ Config.__LITE_CONFIG__.blogName }}
+       :style="{'justify-content': navor?.header ? 'space-between': 'flex-end'}">
+    <div v-if="navor?.header" v-html="navor.header" class="header" @click="nav('/')">
     </div>
     <div class="menus">
       <div v-if="navor?.displaySearch" class="item search">
@@ -82,9 +81,10 @@ svg {
   border-radius: 0 0 6px 6px;
   @include flex();
 
-  .author {
+  .header {
+    color: #878787;
     font-weight: 400;
-    font-size: 30px;
+    font-size: 15px;
     @include flex();
     @include ahover();
   }

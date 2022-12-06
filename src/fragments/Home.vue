@@ -8,15 +8,16 @@ let blur = ref(board?.blur ? board.blur : "1px");
 
 <template>
   <div class="home">
-    <div class="resume" v-if="board && board.display" :style="{'height': board.height ? borad.height : '150px'}">
+    <div class="resume" v-if="board && board.display"
+         :style="{'height': board.height ? board.height : '150px', 'color': board.color ? board.color: '#2b2b2b'}">
       <div class="modal"></div>
       <img loading="lazy" :src="board.bg ? board.bg : ''" alt="FAILED" />
-      <div class="panel">
+      <div class="panel" :style="{'color': board.color ? board.color: '#2b2b2b'}">
         <div class="prime">
           <el-image
             style="width: 80px; height: 80px; border-radius: 50px" fit="cover" :src="board.avatar"></el-image>
           <div class="prime__packer">
-            <div class="username">
+            <div class="username" :style="{'color': board.color ? board.color: '#2b2b2b'}">
               <span class="text">{{ Config.__LITE_CONFIG__.blogName }}</span>
               <span class="tag">
                 <el-tag :type="board.tag?.type ? board.tag.type : 'success'" effect="plain"
@@ -24,10 +25,12 @@ let blur = ref(board?.blur ? board.blur : "1px");
                         :round="board.tag?.round"> {{ board.tag?.text ? board.tag.text : "摸鱼中..." }} </el-tag>
               </span>
             </div>
-            <div class="signature">签名：{{ board.signature ? board.signature : "这个人很懒，什么也没有留下。" }}</div>
+            <div :style="{'color': board.color ? board.color: '#2b2b2b'}" v-if="board.signature" class="signature">签名：<span
+              v-html="board.signature" /></div>
           </div>
         </div>
-        <div class="floating" v-if="board.floating && board.floating.length > 0">
+        <div :style="{'color': board.color ? board.color: '#2b2b2b'}" class="floating"
+             v-if="board.floating && board.floating.length > 0">
           <div v-for="(item, index) in board.floating" :key="index">{{ item.label }}：{{ item.text }}</div>
         </div>
       </div>
@@ -43,7 +46,6 @@ let blur = ref(board?.blur ? board.blur : "1px");
   box-sizing: border-box;
   margin: 0 10px 12px 10px;
   position: relative;
-  width: 100%;
   border-radius: 6px;
 
   .modal,
