@@ -337,7 +337,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
       </div>
     </div>
     <el-empty v-if="Config.__LITE_CONFIG__.isLogined && !comments?.length" description="没有评论，来一条友善的评论吧🤨" />
-    <el-empty v-else description="你没有登录所以看不到评论哦~" />
+    <el-empty v-if="!Config.__LITE_CONFIG__.isLogined" description="你没有登录所以看不到评论哦~" />
   </div>
 </template>
 
@@ -448,7 +448,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
     .brief {
       color: var(--el-text-color-placeholder);
       @include flex($justify: flex-start);
-      font-size: 15px;
+      font-size: 13px;
       margin-top: 8px;
 
       .layer {
@@ -474,8 +474,9 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
     }
 
     & > div + div + div {
+      color: var(--el-text-color-placeholder);
       cursor: pointer;
-      font-size: 14px;
+      font-size: 13px;
       @include flex($justify: flex-end);
 
       .replay > div,
