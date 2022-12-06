@@ -115,8 +115,20 @@ export interface LiteConfigType {
   blogId?: number;
   isLogined?: boolean;
   isBlogOwner?: boolean;
-  board?: { display?: boolean; signature?: string; tag?: string; qq?: string; email?: string; company?: string; },
-  navor: { displayName?: boolean; displaySearch?: boolean; navs?: { href?: string; text?: string; svg?: string; img?: string; }[] }
+  board?: {
+    height?: string;
+    display?: boolean; signature?: string;
+    bg?: string; blur?: string;
+    avatar?: string;
+    tag?: {
+      text?: string;
+      color?: string;
+      type?: "success" | "info" | "warning" | "danger",
+      round?: boolean;
+    };
+    floating?: { label?: string; text?: string; }[];
+  },
+  navor?: { displayName?: boolean; displaySearch?: boolean; navs?: { href?: string; text?: string; svg?: string; img?: string; }[] }
   github?: string;
   gitee?: string;
   bilibili?: string;

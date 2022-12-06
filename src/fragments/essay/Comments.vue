@@ -373,7 +373,6 @@ function replayComment(comment: DataType.Comment) {
     outline: none;
     border-radius: 8px;
     box-sizing: border-box;
-    font-family: font1;
     font-weight: 300;
     color: #a7a7a7;
     padding: 10px;

@@ -10,10 +10,10 @@ const props = defineProps({
     type: String as PropType<"Category" | "Home">,
     required: true
   },
-  categoryId: {
+  id: {
     type: String
   },
-  categoryPage: {
+  page: {
     type: String
   }
 });
@@ -28,14 +28,14 @@ let currentIndex = ref(1);
 let pageCount = ref(0);
 let calcPage = ref(false);
 
-watch(() => props.categoryId, () => {
+watch(() => props.id, () => {
   loading.value = true;
-  fetchData(props.categoryId, 1, true);
+  fetchData(props.id, 1, true);
 });
 
-function fetchData(categoryId: any, index: number, calc: boolean, complete?: Function) {
-  if (categoryId) {
-    Api.getCategories(categoryId, calc, index, res => {
+function fetchData(id: any, index: number, calc: boolean, complete?: Function) {
+  if (id) {
+    Api.getCategories(id, calc, index, res => {
       categories.value = res.category;
       essays.value = res.list;
       pages.value = res.pages;
@@ -55,7 +55,7 @@ function fetchData(categoryId: any, index: number, calc: boolean, complete?: Fun
 }
 
 if (props.type === "Category") {
-  fetchData(props.categoryId, parseInt(props.categoryPage!), true, () => {
+  fetchData(props.id, parseInt(props.page!), true, () => {
     manageLoader();
   });
 } else if (props.type === "Home") {
@@ -74,45 +74,18 @@ function floatSorterChange(direction: "left" | "right") {
   if (direction === "right") currentIndex.value++;
   else if (direction === "left") currentIndex.value--;
   pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
-  fetchData(props.categoryId, currentIndex.value, calcPage.value);
+  fetchData(props.id, currentIndex.value, calcPage.value);
 }
 
 function fixedSorterChange() {
   loading.value = true;
   pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
-  fetchData(props.categoryId, currentIndex.value, calcPage.value);
+  fetchData(props.id, currentIndex.value, calcPage.value);
 }
 </script>
 
 <template>
   <div class="common">
-    <div class="resume">
-      <div class="modal"></div>
-      <img loading="lazy"
-           src="https://img2.baidu.com/it/u=3208290999,1116912473&fm=253&fmt=auto&app=120&f=JPEG?w=862&h=500" alt="" />
-      <div class="panel">
-        <div class="prime">
-          <el-image
-            style="width: 80px; height: 80px; border-radius: 50px"
-            fit="cover"
-            src="https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/1934022/t_221121082134_QQ%E5%9B%BE%E7%89%8720221121162116.jpg"></el-image>
-          <div class="prime__packer">
-            <div class="username">
-              <span class="text">Enziandom</span>
-              <span class="tag">
-                <el-tag type="success" effect="plain" round> 摸鱼中... </el-tag>
-              </span>
-            </div>
-            <div class="signature">个签：Time tick away, dream faded away!</div>
-          </div>
-        </div>
-        <div class="floating">
-          <div>QQ：1282957580</div>
-          <div>Email：enziandom@qq.com</div>
-          <div>公司：中二病会社</div>
-        </div>
-      </div>
-    </div>
     <div class="pagination pg-top" v-if="currentIndex > 1 && pageCount > 1">
       <el-pagination
         @current-change="fixedSorterChange"
@@ -151,34 +124,39 @@ function fixedSorterChange() {
       </el-tooltip>
     </div>
     <div class="category" v-if="categories">{{ categories }}</div>
-    <Card class="essay" v-for="(item, index) in essays" :key="index" v-if="!loading" width="auto" padding="15px 25px"
-          margin="12px 10px 12px 10px">
-      <div class="essay__vessel">
-        <div class="packer">
-          <div class="header">
-            <el-image v-if="index % 2 !== 0 && item.surface" class="cover" :src="item.surface" fit="cover" />
-            <div class="header__middle" :class="{ 'nocover': !item.surface }">
-              <div class="title" @click="nav('/e/' + item.id)">{{ item.text }}</div>
-              <div class="desc">{{ item.desc }}</div>
+    <div class="essay">
+      <Card class="item"
+            v-for="(item, index) in essays" :key="index"
+            v-if="!loading"
+            width="auto"
+            padding="15px 25px">
+        <div class="essay__vessel">
+          <div class="packer">
+            <div class="header">
+              <el-image v-if="index % 2 !== 0 && item.surface" class="cover" :src="item.surface" fit="cover" />
+              <div class="header__middle" :class="{ 'nocover': !item.surface }">
+                <div class="title" @click="nav('/e/' + item.id)">{{ item.text }}</div>
+                <div class="desc">{{ item.desc }}</div>
+              </div>
+              <el-image v-if="index % 2 === 0 && item.surface" class="cover" :src="item.surface" fit="cover" />
             </div>
-            <el-image v-if="index % 2 === 0 && item.surface" class="cover" :src="item.surface" fit="cover" />
-          </div>
-          <div class="browse">
-            <el-icon>
-              <CaretRight />
-            </el-icon>
-            <router-link :to="'/e/' + item.id">阅读全文</router-link>
-          </div>
-          <div class="bottom">
-            <EssayBottomData
-              :data="{date: item.date,
+            <div class="browse">
+              <el-icon>
+                <CaretRight />
+              </el-icon>
+              <router-link :to="'/e/' + item.id">阅读全文</router-link>
+            </div>
+            <div class="bottom">
+              <EssayBottomData
+                :data="{date: item.date,
                view: item.view,
                 comm: item.comm,
                  digg: item.digg}" />
+            </div>
           </div>
         </div>
-      </div>
-    </Card>
+      </Card>
+    </div>
     <div class="right-sorter float-sorter" v-if="(pageCount > 1 || pageCount === 0) && currentIndex !== pageCount"
          @click="floatSorterChange('right')">
       <el-tooltip
@@ -207,10 +185,6 @@ function fixedSorterChange() {
 @import "../scss/mixins.scss";
 
 $border-radius: 6px;
-$title-size: 22px;
-$desc-size: 17px;
-$bottom-size: 16px;
-$margin: 3px;
 
 .common {
   position: relative;
@@ -243,157 +217,87 @@ $margin: 3px;
   }
 }
 
-.resume {
-  margin: 0 5px 0 5px;
-  position: relative;
-  width: 100%;
-  height: 150px;
-  border-radius: 6px;
-
-  .modal,
-  .panel {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 6px;
-  }
-
-  .modal {
-    backdrop-filter: saturate(50%) blur(1px);
-    background: rgba(36, 36, 36, 0.6);
-  }
-
-  .panel {
-    font-family: font1;
-    color: #bcbcbc;
-    padding: 15px;
-    box-sizing: border-box;
-    font-weight: 400;
-    z-index: 999;
-
-    .prime {
-      @include flex($justify: flex-start);
-
-      .prime__packer {
-        margin-left: 15px;
-
-        .username {
-          margin-bottom: 4px;
-          font-size: 20px;
-          @include flex($justify: flex-start);
-
-          .text {
-            margin-right: 10px;
-          }
-        }
-
-        .signature {
-          font-size: 15px;
-        }
-      }
-    }
-
-    .floating {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      font-size: 15px;
-
-      div {
-        margin-bottom: 4px;
-      }
-    }
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    border-radius: 6px;
-    object-fit: cover;
-  }
-}
-
 .category {
   font-size: 20px;
   margin: 10px 20px;
 }
 
 .essay {
-  padding: 15px 25px;
-  margin: 12px 10px 12px 10px;
-
-  &:first-child {
-    margin: 0 5px 0 5px !important;
+  .item:nth-child(1) {
+    margin: 0 10px 12px 10px;
   }
 
-  .essay__vessel {
-    @include flex($justify: space-between, $wrap: nowrap);
+  .item {
+    padding: 15px 25px;
+    margin: 12px 10px 12px 10px;
 
-    .cover {
-      border-radius: $border-radius;
-      width: 25%;
-      height: 150px;
-    }
+    .essay__vessel {
+      @include flex($justify: space-between, $wrap: nowrap);
 
-    .packer {
-      .nocover {
-        width: 100% !important;
+      .cover {
+        border-radius: $border-radius;
+        width: 25%;
+        height: 150px;
       }
 
-      .header {
-        @include flex($justify: space-between);
+      .packer {
+        .nocover {
+          width: 100% !important;
+        }
 
-        .header__middle {
-          width: 73%;
+        .header {
+          @include flex($justify: space-between);
 
-          .title {
-            cursor: pointer;
-            font-size: $title-size;
-            letter-spacing: 1px;
+          .header__middle {
+            width: 73%;
 
-            @include ahover();
+            .title {
+              cursor: pointer;
+              font-size: 22px;
+              letter-spacing: 1px;
+
+              @include ahover();
+            }
+
+            .desc {
+              color: #878787;
+              padding: 10px 0 25px 0;
+              font-size: 17px;
+              letter-spacing: 0.6px;
+            }
+
+            .title,
+            .desc {
+              word-break: break-all;
+              line-height: 1.4;
+            }
           }
 
-          .desc {
-            color: #878787;
-            padding: 10px 0 25px 0;
-            font-size: $desc-size;
-            letter-spacing: 0.6px;
-          }
-
-          .title,
-          .desc {
-            word-break: break-all;
-            line-height: 1.4;
+          .cover {
+            border-radius: $border-radius;
+            width: 25%;
+            height: 160px;
           }
         }
 
-        .cover {
-          border-radius: $border-radius;
-          width: 25%;
-          height: 160px;
-        }
-      }
+        .browse {
+          @include flex($justify: flex-start);
+          margin: 15px 0;
 
-      .browse {
-        @include flex($justify: flex-start);
-        margin: 15px 0;
+          a {
+            margin-left: 3px;
+            border-bottom: 1px dotted #cccccc;
 
-        a {
-          margin-left: $margin;
-          border-bottom: 1px dotted #cccccc;
-
-          @include ahover() {
-            border-bottom: 1px dotted var(--el-color-primary);
+            @include ahover() {
+              border-bottom: 1px dotted var(--el-color-primary);
+            }
           }
         }
-      }
 
-      .bottom {
-        font-size: $bottom-size;
-        @include flex($justify: flex-end);
+        .bottom {
+          font-size: 16px;
+          @include flex($justify: flex-end);
+        }
       }
     }
   }

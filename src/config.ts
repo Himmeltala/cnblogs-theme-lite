@@ -15,8 +15,8 @@ if (!devEnv(DEV_EN)) {
 } else {
   __LITE_CONFIG__ = {
     blogName: "Enziandom",
-    github: "https://www.github.com/enziandom",
-    gitee: "https://www.gitee.com/enziandom",
+    github: "https://github.com/Enziandom",
+    gitee: "https://gitee.com/Enziandom",
     bilibili: "https://space.bilibili.com/7021686",
     navor: {
       displaySearch: true,
@@ -43,7 +43,6 @@ if (!devEnv(DEV_EN)) {
   };
 }
 
-// 导出配置对象，在项目中使用
 const Config = {
   __LITE_CONFIG__,
   api: {

@@ -15,16 +15,18 @@ let input = ref("");
 function search() {
   window.open(`https://zzk.cnblogs.com/s?w=blog:${Config.__LITE_CONFIG__.blogName}%${input.value}`, "__blank");
 }
+
+let navor = Config.__LITE_CONFIG__.navor;
 </script>
 
 <template>
   <div class="navigator"
-       :style="{'justify-content': Config.__LITE_CONFIG__.navor.displayName ? 'space-between': 'flex-end'}">
-    <div v-show="Config.__LITE_CONFIG__.navor.displayName" class="author" @click="nav('/')">
+       :style="{'justify-content': navor?.displayName ? 'space-between': 'flex-end'}">
+    <div v-show="navor?.displayName" class="author" @click="nav('/')">
       {{ Config.__LITE_CONFIG__.blogName }}
     </div>
     <div class="menus">
-      <div v-if="Config.__LITE_CONFIG__.navor.displaySearch" class="item search">
+      <div v-if="navor?.displaySearch" class="item search">
         <el-input @keyup.enter="search" v-model="input" class="w-50 m-2" placeholder="输入查询关键字">
           <template #prefix>
             <el-icon @click="search">
@@ -36,7 +38,8 @@ function search() {
       <div class="item" @click="nav('https://www.cnblogs.com', true)">博客园</div>
       <div class="item" @click="nav('/')">首页</div>
       <div class="item" @click="nav('/')">标签</div>
-      <div class="item navs" v-for="(item, index) in Config.__LITE_CONFIG__.navor.navs" :key="index">
+      <div v-if="navor?.navs" class="item navs"
+           v-for="(item, index) in navor.navs" :key="index">
         <div class="text" v-if="item.text" @click="nav(item.href, true)">{{ item.text }}</div>
         <div class="icon" v-else>
           <svg

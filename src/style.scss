@@ -1,7 +1,6 @@
 :root,
 body {
   font-weight: 300;
-  font-family: font1;
   background-color: #191919;
   padding: 0;
   margin: 0;
@@ -48,10 +47,8 @@ a:active {
 
 .el-button {
   span {
-    font-family: font1;
   }
 }
 
 .el-input__inner {
-  font-family: font1;
 }

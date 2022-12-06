@@ -4,21 +4,21 @@ import { ref, watch } from "vue";
 
 const router = useRouter();
 const route = useRoute();
-let categoryId = ref<string>();
-let categoryPage = ref<string>();
+let id = ref<string>();
+let page = ref<string>();
 
-categoryId.value = route.params.id as string;
-categoryPage.value = route.params.page as string;
+id.value = route.params.id as string;
+page.value = route.params.page as string;
 
 watch(route, () => {
-  categoryId.value = route.params.id as string;
-  categoryPage.value = route.params.page as string;
+  id.value = route.params.id as string;
+  page.value = route.params.page as string;
 });
 </script>
 
 <template>
   <div class="category">
-    <Common :type="'Category'" :category-id="categoryId" :category-page="categoryPage" />
+    <Common :type="'Category'" :id="id" :page="page" />
   </div>
 </template>
 
