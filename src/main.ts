@@ -7,9 +7,9 @@ import "element-plus/dist/index.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import "highlight.js/styles/atom-one-dark.css";
 import Directive from "./directive";
-import config from "./config";
+import Config from "./config";
 
-config.init();
+Config.init();
 
 const app = createApp(App);
 

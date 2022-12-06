@@ -12,10 +12,10 @@ import $ from "jquery";
 import * as Parser from "./parser";
 import * as DataType from "../types/data-type";
 import * as HttpType from "../types/http-type";
-import config from "../config";
+import Config from "../config";
 import { BlogerInfo } from "../types/data-type";
 
-const BASE_URL = config.api.base;
+const BASE_URL = Config.api.base;
 
 /**
  * 获取首页的随笔列表

@@ -1,5 +1,9 @@
+<script setup lang="ts">
+import Config from "../config";
+</script>
+
 <template>
-  <a href="http://www.github.com/enziandom" class="github-corner" title="GitHub" target="_blank">
+  <a :href="Config.__LITE_CONFIG__.github" class="github-corner" title="GitHub" target="_blank">
     <svg width="60" height="60" viewBox="0 0 250 250" style="color: #fff" aria-hidden="true">
       <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
       <path
