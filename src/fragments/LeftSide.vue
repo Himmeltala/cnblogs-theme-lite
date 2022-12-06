@@ -91,7 +91,7 @@ Api.getSideBlogerInfo(res => {
           <div class="my-tags__packer">
             <div class="item" v-for="(item, index) in tags" :key="index">
               <div class="text" @click="nav('/t/' + item.id)">
-                <Tag>
+                <Tag font-size="13px">
                   {{ item.text }}
                 </Tag>
               </div>

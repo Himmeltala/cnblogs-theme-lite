@@ -14,7 +14,7 @@ if (!devEnv(DEV_EN)) {
   __LITE_CONFIG__ = window["__LITE_CONFIG__"];
 } else {
   __LITE_CONFIG__ = {
-    blogName: "Enziandom",
+    currentBlogApp: "Enziandom",
     github: "https://github.com/Enziandom"
   };
 }
@@ -22,10 +22,10 @@ if (!devEnv(DEV_EN)) {
 const Config = {
   __LITE_CONFIG__,
   api: {
-    base: devEnv(DEV_EN) ? "/api" : `https://www.cnblogs.com/${__LITE_CONFIG__.blogName}`
+    base: devEnv(DEV_EN) ? "/api" : `https://www.cnblogs.com/${__LITE_CONFIG__.currentBlogApp}`
   },
   router: {
-    space: devEnv(DEV_EN) ? "" : `/${__LITE_CONFIG__.blogName}`
+    space: devEnv(DEV_EN) ? "" : `/${__LITE_CONFIG__.currentBlogApp}`
   },
   init: () => {
     $("body").append(`<div id="app"></div>`);

@@ -141,9 +141,9 @@ export function parseCommentPages(json: any): number {
  */
 export function parseEssayTagsAndCategories(strDOM: any): any {
   let list = <any>{ tags: [], categories: [] };
-  let _dom = parseStrToDom(strDOM);
+  let dom = parseStrToDom(strDOM);
 
-  $(_dom)
+  $(dom)
     .find("#BlogPostCategory > a")
     .map((i, d) => {
       list.categories[i] = {
@@ -152,7 +152,7 @@ export function parseEssayTagsAndCategories(strDOM: any): any {
       };
     });
 
-  $(_dom)
+  $(dom)
     .find("#EntryTag > a")
     .map((i, d) => {
       list.tags[i] = {
@@ -170,7 +170,6 @@ export function parseEssayTagsAndCategories(strDOM: any): any {
  */
 export function parsePrevNext(strDOM: any): any {
   let _dom = parseStrToDom(strDOM);
-
   let prevNext = { prev: {}, next: {} };
 
   $(_dom)
@@ -202,6 +201,7 @@ export function parsePrevNext(strDOM: any): any {
 export function parseCategoryList(realDOM: any, calcPage: boolean): { pages: string[]; category?: string; list: Array<DataType.Essay> } {
   let dom = $(realDOM).find(".entrylistItem");
   let pages: string[] = [];
+  let list: Array<DataType.Essay> = [];
 
   if (calcPage) {
     let pager = $($(realDOM).find(".pager")[0]).find("a");
@@ -221,8 +221,6 @@ export function parseCategoryList(realDOM: any, calcPage: boolean): { pages: str
   let view = record.match(/阅读\([0-9]+\)/g);
   let comm = record.match(/评论\([0-9]+\)/g);
   let digg = record.match(/推荐\([0-9]+\)/g);
-
-  let list: Array<DataType.Essay> = [];
 
   $(dom).each((i, e) => {
     let cover = $(e).find(".c_b_p_desc > .desc_img").attr("src");
@@ -246,10 +244,10 @@ export function parseCategoryList(realDOM: any, calcPage: boolean): { pages: str
   };
 }
 
-export function parseTagPageList(realDom: any): DataType.TagPage {
-  let title = $(realDom).find(".PostList > .postTitl2 > a");
-  let describe = $(realDom).find(".PostList > .postDesc2");
-  let tagTitle = $(realDom).find(".PostListTitle").text().trim();
+export function parseTagPageList(realDOM: any): DataType.TagPage {
+  let title = $(realDOM).find(".PostList > .postTitl2 > a");
+  let describe = $(realDOM).find(".PostList > .postDesc2");
+  let tagTitle = $(realDOM).find(".PostListTitle").text().trim();
   let list: any = [];
 
   $(title).each((i, e) => {
@@ -270,21 +268,16 @@ export function parseTagPageList(realDom: any): DataType.TagPage {
   };
 }
 
-export function parseSideCategories(strDom: string): any {
-  let dom = parseStrToDom(strDom);
+export function parseSideCategories(strDOM: string): any {
+  let dom = parseStrToDom(strDOM);
   let list: any = { categories: [], tags: [] };
 
-  let tagLi = $(dom).find("#sidebar_toptags ul li > a");
-  for (let i = 0; i < 21; i++) {
-    let uri = $(tagLi[i]).attr("href");
+  let tags = $(dom).find("#sidebar_toptags ul li > a");
+  for (let i = 0; i < $(tags).length; i++) {
+    let uri = $(tags[i]).attr("href");
     if (uri) {
-      let tag = decodeURI(uri).match(/\/tag\/[\d\w\s\u4e00-\u9fa5\n]+/g);
-      if (tag) {
-        list.tags[i] = {
-          id: tag[0].split("/")[2],
-          text: $(tagLi[i]).text()
-        };
-      }
+      let decode = decodeURI(uri).match(/\/tag\/[\d\w\s\u4e00-\u9fa5\n.\-|_]+/g);
+      if (decode) list.tags[i] = { id: decode[0].split("/")[2], text: $(tags[i]).text() };
     }
   }
 
@@ -296,28 +289,26 @@ export function parseSideCategories(strDom: string): any {
   return list;
 }
 
-export function parseSideBlogerInfo(strDom: string): Array<DataType.BlogerInfo> {
+export function parseSideBlogerInfo(strDOM: string): Array<DataType.BlogerInfo> {
   let list: Array<DataType.BlogerInfo> = [];
-  let a = $(strDom).find("#profile_block > a");
+  let a = $(strDOM).find("#profile_block > a");
   $(a).each((i, e) => {
     list.push({ text: $(e).text().trim(), href: $(e).attr("href")! });
   });
   return list;
 }
 
-export function parseBlogInfo(strDom: string): any {
+export function parseBlogInfo(strDOM: string): any {
   let list = <any>[];
-  $(parseStrToDom(strDom)).find("span").each((i, d) => {
-    if ($(d).attr("id")) {
-      list.push(TextUtils.regTrim($(d).text(), [/\n+/g]));
-    }
+  $(parseStrToDom(strDOM)).find("span").each((i, d) => {
+    if ($(d).attr("id")) list.push(TextUtils.regTrim($(d).text(), [/\n+/g]));
   });
   return list;
 }
 
-export function parseSideBlogTopList(strDom: string): any {
+export function parseSideBlogTopList(strDOM: string): any {
   let list = <any>[];
-  $(parseStrToDom(strDom)).find("#TopViewPostsBlock ul > li > a").each((i, e) => {
+  $(parseStrToDom(strDOM)).find("#TopViewPostsBlock ul > li > a").each((i, e) => {
     list.push({
       id: $(e).attr("href")?.match(/\/p\/\d+/g)![0].split("/")[2],
       text: TextUtils.regTrim($(e).text().trim(), [/\n+/g])

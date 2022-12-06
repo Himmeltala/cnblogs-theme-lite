@@ -2,6 +2,7 @@
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import * as Api from "../utils/api";
+import { manageLoader } from "../utils/loader";
 
 const route = useRoute();
 const router = useRouter();
@@ -10,20 +11,21 @@ let taglist = ref();
 let tagname = "";
 let loading = ref(true);
 
-watch(route, () => {
-  loading.value = true;
+function fetchTagPageList() {
   Api.getTagPageList(String(route.params.tag), res => {
     tagname = res.text;
     taglist.value = res.list;
     loading.value = false;
+    manageLoader();
   });
+}
+
+watch(route, () => {
+  loading.value = true;
+  fetchTagPageList();
 });
 
-Api.getTagPageList(String(route.params.tag), res => {
-  tagname = res.text;
-  taglist.value = res.list;
-  loading.value = false;
-});
+fetchTagPageList();
 </script>
 
 <template>

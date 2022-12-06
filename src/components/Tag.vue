@@ -2,12 +2,15 @@
 defineProps({
   color: {
     type: String
+  },
+  fontSize: {
+    type: String
   }
 });
 </script>
 
 <template>
-  <div class="tag">
+  <div class="tag" :style="{'font-size': fontSize ? fontSize : '12px'}">
     <slot />
   </div>
 </template>
@@ -17,7 +20,6 @@ defineProps({
   box-sizing: border-box;
   padding: 6px 8px;
   border-radius: 6px;
-  font-size: 12px;
   transition: 0.3s;
   border: {
     width: 1px;

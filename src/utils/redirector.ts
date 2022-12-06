@@ -10,7 +10,7 @@ export enum RouteName {
 const Reg = {
   ESSAY: /\/p\/\d+/g,
   CATEGORY: /\/category\/\d+/g,
-  TAG_PAGE: /\/tag\/[\d\w\s\u4e00-\u9fa5\n]+/g
+  TAG_PAGE: /\/tag\/[\d\w\s\u4e00-\u9fa5\n.\-|_]+/g
 };
 
 export function redirect(href: string): any {

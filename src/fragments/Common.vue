@@ -261,8 +261,8 @@ $border-radius: 6px;
 
             .desc {
               color: #878787;
-              padding: 10px 0 15px 0;
-              font-size: 17px;
+              padding: 10px 0 10px 0;
+              font-size: 16px;
               letter-spacing: 0.6px;
             }
 
@@ -283,7 +283,7 @@ $border-radius: 6px;
         .browse {
           font-size: 14px;
           @include flex($justify: flex-start);
-          margin: 15px 0;
+          margin: 15px 0 5px 0;
 
           a {
             margin-left: 3px;

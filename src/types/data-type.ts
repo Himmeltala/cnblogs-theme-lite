@@ -111,28 +111,24 @@ export interface BlogerInfo {
 }
 
 export interface LiteConfigType {
-  blogName?: string;
-  blogId?: number;
+  // 当前博客的名称
+  currentBlogApp?: string;
+  // 当前博客的 ID
+  currentBlogId?: number;
+  // 访问的用户是否已经登录？
   isLogined?: boolean;
+  // 是否为博客持有者？
   isBlogOwner?: boolean;
+  // 左侧边栏配置项
   leftSide?: {
     avatar?: string;
     signature?: string;
-  },
-  board?: {
-    color?: string;
-    height?: string;
-    display?: boolean; signature?: string;
-    bg?: string; blur?: string;
-    avatar?: string;
-    tag?: {
-      text?: string;
-      color?: string;
-      type?: "success" | "info" | "warning" | "danger",
-      round?: boolean;
-    };
-    floating?: { label?: string; text?: string; }[];
-  },
-  navor?: { header?: string; displaySearch?: boolean; navs?: { href: string; text: string; svg?: string; img?: string; }[] }
+  };
+  // 导航栏配置项
+  navor?: {
+    header?: string; displaySearch?: boolean;
+    navs?: { href: string; text: string; svg?: string; img?: string; }[]
+  };
+  // github 链接
   github?: string;
 }

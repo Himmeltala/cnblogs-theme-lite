@@ -4,19 +4,17 @@ import { useRouter } from "vue-router";
 import Config from "../config";
 
 const router = useRouter();
+const navor = Config.__LITE_CONFIG__.navor;
+let input = ref("");
 
 function nav(path: string, out?: boolean) {
   if (out) window.open(path, "__blank");
   else router.push(path);
 }
 
-let input = ref("");
-
 function search() {
-  window.open(`https://zzk.cnblogs.com/s?w=blog:${Config.__LITE_CONFIG__.blogName}%${input.value}`, "__blank");
+  window.open(`https://zzk.cnblogs.com/s?w=blog:${Config.__LITE_CONFIG__.currentBlogApp}%${input.value}`, "__blank");
 }
-
-const navor = Config.__LITE_CONFIG__.navor;
 </script>
 
 <template>

@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
+import Config from "../../config";
 import * as DataType from "../../types/data-type";
 import * as Native from "../../utils/native";
 import * as Api from "../../utils/api";
@@ -172,6 +173,34 @@ function updateComment(comment: DataType.Comment) {
   }
 }
 
+let reCommentBody = ref("");
+let lastReComment = ref();
+
+function replayComment(comment: DataType.Comment) {
+  comment.replayEditable = !comment.replayEditable;
+  if (lastReComment.value && lastReComment.value.commentId !== comment.commentId) lastReComment.value.replayEditable = false;
+  if (comment.updateEditable) comment.updateEditable = false;
+
+  if (!comment.replayEditable) {
+    Api.replayComment({
+      body: reCommentBody.value,
+      postId: props.postId,
+      parentCommentId: comment.commentId
+    }, (ajax: any) => {
+      fetchComment(ajax.isSuccess, {
+        message: "回复成功！😀",
+        success: res => comments.value = res
+      }, {
+        message: "回复失败！😑"
+      });
+    });
+  } else {
+    reCommentBody.value = "";
+    reCommentBody.value += `回复 ${comment.layer} [@${comment.author}](${comment.space})\n\n`;
+  }
+  lastReComment.value = comment;
+}
+
 function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
   Api.voteComment(
     {
@@ -192,34 +221,6 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
       });
     }
   );
-}
-
-let replayCommentBody = ref("");
-let lastReplayComment = ref();
-
-function replayComment(comment: DataType.Comment) {
-  comment.replayEditable = !comment.replayEditable;
-  if (lastReplayComment.value && lastReplayComment.value.commentId !== comment.commentId) lastReplayComment.value.replayEditable = false;
-  if (comment.updateEditable) comment.updateEditable = false;
-
-  if (!comment.replayEditable) {
-    Api.replayComment({
-      body: replayCommentBody.value,
-      postId: props.postId,
-      parentCommentId: comment.commentId
-    }, (ajax: any) => {
-      fetchComment(ajax.isSuccess, {
-        message: "回复成功！😀",
-        success: res => comments.value = res
-      }, {
-        message: "回复失败！😑"
-      });
-    });
-  } else {
-    replayCommentBody.value = "";
-    replayCommentBody.value += `回复 ${comment.layer} [@${comment.author}](${comment.space})\n\n`;
-  }
-  lastReplayComment.value = comment;
 }
 </script>
 
@@ -242,7 +243,11 @@ function replayComment(comment: DataType.Comment) {
       <div class="img-link__packer">
         <textarea id="img-link" />
       </div>
-      <el-button type="primary" :loading="loading" class="upload" @click="insertComment">发送评论
+      <el-button
+        type="primary" :disabled="!Config.__LITE_CONFIG__.isLogined" :loading="loading"
+        class="upload" @click="insertComment"
+      >
+        发送评论
       </el-button>
     </div>
     <h3>评论列表</h3>
@@ -270,7 +275,7 @@ function replayComment(comment: DataType.Comment) {
           <div class="replay-area">
             <textarea
               v-show="item.replayEditable"
-              v-model="replayCommentBody"
+              v-model="reCommentBody"
               placeholder="请回复一条友善的评论，支持 Markdown 语法" />
           </div>
           <div>
@@ -331,7 +336,8 @@ function replayComment(comment: DataType.Comment) {
           v-model:page-count="commentCount" />
       </div>
     </div>
-    <el-empty v-if="!comments?.length" description="没有评论，来一条友善的评论吧🤨也许是你没有登录所以看不到哦~" />
+    <el-empty v-if="Config.__LITE_CONFIG__.isLogined && !comments?.length" description="没有评论，来一条友善的评论吧🤨" />
+    <el-empty v-else description="你没有登录所以看不到评论哦~" />
   </div>
 </template>
 

@@ -157,12 +157,11 @@ export function getCommentList(postId: number | string, pageIndex: number, respo
 /**
  * 获取随笔的标签和分类
  *
- * @param blogId 在头部 script 标签中获取
  * @param postId 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
-export function getEssayTagsAndCategories(blogId: number, postId: number, response: (res: any) => void) {
-  axios.get(`${BASE_URL}/ajax/CategoriesTags.aspx?blogId=${blogId}&postId=${postId}`).then(({ data }) => {
+export function getEssayTagsAndCategories(postId: number, response: (res: any) => void) {
+  axios.get(`${BASE_URL}/ajax/CategoriesTags.aspx?blogId=${Config.__LITE_CONFIG__.currentBlogId}&postId=${postId}`).then(({ data }) => {
     response(Parser.parseEssayTagsAndCategories(data));
   });
 }
@@ -218,30 +217,55 @@ export function getCategories(id: any, calcPage: boolean, page: number, response
   });
 }
 
+/**
+ * 获取标签下所有随笔列表
+ *
+ * @param tag 标签名称
+ * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
+ */
 export function getTagPageList(tag: string, response: (res: DataType.TagPage) => void) {
   axios.get(`${BASE_URL}/tag/${tag}`).then(({ data }) => {
     response(Parser.parseTagPageList(data));
   });
 }
 
+/**
+ * 获取侧边栏的部分随笔分类列表
+ *
+ * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
+ */
 export function getSideCategories(response: (res: any) => void) {
   axios.get(`${BASE_URL}/ajax/sidecolumn.aspx`).then(({ data }) => {
     response(Parser.parseSideCategories(data));
   });
 }
 
+/**
+ * 获取侧边栏的博主信息
+ * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
+ */
 export function getSideBlogerInfo(response: (res: Array<DataType.BlogerInfo>) => void) {
   axios.get(`${BASE_URL}/ajax/news.aspx`).then(({ data }) => {
     response(Parser.parseSideBlogerInfo(data));
   });
 }
 
+/**
+ * 获取侧边栏博客的数据
+ *
+ * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
+ */
 export function getSideBlogInfo(response: (res: any) => void) {
   axios.get(`${BASE_URL}/ajax/blogStats`).then(({ data }) => {
     response(Parser.parseBlogInfo(data));
   });
 }
 
+/**
+ * 获取侧边栏阅读排行榜列表
+ *
+ * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
+ */
 export function getSideTopList(response: (res: any) => void) {
   axios.get(`${BASE_URL}/ajax/TopLists.aspx`).then(({ data }) => {
     response(Parser.parseSideBlogTopList(data));

@@ -6,6 +6,7 @@ import { ElMessage } from "element-plus";
 import * as Api from "../../utils/api";
 import * as DataType from "../../types/data-type";
 import { manageLoader } from "../../utils/loader";
+import Config from "../../config.js";
 
 const route = useRoute();
 const router = useRouter();
@@ -20,7 +21,7 @@ let holeSkeleton = ref(true);
 
 Api.getEssay(postId, (res) => {
   essay.value = res;
-  Api.getEssayTagsAndCategories(666252, postId, res => {
+  Api.getEssayTagsAndCategories(postId, res => {
     tagscatoies.value = res;
     holeSkeleton.value = false;
     Api.getPrevNext(postId, res => {
@@ -94,7 +95,10 @@ function voteEssay(voteType: DataType.VoteType) {
             </el-icon>
             <span>放大</span>
           </div>
-          <div class="edit-essay" @click="nav('https://i.cnblogs.com/EditPosts.aspx?postid=' + postId, true)">
+          <div class="edit-essay"
+               v-if="Config.__LITE_CONFIG__.isBlogOwner"
+               @click="nav('https://i.cnblogs.com/EditPosts.aspx?postid=' + postId, true)"
+          >
             <el-icon>
               <EditPen />
             </el-icon>
@@ -131,7 +135,7 @@ function voteEssay(voteType: DataType.VoteType) {
         </div>
         <div class="essay-content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code="true"
              v-html="essay?.content" />
-        <el-divider style="margin: 50px 0 0 30px" border-style="dashed" />
+        <div class="divider"></div>
         <div class="tail-info">
           <div class="date">
             <el-icon>
@@ -359,7 +363,7 @@ $color: #a7a7a7;
     line-height: 1.3;
     color: $color !important;
     word-break: break-all;
-    font-size: 27px;
+    font-size: 24px;
   }
 
   .head-info {
@@ -367,7 +371,7 @@ $color: #a7a7a7;
   }
 
   .labels {
-    font-size: 16px;
+    font-size: 14px;
     margin: 25px 0;
 
     .categories {
@@ -396,12 +400,29 @@ $color: #a7a7a7;
     }
   }
 
+  .divider {
+    margin: {
+      top: 50px;
+      left: 0;
+      right: 0;
+      bottom: 10px;
+    };
+    border: {
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 1px;
+      style: dashed;
+      color: #444444;
+    };
+  }
+
   .tail-info {
     @include flex($justify: flex-end);
   }
 
   .prev-next {
-    font-size: 16px;
+    font-size: 14px;
     margin-top: 40px;
 
     a {
