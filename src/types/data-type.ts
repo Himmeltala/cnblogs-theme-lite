@@ -109,3 +109,15 @@ export interface BlogerInfo {
   text: string;
   href: string;
 }
+
+export interface LiteConfigType {
+  blogName?: string;
+  blogId?: number;
+  isLogined?: boolean;
+  isBlogOwner?: boolean;
+  board?: { display?: boolean; signature?: string; tag?: string; qq?: string; email?: string; company?: string; },
+  navor: { displayName?: boolean; displaySearch?: boolean; navs?: { href?: string; text?: string; svg?: string; img?: string; }[] }
+  github?: string;
+  gitee?: string;
+  bilibili?: string;
+}

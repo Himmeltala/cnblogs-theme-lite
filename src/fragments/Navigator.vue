@@ -6,9 +6,8 @@ import Config from "../config";
 const router = useRouter();
 
 function nav(path: string, out?: boolean) {
-  if (out) {
-    window.open(path, "__blank");
-  } else router.push(path);
+  if (out) window.open(path, "__blank");
+  else router.push(path);
 }
 
 let input = ref("");
@@ -19,10 +18,13 @@ function search() {
 </script>
 
 <template>
-  <div class="navigator">
-    <div class="author" @click="nav('/')">{{ Config.__LITE_CONFIG__.blogName }}</div>
+  <div class="navigator"
+       :style="{'justify-content': Config.__LITE_CONFIG__.navor.displayName ? 'space-between': 'flex-end'}">
+    <div v-show="Config.__LITE_CONFIG__.navor.displayName" class="author" @click="nav('/')">
+      {{ Config.__LITE_CONFIG__.blogName }}
+    </div>
     <div class="menus">
-      <div class="item search">
+      <div v-if="Config.__LITE_CONFIG__.navor.displaySearch" class="item search">
         <el-input @keyup.enter="search" v-model="input" class="w-50 m-2" placeholder="输入查询关键字">
           <template #prefix>
             <el-icon @click="search">
@@ -34,7 +36,7 @@ function search() {
       <div class="item" @click="nav('https://www.cnblogs.com', true)">博客园</div>
       <div class="item" @click="nav('/')">首页</div>
       <div class="item" @click="nav('/')">标签</div>
-      <div class="item navs" v-for="(item, index) in Config.__LITE_CONFIG__.navs" :key="index">
+      <div class="item navs" v-for="(item, index) in Config.__LITE_CONFIG__.navor.navs" :key="index">
         <div class="text" v-if="item.text" @click="nav(item.href, true)">{{ item.text }}</div>
         <div class="icon" v-else>
           <svg
@@ -46,7 +48,8 @@ function search() {
             height="25"
             v-html="item.svg">
           </svg>
-          <img v-else @click="nav(item.href, true)" style="width: 25px; height: 25px; object-fit: cover"
+          <img alt="FAILED" v-else @click="nav(item.href, true)"
+               style="width: 25px; height: 25px; object-fit: cover; border-radius: 50px"
                :src="item.img" />
         </div>
       </div>
@@ -73,31 +76,14 @@ svg {
   height: 9vh;
   background-color: #252525;
   z-index: 999;
-  // backdrop-filter: saturate(50%) blur(8px);
-  border-radius: 0px 0px 6px 6px;
-  @include flex($justify: space-between);
-
-  @mixin mouse-hover {
-    margin-right: 20px;
-    cursor: pointer;
-    word-break: break-all;
-    transition: 0.3s;
-
-    &:hover {
-      color: var(--el-color-primary);
-    }
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
+  border-radius: 0 0 6px 6px;
+  @include flex();
 
   .author {
-    font-family: font1;
-    @include flex();
     font-weight: 400;
     font-size: 30px;
-    @include mouse-hover();
+    @include flex();
+    @include ahover();
   }
 
   .menus {
@@ -117,7 +103,12 @@ svg {
     }
 
     .item {
-      @include mouse-hover();
+      margin-right: 20px;
+      @include ahover();
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 }
