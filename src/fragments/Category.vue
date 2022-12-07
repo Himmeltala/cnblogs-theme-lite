@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import { ref, watch } from "vue";
+import { watch } from "vue";
+import { $ref } from "vue/macros";
 
 const router = useRouter();
 const route = useRoute();
-let id = ref<string>();
-let page = ref<string>();
+let id = $ref<string>();
+let page = $ref<string>();
 
-id.value = route.params.id as string;
-page.value = route.params.page as string;
+id = route.params.id as string;
+page = route.params.page as string;
 
 watch(route, () => {
-  id.value = route.params.id as string;
-  page.value = route.params.page as string;
+  id = route.params.id as string;
+  page = route.params.page as string;
 });
 </script>
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { $ref } from "vue/macros";
 import { useRoute, useRouter } from "vue-router";
 import * as Api from "../utils/api";
 import Config from "../config";
 
-const sideConfig = Config.__LITE_CONFIG__.leftSide;
+const side = Config.__LITE_CONFIG__.side;
 const route = useRoute();
 const router = useRouter();
 
@@ -13,23 +13,23 @@ function nav(path: string, out?: boolean) {
   else router.push(path);
 }
 
-let categories = ref();
-let tags = ref();
-let bloger = ref();
-let blogInfo = ref();
-let toplist = ref();
-let loading = ref(true);
+let categories = $ref();
+let tags = $ref();
+let bloger = $ref<any>();
+let blogInfo = $ref();
+let toplist = $ref();
+let loading = $ref(true);
 
 Api.getSideBlogerInfo(res => {
-  bloger.value = res;
+  bloger = res;
   Api.getSideBlogInfo(res => {
-    blogInfo.value = res;
+    blogInfo = res;
     Api.getSideCategories(res => {
-      tags.value = res.tags;
-      categories.value = res.categories;
-      loading.value = false;
+      tags = res.tags;
+      categories = res.categories;
+      loading = false;
       Api.getSideTopList(res => {
-        toplist.value = res;
+        toplist = res;
       });
     });
   });
@@ -41,10 +41,15 @@ Api.getSideBlogerInfo(res => {
     <div class="left-size__packer">
       <Card padding="1px 20px">
         <SideItem class="bloger" text="博客信息">
+          <template #icon>
+            <el-icon style="margin-right: 5px">
+              <House />
+            </el-icon>
+          </template>
           <div class="bloger__packer">
-            <div v-if="sideConfig?.avatar" class="avatar">
+            <div v-if="side?.avatar" class="avatar">
               <img alt="FAILED" style="width: 80px; height: 80px; border-radius: 50px"
-                   :src="sideConfig?.avatar" />
+                   :src="side?.avatar" />
             </div>
             <div class="item" v-for="(item, index) in bloger" :key="index">
               <div class="text" @click="nav(item.href, true)">
@@ -77,10 +82,15 @@ Api.getSideBlogerInfo(res => {
             <div class="bloger-data">
               <span v-for="(item, index) in blogInfo" :key="index">{{ item }}</span>
             </div>
-            <div v-if="sideConfig?.signature" class="signature" v-html="sideConfig.signature" />
+            <div v-if="side?.signature" class="signature" v-html="side.signature" />
           </div>
         </SideItem>
         <SideItem class="my-essay" text="我的随笔">
+          <template #icon>
+            <el-icon style="margin-right: 5px">
+              <Folder />
+            </el-icon>
+          </template>
           <div class="item" v-for="(item, index) in categories" :key="index">
             <div class="text" @click="nav('/c/' + item.id + '/1')">
               {{ item.text }}
@@ -88,17 +98,23 @@ Api.getSideBlogerInfo(res => {
           </div>
         </SideItem>
         <SideItem class="my-tags" text="我的标签">
-          <div class="my-tags__packer">
-            <div class="item" v-for="(item, index) in tags" :key="index">
-              <div class="text" @click="nav('/t/' + item.id)">
-                <Tag font-size="13px">
-                  {{ item.text }}
-                </Tag>
-              </div>
+          <template #icon>
+            <el-icon style="margin-right: 5px">
+              <CollectionTag />
+            </el-icon>
+          </template>
+          <div class="item" v-for="(item, index) in tags" :key="index">
+            <div class="text" @click="nav('/t/' + item.id)">
+              {{ item.text }}
             </div>
           </div>
         </SideItem>
         <SideItem class="my-toplist" text="阅读排行榜">
+          <template #icon>
+            <el-icon style="margin-right: 5px">
+              <DCaret />
+            </el-icon>
+          </template>
           <div class="my-toplist__packer">
             <div class="item" v-for="(item, index) in toplist" :key="index">
               <div class="text" @click="nav('/e/' + item.id)">
@@ -135,16 +151,6 @@ Api.getSideBlogerInfo(res => {
 
     &::-webkit-scrollbar-thumb {
       background-color: #a7a7a7;
-    }
-  }
-
-  .my-tags {
-    .my-tags__packer {
-      @include flex($justify: space-between);
-
-      .item {
-        box-sizing: border-box;
-      }
     }
   }
 
@@ -193,7 +199,7 @@ Api.getSideBlogerInfo(res => {
     }
   }
 
-  .my-essay, .my-toplist {
+  .my-essay, .my-toplist, .my-tags {
     .item {
       margin: 15px 0;
     }
@@ -201,7 +207,7 @@ Api.getSideBlogerInfo(res => {
 
   .my-tags {
     .item {
-      margin: 5px 0;
+      margin: 8px 0;
     }
   }
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { PropType, ref, watch } from "vue";
+import { PropType, watch } from "vue";
+import { $ref } from "vue/macros";
 import { useRouter } from "vue-router";
 import * as Api from "../utils/api";
 import * as DataType from "../types/data-type";
@@ -20,35 +21,35 @@ const props = defineProps({
 
 const router = useRouter();
 
-let loading = ref(true);
-let essays = ref<Array<DataType.Essay>>();
-let categories = ref();
-let pages = ref();
-let currentIndex = ref(1);
-let pageCount = ref(0);
-let calcPage = ref(false);
+let loading = $ref(true);
+let essays = $ref<Array<DataType.Essay>>();
+let categories = $ref<any>();
+let pages = $ref<any>();
+let currentIndex = $ref(1);
+let pageCount = $ref(0);
+let calcPage = $ref(false);
 
 watch(() => props.id, () => {
-  loading.value = true;
+  loading = true;
   fetchData(props.id, 1, true);
 });
 
 function fetchData(id: any, index: number, calc: boolean, complete?: Function) {
   if (id) {
     Api.getCategories(id, calc, index, res => {
-      categories.value = res.category;
-      essays.value = res.list;
-      pages.value = res.pages;
-      if (calc) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
-      loading.value = false;
+      categories = res.category;
+      essays = res.list;
+      pages = res.pages;
+      if (calc) pageCount = parseInt(res.pages[res.pages.length - 1]);
+      loading = false;
       if (complete) complete();
     });
   } else {
     Api.getEssayList(index, calc, res => {
-      essays.value = res.list;
-      pages.value = res.pages;
-      if (calc) pageCount.value = parseInt(res.pages[res.pages.length - 1]);
-      loading.value = false;
+      essays = res.list;
+      pages = res.pages;
+      if (calc) pageCount = parseInt(res.pages[res.pages.length - 1]);
+      loading = false;
       if (complete) complete();
     });
   }
@@ -70,17 +71,17 @@ function nav(path: string, out?: boolean) {
 }
 
 function floatSorterChange(direction: "left" | "right") {
-  loading.value = true;
-  if (direction === "right") currentIndex.value++;
-  else if (direction === "left") currentIndex.value--;
-  pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
-  fetchData(props.id, currentIndex.value, calcPage.value);
+  loading = true;
+  if (direction === "right") currentIndex++;
+  else if (direction === "left") currentIndex--;
+  pageCount ? (calcPage = false) : (calcPage = true);
+  fetchData(props.id, currentIndex, calcPage);
 }
 
 function fixedSorterChange() {
-  loading.value = true;
-  pageCount.value ? (calcPage.value = false) : (calcPage.value = true);
-  fetchData(props.id, currentIndex.value, calcPage.value);
+  loading = true;
+  pageCount ? (calcPage = false) : (calcPage = true);
+  fetchData(props.id, currentIndex, calcPage);
 }
 </script>
 

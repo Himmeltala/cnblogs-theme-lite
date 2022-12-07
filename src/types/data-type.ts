@@ -120,7 +120,7 @@ export interface LiteConfigType {
   // 是否为博客持有者？
   isBlogOwner?: boolean;
   // 左侧边栏配置项
-  leftSide?: {
+  side?: {
     avatar?: string;
     signature?: string;
   };

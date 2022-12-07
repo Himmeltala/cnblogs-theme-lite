@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { watch } from "vue";
+import { $ref } from "vue/macros";
 import { useRoute, useRouter } from "vue-router";
 import * as Api from "../utils/api";
 import { manageLoader } from "../utils/loader";
@@ -7,21 +8,21 @@ import { manageLoader } from "../utils/loader";
 const route = useRoute();
 const router = useRouter();
 
-let taglist = ref();
+let taglist = $ref<any>();
 let tagname = "";
-let loading = ref(true);
+let loading = $ref(true);
 
 function fetchTagPageList() {
   Api.getTagPageList(String(route.params.tag), res => {
     tagname = res.text;
-    taglist.value = res.list;
-    loading.value = false;
+    taglist = res.list;
+    loading = false;
     manageLoader();
   });
 }
 
 watch(route, () => {
-  loading.value = true;
+  loading = true;
   fetchTagPageList();
 });
 

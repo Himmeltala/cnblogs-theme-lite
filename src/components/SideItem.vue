@@ -6,7 +6,10 @@ defineProps({
 
 <template>
   <div class="side-item">
-    <h3>{{ text }}</h3>
+    <h3>
+      <slot name="icon" class="icon" />
+      {{ text }}
+    </h3>
     <div class="side-item__slot">
       <slot />
     </div>
@@ -14,9 +17,13 @@ defineProps({
 </template>
 
 <style scoped lang="scss">
+@import "../scss/mixins";
+
 h3 {
+  @include flex($justify: flex-start);
   margin: 20px 0;
-  font-size: 20px;
+  font-weight: 300;
+  font-size: 18px;
   text-align: left;
   border-left: 4px solid var(--el-color-primary);
   border-radius: 4px;

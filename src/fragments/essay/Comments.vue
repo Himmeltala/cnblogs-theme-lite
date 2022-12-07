@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { $ref } from "vue/macros";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import Config from "../../config";
@@ -22,12 +22,12 @@ function nav(path: string, out?: boolean) {
   else router.push(path);
 }
 
-let form = ref<DataType.Comment>({ postId: props.postId, parentCommentId: 0, content: "" });
-let loading = ref(false);
-let comments = ref<Array<DataType.Comment>>();
-let commentCount = ref(1);
-let currentIndex = ref(0);
-let skeleton = ref(true);
+let form = $ref<DataType.Comment>({ postId: props.postId, parentCommentId: 0, content: "" });
+let loading = $ref(false);
+let comments = $ref<Array<DataType.Comment>>();
+let commentCount = $ref(1);
+let currentIndex = $ref(0);
+let skeleton = $ref(true);
 
 function fetchComment(f: boolean, y?: {
   message?: string,
@@ -39,9 +39,9 @@ function fetchComment(f: boolean, y?: {
   if (f) {
     if (bf) bf();
     Api.getCommentCount(props.postId, count => {
-      commentCount.value = count;
-      currentIndex.value = count;
-      Api.getCommentList(props.postId, currentIndex.value,
+      commentCount = count;
+      currentIndex = count;
+      Api.getCommentList(props.postId, currentIndex,
         (res: Array<DataType.Essay>) => {
           if (y && y.success) {
             y.success(res);
@@ -71,42 +71,42 @@ function fetchComment(f: boolean, y?: {
 
 fetchComment(true, {
   message: "", success: (res) => {
-    comments.value = res;
-    skeleton.value = false;
+    comments = res;
+    skeleton = false;
   }
 }, undefined, undefined);
 
 function uploadImage() {
-  Native.openImageUploadWindow((imgUrl: any) => form.value.content += `\n\n${imgUrl}\n\n`);
+  Native.openImageUploadWindow((imgUrl: any) => form.content += `\n\n${imgUrl}\n\n`);
 }
 
 function paginationChange() {
-  skeleton.value = true;
-  Api.getCommentList(props.postId, currentIndex.value,
+  skeleton = true;
+  Api.getCommentList(props.postId, currentIndex,
     (res: Array<DataType.Essay>) => {
-      comments.value = res;
-      skeleton.value = false;
+      comments = res;
+      skeleton = false;
     });
 }
 
 function insertComment() {
-  if (form.value.content) {
-    loading.value = true;
+  if (form.content) {
+    loading = true;
     Api.setComment({
-      postId: form.value.postId,
-      body: form.value.content,
-      parentCommentId: form.value.parentCommentId
+      postId: form.postId,
+      body: form.content,
+      parentCommentId: form.parentCommentId
     }, ({ data }) => {
       fetchComment(data.isSuccess, {
           message: "你的评论传达成功！😀",
           success(res: any) {
-            comments.value = res;
-            loading.value = false;
+            comments = res;
+            loading = false;
           }
         }, {
           message: "你的评论似乎没有发出去！😑",
-          error: () => loading.value = false
-        }, () => form.value.content = ""
+          error: () => loading = false
+        }, () => form.content = ""
       );
     });
   } else {
@@ -122,12 +122,12 @@ function deleteComment(comment: DataType.Comment, index: number) {
   Api.deleteComment(
     {
       commentId: comment.commentId,
-      pageIndex: currentIndex.value - 1,
+      pageIndex: currentIndex - 1,
       parentId: props.postId
     },
     ({ data }) => {
       if (data) {
-        comments.value?.splice(index, 1);
+        comments?.splice(index, 1);
         ElMessage({
           message: "评论删除成功！",
           grouping: true,
@@ -173,32 +173,32 @@ function updateComment(comment: DataType.Comment) {
   }
 }
 
-let reCommentBody = ref("");
-let lastReComment = ref();
+let reCommentBody = $ref("");
+let lastReComment = $ref<any>();
 
 function replayComment(comment: DataType.Comment) {
   comment.replayEditable = !comment.replayEditable;
-  if (lastReComment.value && lastReComment.value.commentId !== comment.commentId) lastReComment.value.replayEditable = false;
+  if (lastReComment && lastReComment.commentId !== comment.commentId) lastReComment.replayEditable = false;
   if (comment.updateEditable) comment.updateEditable = false;
 
   if (!comment.replayEditable) {
     Api.replayComment({
-      body: reCommentBody.value,
+      body: reCommentBody,
       postId: props.postId,
       parentCommentId: comment.commentId
     }, (ajax: any) => {
       fetchComment(ajax.isSuccess, {
         message: "回复成功！😀",
-        success: res => comments.value = res
+        success: res => comments = res
       }, {
         message: "回复失败！😑"
       });
     });
   } else {
-    reCommentBody.value = "";
-    reCommentBody.value += `回复 ${comment.layer} [@${comment.author}](${comment.space})\n\n`;
+    reCommentBody = "";
+    reCommentBody += `回复 ${comment.layer} [@${comment.author}](${comment.space})\n\n`;
   }
-  lastReComment.value = comment;
+  lastReComment = comment;
 }
 
 function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {

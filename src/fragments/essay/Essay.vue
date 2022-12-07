@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { $ref } from "vue/macros";
 import { useRoute, useRouter } from "vue-router";
 import { ArrowLeft, CaretBottom, CaretTop } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
@@ -12,32 +12,32 @@ const route = useRoute();
 const router = useRouter();
 const postId: any = route.params.id;
 
-let essay = ref<DataType.Essay>();
-let prevNext = ref<any>();
-let essayVote = ref<DataType.BlogEssayVote>();
-let tagscatoies = ref<any>({ categories: {}, tags: {} });
+let essay = $ref<DataType.Essay>();
+let prevNext = $ref<any>();
+let essayVote = $ref<DataType.BlogEssayVote>();
+let tagscatoies = $ref<any>({ categories: {}, tags: {} });
 
-let holeSkeleton = ref(true);
+let holeSkeleton = $ref(true);
 
 Api.getEssay(postId, (res) => {
-  essay.value = res;
+  essay = res;
   Api.getEssayTagsAndCategories(postId, res => {
-    tagscatoies.value = res;
-    holeSkeleton.value = false;
+    tagscatoies = res;
+    holeSkeleton = false;
     Api.getPrevNext(postId, res => {
-      prevNext.value = res;
+      prevNext = res;
       Api.getEssayVote([postId], res => {
-        essayVote.value = res[0];
+        essayVote = res[0];
         manageLoader();
       });
     });
   });
 });
 
-let fontSize = ref(17);
+let fontSize = $ref(17);
 
 function zoomIn() {
-  fontSize.value >= 24 ? (fontSize.value = 16) : fontSize.value++;
+  fontSize >= 24 ? (fontSize = 16) : fontSize++;
 }
 
 function nav(path: string, out?: boolean) {
@@ -48,8 +48,8 @@ function nav(path: string, out?: boolean) {
 function voteEssay(voteType: DataType.VoteType) {
   Api.voteEssay({ postId, isAbandoned: false, voteType }, ajax => {
     if (ajax.isSuccess) {
-      if (voteType == "Bury") essayVote.value!.buryCount = essayVote.value!.buryCount! + 1;
-      else essayVote.value!.diggCount = essayVote.value!.diggCount! + 1;
+      if (voteType == "Bury") essayVote!.buryCount = essayVote!.buryCount! + 1;
+      else essayVote!.diggCount = essayVote!.diggCount! + 1;
     }
     ElMessage({
       message: ajax.message,
