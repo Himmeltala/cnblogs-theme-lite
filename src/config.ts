@@ -1,7 +1,7 @@
 import $ from "jquery";
 import * as DataType from "./types/data-type";
 
-const DEV_EN: "dev" | "pro" = "dev";
+const DEV_EN: "dev" | "pro" = "pro";
 
 function devEnv(env: "dev" | "pro") {
   return env === "dev";
@@ -16,11 +16,7 @@ if (!devEnv(DEV_EN)) {
   __LITE_CONFIG__ = {
     currentBlogId: 666252,
     currentBlogApp: "Enziandom",
-    github: "https://github.com/Enziandom",
-    links: [
-      { tip: "一个 typescript 教程", href: "", text: "TypeScript 教程" },
-      { href: "", text: "TypeScriptTypeScriptTypeScriptTypeScript 教程" }
-    ]
+    github: "https://github.com/Enziandom"
   };
 }
 

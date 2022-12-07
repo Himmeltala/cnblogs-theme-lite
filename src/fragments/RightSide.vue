@@ -69,6 +69,16 @@ const books = Config.__LITE_CONFIG__.books;
   right: 10vw;
   width: 13.5vw;
   height: 90vh;
+  overflow: auto;
+  background-color: #252525;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #a7a7a7;
+  }
 
   .link {
     word-break: break-all;

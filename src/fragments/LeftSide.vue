@@ -13,11 +13,11 @@ function nav(path: string, out?: boolean) {
   else router.push(path);
 }
 
-let categories = $ref();
-let tags = $ref();
+let categories = $ref<any>();
+let tags = $ref<any>();
 let bloger = $ref<any>();
-let blogInfo = $ref();
-let toplist = $ref();
+let blogInfo = $ref<any>();
+let toplist = $ref<any>();
 let loading = $ref(true);
 
 Api.getSideBlogerInfo(res => {

@@ -39,6 +39,7 @@ export default class Directive {
           });
       }
 
+      // @ts-ignore
       let MathJax: any = window.MathJax;
       this.mathJax(MathJax);
     });
