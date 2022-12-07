@@ -66,7 +66,7 @@ if (props.type === "Category") {
 }
 
 function nav(path: string, out?: boolean) {
-  if (out) window.open(path, "__blank");
+  if (out) window.open(path, "_blank");
   else router.push(path);
 }
 

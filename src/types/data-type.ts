@@ -137,4 +137,6 @@ export interface LiteConfigType {
   },
   // github 链接
   github?: string;
+  links?: { href: string; text: string; tip?: string; }[],
+  books?: { href?: string; text: string; img: string, author: string; rate: number }[]
 }

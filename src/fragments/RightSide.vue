@@ -1,9 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Config from "../config";
+
+const links = Config.__LITE_CONFIG__.links;
+const books = Config.__LITE_CONFIG__.books;
+</script>
 
 <template>
   <div class="right-side">
     <Card padding="1px 20px">
-      <SideItem text="我的技术栈">
+      <SideItem text="我的技术栈" v-if="Config.__LITE_CONFIG__.radar">
         <template #icon>
           <el-icon style="margin-right: 5px">
             <Aim />
@@ -11,11 +16,52 @@
         </template>
         <RadarMap />
       </SideItem>
+      <SideItem text="常用链接" v-if="links && links.length > 0">
+        <template #icon>
+          <el-icon style="margin-right: 5px">
+            <Link />
+          </el-icon>
+        </template>
+        <div class="link" v-for="(item, index) in links" :key="index">
+          <el-tooltip
+            v-if="item.tip"
+            effect="dark"
+            :content="item.tip"
+            placement="right"
+          >
+            <a :href="item.href" target="_blank">{{ item.text }}</a>
+          </el-tooltip>
+          <a v-else :href="item.href" target="_blank">{{ item.text }}</a>
+        </div>
+      </SideItem>
+      <SideItem text="推荐书籍" v-if="books && books.length > 0">
+        <template #icon>
+          <el-icon style="margin-right: 5px">
+            <Notebook />
+          </el-icon>
+        </template>
+        <div class="book" v-for="(item, index) in books" :key="index">
+          <img :src="item.img" alt="FAILED" />
+          <div class="text">
+            <span v-if="!item.href">{{ item.text }}</span>
+            <a v-else :href="item.href" target="_blank">{{ item.text }}</a>
+            <div class="author">{{ item.author }}</div>
+            <el-rate
+              style="width: 100%"
+              v-model="item.rate"
+              disabled
+              size="small"
+            />
+          </div>
+        </div>
+      </SideItem>
     </Card>
   </div>
 </template>
 
 <style scoped lang="scss">
+@import "../scss/mixins";
+
 .right-side {
   color: #878787;
   position: absolute;
@@ -23,5 +69,46 @@
   right: 10vw;
   width: 13.5vw;
   height: 90vh;
+
+  .link {
+    word-break: break-all;
+    font-size: 14px;
+    margin: 10px 0 0 0;
+
+    a {
+      @include ahover();
+    }
+  }
+
+  .book {
+    margin: 10px 0 0 0;
+    @include flex($justify: flex-start);
+    font-size: 14px;
+
+    & > div {
+      margin-left: 8px;
+    }
+
+    .text {
+      word-break: break-all;
+      width: calc(100% - 3.8vw - 8px);
+    }
+
+    .author {
+      margin-top: 4px;
+      font-size: 12px;
+    }
+
+    a {
+      @include ahover();
+    }
+
+    img {
+      height: 9vh;
+      object-fit: cover;
+      width: 3.8vw;
+      border-radius: 6px;
+    }
+  }
 }
 </style>

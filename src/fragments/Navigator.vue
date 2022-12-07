@@ -8,7 +8,7 @@ const navor = Config.__LITE_CONFIG__.navor;
 let input = $ref("");
 
 function nav(path: string, out?: boolean) {
-  if (out) window.open(path, "__blank");
+  if (out) window.open(path, "_blank");
   else router.push(path);
 }
 

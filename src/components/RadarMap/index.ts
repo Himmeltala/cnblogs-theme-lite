@@ -82,7 +82,7 @@ function drawDataArea(radius: any, coords: any, x: any, y: any, config: any, ctx
 
   ctx.beginPath();
   ctx.moveTo(0, 0);
-  ctx.font = `${config.textSize}px Georgia`;
+  ctx.font = `${config.textSize}px serial`;
 
   for (let i = 0; i < config.sides; i++) {
     ctx.fillStyle = config.textColor;
@@ -181,7 +181,7 @@ export function createRadar(vw: number) {
   const config = Config.__LITE_CONFIG__.radar;
   if (config) {
     fillColor = config.fillColor ? config.fillColor : "#409eff";
-    strokeColor = config.strokeColor ? config.strokeColor : "#cecece";
+    strokeColor = config.strokeColor ? config.strokeColor : "#a7a7a7";
     // @ts-ignore
     const ctx = document.getElementById("radar").getContext("2d");
     drawRadarMap(config, vw, vw, ctx);
