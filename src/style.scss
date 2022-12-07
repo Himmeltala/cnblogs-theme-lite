@@ -48,6 +48,7 @@ a:active {
 
 .el-button {
   span {
+    color: #a7a7a7;
     font-family: sans-serif;
   }
 }
@@ -58,4 +59,8 @@ a:active {
 
 .el-rate__icon {
   margin: 0 !important;
+}
+
+.anchor-active {
+  color: #409eff !important;
 }

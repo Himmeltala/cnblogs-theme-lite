@@ -231,7 +231,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
       <div class="tools">
         <el-tooltip effect="dark" content="插入图片" placement="top-start">
           <el-icon class="upload-img" @click="uploadImage">
-            <Picture />
+            <PictureRounded />
           </el-icon>
         </el-tooltip>
       </div>

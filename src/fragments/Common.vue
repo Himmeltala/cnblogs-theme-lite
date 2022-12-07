@@ -207,13 +207,13 @@ $border-radius: 6px;
 
   .left-sorter {
     border-radius: 60px 0 0 60px;
-    left: calc(20vw + 54px);
+    left: calc(23.5vw);
     top: 50vh;
   }
 
   .right-sorter {
     border-radius: 0 60px 60px 0;
-    right: calc(20vw + 54px);
+    right: calc(23.5vw);
     top: 50vh;
   }
 }

@@ -8,17 +8,17 @@
  */
 
 import $ from "jquery";
-import * as TextUtils from "./regular";
+import * as TextUtils from "./text-helper";
 import * as DataType from "../types/data-type";
 
 /**
  * 由于一些问题，有时候请求过来的 DOM 不是真实的 DOM，所以不能被 JQ 解析，必须先调用该函数进行转换
  *
- * @param data 被解析成 DOM 树的对象
+ * @param strDOM 被解析成 DOM 树的对象
  * @returns 返回一个真实的 DOM 树
  */
-function parseStrToDom(data: any) {
-  return new DOMParser().parseFromString(data, "text/html");
+export function parseStrToDom(strDOM: any) {
+  return new DOMParser().parseFromString(strDOM, "text/html");
 }
 
 /**

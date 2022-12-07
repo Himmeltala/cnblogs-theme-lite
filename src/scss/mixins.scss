@@ -9,11 +9,11 @@
 
 @mixin ahover() {
   transition: 0.3s;
-  cursor: pointer;
+  cursor: pointer !important;
 
   &:hover {
     transition: 0.3s;
-    color: var(--el-color-primary);
+    color: var(--el-color-primary) !important;
     @content
   }
 }

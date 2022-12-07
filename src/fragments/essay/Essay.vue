@@ -24,11 +24,11 @@ Api.getEssay(postId, (res) => {
   Api.getEssayTagsAndCategories(postId, res => {
     tagscatoies = res;
     holeSkeleton = false;
+    manageLoader();
     Api.getPrevNext(postId, res => {
       prevNext = res;
       Api.getEssayVote([postId], res => {
         essayVote = res[0];
-        manageLoader();
       });
     });
   });

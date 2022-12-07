@@ -22,8 +22,8 @@ defineProps({
 h3 {
   @include flex($justify: flex-start);
   margin: 20px 0;
-  font-weight: 300;
-  font-size: 18px;
+  font-weight: 300 !important;
+  font-size: 18px !important;
   text-align: left;
   border-left: 4px solid var(--el-color-primary);
   border-radius: 4px;

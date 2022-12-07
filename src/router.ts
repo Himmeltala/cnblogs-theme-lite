@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { redirect, reinstallUrl, RouteName } from "./utils/redirector";
+import { redirect, reinstallUrl, RouteName } from "./utils/route-helper";
 
 const routes = [
   {

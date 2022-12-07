@@ -1,13 +1,39 @@
 <script setup lang="ts">
+import { watch } from "vue";
+import { $ref } from "vue/macros";
+import { useRoute } from "vue-router";
+import { useAnchorStore } from "../store";
+import { RouteName } from "../utils/route-helper";
 import Config from "../config";
 
+const route = useRoute();
 const links = Config.__LITE_CONFIG__.links;
 const books = Config.__LITE_CONFIG__.books;
+
+let anchors = $ref<any>();
+const anchorsStore = useAnchorStore();
+anchorsStore.$onAction(({ store, args }) => {
+  anchors = args[0];
+}, true);
+
+watch(route, (value, oldValue, onCleanup) => {
+  if (value.name === RouteName.HOME) anchors = [];
+});
 </script>
 
 <template>
   <div class="right-side">
     <Card padding="1px 20px">
+      <SideItem text="随笔目录" v-if="anchors && anchors.length > 0">
+        <template #icon>
+          <el-icon style="margin-right: 5px">
+            <Location />
+          </el-icon>
+        </template>
+        <div class="catalog">
+          <div class="item" v-for="(item, index) in anchors" :key="index" v-html="item.content" />
+        </div>
+      </SideItem>
       <SideItem text="我的技术栈" v-if="Config.__LITE_CONFIG__.radar">
         <template #icon>
           <el-icon style="margin-right: 5px">
@@ -58,6 +84,23 @@ const books = Config.__LITE_CONFIG__.books;
     </Card>
   </div>
 </template>
+
+<style lang="scss">
+@import "../scss/mixins";
+
+.catalog {
+  .item {
+    margin-bottom: 7px;
+    word-break: break-all;
+    font-size: 14px;
+
+    a {
+      color: #878787;
+      @include ahover();
+    }
+  }
+}
+</style>
 
 <style scoped lang="scss">
 @import "../scss/mixins";

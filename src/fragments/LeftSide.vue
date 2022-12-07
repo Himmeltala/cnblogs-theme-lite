@@ -168,6 +168,7 @@ Api.getSideBlogerInfo(res => {
     }
 
     .signature {
+      font-size: 14px;
       margin-top: 20px;
       text-align: center;
     }

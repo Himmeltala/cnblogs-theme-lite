@@ -1,5 +1,6 @@
 import hljs from "highlight.js";
 import $ from "jquery";
+import { makeAnchor } from "./utils/anchor";
 
 export default class Directive {
   private Vue;
@@ -37,6 +38,7 @@ export default class Directive {
           .each((i, elem) => {
             $(elem).attr("class", "cust-img");
           });
+        makeAnchor(el);
       }
 
       // @ts-ignore
