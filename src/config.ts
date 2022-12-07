@@ -16,7 +16,25 @@ if (!devEnv(DEV_EN)) {
   __LITE_CONFIG__ = {
     currentBlogId: 666252,
     currentBlogApp: "Enziandom",
-    github: "https://github.com/Enziandom"
+    github: "https://github.com/Enziandom",
+    radar: {
+      alpha: 0.85,
+      sides: 6,
+      layer: 5,
+      lineWidth: 1,
+      textSize: 14,
+      fillColor: "#409eff",
+      lineColor: "#A7A7A7",
+      textColor: "#A7A7A7",
+      data: [
+        { title: "js", star: 4 },
+        { title: "ts", star: 2 },
+        { title: "html", star: 4 },
+        { title: "css", star: 4 },
+        { title: "vue", star: 4 },
+        { title: "jq", star: 4 }
+      ]
+    }
   };
 }
 

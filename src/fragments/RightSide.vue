@@ -2,7 +2,16 @@
 
 <template>
   <div class="right-side">
-    <Card></Card>
+    <Card padding="1px 20px">
+      <SideItem text="我的技术栈">
+        <template #icon>
+          <el-icon style="margin-right: 5px">
+            <Aim />
+          </el-icon>
+        </template>
+        <RadarMap />
+      </SideItem>
+    </Card>
   </div>
 </template>
 

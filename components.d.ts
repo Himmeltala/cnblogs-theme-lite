@@ -28,6 +28,7 @@ declare module '@vue/runtime-core' {
     LeftSide: typeof import('./src/fragments/LeftSide.vue')['default']
     MyTags: typeof import('./src/fragments/MyTags.vue')['default']
     Navigator: typeof import('./src/fragments/Navigator.vue')['default']
+    RadarMap: typeof import('./src/components/RadarMap/RadarMap.vue')['default']
     RightSide: typeof import('./src/fragments/RightSide.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

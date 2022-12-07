@@ -23,7 +23,7 @@ function search() {
     <div v-if="navor?.header" v-html="navor.header" class="header" @click="nav('/')">
     </div>
     <div class="menus">
-      <div v-if="navor?.displaySearch" class="item search">
+      <div v-if="navor?.search" class="item search">
         <el-input @keyup.enter="search" v-model="input" class="w-50 m-2" placeholder="输入查询关键字">
           <template #prefix>
             <el-icon @click="search">

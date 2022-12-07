@@ -126,9 +126,15 @@ export interface LiteConfigType {
   };
   // 导航栏配置项
   navor?: {
-    header?: string; displaySearch?: boolean;
+    header?: string; search?: boolean;
     navs?: { href: string; text: string; svg?: string; img?: string; }[]
   };
+  radar?: {
+    fillColor?: string;
+    strokeColor?: string; alpha?: number; sides?: number;
+    layer?: number; lineWidth?: number;
+    textSize?: number; lineColor?: string; textColor?: string; data?: { title: string; star: number } []
+  },
   // github 链接
   github?: string;
 }
