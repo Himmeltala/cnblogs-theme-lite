@@ -1,68 +1,67 @@
 <script setup lang="ts">
-import { PropType, watch } from "vue";
 import { $ref } from "vue/macros";
-import { useRouter } from "vue-router";
-import * as Api from "../utils/api";
+import { PropType, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import * as RemoteApi from "../utils/api";
+import * as LocalApi from "../utils/local-api";
 import * as DataType from "../types/data-type";
-import { manageLoader } from "../utils/loader";
+import { RouteName } from "../utils/route-helper";
+import { closeLoader } from "../utils/loader";
+import { useRouterStore } from "../store";
 
 const props = defineProps({
-  type: {
-    type: String as PropType<"Category" | "Home">,
-    required: true
-  },
-  id: {
-    type: String
-  },
-  page: {
-    type: String
-  }
+  id: { type: String },
+  type: { type: String as PropType<RouteName.CATEGORY | RouteName.HOME>, required: true },
+  page: { type: String },
+  data: { type: Array as PropType<Array<DataType.Essay>>, required: true }
 });
 
 const router = useRouter();
+const route = useRoute();
 
 let loading = $ref(true);
-let essays = $ref<Array<DataType.Essay>>();
-let categories = $ref<any>();
+let calcPage = $ref(false);
+let rubric = $ref<any>();
 let pages = $ref<any>();
 let currentIndex = $ref(1);
 let pageCount = $ref(0);
-let calcPage = $ref(false);
+let essays = $ref<Array<DataType.Essay>>();
 
-watch(() => props.id, () => {
-  loading = true;
-  fetchData(props.id, 1, true);
+const routerStore = useRouterStore();
+
+routerStore.$onAction(({ store, args }) => {
+  if (args[0] === RouteName.HOME) {
+    fetchData(false, currentIndex, calcPage, () => closeLoader());
+  }
 });
+
+if (props.type === RouteName.CATEGORY) fetchData(props.id, 1, calcPage, () => closeLoader());
+else if (props.type === RouteName.HOME) {
+  let data = LocalApi.getEssayList().list;
+  (data.length > 0 && (essays = data)) || fetchData(false, currentIndex, calcPage, () => closeLoader());
+  loading = false;
+  closeLoader();
+}
 
 function fetchData(id: any, index: number, calc: boolean, complete?: Function) {
   if (id) {
-    Api.getCategories(id, calc, index, res => {
-      categories = res.category;
+    RemoteApi.getCategories(id, calc, index, res => {
+      rubric = res.label;
       essays = res.list;
       pages = res.pages;
-      if (calc) pageCount = parseInt(res.pages[res.pages.length - 1]);
+      calc && (pageCount = parseInt(res.pages[res.pages.length - 1]));
       loading = false;
-      if (complete) complete();
+      complete && complete();
     });
   } else {
-    Api.getEssayList(index, calc, res => {
+    RemoteApi.getEssayList(index, calc, res => {
       essays = res.list;
       pages = res.pages;
-      if (calc) pageCount = parseInt(res.pages[res.pages.length - 1]);
+      calc && (pageCount = parseInt(res.pages[res.pages.length - 1]));
       loading = false;
-      if (complete) complete();
+      complete && complete();
     });
   }
-}
-
-if (props.type === "Category") {
-  fetchData(props.id, parseInt(props.page!), true, () => {
-    manageLoader();
-  });
-} else if (props.type === "Home") {
-  fetchData(false, 1, false, () => {
-    manageLoader();
-  });
 }
 
 function nav(path: string, out?: boolean) {
@@ -87,18 +86,20 @@ function fixedSorterChange() {
 
 <template>
   <div class="common">
-    <div class="pagination pg-top" v-if="currentIndex > 1 && pageCount > 1">
+    <div class="pagination pg-top" v-if="currentIndex > 1 && pageCount >= 1">
       <el-pagination
         @current-change="fixedSorterChange"
         v-model:current-page="currentIndex"
         v-model:page-count="pageCount"
         :background="true"
-        layout="prev, pager, next, jumper" />
+        layout="prev, pager, next, jumper"
+      />
     </div>
     <el-skeleton style="margin-top: 10px" :loading="loading" animated>
       <template #template>
         <Card v-for="item in 10" :key="item" width="auto" padding="15px 25px"
-              margin="12px 10px 12px 10px">
+              margin="12px 10px 12px 10px"
+        >
           <el-skeleton-item variant="p" style="width: 60%" />
           <div style="display: flex; align-items: center">
             <el-skeleton-item variant="text" style="margin-right: 16px; margin-top: 8px" />
@@ -114,23 +115,20 @@ function fixedSorterChange() {
       </template>
     </el-skeleton>
     <div v-show="currentIndex > 1" class="left-sorter float-sorter" @click="floatSorterChange('left')">
-      <el-tooltip
-        effect="dark"
-        content="上一页"
-        placement="left"
-      >
+      <el-tooltip effect="dark" content="上一页" placement="left">
         <el-icon>
           <ArrowLeftBold />
         </el-icon>
       </el-tooltip>
     </div>
-    <div class="category" v-if="categories">{{ categories }}</div>
+    <div class="category" v-if="rubric">{{ rubric }}</div>
     <div class="essay">
       <Card class="item"
             v-for="(item, index) in essays" :key="index"
             v-if="!loading"
             width="auto"
-            padding="15px 25px">
+            padding="15px 25px"
+      >
         <div class="essay__vessel">
           <div class="packer">
             <div class="header">
@@ -148,18 +146,15 @@ function fixedSorterChange() {
               <router-link :to="'/e/' + item.id">阅读全文</router-link>
             </div>
             <div class="bottom">
-              <EssayBottomData
-                :data="{date: item.date,
-               view: item.view,
-                comm: item.comm,
-                 digg: item.digg}" />
+              <EssayBottomData :data="{date: item.date, comm: item.comm, digg: item.digg, view: item.view}" />
             </div>
           </div>
         </div>
       </Card>
     </div>
-    <div class="right-sorter float-sorter" v-if="(pageCount > 1 || pageCount === 0) && currentIndex !== pageCount"
-         @click="floatSorterChange('right')">
+    <div class="right-sorter float-sorter"
+         @click="floatSorterChange('right')"
+    >
       <el-tooltip
         effect="dark"
         content="下一页"
@@ -170,14 +165,15 @@ function fixedSorterChange() {
         </el-icon>
       </el-tooltip>
     </div>
-    <div class="pagination" v-if="pageCount > 1">
+    <div class="pagination" v-if="pageCount >= 1">
       <el-pagination
         @current-change="fixedSorterChange"
         v-show="pageCount"
         v-model:current-page="currentIndex"
         v-model:page-count="pageCount"
         :background="true"
-        layout="prev, pager, next, jumper" />
+        layout="prev, pager, next, jumper"
+      />
     </div>
   </div>
 </template>

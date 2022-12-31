@@ -1,4 +1,5 @@
 <script setup lang="ts">
+console.log('eeeeeee');
 </script>
 
 <template>

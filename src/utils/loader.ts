@@ -1,6 +1,6 @@
 import $ from "jquery";
 
-export function manageLoader() {
+export function closeLoader() {
   setTimeout(() => {
     $(".light-loading, .dark-loading").fadeOut();
   }, 0);

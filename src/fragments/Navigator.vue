@@ -19,7 +19,8 @@ function search() {
 
 <template>
   <div class="navigator"
-       :style="{'justify-content': navor?.header ? 'space-between': 'flex-end'}">
+       :style="{'justify-content': navor?.header ? 'space-between': 'flex-end'}"
+  >
     <div v-if="navor?.header" v-html="navor.header" class="header" @click="nav('/')">
     </div>
     <div class="menus">
@@ -36,7 +37,8 @@ function search() {
       <div class="item" @click="nav('/')">首页</div>
       <div class="item" @click="nav('/')">标签</div>
       <div v-if="navor?.navs" class="item navs"
-           v-for="(item, index) in navor.navs" :key="index">
+           v-for="(item, index) in navor.navs" :key="index"
+      >
         <div class="text" v-if="item.text" @click="nav(item.href, true)">{{ item.text }}</div>
         <div class="icon" v-else>
           <svg
@@ -46,11 +48,13 @@ function search() {
             xmlns="http://www.w3.org/2000/svg"
             width="25"
             height="25"
-            v-html="item.svg">
+            v-html="item.svg"
+          >
           </svg>
           <img alt="FAILED" v-else @click="nav(item.href, true)"
                style="width: 25px; height: 25px; object-fit: cover; border-radius: 50px"
-               :src="item.img" />
+               :src="item.img"
+          />
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ import { ArrowLeft, CaretBottom, CaretTop } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import * as Api from "../../utils/api";
 import * as DataType from "../../types/data-type";
-import { manageLoader } from "../../utils/loader";
+import { closeLoader } from "../../utils/loader";
 import Config from "../../config.js";
 
 const route = useRoute();
@@ -24,7 +24,7 @@ Api.getEssay(postId, (res) => {
   Api.getEssayTagsAndCategories(postId, res => {
     tagscatoies = res;
     holeSkeleton = false;
-    manageLoader();
+    closeLoader();
     Api.getPrevNext(postId, res => {
       prevNext = res;
       Api.getEssayVote([postId], res => {
@@ -51,11 +51,7 @@ function voteEssay(voteType: DataType.VoteType) {
       if (voteType == "Bury") essayVote!.buryCount = essayVote!.buryCount! + 1;
       else essayVote!.diggCount = essayVote!.diggCount! + 1;
     }
-    ElMessage({
-      message: ajax.message,
-      grouping: true,
-      type: ajax.isSuccess ? "success" : "error"
-    });
+    ElMessage({ message: ajax.message, grouping: true, type: ajax.isSuccess ? "success" : "error" });
   });
 }
 </script>
@@ -134,7 +130,8 @@ function voteEssay(voteType: DataType.VoteType) {
           </div>
         </div>
         <div class="essay-content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code="true"
-             v-html="essay?.content" />
+             v-html="essay?.content"
+        />
         <div class="divider"></div>
         <div class="tail-info">
           <div class="date">

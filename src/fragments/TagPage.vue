@@ -3,7 +3,7 @@ import { watch } from "vue";
 import { $ref } from "vue/macros";
 import { useRoute, useRouter } from "vue-router";
 import * as Api from "../utils/api";
-import { manageLoader } from "../utils/loader";
+import { closeLoader } from "../utils/loader";
 
 const route = useRoute();
 const router = useRouter();
@@ -17,7 +17,7 @@ function fetchTagPageList() {
     tagname = res.text;
     taglist = res.list;
     loading = false;
-    manageLoader();
+    closeLoader();
   });
 }
 
@@ -34,11 +34,13 @@ fetchTagPageList();
     <div class="tagname">{{ tagname }}</div>
     <div class="taglist">
       <Card v-if="loading" class="item" v-for="item in 10" :key="item" width="auto" height="auto"
-            margin="5px">
+            margin="5px"
+      >
         <el-skeleton animated :loading="loading"></el-skeleton>
       </Card>
       <Card v-if="!loading" class="item" v-for="(item, index) in taglist" :key="index" width="auto" height="auto"
-            margin="5px">
+            margin="5px"
+      >
         <div class="name">
           <router-link :to="'/e/' + item.id">{{ item.title }}</router-link>
         </div>
@@ -49,12 +51,7 @@ fetchTagPageList();
           <router-link :to="'/e/' + item.id">阅读全文</router-link>
         </div>
         <div class="desc">
-          <EssayBottomData :data="{
-            date: item.date,
-            view: item.view,
-            comm: item.comm,
-            digg: item.digg
-          }" />
+          <EssayBottomData :data="{date: item.date, view: item.view, comm: item.comm, digg: item.digg}" />
         </div>
       </Card>
     </div>

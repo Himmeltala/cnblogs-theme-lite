@@ -10,7 +10,6 @@ export default class Directive {
   }
 
   mathJax(MathJax: any) {
-    if (!MathJax) this.mathJax(MathJax);
     MathJax.startup.promise
       .then(() => {
         return MathJax.typesetPromise();
@@ -42,8 +41,8 @@ export default class Directive {
       }
 
       // @ts-ignore
-      let MathJax: any = window.MathJax;
-      this.mathJax(MathJax);
+      // let MathJax: any = window.MathJax;
+      // this.mathJax(MathJax);
     });
   }
 }

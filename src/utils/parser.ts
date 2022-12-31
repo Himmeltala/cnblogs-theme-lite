@@ -21,25 +21,27 @@ export function parseStrToDom(strDOM: any) {
   return new DOMParser().parseFromString(strDOM, "text/html");
 }
 
+function calcPages(realDOM: any, calc: boolean): string[] {
+  let pages: string[] = [];
+  if (calc) {
+    let sorter = $(realDOM).find("#homepage_bottom_pager > .pager > a");
+    if ($(sorter).length > 1) {
+      $(sorter).each((i, e) => {
+        if (i != 0 && (i != $(sorter).length - 1 || $(sorter).length - 1 === 1)) pages.push($(e).text());
+      });
+    }
+  }
+  return pages;
+}
+
 /**
  * 解析随笔列表页面
  *
  * @param realDOM 不知道什么原因，该接口获取到传递下来的 DOM 是能够被 jQuery 解析的，所以不需要调用 parseStrToDom 函数。
- * @param calcPage 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
+ * @param calc 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
  * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
  */
-export function parseEssayList(realDOM: any, calcPage: boolean): { pages: string[]; category?: string; list: Array<DataType.Essay> } {
-  let pages: string[] = [];
-  if (calcPage) {
-    let pager = $(realDOM).find("#homepage_bottom_pager > .pager > a");
-    if ($(pager).length > 1) {
-      let index = 0;
-      $(pager).each((i, elem) => {
-        if (i != 0 && i != $(pager).length - 1) pages[index++] = $(elem).text();
-      });
-    }
-  }
-
+export function parseEssayList(realDOM: any, calc: boolean): { pages: string[]; list: Array<DataType.Essay> } {
   let id = $(realDOM).find(".postTitle2");
   let title = $(realDOM).find(".postTitle");
   let describe = $(realDOM).find(".c_b_p_desc");
@@ -50,27 +52,16 @@ export function parseEssayList(realDOM: any, calcPage: boolean): { pages: string
   let digg = record.match(/推荐\([0-9]+\)/g);
 
   let list: Array<DataType.Essay> = [];
-
   $(describe).each((i, e) => {
-    let cover = $(e).find(".desc_img").attr("src");
-
-    list[i] = {
+    let surface = $(e).find(".desc_img").attr("src");
+    list.push({
       id: parseInt($(id[i]).attr("href")!.match(/[0-9]+/g)![0]),
-      text: $(title[i]).text().trim(),
-      desc: TextUtils.regTrim($(describe[i]).text(), [/阅读全文/g]),
-      date: date![i],
-      view: view![i],
-      comm: comm![i],
-      digg: digg![i],
-      surface: cover ? cover : ""
-    };
+      text: $(title[i]).text().trim(), desc: TextUtils.regTrim($(describe[i]).text(), [/阅读全文/g]),
+      date: date![i], view: view![i], comm: comm![i], digg: digg![i], surface: surface || ""
+    });
   });
 
-  return {
-    pages,
-    list,
-    category: $(realDOM).find(".entrylistTitle").text()
-  };
+  return { pages: calcPages(realDOM, calc), list };
 }
 
 /**
@@ -196,22 +187,10 @@ export function parsePrevNext(strDOM: any): any {
  * 解析分类列表页面
  *
  * @param realDOM 真实 DOM
- * @param calcPage 是否计算页数
+ * @param calc 是否计算页数
  */
-export function parseCategoryList(realDOM: any, calcPage: boolean): { pages: string[]; category?: string; list: Array<DataType.Essay> } {
+export function parseCategoryList(realDOM: any, calc: boolean): { pages: string[]; label: string; list: Array<DataType.Essay> } {
   let dom = $(realDOM).find(".entrylistItem");
-  let pages: string[] = [];
-  let list: Array<DataType.Essay> = [];
-
-  if (calcPage) {
-    let pager = $($(realDOM).find(".pager")[0]).find("a");
-    if ($(pager).length > 1) {
-      let index = 0;
-      $(pager).each((i, elem) => {
-        if (i != 0 && i != $(pager).length - 1) pages[index++] = $(elem).text();
-      });
-    }
-  }
 
   let id = $(dom).find(".entrylistItemTitle");
   let title = $(dom).find(".entrylistItemTitle > span");
@@ -222,25 +201,18 @@ export function parseCategoryList(realDOM: any, calcPage: boolean): { pages: str
   let comm = record.match(/评论\([0-9]+\)/g);
   let digg = record.match(/推荐\([0-9]+\)/g);
 
+  let list: Array<DataType.Essay> = [];
   $(dom).each((i, e) => {
-    let cover = $(e).find(".c_b_p_desc > .desc_img").attr("src");
-
-    list[i] = {
+    let surface = $(e).find(".c_b_p_desc > .desc_img").attr("src");
+    list.push({
       id: parseInt($(id[i]).attr("href")!.match(/[0-9]+/g)![0]),
-      text: $(title[i]).text(),
-      desc: $(describe[i]).text(),
-      date: date![i],
-      view: view![i],
-      comm: comm![i],
-      digg: digg![i],
-      surface: cover ? cover : ""
-    };
+      text: $(title[i]).text(), desc: $(describe[i]).text(), date: date![i],
+      view: view![i], comm: comm![i], digg: digg![i], surface: surface ? surface : ""
+    });
   });
 
   return {
-    pages,
-    list,
-    category: $(realDOM).find(".entrylistTitle").text()
+    pages: calcPages(realDOM, calc), list, label: $(realDOM).find(".entrylistTitle").text() || ""
   };
 }
 

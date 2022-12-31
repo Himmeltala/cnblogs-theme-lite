@@ -8,10 +8,7 @@ import * as Native from "../../utils/native";
 import * as Api from "../../utils/api";
 
 const props = defineProps({
-  postId: {
-    type: Number,
-    required: true
-  }
+  postId: { type: Number, required: true }
 });
 
 const route = useRoute();
@@ -29,15 +26,10 @@ let commentCount = $ref(1);
 let currentIndex = $ref(0);
 let skeleton = $ref(true);
 
-function fetchComment(f: boolean, y?: {
-  message?: string,
-  success?: (res: any) => void
-}, n?: {
-  message?: string,
-  error?: () => void
-}, bf?: Function) {
+function fetchComment(f: boolean, y?: { message?: string, success?: (res: any) => void },
+                      n?: { message?: string, error?: () => void }, bf?: Function) {
   if (f) {
-    if (bf) bf();
+    bf && bf();
     Api.getCommentCount(props.postId, count => {
       commentCount = count;
       currentIndex = count;
@@ -46,11 +38,7 @@ function fetchComment(f: boolean, y?: {
           if (y && y.success) {
             y.success(res);
             if (y.message) {
-              ElMessage({
-                message: y.message,
-                grouping: true,
-                type: "success"
-              });
+              ElMessage({ message: y.message, grouping: true, type: "success" });
             }
           }
         });
@@ -59,11 +47,7 @@ function fetchComment(f: boolean, y?: {
     if (n && n.error) {
       n.error();
       if (n.message) {
-        ElMessage({
-          message: n.message,
-          grouping: true,
-          type: "error"
-        });
+        ElMessage({ message: n.message, grouping: true, type: "error" });
       }
     }
   }
@@ -82,63 +66,43 @@ function uploadImage() {
 
 function paginationChange() {
   skeleton = true;
-  Api.getCommentList(props.postId, currentIndex,
-    (res: Array<DataType.Essay>) => {
-      comments = res;
-      skeleton = false;
-    });
+  Api.getCommentList(props.postId, currentIndex, (res: Array<DataType.Essay>) => {
+    comments = res;
+    skeleton = false;
+  });
 }
 
 function insertComment() {
   if (form.content) {
     loading = true;
-    Api.setComment({
-      postId: form.postId,
-      body: form.content,
-      parentCommentId: form.parentCommentId
-    }, ({ data }) => {
-      fetchComment(data.isSuccess, {
-          message: "你的评论传达成功！😀",
-          success(res: any) {
-            comments = res;
-            loading = false;
-          }
-        }, {
-          message: "你的评论似乎没有发出去！😑",
-          error: () => loading = false
-        }, () => form.content = ""
-      );
-    });
+    Api.setComment({ postId: form.postId, body: form.content, parentCommentId: form.parentCommentId },
+      ({ data }) => {
+        fetchComment(data.isSuccess, {
+            message: "你的评论传达成功！😀",
+            success(res: any) {
+              comments = res;
+              loading = false;
+            }
+          }, {
+            message: "你的评论似乎没有发出去！😑",
+            error: () => loading = false
+          }, () => form.content = ""
+        );
+      });
   } else {
-    ElMessage({
-      message: "评论不能为空，或字数不够⚠️",
-      grouping: true,
-      type: "error"
-    });
+    ElMessage({ message: "评论不能为空，或字数不够⚠️", grouping: true, type: "error" });
   }
 }
 
 function deleteComment(comment: DataType.Comment, index: number) {
   Api.deleteComment(
-    {
-      commentId: comment.commentId,
-      pageIndex: currentIndex - 1,
-      parentId: props.postId
-    },
+    { commentId: comment.commentId, pageIndex: currentIndex - 1, parentId: props.postId },
     ({ data }) => {
       if (data) {
         comments?.splice(index, 1);
-        ElMessage({
-          message: "评论删除成功！",
-          grouping: true,
-          type: "success"
-        });
+        ElMessage({ message: "评论删除成功！", grouping: true, type: "success" });
       } else {
-        ElMessage({
-          message: "这可能不是你的评论哦！",
-          grouping: true,
-          type: "error"
-        });
+        ElMessage({ message: "这可能不是你的评论哦！", grouping: true, type: "error" });
       }
     }
   );
@@ -157,16 +121,9 @@ function updateComment(comment: DataType.Comment) {
       },
       ({ data }) => {
         if (data.isSuccess) {
-          ElMessage({
-            message: "评论修改成功！",
-            type: "success"
-          });
+          ElMessage({ message: "评论修改成功！", grouping: true, type: "success" });
         } else {
-          ElMessage({
-            message: "这可能不是你的评论哦~",
-            grouping: true,
-            type: "error"
-          });
+          ElMessage({ message: "这可能不是你的评论哦~", grouping: true, type: "error" });
         }
       }
     );
@@ -203,22 +160,13 @@ function replayComment(comment: DataType.Comment) {
 
 function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
   Api.voteComment(
-    {
-      isAbandoned: false,
-      commentId: comment.commentId,
-      postId: props.postId,
-      voteType: voteType
-    },
+    { isAbandoned: false, commentId: comment.commentId, postId: props.postId, voteType: voteType },
     ajax => {
       if (ajax.isSuccess) {
         if (voteType == "Bury") comment.bury = comment.bury! + 1;
         else comment.digg = comment.digg! + 1;
       }
-      ElMessage({
-        message: ajax.message,
-        grouping: true,
-        type: ajax.isSuccess ? "success" : "error"
-      });
+      ElMessage({ message: ajax.message, grouping: true, type: ajax.isSuccess ? "success" : "error" });
     }
   );
 }
@@ -238,7 +186,8 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
       <div class="edit-area">
         <textarea
           v-model="form.content"
-          placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
+          placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"
+        ></textarea>
       </div>
       <div class="img-link__packer">
         <textarea id="img-link" />
@@ -270,13 +219,15 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
             <textarea
               v-show="item.updateEditable"
               v-model="item.content"
-              placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
+              placeholder="请编辑一条友善的评论，支持 Markdown 语法"
+            />
           </div>
           <div class="replay-area">
             <textarea
               v-show="item.replayEditable"
               v-model="reCommentBody"
-              placeholder="请回复一条友善的评论，支持 Markdown 语法" />
+              placeholder="请回复一条友善的评论，支持 Markdown 语法"
+            />
           </div>
           <div>
             <div class="replay actions" @click="replayComment(item)">
@@ -333,7 +284,8 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
           @current-change="paginationChange"
           layout="prev, pager, next"
           v-model:current-page="currentIndex"
-          v-model:page-count="commentCount" />
+          v-model:page-count="commentCount"
+        />
       </div>
     </div>
     <el-empty v-if="Config.__LITE_CONFIG__.isLogined && !comments?.length" description="没有评论，来一条友善的评论吧🤨" />

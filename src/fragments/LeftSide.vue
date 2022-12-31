@@ -49,7 +49,8 @@ Api.getSideBlogerInfo(res => {
           <div class="bloger__packer">
             <div v-if="side?.avatar" class="avatar">
               <img alt="FAILED" style="width: 80px; height: 80px; border-radius: 50px"
-                   :src="side?.avatar" />
+                   :src="side?.avatar"
+              />
             </div>
             <div class="item" v-for="(item, index) in bloger" :key="index">
               <div class="text" @click="nav(item.href, true)">
