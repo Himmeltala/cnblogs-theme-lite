@@ -14,7 +14,7 @@ export default defineConfig({
     }),
     Components({
       resolvers: [ElementPlusResolver()],
-      dirs: ["./src/fragments/**", "./src/components/**"]
+      dirs: ["./src/views/**", "./src/components/**"]
     })
   ],
   base: "/",

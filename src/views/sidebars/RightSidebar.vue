@@ -2,9 +2,9 @@
 import { watch } from "vue";
 import { $ref } from "vue/macros";
 import { useRoute } from "vue-router";
-import { useAnchorStore } from "../store";
-import { RouteName } from "../utils/route-helper";
-import Config from "../config";
+import { useAnchorStore } from "../../store";
+import { RouteName } from "../../utils/route-helper";
+import Config from "../../config";
 
 const route = useRoute();
 const links = Config.__LITE_CONFIG__.links;
@@ -34,13 +34,13 @@ watch(route, (value, oldValue, onCleanup) => {
           <div class="item" v-for="(item, index) in anchors" :key="index" v-html="item.content" />
         </div>
       </SideItem>
-      <SideItem text="我的技术栈" v-if="Config.__LITE_CONFIG__.radar">
+      <SideItem text="我的技术栈" v-if="Config.__LITE_CONFIG__.graph">
         <template #icon>
           <el-icon style="margin-right: 5px">
             <Aim />
           </el-icon>
         </template>
-        <RadarMap />
+        <SkillGraph />
       </SideItem>
       <SideItem text="常用链接" v-if="links && links.length > 0">
         <template #icon>
@@ -86,7 +86,7 @@ watch(route, (value, oldValue, onCleanup) => {
 </template>
 
 <style lang="scss">
-@import "../scss/mixins";
+@import "../../scss/mixins";
 
 .catalog {
   .item {
@@ -103,7 +103,7 @@ watch(route, (value, oldValue, onCleanup) => {
 </style>
 
 <style scoped lang="scss">
-@import "../scss/mixins";
+@import "../../scss/mixins";
 
 .right-side {
   color: #878787;

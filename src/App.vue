@@ -15,7 +15,7 @@ router.beforeEach((to: any, from, next) => {
   <div id="app-pack">
     <GitHub />
     <Navigator />
-    <LeftSide />
+    <LeftSidebar />
     <div id="app-vessel">
       <router-view v-slot="{ Component }">
         <Transition name="fade">
@@ -25,7 +25,7 @@ router.beforeEach((to: any, from, next) => {
         </Transition>
       </router-view>
     </div>
-    <RightSide />
+    <RightSidebar />
   </div>
 </template>
 

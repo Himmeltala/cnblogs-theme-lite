@@ -2,8 +2,8 @@
 import { watch } from "vue";
 import { $ref } from "vue/macros";
 import { useRoute, useRouter } from "vue-router";
-import * as Api from "../utils/api";
-import { closeLoader } from "../utils/loader";
+import * as Api from "../../utils/api";
+import { closeLoader } from "../../utils/loader";
 
 const route = useRoute();
 const router = useRouter();
@@ -59,7 +59,7 @@ fetchTagPageList();
 </template>
 
 <style scoped lang="scss">
-@import "../scss/mixins";
+@import "../../scss/mixins";
 
 .tagpage {
   .tagname {

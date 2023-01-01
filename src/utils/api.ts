@@ -209,7 +209,7 @@ export function getEssayVote(data: any[], response: (ajax: Array<DataType.BlogEs
  * @param page 页数
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
-export function getCategories(id: any, calcPage: boolean, page: number, response: (res: { pages: string[]; label: string; list: Array<DataType.Essay> }) => void) {
+export function getCategories(id: any, calcPage: boolean, page: any, response: (res: { pages: string[]; label: string; list: Array<DataType.Essay> }) => void) {
   axios.get(`${BASE_URL}/category/${id}.html?page=${page}`).then(({ data }) => {
     response(Parser.parseCategoryList(data, calcPage));
   });

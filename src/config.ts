@@ -14,8 +14,26 @@ if (!devEnv(DEV_EN)) {
   __LITE_CONFIG__ = window["__LITE_CONFIG__"];
 } else {
   __LITE_CONFIG__ = {
-    currentBlogId: 764030,
-    currentBlogApp: "WClown"
+    currentBlogId: 666252,
+    currentBlogApp: "Enziandom",
+    graph: {
+      alpha: 0.85,
+      sides: 5,
+      layer: 5,
+      lineWidth: 1,
+      textSize: 12,
+      fillColor: "#409eff",
+      strokeColor: "#A7A7A7",
+      lineColor: "#A7A7A7",
+      textColor: "#A7A7A7",
+      data: [
+        { title: "Css", star: 4 },
+        { title: "Vue", star: 4 },
+        { title: "Java", star: 3 },
+        { title: "JS/TS", star: 4 },
+        { title: "Android", star: 3 }
+      ]
+    },
   };
 }
 

@@ -74,7 +74,7 @@ export interface LiteConfigType {
     header?: string; search?: boolean;
     navs?: { href: string; text: string; svg?: string; img?: string; }[]
   };
-  radar?: {
+  graph?: {
     fillColor?: string;
     strokeColor?: string; alpha?: number; sides?: number;
     layer?: number; lineWidth?: number;

@@ -10,12 +10,16 @@ defineProps({
       digg: string;
     }>,
     required: true
+  },
+  align: {
+    type: String as PropType<"flex-start" | "flex-end">,
+    default: "flex-start"
   }
 });
 </script>
 
 <template>
-  <div class="bottom-data">
+  <div class="bottom-data" :style="{'justify-content': align}">
     <div class="date">
       <el-icon>
         <Clock />
@@ -48,7 +52,7 @@ defineProps({
 
 .bottom-data {
   color: #989898;
-  @include flex($justify: flex-start);
+  @include flex();
 
   & > div {
     @include flex($justify: space-between);

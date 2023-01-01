@@ -129,7 +129,7 @@ function drawDataArea(radius: any, coords: any, x: any, y: any, config: any, ctx
 function drawFloatingPanel(axis: any) {
   let cnp = $("#floating");
   let timeout: any = null;
-  $("#radar").on({
+  $("#graph").on({
     mousemove: function(e) {
       if (timeout != null) clearTimeout(timeout);
       timeout = setTimeout(() => {
@@ -178,12 +178,12 @@ export function calcSize(sideWidthVw: number) {
 }
 
 export function createRadar(vw: number) {
-  const config = Config.__LITE_CONFIG__.radar;
+  const config = Config.__LITE_CONFIG__.graph;
   if (config) {
     fillColor = config.fillColor ? config.fillColor : "#409eff";
     strokeColor = config.strokeColor ? config.strokeColor : "#a7a7a7";
     // @ts-ignore
-    const ctx = document.getElementById("radar").getContext("2d");
+    const ctx = document.getElementById("graph").getContext("2d");
     drawRadarMap(config, vw, vw, ctx);
   }
   return vw;

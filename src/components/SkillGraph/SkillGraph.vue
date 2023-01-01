@@ -6,21 +6,21 @@ import Config from "../../config";
 const vw = calcSize(13.5);
 
 onMounted(() => {
-  if (Config.__LITE_CONFIG__.radar) {
+  if (Config.__LITE_CONFIG__.graph) {
     createRadar(vw / 2);
   }
 });
 </script>
 
 <template>
-  <div class="radar__packer" v-if="Config.__LITE_CONFIG__.radar">
-    <canvas id="radar" :width="vw" :height="vw"></canvas>
+  <div class="graph__packer" v-if="Config.__LITE_CONFIG__.graph">
+    <canvas id="graph" :width="vw" :height="vw"></canvas>
     <div id="floating"></div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.radar__packer {
+.graph__packer {
   position: relative;
   width: inherit;
   height: 210px;
@@ -28,7 +28,7 @@ onMounted(() => {
   display: flex;
   justify-content: center;
 
-  #radar {
+  #graph {
     position: absolute;
     cursor: pointer;
   }
