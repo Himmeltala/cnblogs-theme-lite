@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { $ref } from "vue/macros";
 import { useRouter } from "vue-router";
-import Config from "../config";
+import Config from "../../config";
 
 const router = useRouter();
 const navor = Config.__LITE_CONFIG__.navor;
+
 let input = $ref("");
 
 function nav(path: string, out?: boolean) {
@@ -69,7 +70,7 @@ svg {
 </style>
 
 <style scoped lang="scss">
-@import "../scss/mixins.scss";
+@import "../../scss/mixins";
 
 .navigator {
   box-sizing: border-box;

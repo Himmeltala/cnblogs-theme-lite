@@ -48,7 +48,7 @@ defineProps({
 </template>
 
 <style scoped lang="scss">
-@import "../scss/mixins";
+@import "../../scss/mixins";
 
 .bottom-data {
   color: #989898;

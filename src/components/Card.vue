@@ -16,8 +16,13 @@ defineProps({
 </script>
 
 <template>
-  <div class="card"
-       :style="{ padding: padding, 'width': width ? width : '', height: height, 'margin': margin ? margin : '' }"
+  <div
+    class="card"
+    :style="{
+      'padding': padding,
+      'width': width ? width : '',
+      'height': height, 'margin': margin ? margin : ''
+    }"
   >
     <slot />
   </div>

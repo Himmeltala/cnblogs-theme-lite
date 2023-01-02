@@ -7,7 +7,6 @@ const props = defineProps({});
 let currentIndex = $ref(1);
 let pageCount = $ref(0);
 
-
 function floatSorterChange(direction: "left" | "right") {
 }
 
@@ -56,7 +55,7 @@ function fixedSorterChange() {
 </template>
 
 <style scoped lang="scss">
-@import "../../scss/mixins";
+@import "../scss/mixins";
 
 $border-radius: 6px;
 

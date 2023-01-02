@@ -5,22 +5,22 @@ const routes = [
   {
     name: RouteName.HOME,
     path: "/",
-    component: () => import("./views/home/Home.vue")
+    component: () => import("./views/modules/home/Home.vue")
   },
   {
     name: RouteName.ESSAY,
     path: "/e/:id",
-    component: () => import("./views/essay/Essay.vue")
+    component: () => import("./views/modules/essay/Essay.vue")
   },
   {
     name: RouteName.CATEGORY,
     path: "/c/:id/:page",
-    component: () => import("./views/home/Category.vue")
+    component: () => import("./views/modules/home/Category.vue")
   },
   {
     name: RouteName.TAG_PAGE,
     path: "/t/:tag",
-    component: () => import("./views/home/TagPage.vue")
+    component: () => import("./views/modules/home/TagPage.vue")
   }
 ];
 

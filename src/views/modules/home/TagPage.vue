@@ -2,8 +2,8 @@
 import { watch } from "vue";
 import { $ref } from "vue/macros";
 import { useRoute, useRouter } from "vue-router";
-import * as Api from "../../utils/api";
-import { closeLoader } from "../../utils/loader";
+import * as Api from "../../../utils/api";
+import { closeLoader } from "../../../utils/loader";
 
 const route = useRoute();
 const router = useRouter();
@@ -51,7 +51,7 @@ fetchTagPageList();
           <router-link :to="'/e/' + item.id">阅读全文</router-link>
         </div>
         <div class="desc">
-          <EssayBottomData :data="{date: item.date, view: item.view, comm: item.comm, digg: item.digg}" />
+          <EssayBottom :data="{date: item.date, view: item.view, comm: item.comm, digg: item.digg}" />
         </div>
       </Card>
     </div>
@@ -59,7 +59,7 @@ fetchTagPageList();
 </template>
 
 <style scoped lang="scss">
-@import "../../scss/mixins";
+@import "../../../scss/mixins";
 
 .tagpage {
   .tagname {

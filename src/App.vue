@@ -1,14 +1,4 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-import { useRouterStore } from "./store";
-
-const router = useRouter();
-const routerStore = useRouterStore();
-
-router.beforeEach((to: any, from, next) => {
-  routerStore.setName(to.name);
-  next();
-});
 </script>
 
 <template>
