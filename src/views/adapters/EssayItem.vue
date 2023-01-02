@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PropType } from "vue";
-import * as DataType from "../../types/data-type";
 import { useRouter } from "vue-router";
+import * as DataType from "../../types/data-type";
 
 defineProps({
   loading: {

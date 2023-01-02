@@ -9,47 +9,65 @@ import { closeLoader } from "../../../utils/loader";
 const route = useRoute();
 
 let data = $ref<Array<DataType.Essay>>();
-let pages = $ref<any>();
 let label = $ref<any>();
 let loading = $ref<boolean>(true);
-let pageCount = $ref<number>(2);
 
+/**
+ * 获取该随笔分类下的所有随笔列表。
+ * @param complete 请求完成的回调函数
+ * @param calcPage 是否获取分页情况
+ * @param pageIndex 当前页数
+ */
 function fetchData(
   complete?: ((pages: string[]) => void) | null,
-  calc: boolean = false, page: number = 1
+  calcPage: boolean = false, pageIndex: number = 1
 ) {
   loading = true;
-  RemoteApi.getCategories(route.params.id, calc, page, res => {
+  RemoteApi.getCategories(route.params.id, calcPage, pageIndex, res => {
     data = res.list;
-    label = res.label;
     loading = false;
+    label = res.label;
     complete && complete(res.pages);
   });
 }
 
+// 组件初始化数据
 fetchData(() => {
   closeLoader();
 });
 
-let isCalced = $ref<boolean>(true);
+let isCalc = $ref<boolean>(true);
 const pagination = ref();
 
+// 监听路由状态，左侧边栏随笔分类发生变化时，触发 pagination 子组件，更新 pageCount 和 pageIndex
 watch(route, () => {
-  isCalced = true;
+  isCalc = true;
   pagination.value.updateProps();
   fetchData();
 });
 
+let pageCount = $ref<number>(2);
+
+/**
+ * 触发左或右时，该函数获取 page 对象，包含当前分类的总页数以及当前页数 index
+ * @param page 子组件传递到父组件的当前分页情况
+ */
 function floatChange(page: any) {
-  fetchData(res => {
-    if (isCalced) {
-      pageCount = parseInt(res[res.length - 1]);
+  fetchData(pages => {
+    if (isCalc) {
+      // 获取 pages，即分页情况，只获取第一次，页面第一页默认时没有分页情况，只有第二页才有
+      pageCount = parseInt(pages[pages.length - 1]);
+      // 如果页数总数只有 1 页，防止错误发生，将变量设置为 2
       if (pageCount === 1) pageCount = 2;
-      isCalced = false;
+      isCalc = false;
     }
-  }, isCalced, page.currentIndex);
+  }, isCalc, page.currentIndex);
 }
 
+/**
+ * 固定分页点击之后时触发
+ * @param page 子组件传递到父组件的当前分页情况
+ */
 function fixedChange(page: any) {
   fetchData(null, false, page.currentIndex);
 }

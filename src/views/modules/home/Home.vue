@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { $ref } from "vue/macros";
 import * as RemoteApi from "../../../utils/api";
 import * as DataType from "../../../types/data-type";
@@ -8,15 +9,20 @@ let data = $ref<Array<DataType.Essay>>();
 let loading = $ref<boolean>(true);
 let pageCount = $ref<number>(2);
 
+const pagination = ref();
+
 function fetchData(
   complete?: ((pages: string[]) => void) | null,
-  calc: boolean = false, page: number = 1
+  isCalc: boolean = false, pageIndex: number = 1
 ) {
   loading = true;
-  RemoteApi.getEssayList(page, calc, res => {
-    data = res.list;
+  RemoteApi.getEssayList(pageIndex, isCalc, res => {
+    if (res.list.length === 0) {
+      pagination.value.updateProps();
+    } else {
+      data = res.list;
+    }
     loading = false;
-    console.log(res);
     complete && complete(res.pages);
   });
 }
@@ -25,15 +31,18 @@ fetchData(() => {
   closeLoader();
 });
 
-let isCalced = true;
+let isCalc = true;
 
 function floatChange(page: any) {
-  fetchData(res => {
-    if (isCalced) {
-      pageCount = parseInt(res[res.length - 1]);
-      isCalced = false;
+  fetchData(pages => {
+    if (isCalc) {
+      // 获取 pages，即分页情况，只获取第一次，页面第一页默认时没有分页情况，只有第二页才有
+      pageCount = parseInt(pages[pages.length - 1]);
+      // 如果页数总数只有 1 页，防止错误发生，将变量设置为 2
+      if (pageCount === 1) pageCount = 2;
+      isCalc = false;
     }
-  }, isCalced, page.currentIndex);
+  }, isCalc, page.currentIndex);
 }
 
 function fixedChange(page: any) {
@@ -44,6 +53,7 @@ function fixedChange(page: any) {
 <template>
   <div class="home">
     <PaginationPage
+      ref="pagination"
       @fixed-change="fixedChange"
       @float-change="floatChange"
       :page-count="pageCount">

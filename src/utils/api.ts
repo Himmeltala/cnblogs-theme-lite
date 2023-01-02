@@ -1,10 +1,10 @@
 /**
  * 提供对接博客园各种可用的基础 API
  *
- * @author Enziandom
+ * @author Himmelbleu
  * @since 1.0
  * @date 2022 年 12 月 1 日
- * @url https://www.cnblogs.com/enziandom/#/
+ * @url https://www.cnblogs.com/Himmelbleu/#/
  */
 
 import axios from "axios";
@@ -25,8 +25,7 @@ const BASE_URL = Config.api.base;
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
 export function getEssayList(
-  page: number,
-  calcPage: boolean,
+  page: number, calcPage: boolean,
   response: (res: { pages: string[]; list: Array<DataType.Essay> }) => void
 ) {
   axios.get(`${BASE_URL}/default.html?page=${page}`).then(({ data }) => {
@@ -146,7 +145,10 @@ export function replayComment(comment: DataType.BlogComment, response: (ajax: Ht
  * @param pageIndex 1 页最多有 50 条评论
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
-export function getCommentList(postId: number | string, pageIndex: number, response: (res: Array<DataType.Comment>) => void) {
+export function getCommentList(
+  postId: number | string, pageIndex: number,
+  response: (res: Array<DataType.Comment>) => void
+) {
   axios.get(`${BASE_URL}/ajax/GetComments.aspx?postId=${postId}&pageIndex=${pageIndex}`).then(({ data }) => {
     response(Parser.parseCommentList(data));
   });
@@ -209,7 +211,10 @@ export function getEssayVote(data: any[], response: (ajax: Array<DataType.BlogEs
  * @param page 页数
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
-export function getCategories(id: any, calcPage: boolean, page: any, response: (res: { pages: string[]; label: string; list: Array<DataType.Essay> }) => void) {
+export function getCategories(
+  id: any, calcPage: boolean, page: any,
+  response: (res: { pages: string[]; label: string; list: Array<DataType.Essay> }) => void
+) {
   axios.get(`${BASE_URL}/category/${id}.html?page=${page}`).then(({ data }) => {
     response(Parser.parseCategoryList(data, calcPage));
   });

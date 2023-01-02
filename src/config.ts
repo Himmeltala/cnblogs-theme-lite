@@ -14,8 +14,8 @@ if (!devEnv(DEV_EN)) {
   __LITE_CONFIG__ = window["__LITE_CONFIG__"];
 } else {
   __LITE_CONFIG__ = {
-    currentBlogId: 666252,
-    currentBlogApp: "Enziandom"
+    currentBlogId: 729438,
+    currentBlogApp: "lzen-lx"
   };
 }
 
