@@ -21,7 +21,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://www.cnblogs.com/lzen-lx",
+        target: "https://www.cnblogs.com/Enziandom",
         changeOrigin: true,
         rewrite: (path: any) => path.replace(/^\/api/, "")
       }

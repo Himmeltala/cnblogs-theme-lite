@@ -1,7 +1,7 @@
 import $ from "jquery";
 import * as DataType from "./types/data-type";
 
-const DEV_EN: "dev" | "pro" = "dev";
+const DEV_EN: "dev" | "pro" = "pro";
 
 function devEnv(env: "dev" | "pro") {
   return env === "dev";
@@ -14,8 +14,8 @@ if (!devEnv(DEV_EN)) {
   __LITE_CONFIG__ = window["__LITE_CONFIG__"];
 } else {
   __LITE_CONFIG__ = {
-    currentBlogId: 729438,
-    currentBlogApp: "lzen-lx"
+    currentBlogId: 666252,
+    currentBlogApp: "Enziandom"
   };
 }
 
