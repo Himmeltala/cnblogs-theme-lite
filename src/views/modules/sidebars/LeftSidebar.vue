@@ -48,7 +48,8 @@ Api.getSideBlogerInfo(res => {
           </template>
           <div class="bloger__packer">
             <div v-if="side?.avatar" class="avatar">
-              <img alt="FAILED" style="width: 80px; height: 80px; border-radius: 50px"
+              <img alt="FAILED"
+                   style="width: 80px; height: 80px; border-radius: 50px; object-fit: cover;"
                    :src="side?.avatar"
               />
             </div>
