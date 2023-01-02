@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from "vue-router";
-import { watch } from "vue";
+import { watch, ref } from "vue";
 import { $ref } from "vue/macros";
+import { useRoute } from "vue-router";
 import * as DataType from "../../../types/data-type";
 import * as RemoteApi from "../../../utils/api";
 import { closeLoader } from "../../../utils/loader";
@@ -9,19 +9,21 @@ import { closeLoader } from "../../../utils/loader";
 const route = useRoute();
 
 let data = $ref<Array<DataType.Essay>>();
-let label = $ref<any>();
 let pages = $ref<any>();
-let rubric = $ref<any>();
+let label = $ref<any>();
 let loading = $ref<boolean>(true);
+let pageCount = $ref<number>(2);
 
-function fetchData(complete?: Function) {
+function fetchData(
+  complete?: ((pages: string[]) => void) | null,
+  calc: boolean = false, page: number = 1
+) {
   loading = true;
-  RemoteApi.getCategories(route.params.id, true, route.params.page, res => {
+  RemoteApi.getCategories(route.params.id, calc, page, res => {
     data = res.list;
-    pages = res.pages;
-    rubric = res.label;
+    label = res.label;
     loading = false;
-    complete && complete();
+    complete && complete(res.pages);
   });
 }
 
@@ -29,14 +31,37 @@ fetchData(() => {
   closeLoader();
 });
 
+let isCalced = $ref<boolean>(true);
+const pagination = ref();
+
 watch(route, () => {
+  isCalced = true;
+  pagination.value.updateProps();
   fetchData();
 });
+
+function floatChange(page: any) {
+  fetchData(res => {
+    if (isCalced) {
+      pageCount = parseInt(res[res.length - 1]);
+      if (pageCount === 1) pageCount = 2;
+      isCalced = false;
+    }
+  }, isCalced, page.currentIndex);
+}
+
+function fixedChange(page: any) {
+  fetchData(null, false, page.currentIndex);
+}
 </script>
 
 <template>
   <div class="category">
-    <PaginationPage :current-index="0" :page-count="1">
+    <PaginationPage
+      ref="pagination"
+      @fixed-change="fixedChange"
+      @float-change="floatChange"
+      :page-count="pageCount">
       <template #loading>
         <el-skeleton style="margin-top: 10px" :loading="loading" animated>
           <template #template>
@@ -59,7 +84,7 @@ watch(route, () => {
         </el-skeleton>
       </template>
       <template #content>
-        <div class="label">{{ rubric }}</div>
+        <div class="label">{{ label }}</div>
         <EssayItem :data="data" :loading="loading" />
       </template>
     </PaginationPage>

@@ -1,20 +1,28 @@
 <script setup lang="ts">
+import { watch } from "vue";
 import { $ref } from "vue/macros";
 import { ElMessage } from "element-plus";
 
 const props = defineProps({
   pageCount: {
     type: Number,
-    default: 1
-  },
-  currentIndex: {
-    type: Number,
-    default: 1
+    default: 2
   }
 });
 
 let _pageCount = $ref<number>(props.pageCount);
-let _currentIndex = $ref<number>(props.currentIndex);
+let _currentIndex = $ref<number>(1);
+
+const updateProps = () => {
+  _pageCount = 2;
+  _currentIndex = 1;
+};
+
+defineExpose({ updateProps });
+
+watch(() => props.pageCount, () => {
+  _pageCount = props.pageCount;
+});
 
 const emits = defineEmits(["floatChange", "fixedChange"]);
 
@@ -75,7 +83,7 @@ function fixedSorterChange() {
         </el-icon>
       </el-tooltip>
     </div>
-    <div class="pg pg-bottom" v-if="_pageCount >= 1">
+    <div class="pg pg-bottom" v-if="_currentIndex > 1 && _pageCount >= 1">
       <el-pagination
         @current-change="fixedSorterChange"
         v-show="_pageCount"

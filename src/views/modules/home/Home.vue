@@ -6,13 +6,18 @@ import { closeLoader } from "../../../utils/loader";
 
 let data = $ref<Array<DataType.Essay>>();
 let loading = $ref<boolean>(true);
+let pageCount = $ref<number>(2);
 
-function fetchData(complete?: Function) {
+function fetchData(
+  complete?: ((pages: string[]) => void) | null,
+  calc: boolean = false, page: number = 1
+) {
   loading = true;
-  RemoteApi.getEssayList(0, true, res => {
+  RemoteApi.getEssayList(page, calc, res => {
     data = res.list;
     loading = false;
-    complete && complete();
+    console.log(res);
+    complete && complete(res.pages);
   });
 }
 
@@ -20,11 +25,19 @@ fetchData(() => {
   closeLoader();
 });
 
+let isCalced = true;
+
 function floatChange(page: any) {
-  console.log(page);
+  fetchData(res => {
+    if (isCalced) {
+      pageCount = parseInt(res[res.length - 1]);
+      isCalced = false;
+    }
+  }, isCalced, page.currentIndex);
 }
 
 function fixedChange(page: any) {
+  fetchData(null, false, page.currentIndex);
 }
 </script>
 
@@ -33,7 +46,7 @@ function fixedChange(page: any) {
     <PaginationPage
       @fixed-change="fixedChange"
       @float-change="floatChange"
-      :current-index="1" :page-count="2">
+      :page-count="pageCount">
       <template #loading>
         <el-skeleton style="margin-top: 10px" :loading="loading" animated>
           <template #template>

@@ -21,15 +21,20 @@ export function parseStrToDom(strDOM: any) {
   return new DOMParser().parseFromString(strDOM, "text/html");
 }
 
-function calcPages(realDOM: any, calc: boolean): string[] {
+function calcPages(sorter: any, calc: boolean): string[] {
   let pages: string[] = [];
-  if (calc) {
-    let sorter = $(realDOM).find("#homepage_bottom_pager > .pager > a");
+  if (calc && sorter) {
     if ($(sorter).length > 1) {
       $(sorter).each((i, e) => {
-        if (i != 0 && (i != $(sorter).length - 1 || $(sorter).length - 1 === 1)) pages.push($(e).text());
+        let text = $(e).text();
+        if (!(/下一页/g.test(text) || /上一页/g.test(text))) {
+          pages.push(text);
+        }
+        // if (i != 0 && (i != $(sorter).length - 1 || $(sorter).length - 1 === 1)) pages.push($(e).text());
       });
     }
+  } else {
+    pages.push("Do not calculate pages.");
   }
   return pages;
 }
@@ -61,7 +66,7 @@ export function parseEssayList(realDOM: any, calc: boolean): { pages: string[]; 
     });
   });
 
-  return { pages: calcPages(realDOM, calc), list };
+  return { pages: calcPages($(realDOM).find("#homepage_top_pager > .pager > a"), calc), list };
 }
 
 /**
@@ -212,7 +217,9 @@ export function parseCategoryList(realDOM: any, calc: boolean): { pages: string[
   });
 
   return {
-    pages: calcPages(realDOM, calc), list, label: $(realDOM).find(".entrylistTitle").text() || ""
+    pages: calcPages($(realDOM).find("#mainContent .pager")[0]?.querySelectorAll("a"), calc),
+    list,
+    label: $(realDOM).find(".entrylistTitle").text() || ""
   };
 }
 
