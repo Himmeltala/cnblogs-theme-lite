@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 
+type DataType = {
+  date: string;
+  view: string;
+  comm: string;
+  digg: string;
+}
+
+type AlignType = "flex-start" | "flex-end";
+
 defineProps({
   data: {
-    type: Object as PropType<{
-      date: string;
-      view: string;
-      comm: string;
-      digg: string;
-    }>,
+    type: Object as PropType<DataType>,
     required: true
   },
   align: {
-    type: String as PropType<"flex-start" | "flex-end">,
+    type: String as PropType<AlignType>,
     default: "flex-start"
   }
 });

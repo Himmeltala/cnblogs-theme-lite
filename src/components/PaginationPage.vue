@@ -1,32 +1,66 @@
 <script setup lang="ts">
 import { $ref } from "vue/macros";
-import { PropType } from "vue";
+import { ElMessage } from "element-plus";
 
-const props = defineProps({});
+const props = defineProps({
+  pageCount: {
+    type: Number,
+    default: 1
+  },
+  currentIndex: {
+    type: Number,
+    default: 1
+  }
+});
 
-let currentIndex = $ref(1);
-let pageCount = $ref(0);
+let _pageCount = $ref<number>(props.pageCount);
+let _currentIndex = $ref<number>(props.currentIndex);
+
+const emits = defineEmits(["floatChange", "fixedChange"]);
 
 function floatSorterChange(direction: "left" | "right") {
+  if (direction === "left") {
+    if (_currentIndex >= 0) {
+      _currentIndex--;
+      emits("floatChange", {
+        pageCount: _pageCount,
+        currentIndex: _currentIndex
+      });
+    }
+  } else {
+    if (_currentIndex <= _pageCount - 1) {
+      _currentIndex++;
+      emits("floatChange", {
+        pageCount: _pageCount,
+        currentIndex: _currentIndex
+      });
+    } else {
+      ElMessage({ message: "已经是最后一页！", grouping: true, showClose: true, type: "warning" });
+    }
+  }
 }
 
 function fixedSorterChange() {
+  emits("fixedChange", {
+    pageCount: _pageCount,
+    currentIndex: _currentIndex
+  });
 }
 </script>
 
 <template>
-  <div class="common">
-    <div class="pagination pg-top" v-if="currentIndex > 1 && pageCount >= 1">
+  <div class="pagination-page">
+    <div class="pg pg-top" v-if="_currentIndex > 1 && _pageCount >= 1">
       <el-pagination
         @current-change="fixedSorterChange"
-        v-model:current-page="currentIndex"
-        v-model:page-count="pageCount"
+        v-model:current-page="_currentIndex"
+        v-model:page-count="_pageCount"
         :background="true"
         layout="prev, pager, next, jumper"
       />
     </div>
     <slot name="loading" />
-    <div v-show="currentIndex > 1" class="float-sorter left-sorter" @click="floatSorterChange('left')">
+    <div v-show="_currentIndex > 1" class="float-sorter left-sorter" @click="floatSorterChange('left')">
       <el-tooltip effect="dark" content="上一页" placement="left">
         <el-icon>
           <ArrowLeftBold />
@@ -41,12 +75,12 @@ function fixedSorterChange() {
         </el-icon>
       </el-tooltip>
     </div>
-    <div class="pagination pg-bottom" v-if="pageCount >= 1">
+    <div class="pg pg-bottom" v-if="_pageCount >= 1">
       <el-pagination
         @current-change="fixedSorterChange"
-        v-show="pageCount"
-        v-model:current-page="currentIndex"
-        v-model:page-count="pageCount"
+        v-show="_pageCount"
+        v-model:current-page="_currentIndex"
+        v-model:page-count="_pageCount"
         :background="true"
         layout="prev, pager, next, jumper"
       />
@@ -57,9 +91,7 @@ function fixedSorterChange() {
 <style scoped lang="scss">
 @import "../scss/mixins";
 
-$border-radius: 6px;
-
-.common {
+.pagination-page {
   position: relative;
 
   .float-sorter {
@@ -90,7 +122,7 @@ $border-radius: 6px;
   }
 }
 
-.pagination {
+.pg {
   margin-bottom: 10px;
   @include flex($justify: flex-end);
 }

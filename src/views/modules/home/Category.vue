@@ -36,7 +36,7 @@ watch(route, () => {
 
 <template>
   <div class="category">
-    <PaginationPage>
+    <PaginationPage :current-index="0" :page-count="1">
       <template #loading>
         <el-skeleton style="margin-top: 10px" :loading="loading" animated>
           <template #template>

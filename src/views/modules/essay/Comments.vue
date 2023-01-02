@@ -5,7 +5,7 @@ import { ElMessage } from "element-plus";
 import Config from "../../../config";
 import * as DataType from "../../../types/data-type";
 import * as Native from "../../../utils/native";
-import * as Api from "../../../utils/api";
+import * as RemoteApi from "../../../utils/api";
 
 const props = defineProps({
   postId: { type: Number, required: true }
@@ -30,10 +30,10 @@ function fetchComment(f: boolean, y?: { message?: string, success?: (res: any) =
                       n?: { message?: string, error?: () => void }, bf?: Function) {
   if (f) {
     bf && bf();
-    Api.getCommentCount(props.postId, count => {
+    RemoteApi.getCommentCount(props.postId, count => {
       commentCount = count;
       currentIndex = count;
-      Api.getCommentList(props.postId, currentIndex,
+      RemoteApi.getCommentList(props.postId, currentIndex,
         (res: Array<DataType.Essay>) => {
           if (y && y.success) {
             y.success(res);
@@ -66,7 +66,7 @@ function uploadImage() {
 
 function paginationChange() {
   skeleton = true;
-  Api.getCommentList(props.postId, currentIndex, (res: Array<DataType.Essay>) => {
+  RemoteApi.getCommentList(props.postId, currentIndex, (res: Array<DataType.Essay>) => {
     comments = res;
     skeleton = false;
   });
@@ -75,7 +75,7 @@ function paginationChange() {
 function insertComment() {
   if (form.content) {
     loading = true;
-    Api.setComment({ postId: form.postId, body: form.content, parentCommentId: form.parentCommentId },
+    RemoteApi.setComment({ postId: form.postId, body: form.content, parentCommentId: form.parentCommentId },
       ({ data }) => {
         fetchComment(data.isSuccess, {
             message: "你的评论传达成功！😀",
@@ -95,7 +95,7 @@ function insertComment() {
 }
 
 function deleteComment(comment: DataType.Comment, index: number) {
-  Api.deleteComment(
+  RemoteApi.deleteComment(
     { commentId: comment.commentId, pageIndex: currentIndex - 1, parentId: props.postId },
     ({ data }) => {
       if (data) {
@@ -111,10 +111,10 @@ function deleteComment(comment: DataType.Comment, index: number) {
 function updateComment(comment: DataType.Comment) {
   comment.updateEditable = !comment.updateEditable;
   if (comment.replayEditable) comment.replayEditable = false;
-  if (comment.updateEditable) Api.getComment({ commentId: comment.commentId }, ({ data }) => comment.content = data);
+  if (comment.updateEditable) RemoteApi.getComment({ commentId: comment.commentId }, ({ data }) => comment.content = data);
 
   if (!comment.updateEditable) {
-    Api.updateComment(
+    RemoteApi.updateComment(
       {
         body: comment.content,
         commentId: comment.commentId
@@ -139,7 +139,7 @@ function replayComment(comment: DataType.Comment) {
   if (comment.updateEditable) comment.updateEditable = false;
 
   if (!comment.replayEditable) {
-    Api.replayComment({
+    RemoteApi.replayComment({
       body: reCommentBody,
       postId: props.postId,
       parentCommentId: comment.commentId
@@ -159,7 +159,7 @@ function replayComment(comment: DataType.Comment) {
 }
 
 function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
-  Api.voteComment(
+  RemoteApi.voteComment(
     { isAbandoned: false, commentId: comment.commentId, postId: props.postId, voteType: voteType },
     ajax => {
       if (ajax.isSuccess) {

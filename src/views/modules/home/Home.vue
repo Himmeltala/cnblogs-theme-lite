@@ -19,11 +19,21 @@ function fetchData(complete?: Function) {
 fetchData(() => {
   closeLoader();
 });
+
+function floatChange(page: any) {
+  console.log(page);
+}
+
+function fixedChange(page: any) {
+}
 </script>
 
 <template>
   <div class="home">
-    <PaginationPage>
+    <PaginationPage
+      @fixed-change="fixedChange"
+      @float-change="floatChange"
+      :current-index="1" :page-count="2">
       <template #loading>
         <el-skeleton style="margin-top: 10px" :loading="loading" animated>
           <template #template>
