@@ -129,6 +129,7 @@ watch(route, (value, oldValue, onCleanup) => {
     margin: 10px 0 0 0;
 
     a {
+      color: #878787;
       @include ahover();
     }
   }
@@ -145,6 +146,10 @@ watch(route, (value, oldValue, onCleanup) => {
     .text {
       word-break: break-all;
       width: calc(100% - 3.8vw - 8px);
+
+      a {
+        color: #878787;
+      }
     }
 
     .author {

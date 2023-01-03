@@ -6,6 +6,7 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
 // CSS
 import "./style.scss";
+import "./scss/common.scss";
 import "element-plus/theme-chalk/dark/css-vars.css";
 import "element-plus/dist/index.css";
 import "highlight.js/styles/atom-one-dark.css";

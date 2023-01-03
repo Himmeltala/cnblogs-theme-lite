@@ -15,7 +15,11 @@ if (!devEnv(DEV_EN)) {
 } else {
   __LITE_CONFIG__ = {
     currentBlogId: 666252,
-    currentBlogApp: "Enziandom"
+    currentBlogApp: "Enziandom",
+    side: {
+      avatar: "https://img2.baidu.com/it/u=4193796664,2438723961&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+      signature: "Time tick away, dream faded away!"
+    }
   };
 }
 

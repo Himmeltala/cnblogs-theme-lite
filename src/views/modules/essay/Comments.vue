@@ -2,6 +2,7 @@
 import { $ref } from "vue/macros";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
+import { InfoFilled } from "@element-plus/icons-vue";
 import Config from "../../../config";
 import * as DataType from "../../../types/data-type";
 import * as Native from "../../../utils/native";
@@ -26,8 +27,10 @@ let commentCount = $ref(1);
 let currentIndex = $ref(0);
 let skeleton = $ref(true);
 
-function fetchComment(f: boolean, y?: { message?: string, success?: (res: any) => void },
-                      n?: { message?: string, error?: () => void }, bf?: Function) {
+function fetchComment(
+  f: boolean, y?: { message?: string, success?: (res: any) => void },
+  n?: { message?: string, error?: () => void }, bf?: Function
+) {
   if (f) {
     bf && bf();
     RemoteApi.getCommentCount(props.postId, count => {
@@ -106,6 +109,10 @@ function deleteComment(comment: DataType.Comment, index: number) {
       }
     }
   );
+}
+
+function confirmDeleteComment(comment: DataType.Comment, index: number) {
+  deleteComment(comment, index);
 }
 
 function updateComment(comment: DataType.Comment) {
@@ -256,11 +263,24 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
               </el-icon>
               <span>{{ item.bury }}</span>
             </div>
-            <div class="delete actions" @click="deleteComment(item, index)">
-              <el-icon>
-                <Delete />
-              </el-icon>
-              <span>删除</span>
+            <div class="actions">
+              <el-popconfirm
+                confirm-button-text="确定"
+                cancel-button-text="取消"
+                :icon="InfoFilled"
+                icon-color="#626AEF"
+                title="确定删除该评论？"
+                @confirm="confirmDeleteComment"
+              >
+                <template #reference>
+                  <div class="delete">
+                    <el-icon>
+                      <Delete />
+                    </el-icon>
+                    <span>删除</span>
+                  </div>
+                </template>
+              </el-popconfirm>
             </div>
             <div class="update actions" @click="updateComment(item)">
               <div v-if="!item.updateEditable">
@@ -433,7 +453,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
 
       .replay > div,
       .update > div,
-      .actions {
+      .actions, .delete {
         margin-right: 15px;
         @include flex();
         @include ahover();
