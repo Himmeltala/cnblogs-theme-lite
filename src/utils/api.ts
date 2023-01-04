@@ -12,9 +12,7 @@ import $ from "jquery";
 import * as Parser from "./parser";
 import * as DataType from "../types/data-type";
 import * as HttpType from "../types/http-type";
-import Config from "../config";
-
-const BASE_URL = Config.api.base;
+import { __LITE_CONFIG__, BaseAPI } from "../config";
 
 /**
  * 获取首页的随笔列表
@@ -28,7 +26,7 @@ export function getEssayList(
   page: number, calcPage: boolean,
   response: (res: { pages: string[]; list: Array<DataType.Essay> }) => void
 ) {
-  axios.get(`${BASE_URL}/default.html?page=${page}`).then(({ data }) => {
+  axios.get(`${BaseAPI}/default.html?page=${page}`).then(({ data }) => {
     response(Parser.parseEssayList(data, calcPage));
   });
 }
@@ -40,7 +38,7 @@ export function getEssayList(
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
 export function getEssay(postId: number, response: (res: DataType.Essay) => void) {
-  axios.get(`${BASE_URL}/p/${postId}.html`).then(({ data }) => {
+  axios.get(`${BaseAPI}/p/${postId}.html`).then(({ data }) => {
     response(Parser.parseEssay(postId, data));
   });
 }
@@ -69,7 +67,7 @@ function sendPost(url: string, data: any, response: (res: any) => void) {
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
 export function setComment(comment: DataType.BlogComment, response: (res: any) => void) {
-  sendPost(`${BASE_URL}/ajax/PostComment/Add.aspx`, comment, response);
+  sendPost(`${BaseAPI}/ajax/PostComment/Add.aspx`, comment, response);
 }
 
 /**
@@ -79,7 +77,7 @@ export function setComment(comment: DataType.BlogComment, response: (res: any) =
  * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
 export function deleteComment(comment: DataType.BlogComment, response: (res: any) => void) {
-  sendPost(`${BASE_URL}/ajax/comment/DeleteComment.aspx`, comment, response);
+  sendPost(`${BaseAPI}/ajax/comment/DeleteComment.aspx`, comment, response);
 }
 
 /**
@@ -89,7 +87,7 @@ export function deleteComment(comment: DataType.BlogComment, response: (res: any
  * @param response 获取响应的消息——该实体类与 DataType 中定义的评论实体类字段不一致。返回一个 axios 中 data 部分消息
  */
 export function getComment(comment: DataType.BlogComment, response: (res: any) => void) {
-  sendPost(`${BASE_URL}/ajax/comment/GetCommentBody.aspx`, comment, response);
+  sendPost(`${BaseAPI}/ajax/comment/GetCommentBody.aspx`, comment, response);
 }
 
 /**
@@ -99,7 +97,7 @@ export function getComment(comment: DataType.BlogComment, response: (res: any) =
  * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
 export function updateComment(comment: DataType.BlogComment, response: (res: any) => void) {
-  sendPost(`${BASE_URL}/ajax/PostComment/Update.aspx`, comment, response);
+  sendPost(`${BaseAPI}/ajax/PostComment/Update.aspx`, comment, response);
 }
 
 /**
@@ -109,7 +107,7 @@ export function updateComment(comment: DataType.BlogComment, response: (res: any
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
 export function getCommentCount(postId: number | string, response: (res: any) => void) {
-  axios.get(`${BASE_URL}/ajax/GetCommentCount.aspx?postId=${postId}`).then(({ data }) => {
+  axios.get(`${BaseAPI}/ajax/GetCommentCount.aspx?postId=${postId}`).then(({ data }) => {
     response(Parser.parseCommentPages(data));
   });
 }
@@ -121,7 +119,7 @@ export function getCommentCount(postId: number | string, response: (res: any) =>
  * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
 export function voteComment(comment: DataType.BlogComment, response: (ajax: HttpType.AjaxType) => void) {
-  sendPost(`${BASE_URL}/ajax/vote/comment`, comment, ({ data }) => {
+  sendPost(`${BaseAPI}/ajax/vote/comment`, comment, ({ data }) => {
     response(data);
   });
 }
@@ -133,7 +131,7 @@ export function voteComment(comment: DataType.BlogComment, response: (ajax: Http
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。这里需要获取 AjaxType。利用其中的 isSuccess 查看是否回复成功。
  */
 export function replayComment(comment: DataType.BlogComment, response: (ajax: HttpType.AjaxType) => void) {
-  sendPost(`${BASE_URL}/ajax/PostComment/Add.aspx`, comment, ({ data }) => {
+  sendPost(`${BaseAPI}/ajax/PostComment/Add.aspx`, comment, ({ data }) => {
     response(data);
   });
 }
@@ -149,7 +147,7 @@ export function getCommentList(
   postId: number | string, pageIndex: number,
   response: (res: Array<DataType.Comment>) => void
 ) {
-  axios.get(`${BASE_URL}/ajax/GetComments.aspx?postId=${postId}&pageIndex=${pageIndex}`).then(({ data }) => {
+  axios.get(`${BaseAPI}/ajax/GetComments.aspx?postId=${postId}&pageIndex=${pageIndex}`).then(({ data }) => {
     response(Parser.parseCommentList(data));
   });
 }
@@ -161,7 +159,7 @@ export function getCommentList(
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
 export function getEssayTagsAndCategories(postId: number, response: (res: any) => void) {
-  axios.get(`${BASE_URL}/ajax/CategoriesTags.aspx?blogId=${Config.__LITE_CONFIG__.currentBlogId}&postId=${postId}`).then(({ data }) => {
+  axios.get(`${BaseAPI}/ajax/CategoriesTags.aspx?blogId=${__LITE_CONFIG__.currentBlogId}&postId=${postId}`).then(({ data }) => {
     response(Parser.parseEssayTagsAndCategories(data));
   });
 }
@@ -173,7 +171,7 @@ export function getEssayTagsAndCategories(postId: number, response: (res: any) =
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
 export function getPrevNext(postId: number | string, response: (res: any) => void) {
-  axios.get(`${BASE_URL}/ajax/post/prevnext?postId=${postId}`).then(({ data }) => {
+  axios.get(`${BaseAPI}/ajax/post/prevnext?postId=${postId}`).then(({ data }) => {
     response(Parser.parsePrevNext(data));
   });
 }
@@ -185,7 +183,7 @@ export function getPrevNext(postId: number | string, response: (res: any) => voi
  * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
 export function voteEssay(data: DataType.BlogEssay, response: (ajax: HttpType.AjaxType) => void) {
-  sendPost(`${BASE_URL}/ajax/vote/blogpost`, data, ({ data }) => {
+  sendPost(`${BaseAPI}/ajax/vote/blogpost`, data, ({ data }) => {
     response(data);
   });
 }
@@ -197,7 +195,7 @@ export function voteEssay(data: DataType.BlogEssay, response: (ajax: HttpType.Aj
  * @param response 获取响应的消息，返回一个 axios 的 data 部分
  */
 export function getEssayVote(data: any[], response: (ajax: Array<DataType.BlogEssayVote>) => void) {
-  sendPost(`${BASE_URL}/ajax/GetPostStat`, data, ({ data }) => {
+  sendPost(`${BaseAPI}/ajax/GetPostStat`, data, ({ data }) => {
     response(data);
   });
 }
@@ -215,7 +213,7 @@ export function getCategories(
   id: any, calcPage: boolean, page: any,
   response: (res: { pages: string[]; label: string; list: Array<DataType.Essay> }) => void
 ) {
-  axios.get(`${BASE_URL}/category/${id}.html?page=${page}`).then(({ data }) => {
+  axios.get(`${BaseAPI}/category/${id}.html?page=${page}`).then(({ data }) => {
     response(Parser.parseCategoryList(data, calcPage));
   });
 }
@@ -227,7 +225,7 @@ export function getCategories(
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
 export function getTagPageList(tag: string, response: (res: DataType.TagPage) => void) {
-  axios.get(`${BASE_URL}/tag/${tag}`).then(({ data }) => {
+  axios.get(`${BaseAPI}/tag/${tag}`).then(({ data }) => {
     response(Parser.parseTagPageList(data));
   });
 }
@@ -238,19 +236,34 @@ export function getTagPageList(tag: string, response: (res: DataType.TagPage) =>
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
 export function getSideCategories(response: (res: any) => void) {
-  axios.get(`${BASE_URL}/ajax/sidecolumn.aspx`).then(({ data }) => {
+  axios.get(`${BaseAPI}/ajax/sidecolumn.aspx`).then(({ data }) => {
     response(Parser.parseSideCategories(data));
   });
 }
 
 /**
+ * 获取侧边栏的部分随笔分类列表。直接调用解析函数解析 home 节点下的侧边栏。
+ */
+export function getSideCategoriesLocal(response: (res: any) => void) {
+  response(Parser.parseSideCategories($("#home").find("#blog-sidecolumn").html()));
+}
+
+/**
  * 获取侧边栏的博主信息
+ *
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
-export function getSideBlogerInfo(response: (res: Array<DataType.BlogerInfo>) => void) {
-  axios.get(`${BASE_URL}/ajax/news.aspx`).then(({ data }) => {
-    response(Parser.parseSideBlogerInfo(data));
+export function getSideBloggerInfo(response: (res: Array<DataType.BloggerInfo>) => void) {
+  axios.get(`${BaseAPI}/ajax/news.aspx`).then(({ data }) => {
+    response(Parser.parseSideBloggerInfo(data));
   });
+}
+
+/**
+ * 获取侧边栏的博主信息。直接调用解析函数解析 home 节点下的侧边栏。
+ */
+export function getSideBloggerInfoLocal(response: (res: Array<DataType.BloggerInfo>) => void) {
+  response(Parser.parseSideBloggerInfo($("#home").find("#blog-news").html()));
 }
 
 /**
@@ -259,9 +272,16 @@ export function getSideBlogerInfo(response: (res: Array<DataType.BlogerInfo>) =>
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
 export function getSideBlogInfo(response: (res: any) => void) {
-  axios.get(`${BASE_URL}/ajax/blogStats`).then(({ data }) => {
-    response(Parser.parseBlogInfo(data));
+  axios.get(`${BaseAPI}/ajax/blogStats`).then(({ data }) => {
+    response(Parser.parseSideBlogInfo(data));
   });
+}
+
+/**
+ * 获取侧边栏博客的数据。直接调用解析函数解析 home 节点下的侧边栏。
+ */
+export function getSideBlogInfoLocal(response: (res: any) => void) {
+  response(Parser.parseSideBlogInfo($("#home").find(".blogStats").html()));
 }
 
 /**
@@ -270,7 +290,15 @@ export function getSideBlogInfo(response: (res: any) => void) {
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
 export function getSideTopList(response: (res: any) => void) {
-  axios.get(`${BASE_URL}/ajax/TopLists.aspx`).then(({ data }) => {
+  axios.get(`${BaseAPI}/ajax/TopLists.aspx`).then(({ data }) => {
     response(Parser.parseSideBlogTopList(data));
   });
+}
+
+/**
+ * 获取侧边栏阅读排行榜列表，不获取通过请求获取阅读排行榜，直接调用解析函数解析 home 节点下的侧边栏。
+ * 调用 getSideTopList 函数不划算，增加额外的请求，耗时。所以推荐使用 getSideTopListLocal 来获取于都排行榜。
+ */
+export function getSideTopListLocal(response: (res: any) => void) {
+  response(Parser.parseSideBlogTopList($("#home").find("#sidebar_topviewedposts").html()));
 }

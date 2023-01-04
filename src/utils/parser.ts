@@ -1,10 +1,10 @@
 /**
  * 提供解析博客园 HTML 或字符 HTML 的各种基础 API
  *
- * @author Enziandom
+ * @author Himmelbleu
  * @since 1.0
  * @date 2022 年 12 月 1 日
- * @url https://www.cnblogs.com/enziandom/#/
+ * @url https://www.cnblogs.com/Himmelbleu/#/
  */
 
 import $ from "jquery";
@@ -223,6 +223,11 @@ export function parseCategoryList(realDOM: any, calc: boolean): { pages: string[
   };
 }
 
+/**
+ * 解析标签页下的随笔列表
+ *
+ * @param realDOM 真实 DOM
+ */
 export function parseTagPageList(realDOM: any): DataType.TagPage {
   let title = $(realDOM).find(".PostList > .postTitl2 > a");
   let describe = $(realDOM).find(".PostList > .postDesc2");
@@ -247,6 +252,11 @@ export function parseTagPageList(realDOM: any): DataType.TagPage {
   };
 }
 
+/**
+ * 解析侧边栏随笔分类列表
+ *
+ * @param strDOM 真实 DOM
+ */
 export function parseSideCategories(strDOM: string): any {
   let dom = parseStrToDom(strDOM);
   let list: any = { categories: [], tags: [] };
@@ -255,7 +265,7 @@ export function parseSideCategories(strDOM: string): any {
   for (let i = 0; i < $(tags).length; i++) {
     let uri = $(tags[i]).attr("href");
     if (uri) {
-      let decode = decodeURI(uri).match(/\/tag\/[\d\w\s\u4e00-\u9fa5\n.\-|_]+/g);
+      let decode = decodeURI(uri).match(/\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g);
       if (decode) list.tags[i] = { id: decode[0].split("/")[2], text: $(tags[i]).text() };
     }
   }
@@ -268,16 +278,26 @@ export function parseSideCategories(strDOM: string): any {
   return list;
 }
 
-export function parseSideBlogerInfo(strDOM: string): Array<DataType.BlogerInfo> {
-  let list: Array<DataType.BlogerInfo> = [];
-  let a = $(strDOM).find("#profile_block > a");
+/**
+ * 解析侧边栏博主信息
+ *
+ * @param strDOM 真实 DOM
+ */
+export function parseSideBloggerInfo(strDOM: string): Array<DataType.BloggerInfo> {
+  let list: Array<DataType.BloggerInfo> = [];
+  let a = $(parseStrToDom(strDOM)).find("#profile_block > a");
   $(a).each((i, e) => {
     list.push({ text: $(e).text().trim(), href: $(e).attr("href")! });
   });
   return list;
 }
 
-export function parseBlogInfo(strDOM: string): any {
+/**
+ * 解析博客信息
+ *
+ * @param strDOM 真实 DOM
+ */
+export function parseSideBlogInfo(strDOM: string): any {
   let list = <any>[];
   $(parseStrToDom(strDOM)).find("span").each((i, d) => {
     if ($(d).attr("id")) list.push(TextUtils.regTrim($(d).text(), [/\n+/g]));
@@ -285,6 +305,11 @@ export function parseBlogInfo(strDOM: string): any {
   return list;
 }
 
+/**
+ * 解析博客阅读排行榜
+ *
+ * @param strDOM 真实 DOM
+ */
 export function parseSideBlogTopList(strDOM: string): any {
   let list = <any>[];
   $(parseStrToDom(strDOM)).find("#TopViewPostsBlock ul > li > a").each((i, e) => {

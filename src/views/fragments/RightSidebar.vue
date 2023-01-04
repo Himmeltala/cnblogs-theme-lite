@@ -4,11 +4,11 @@ import { $ref } from "vue/macros";
 import { useRoute } from "vue-router";
 import { useAnchorStore } from "../../store";
 import { RouteName } from "../../utils/route-helper";
-import Config from "../../config";
+import { __LITE_CONFIG__ } from "../../config";
 
 const route = useRoute();
-const links = Config.__LITE_CONFIG__.links;
-const books = Config.__LITE_CONFIG__.books;
+const links = __LITE_CONFIG__.links;
+const books = __LITE_CONFIG__.books;
 
 let anchors = $ref<any>();
 const anchorsStore = useAnchorStore();
@@ -16,7 +16,7 @@ anchorsStore.$onAction(({ store, args }) => {
   anchors = args[0];
 }, true);
 
-watch(route, (value, oldValue, onCleanup) => {
+watch(route, (value) => {
   if (value.name === RouteName.HOME) anchors = [];
 });
 </script>
@@ -34,7 +34,7 @@ watch(route, (value, oldValue, onCleanup) => {
           <div class="item" v-for="(item, index) in anchors" :key="index" v-html="item.content" />
         </div>
       </SideItem>
-      <SideItem text="我的技术栈" v-if="Config.__LITE_CONFIG__.graph">
+      <SideItem text="我的技术栈" v-if="__LITE_CONFIG__.graph">
         <template #icon>
           <el-icon style="margin-right: 5px">
             <Aim />
@@ -49,12 +49,7 @@ watch(route, (value, oldValue, onCleanup) => {
           </el-icon>
         </template>
         <div class="link" v-for="(item, index) in links" :key="index">
-          <el-tooltip
-            v-if="item.tip"
-            effect="dark"
-            :content="item.tip"
-            placement="right"
-          >
+          <el-tooltip v-if="item.tip" effect="dark" :content="item.tip" placement="right">
             <a :href="item.href" target="_blank">{{ item.text }}</a>
           </el-tooltip>
           <a v-else :href="item.href" target="_blank">{{ item.text }}</a>
@@ -72,12 +67,7 @@ watch(route, (value, oldValue, onCleanup) => {
             <span v-if="!item.href">{{ item.text }}</span>
             <a v-else :href="item.href" target="_blank">{{ item.text }}</a>
             <div class="author">{{ item.author }}</div>
-            <el-rate
-              style="width: 100%"
-              v-model="item.rate"
-              disabled
-              size="small"
-            />
+            <el-rate style="width: 100%" v-model="item.rate" disabled size="small" />
           </div>
         </div>
       </SideItem>

@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { createRadar, calcSize } from "./index";
-import Config from "../../config";
+import { __LITE_CONFIG__ } from "../../config";
 
 const vw = calcSize(13.5);
 
 onMounted(() => {
-  if (Config.__LITE_CONFIG__.graph) {
+  if (__LITE_CONFIG__.graph) {
     createRadar(vw / 2);
   }
 });
 </script>
 
 <template>
-  <div class="graph__packer" v-if="Config.__LITE_CONFIG__.graph">
+  <div class="graph__packer" v-if="__LITE_CONFIG__.graph">
     <canvas id="graph" :width="vw" :height="vw"></canvas>
     <div id="floating"></div>
   </div>

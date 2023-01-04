@@ -3,7 +3,7 @@ import { $ref } from "vue/macros";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { InfoFilled } from "@element-plus/icons-vue";
-import Config from "../../config";
+import { __LITE_CONFIG__ } from "../../config";
 import * as DataType from "../../types/data-type";
 import * as Native from "../../utils/native";
 import * as RemoteApi from "../../utils/api";
@@ -200,7 +200,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
         <textarea id="img-link" />
       </div>
       <el-button
-        type="primary" :disabled="!Config.__LITE_CONFIG__.isLogined" :loading="loading"
+        type="primary" :disabled="!__LITE_CONFIG__.isLogined" :loading="loading"
         class="upload" @click="insertComment"
       >
         发送评论
@@ -270,7 +270,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
                 :icon="InfoFilled"
                 icon-color="#626AEF"
                 title="确定删除该评论？"
-                @confirm="confirmDeleteComment"
+                @confirm="confirmDeleteComment(item, index)"
               >
                 <template #reference>
                   <div class="delete">
@@ -308,8 +308,8 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
         />
       </div>
     </div>
-    <el-empty v-if="Config.__LITE_CONFIG__.isLogined && !comments?.length" description="没有评论，来一条友善的评论吧🤨" />
-    <el-empty v-if="!Config.__LITE_CONFIG__.isLogined" description="你没有登录所以看不到评论哦~" />
+    <el-empty v-if="__LITE_CONFIG__.isLogined && !comments?.length" description="没有评论，来一条友善的评论吧🤨" />
+    <el-empty v-if="!__LITE_CONFIG__.isLogined" description="你没有登录所以看不到评论哦~" />
   </div>
 </template>
 

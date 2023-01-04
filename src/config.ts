@@ -1,39 +1,39 @@
 import $ from "jquery";
 import * as DataType from "./types/data-type";
 
-const DEV_EN: "dev" | "pro" = "pro";
+export const DEV_EN: "dev" | "pro" = "pro";
 
-function devEnv(env: "dev" | "pro") {
+export function devEnv(env: "dev" | "pro") {
   return env === "dev";
 }
 
-let __LITE_CONFIG__: DataType.LiteConfigType;
+export let __LITE_CONFIG__: DataType.LiteConfigType;
+export let BaseAPI = "";
+export let Belongs = "";
 
-if (!devEnv(DEV_EN)) {
+export function initLite(dev?: Function, pro?: Function) {
+  $("body").append(`<div id="app"></div>`);
+  $("html").attr("class", "dark");
   // @ts-ignore
   __LITE_CONFIG__ = window["__LITE_CONFIG__"];
-} else {
-  __LITE_CONFIG__ = {
-    currentBlogId: 666252,
-    currentBlogApp: "Enziandom",
-    side: {
-      avatar: "https://img2.baidu.com/it/u=4193796664,2438723961&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-    }
-  };
-}
-
-const Config = {
-  __LITE_CONFIG__,
-  api: {
-    base: devEnv(DEV_EN) ? "/api" : `https://www.cnblogs.com/${__LITE_CONFIG__.currentBlogApp}`
-  },
-  router: {
-    space: devEnv(DEV_EN) ? "" : `/${__LITE_CONFIG__.currentBlogApp}`
-  },
-  init: () => {
-    $("body").append(`<div id="app"></div>`);
-    $("html").attr("class", "dark");
+  if (!devEnv(DEV_EN)) {
+    // @ts-ignore
+    __LITE_CONFIG__["currentBlogId"] = currentBlogId;
+    // @ts-ignore
+    __LITE_CONFIG__["currentBlogApp"] = currentBlogApp;
+    // @ts-ignore
+    __LITE_CONFIG__["isLogined"] = isLogined;
+    // @ts-ignore
+    __LITE_CONFIG__["isBlogOwner"] = isBlogOwner;
+    Belongs = `/${__LITE_CONFIG__.currentBlogApp}`;
+    BaseAPI = `https://www.cnblogs.com/${__LITE_CONFIG__.currentBlogApp}`;
+    pro && pro();
+  } else {
+    __LITE_CONFIG__ = {
+      currentBlogId: 666252,
+      currentBlogApp: "Enziandom"
+    };
+    BaseAPI = "/api";
+    dev && dev();
   }
-};
-
-export default Config;
+}

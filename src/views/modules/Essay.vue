@@ -6,7 +6,7 @@ import { ElMessage } from "element-plus";
 import * as Api from "../../utils/api";
 import * as DataType from "../../types/data-type";
 import { closeLoader } from "../../utils/loader";
-import Config from "../../config";
+import { __LITE_CONFIG__ } from "../../config";
 
 const route = useRoute();
 const router = useRouter();
@@ -92,7 +92,7 @@ function voteEssay(voteType: DataType.VoteType) {
             <span>放大</span>
           </div>
           <div class="edit-essay"
-               v-if="Config.__LITE_CONFIG__.isBlogOwner"
+               v-if="__LITE_CONFIG__.isBlogOwner"
                @click="nav('https://i.cnblogs.com/EditPosts.aspx?postid=' + postId, true)"
           >
             <el-icon>

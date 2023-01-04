@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { $ref } from "vue/macros";
 import { useRouter } from "vue-router";
-import Config from "../../config";
+import { __LITE_CONFIG__ } from "../../config";
 
 const router = useRouter();
-const navor = Config.__LITE_CONFIG__.navor;
+const navor = __LITE_CONFIG__.navor;
 
 let input = $ref("");
 
@@ -14,7 +14,7 @@ function nav(path: string, out?: boolean) {
 }
 
 function search() {
-  window.open(`https://zzk.cnblogs.com/s?w=blog:${Config.__LITE_CONFIG__.currentBlogApp}%${input}`, "__blank");
+  window.open(`https://zzk.cnblogs.com/s?w=blog:${__LITE_CONFIG__.currentBlogApp}%${input}`, "__blank");
 }
 </script>
 

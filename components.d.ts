@@ -41,7 +41,4 @@ declare module '@vue/runtime-core' {
     Tag: typeof import('./src/components/Tag.vue')['default']
     TagPage: typeof import('./src/views/modules/home/TagPage.vue')['default']
   }
-  export interface ComponentCustomProperties {
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
-  }
 }

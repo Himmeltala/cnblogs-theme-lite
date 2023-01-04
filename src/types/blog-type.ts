@@ -40,7 +40,7 @@ export interface BlogEssayVote {
   viewCount?: number;
 }
 
-export interface BlogerInfo {
+export interface BloggerInfo {
   text: string;
   href: string;
 }

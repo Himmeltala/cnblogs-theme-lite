@@ -1,4 +1,4 @@
-import Config from "../config";
+import { Belongs } from "../config";
 
 export enum RouteName {
   ESSAY = "Essay",
@@ -35,5 +35,5 @@ export function redirect(href: string): any {
 }
 
 export function reinstallUrl(redirection: any): string {
-  return `${window.location.protocol}//${window.location.host}${Config.router.space}/#/${redirection}`;
+  return `${window.location.protocol}//${window.location.host}${Belongs}/#/${redirection}`;
 }

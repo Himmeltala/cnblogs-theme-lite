@@ -1,5 +1,5 @@
 import $ from "jquery";
-import Config from "../../config";
+import { __LITE_CONFIG__ } from "../../config";
 
 let fillColor = "",
   strokeColor = "";
@@ -178,7 +178,7 @@ export function calcSize(sideWidthVw: number) {
 }
 
 export function createRadar(vw: number) {
-  const config = Config.__LITE_CONFIG__.graph;
+  const config = __LITE_CONFIG__.graph;
   if (config) {
     fillColor = config.fillColor ? config.fillColor : "#409eff";
     strokeColor = config.strokeColor ? config.strokeColor : "#a7a7a7";

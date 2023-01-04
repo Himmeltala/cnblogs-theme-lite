@@ -12,9 +12,7 @@ import "element-plus/dist/index.css";
 import "highlight.js/styles/atom-one-dark.css";
 
 import Directive from "./directive";
-import Config from "./config";
-
-Config.init();
+import { initLite } from "./config";
 
 const app = createApp(App);
 
@@ -22,9 +20,16 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }
 
-const directive = new Directive(app);
-directive.parseCode();
+new Directive(app).parseCode();
 
 app.use(router);
 app.use(createPinia());
-app.mount("#app");
+
+initLite(() => {
+  app.mount("#app");
+}, () => {
+  // @ts-ignore
+  window["__LITE_CONFIG__"].onLoaded = () => {
+    app.mount("#app");
+  };
+});

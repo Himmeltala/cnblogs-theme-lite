@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { $ref } from "vue/macros";
 import { useRouter } from "vue-router";
-import * as Api from "../../utils/api";
-import Config from "../../config";
+import * as RemoteApi from "../../utils/api";
+import { __LITE_CONFIG__ } from "../../config";
 
-const side = Config.__LITE_CONFIG__.side;
+const side = __LITE_CONFIG__.side;
 const router = useRouter();
 
 function nav(path: string, out?: boolean) {
@@ -12,22 +12,20 @@ function nav(path: string, out?: boolean) {
   else router.push(path);
 }
 
-let categories = $ref<any>();
 let tags = $ref<any>();
 let blogger = $ref<any>();
 let blogInfo = $ref<any>();
 let toplist = $ref<any>();
-let loading = $ref(true);
+let categories = $ref<any>();
 
-Api.getSideBlogerInfo(res => {
+RemoteApi.getSideBloggerInfoLocal(res => {
   blogger = res;
-  Api.getSideBlogInfo(res => {
+  RemoteApi.getSideBlogInfoLocal(res => {
     blogInfo = res;
-    Api.getSideCategories(res => {
+    RemoteApi.getSideCategoriesLocal(res => {
       tags = res.tags;
       categories = res.categories;
-      loading = false;
-      Api.getSideTopList(res => {
+      RemoteApi.getSideTopListLocal(res => {
         toplist = res;
       });
     });
@@ -38,7 +36,7 @@ const tabName = $ref("随笔");
 </script>
 
 <template>
-  <div class="left-side" v-loading="loading">
+  <div class="left-side">
     <Card padding="1px 20px">
       <SideItem class="blogger" text="博客信息">
         <template #icon>
