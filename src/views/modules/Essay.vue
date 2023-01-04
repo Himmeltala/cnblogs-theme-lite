@@ -3,10 +3,10 @@ import { $ref } from "vue/macros";
 import { useRoute, useRouter } from "vue-router";
 import { ArrowLeft, CaretBottom, CaretTop } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
-import * as Api from "../../../utils/api";
-import * as DataType from "../../../types/data-type";
-import { closeLoader } from "../../../utils/loader";
-import Config from "../../../config";
+import * as Api from "../../utils/api";
+import * as DataType from "../../types/data-type";
+import { closeLoader } from "../../utils/loader";
+import Config from "../../config";
 
 const route = useRoute();
 const router = useRouter();
@@ -188,7 +188,7 @@ function voteEssay(voteType: DataType.VoteType) {
 </template>
 
 <style lang="scss">
-@import "../../../scss/mixins";
+@import "../../scss/mixins";
 
 h1,
 h2,
@@ -345,7 +345,7 @@ code {
 </style>
 
 <style lang="scss">
-@import "../../../scss/mixins";
+@import "../../scss/mixins";
 
 $color: #a7a7a7;
 

@@ -2,9 +2,9 @@
 import { watch } from "vue";
 import { $ref } from "vue/macros";
 import { useRoute } from "vue-router";
-import { useAnchorStore } from "../../../store";
-import { RouteName } from "../../../utils/route-helper";
-import Config from "../../../config";
+import { useAnchorStore } from "../../store";
+import { RouteName } from "../../utils/route-helper";
+import Config from "../../config";
 
 const route = useRoute();
 const links = Config.__LITE_CONFIG__.links;
@@ -86,7 +86,7 @@ watch(route, (value, oldValue, onCleanup) => {
 </template>
 
 <style lang="scss">
-@import "../../../scss/mixins";
+@import "../../scss/mixins";
 
 .catalog {
   .item {
@@ -103,7 +103,7 @@ watch(route, (value, oldValue, onCleanup) => {
 </style>
 
 <style scoped lang="scss">
-@import "../../../scss/mixins";
+@import "../../scss/mixins";
 
 .right-side {
   color: #878787;

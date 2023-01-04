@@ -10,7 +10,7 @@ const routes = [
   {
     name: RouteName.ESSAY,
     path: "/e/:id",
-    component: () => import("./views/modules/essay/Essay.vue")
+    component: () => import("./views/modules/Essay.vue")
   },
   {
     name: RouteName.CATEGORY,

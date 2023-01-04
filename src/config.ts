@@ -1,7 +1,7 @@
 import $ from "jquery";
 import * as DataType from "./types/data-type";
 
-const DEV_EN: "dev" | "pro" = "dev";
+const DEV_EN: "dev" | "pro" = "pro";
 
 function devEnv(env: "dev" | "pro") {
   return env === "dev";
@@ -17,8 +17,7 @@ if (!devEnv(DEV_EN)) {
     currentBlogId: 666252,
     currentBlogApp: "Enziandom",
     side: {
-      avatar: "https://img2.baidu.com/it/u=4193796664,2438723961&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-      signature: "Time tick away, dream faded away!"
+      avatar: "https://img2.baidu.com/it/u=4193796664,2438723961&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
     }
   };
 }

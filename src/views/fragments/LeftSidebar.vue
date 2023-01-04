@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { $ref } from "vue/macros";
 import { useRouter } from "vue-router";
-import * as Api from "../../../utils/api";
-import Config from "../../../config";
+import * as Api from "../../utils/api";
+import Config from "../../config";
 
 const side = Config.__LITE_CONFIG__.side;
 const router = useRouter();
@@ -141,7 +141,7 @@ const tabName = $ref("随笔");
 </template>
 
 <style scoped lang="scss">
-@import "../../../scss/mixins";
+@import "../../scss/mixins";
 
 .left-side {
   color: #878787;

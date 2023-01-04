@@ -3,10 +3,10 @@ import { $ref } from "vue/macros";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { InfoFilled } from "@element-plus/icons-vue";
-import Config from "../../../config";
-import * as DataType from "../../../types/data-type";
-import * as Native from "../../../utils/native";
-import * as RemoteApi from "../../../utils/api";
+import Config from "../../config";
+import * as DataType from "../../types/data-type";
+import * as Native from "../../utils/native";
+import * as RemoteApi from "../../utils/api";
 
 const props = defineProps({
   postId: { type: Number, required: true }
@@ -329,7 +329,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
 </style>
 
 <style scoped lang="scss">
-@import "../../../scss/mixins";
+@import "../../scss/mixins";
 
 @mixin textarea-style($box: yes, $height: 300px) {
   border-radius: 8px;
