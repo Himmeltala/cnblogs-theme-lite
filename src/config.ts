@@ -1,7 +1,7 @@
 import $ from "jquery";
 import * as DataType from "./types/data-type";
 
-const DEV_EN: "dev" | "pro" = "pro";
+const DEV_EN: "dev" | "pro" = "dev";
 
 function devEnv(env: "dev" | "pro") {
   return env === "dev";
