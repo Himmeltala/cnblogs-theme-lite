@@ -1,11 +1,5 @@
 import $ from "jquery";
-import * as DataType from "./types/data-type";
-
-export const DEV_EN: "dev" | "pro" = "pro";
-
-export function devEnv(env: "dev" | "pro") {
-  return env === "dev";
-}
+import * as DataType from "@/types/data-type";
 
 export let __LITE_CONFIG__: DataType.LiteConfigType;
 export let BaseAPI = "";
@@ -16,7 +10,7 @@ export function initLite(dev?: Function, pro?: Function) {
   $("html").attr("class", "dark");
   // @ts-ignore
   __LITE_CONFIG__ = window["__LITE_CONFIG__"];
-  if (!devEnv(DEV_EN)) {
+  if (import.meta.env.PROD) {
     // @ts-ignore
     __LITE_CONFIG__["currentBlogId"] = currentBlogId;
     // @ts-ignore
@@ -28,10 +22,9 @@ export function initLite(dev?: Function, pro?: Function) {
     Belongs = `/${__LITE_CONFIG__.currentBlogApp}`;
     BaseAPI = `https://www.cnblogs.com/${__LITE_CONFIG__.currentBlogApp}`;
     pro && pro();
-  } else {
+  } else if (import.meta.env.DEV) {
     __LITE_CONFIG__ = {
-      currentBlogId: 666252,
-      currentBlogApp: "Enziandom"
+      currentBlogId: import.meta.env.VITE_BLOG_ID, currentBlogApp: import.meta.env.VITE_BLOG_APP
     };
     BaseAPI = "/api";
     dev && dev();

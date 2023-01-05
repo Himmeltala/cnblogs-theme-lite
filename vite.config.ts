@@ -1,42 +1,79 @@
 import vue from "@vitejs/plugin-vue";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
+import viteCompression from "vite-plugin-compression";
+import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
-import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+import Icons from "unplugin-icons/vite";
+import IconsResolver from "unplugin-icons/resolver";
+import { resolve } from "path";
 
-export default defineConfig({
-  plugins: [
-    vue({
-      reactivityTransform: true
-    }),
-    AutoImport({
-      resolvers: [ElementPlusResolver()]
-    }),
-    Components({
-      resolvers: [ElementPlusResolver()],
-      dirs: ["./src/views/**", "./src/components/**"]
-    })
-  ],
-  base: "/",
-  server: {
-    proxy: {
-      "/api": {
-        target: "https://www.cnblogs.com/Enziandom",
-        changeOrigin: true,
-        rewrite: (path: any) => path.replace(/^\/api/, "")
+export default defineConfig(({ command, mode }) => {
+  const { VITE_BLOG_APP } = loadEnv(mode, "./");
+  return {
+    envDir: "./",
+    plugins: [
+      vue(),
+      AutoImport({
+        imports: ["vue"],
+        resolvers: [
+          ElementPlusResolver(),
+          IconsResolver({
+            prefix: "Icon"
+          })
+        ]
+      }),
+      Components({
+        resolvers: [
+          ElementPlusResolver(),
+          IconsResolver({
+            enabledCollections: ["ep"]
+          })
+        ],
+        dirs: ["./src/views/**", "./src/components/**"]
+      }),
+      Icons({
+        autoInstall: true
+      }),
+      viteCompression({})
+    ],
+    resolve: {
+      alias: [
+        {
+          find: "@",
+          replacement: resolve(__dirname, "src")
+        }
+      ]
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData:
+            `@import "@/scss/mixins.scss"; @import "@/scss/common.scss";`
+        }
+      }
+    },
+    base: "/",
+    server: {
+      proxy: {
+        "/api": {
+          target: `https://www.cnblogs.com/${VITE_BLOG_APP}`,
+          changeOrigin: true,
+          rewrite: (path: any) => path.replace(/^\/api/, "")
+        }
+      }
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id: any) {
+            return "components";
+          },
+          entryFileNames: "[name].js",
+          chunkFileNames: "[name].js",
+          assetFileNames: "[name].[ext]"
+        }
       }
     }
-  },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks(id: any) {
-          return "components";
-        },
-        entryFileNames: "[name].js",
-        chunkFileNames: "[name].js",
-        assetFileNames: "[name].[ext]"
-      }
-    }
-  }
+  };
 });

@@ -26,25 +26,25 @@ defineProps({
   <div class="bottom-data" :style="{'justify-content': align}">
     <div class="date">
       <el-icon>
-        <Clock />
+        <i-ep-clock />
       </el-icon>
       <span>{{ data.date }}</span>
     </div>
     <div class="view">
       <el-icon>
-        <View />
+        <i-ep-view />
       </el-icon>
       <span>{{ data.view }}</span>
     </div>
     <div class="comm">
       <el-icon>
-        <ChatLineSquare />
+        <i-ep-chat-line-square />
       </el-icon>
       <span>{{ data.comm }}</span>
     </div>
     <div class="digg">
       <el-icon>
-        <Star />
+        <i-ep-star />
       </el-icon>
       <span> {{ data.digg }}</span>
     </div>
@@ -52,8 +52,6 @@ defineProps({
 </template>
 
 <style scoped lang="scss">
-@import "../../scss/mixins";
-
 .bottom-data {
   color: #989898;
   @include flex();

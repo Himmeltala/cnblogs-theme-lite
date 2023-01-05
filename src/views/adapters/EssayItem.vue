@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 import { useRouter } from "vue-router";
-import * as DataType from "../../types/data-type";
+import * as DataType from "@/types/data-type";
 
 defineProps({
   loading: {
@@ -9,7 +9,8 @@ defineProps({
     default: true
   },
   data: {
-    type: Object as PropType<Array<DataType.Essay>>
+    type: Object as PropType<Array<DataType.Essay>>,
+    required: true
   }
 });
 
@@ -39,19 +40,19 @@ function nav(path: string, out?: boolean) {
       </div>
       <div class="browse">
         <el-icon>
-          <CaretRight />
+          <i-ep-caret-right />
         </el-icon>
         <router-link :to="'/e/' + item.id">阅读全文</router-link>
       </div>
-      <EssayBottom align="flex-end"
-                   :data="{date: item.date, comm: item.comm, digg: item.digg, view: item.view}" />
+      <EssayBottom
+        align="flex-end"
+        :data="{date: item.date, comm: item.comm, digg: item.digg, view: item.view}"
+      />
     </Card>
   </div>
 </template>
 
 <style scoped lang="scss">
-@import "../../scss/mixins";
-
 .essay {
   .item:nth-child(1) {
     margin: 0 10px 12px 10px;

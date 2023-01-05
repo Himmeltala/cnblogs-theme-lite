@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { $ref } from "vue/macros";
-import * as RemoteApi from "../../../utils/api";
-import * as DataType from "../../../types/data-type";
-import { closeLoader } from "../../../utils/loader";
+import * as RemoteApi from "@/utils/api";
+import * as DataType from "@/types/data-type";
+import { closeLoader } from "@/utils/loader";
 
-let data = $ref<Array<DataType.Essay>>();
-let loading = $ref<boolean>(true);
-let pageCount = $ref<number>(2);
+let data = ref<Array<DataType.Essay>>();
+let loading = ref<boolean>(true);
+let pageCount = ref<number>(2);
 
 const pagination = ref();
 
@@ -15,14 +13,14 @@ function fetchData(
   complete?: ((pages: string[]) => void) | null,
   isCalc: boolean = false, pageIndex: number = 1
 ) {
-  loading = true;
+  loading.value = true;
   RemoteApi.getEssayList(pageIndex, isCalc, res => {
     if (res.list.length === 0) {
       pagination.value.updateProps();
     } else {
-      data = res.list;
+      data.value = res.list;
     }
-    loading = false;
+    loading.value = false;
     complete && complete(res.pages);
   });
 }
@@ -37,9 +35,9 @@ function floatChange(page: any) {
   fetchData(pages => {
     if (isCalc) {
       // 获取 pages，即分页情况，只获取第一次，页面第一页默认时没有分页情况，只有第二页才有
-      pageCount = parseInt(pages[pages.length - 1]);
+      pageCount.value = parseInt(pages[pages.length - 1]);
       // 如果页数总数只有 1 页，防止错误发生，将变量设置为 2
-      if (pageCount === 1) pageCount = 2;
+      if (pageCount.value === 1) pageCount.value = 2;
       isCalc = false;
     }
   }, isCalc, page.currentIndex);

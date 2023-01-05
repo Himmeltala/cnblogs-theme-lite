@@ -9,7 +9,7 @@
 
 import $ from "jquery";
 import * as TextUtils from "./text-helper";
-import * as DataType from "../types/data-type";
+import * as DataType from "@/types/data-type";
 
 /**
  * 由于一些问题，有时候请求过来的 DOM 不是真实的 DOM，所以不能被 JQ 解析，必须先调用该函数进行转换

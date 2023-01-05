@@ -1,4 +1,4 @@
-import { Belongs } from "../config";
+import { Belongs } from "@/config";
 
 export enum RouteName {
   ESSAY = "Essay",

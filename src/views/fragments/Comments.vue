@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { $ref } from "vue/macros";
 import { useRoute, useRouter } from "vue-router";
-import { ElMessage } from "element-plus";
-import { InfoFilled } from "@element-plus/icons-vue";
-import { __LITE_CONFIG__ } from "../../config";
-import * as DataType from "../../types/data-type";
-import * as Native from "../../utils/native";
-import * as RemoteApi from "../../utils/api";
+import { __LITE_CONFIG__ } from "@/config";
+import * as DataType from "@/types/data-type";
+import * as Native from "@/utils/native";
+import * as RemoteApi from "@/utils/api";
 
 const props = defineProps({
   postId: { type: Number, required: true }
@@ -20,12 +17,12 @@ function nav(path: string, out?: boolean) {
   else router.push(path);
 }
 
-let form = $ref<DataType.Comment>({ postId: props.postId, parentCommentId: 0, content: "" });
-let loading = $ref(false);
-let comments = $ref<Array<DataType.Comment>>();
-let commentCount = $ref(1);
-let currentIndex = $ref(0);
-let skeleton = $ref(true);
+let form = ref<DataType.Comment>({ postId: props.postId, parentCommentId: 0, content: "" });
+let loading = ref(false);
+let comments = ref<Array<DataType.Comment>>();
+let commentCount = ref(1);
+let currentIndex = ref(0);
+let skeleton = ref(true);
 
 function fetchComment(
   f: boolean, y?: { message?: string, success?: (res: any) => void },
@@ -34,9 +31,9 @@ function fetchComment(
   if (f) {
     bf && bf();
     RemoteApi.getCommentCount(props.postId, count => {
-      commentCount = count;
-      currentIndex = count;
-      RemoteApi.getCommentList(props.postId, currentIndex,
+      commentCount.value = count;
+      currentIndex.value = count;
+      RemoteApi.getCommentList(props.postId, currentIndex.value,
         (res: Array<DataType.Essay>) => {
           if (y && y.success) {
             y.success(res);
@@ -58,38 +55,42 @@ function fetchComment(
 
 fetchComment(true, {
   message: "", success: (res) => {
-    comments = res;
-    skeleton = false;
+    comments.value = res;
+    skeleton.value = false;
   }
 }, undefined, undefined);
 
 function uploadImage() {
-  Native.openImageUploadWindow((imgUrl: any) => form.content += `\n\n${imgUrl}\n\n`);
+  Native.openImageUploadWindow((imgUrl: any) => form.value.content += `\n\n${imgUrl}\n\n`);
 }
 
 function paginationChange() {
-  skeleton = true;
-  RemoteApi.getCommentList(props.postId, currentIndex, (res: Array<DataType.Essay>) => {
-    comments = res;
-    skeleton = false;
+  skeleton.value = true;
+  RemoteApi.getCommentList(props.postId, currentIndex.value, (res: Array<DataType.Essay>) => {
+    comments.value = res;
+    skeleton.value = false;
   });
 }
 
 function insertComment() {
-  if (form.content) {
-    loading = true;
-    RemoteApi.setComment({ postId: form.postId, body: form.content, parentCommentId: form.parentCommentId },
+  if (form.value.content) {
+    loading.value = true;
+    RemoteApi.setComment({
+        postId: form.value.postId,
+        body: form.value.content,
+        parentCommentId: form.value.parentCommentId
+      },
       ({ data }) => {
         fetchComment(data.isSuccess, {
             message: "你的评论传达成功！😀",
             success(res: any) {
-              comments = res;
-              loading = false;
+              comments.value = res;
+              loading.value = false;
             }
           }, {
             message: "你的评论似乎没有发出去！😑",
-            error: () => loading = false
-          }, () => form.content = ""
+            error: () => loading.value = false
+          }, () => form.value.content = ""
         );
       });
   } else {
@@ -99,10 +100,10 @@ function insertComment() {
 
 function deleteComment(comment: DataType.Comment, index: number) {
   RemoteApi.deleteComment(
-    { commentId: comment.commentId, pageIndex: currentIndex - 1, parentId: props.postId },
+    { commentId: comment.commentId, pageIndex: currentIndex.value - 1, parentId: props.postId },
     ({ data }) => {
       if (data) {
-        comments?.splice(index, 1);
+        comments.value?.splice(index, 1);
         ElMessage({ message: "评论删除成功！", grouping: true, type: "success" });
       } else {
         ElMessage({ message: "这可能不是你的评论哦！", grouping: true, type: "error" });
@@ -137,17 +138,17 @@ function updateComment(comment: DataType.Comment) {
   }
 }
 
-let reCommentBody = $ref("");
-let lastReComment = $ref<any>();
+let reCommentBody = ref("");
+let lastReComment = ref<any>();
 
 function replayComment(comment: DataType.Comment) {
   comment.replayEditable = !comment.replayEditable;
-  if (lastReComment && lastReComment.commentId !== comment.commentId) lastReComment.replayEditable = false;
+  if (lastReComment.value && lastReComment.value.commentId !== comment.commentId) lastReComment.value.replayEditable = false;
   if (comment.updateEditable) comment.updateEditable = false;
 
   if (!comment.replayEditable) {
     RemoteApi.replayComment({
-      body: reCommentBody,
+      body: reCommentBody.value,
       postId: props.postId,
       parentCommentId: comment.commentId
     }, (ajax: any) => {
@@ -159,10 +160,10 @@ function replayComment(comment: DataType.Comment) {
       });
     });
   } else {
-    reCommentBody = "";
-    reCommentBody += `回复 ${comment.layer} [@${comment.author}](${comment.space})\n\n`;
+    reCommentBody.value = "";
+    reCommentBody.value += `回复 ${comment.layer} [@${comment.author}](${comment.space})\n\n`;
   }
-  lastReComment = comment;
+  lastReComment.value = comment;
 }
 
 function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
@@ -186,7 +187,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
       <div class="tools">
         <el-tooltip effect="dark" content="插入图片" placement="top-start">
           <el-icon class="upload-img" @click="uploadImage">
-            <PictureRounded />
+            <i-ep-picture-rounded />
           </el-icon>
         </el-tooltip>
       </div>
@@ -240,26 +241,26 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
             <div class="replay actions" @click="replayComment(item)">
               <div v-if="!item.replayEditable">
                 <el-icon>
-                  <ChatRound />
+                  <i-ep-chat-round />
                 </el-icon>
                 <span>回复</span>
               </div>
               <div v-else>
                 <el-icon>
-                  <Check />
+                  <i-ep-check />
                 </el-icon>
                 <span>完成</span>
               </div>
             </div>
             <div class="digg actions" @click="voteComment(item, 'Digg')">
               <el-icon>
-                <CaretTop />
+                <i-ep-caret-top />
               </el-icon>
               <span>{{ item.digg }}</span>
             </div>
             <div class="bury actions" @click="voteComment(item, 'Bury')">
               <el-icon>
-                <CaretBottom />
+                <i-ep-caret-bottom />
               </el-icon>
               <span>{{ item.bury }}</span>
             </div>
@@ -267,7 +268,6 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
               <el-popconfirm
                 confirm-button-text="确定"
                 cancel-button-text="取消"
-                :icon="InfoFilled"
                 icon-color="#626AEF"
                 title="确定删除该评论？"
                 @confirm="confirmDeleteComment(item, index)"
@@ -275,7 +275,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
                 <template #reference>
                   <div class="delete">
                     <el-icon>
-                      <Delete />
+                      <i-ep-delete />
                     </el-icon>
                     <span>删除</span>
                   </div>
@@ -285,13 +285,13 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
             <div class="update actions" @click="updateComment(item)">
               <div v-if="!item.updateEditable">
                 <el-icon>
-                  <EditPen />
+                  <i-ep-edit-pen />
                 </el-icon>
                 <span>编辑</span>
               </div>
               <div v-else>
                 <el-icon>
-                  <CircleCheck />
+                  <i-ep-circle-check />
                 </el-icon>
                 <span>完成</span>
               </div>
@@ -329,8 +329,6 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
 </style>
 
 <style scoped lang="scss">
-@import "../../scss/mixins";
-
 @mixin textarea-style($box: yes, $height: 300px) {
   border-radius: 8px;
   box-sizing: border-box;

@@ -1,6 +1,6 @@
 import hljs from "highlight.js";
 import $ from "jquery";
-import { makeAnchor } from "./utils/anchor";
+import { makeAnchor } from "@/utils/anchor";
 
 export default class Directive {
   private Vue;

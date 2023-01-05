@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { useAnchorStore } from "../store";
+import { useAnchorStore } from "@/store";
 
 export function makeAnchor(dom: string) {
   const anchorStore = useAnchorStore();

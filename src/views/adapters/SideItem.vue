@@ -17,8 +17,6 @@ defineProps({
 </template>
 
 <style scoped lang="scss">
-@import "../../scss/mixins";
-
 h3 {
   @include flex($justify: flex-start);
   margin: 20px 0;

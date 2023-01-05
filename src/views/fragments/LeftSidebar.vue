@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { $ref } from "vue/macros";
 import { useRouter } from "vue-router";
-import * as RemoteApi from "../../utils/api";
-import { __LITE_CONFIG__ } from "../../config";
+import * as RemoteApi from "@/utils/api";
+import { __LITE_CONFIG__ } from "@/config";
 
 const side = __LITE_CONFIG__.side;
 const router = useRouter();
@@ -12,27 +11,27 @@ function nav(path: string, out?: boolean) {
   else router.push(path);
 }
 
-let tags = $ref<any>();
-let blogger = $ref<any>();
-let blogInfo = $ref<any>();
-let toplist = $ref<any>();
-let categories = $ref<any>();
+let tags = ref<any>();
+let blogger = ref<any>();
+let blogInfo = ref<any>();
+let toplist = ref<any>();
+let categories = ref<any>();
 
 RemoteApi.getSideBloggerInfoLocal(res => {
-  blogger = res;
+  blogger.value = res;
   RemoteApi.getSideBlogInfoLocal(res => {
-    blogInfo = res;
+    blogInfo.value = res;
     RemoteApi.getSideCategoriesLocal(res => {
-      tags = res.tags;
-      categories = res.categories;
+      tags.value = res.tags;
+      categories.value = res.categories;
       RemoteApi.getSideTopListLocal(res => {
-        toplist = res;
+        toplist.value = res;
       });
     });
   });
 });
 
-const tabName = $ref("随笔");
+const tabName = ref("随笔");
 </script>
 
 <template>
@@ -41,7 +40,7 @@ const tabName = $ref("随笔");
       <SideItem class="blogger" text="博客信息">
         <template #icon>
           <el-icon style="margin-right: 5px">
-            <House />
+            <i-ep-house />
           </el-icon>
         </template>
         <div v-if="side?.avatar" class="avatar">
@@ -57,25 +56,25 @@ const tabName = $ref("随笔");
           <div class="text" @click="nav(item.href, true)">
             <div v-if="index === 0">
               <el-icon class="icon">
-                <UserFilled />
+                <i-ep-user-filled />
               </el-icon>
               昵称：{{ item.text }}
             </div>
             <div v-if="index === 1">
               <el-icon class="icon">
-                <Clock />
+                <i-ep-clock />
               </el-icon>
               园龄：{{ item.text }}
             </div>
             <div v-if="index === 2">
               <el-icon class="icon">
-                <StarFilled />
+                <i-ep-star-filled />
               </el-icon>
               粉丝：{{ item.text }}
             </div>
             <div v-if="index === 3">
               <el-icon class="icon">
-                <BellFilled />
+                <i-ep-bell-filled />
               </el-icon>
               关注：{{ item.text }}
             </div>
@@ -95,7 +94,7 @@ const tabName = $ref("随笔");
           <template #label>
             <div class="flex-align-center flex-justify-center">
               <el-icon style="margin-right: 5px">
-                <Folder />
+                <i-ep-folder />
               </el-icon>
               <div>随笔</div>
             </div>
@@ -110,7 +109,7 @@ const tabName = $ref("随笔");
           <template #label>
             <div class="flex-align-center flex-justify-center">
               <el-icon style="margin-right: 5px">
-                <CollectionTag />
+                <i-ep-collection-tag />
               </el-icon>
               <div>标签</div>
             </div>
@@ -125,7 +124,7 @@ const tabName = $ref("随笔");
       <SideItem text="阅读排行榜">
         <template #icon>
           <el-icon style="margin-right: 5px">
-            <DCaret />
+            <i-ep-d-caret />
           </el-icon>
         </template>
         <div class="item" v-for="(item, index) in toplist" :key="index">
@@ -139,8 +138,6 @@ const tabName = $ref("随笔");
 </template>
 
 <style scoped lang="scss">
-@import "../../scss/mixins";
-
 .left-side {
   color: #878787;
   position: absolute;

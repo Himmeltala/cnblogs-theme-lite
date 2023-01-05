@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { $ref } from "vue/macros";
 import { useRouter } from "vue-router";
-import { __LITE_CONFIG__ } from "../../config";
+import { __LITE_CONFIG__ } from "@/config";
 
 const router = useRouter();
 const navor = __LITE_CONFIG__.navor;
 
-let input = $ref("");
+let input = ref("");
 
 function nav(path: string, out?: boolean) {
   if (out) window.open(path, "_blank");
@@ -14,7 +13,7 @@ function nav(path: string, out?: boolean) {
 }
 
 function search() {
-  window.open(`https://zzk.cnblogs.com/s?w=blog:${__LITE_CONFIG__.currentBlogApp}%${input}`, "__blank");
+  window.open(`https://zzk.cnblogs.com/s?w=blog:${__LITE_CONFIG__.currentBlogApp}%${input.value}`, "__blank");
 }
 </script>
 
@@ -29,7 +28,7 @@ function search() {
         <el-input @keyup.enter="search" v-model="input" class="w-50 m-2" placeholder="输入查询关键字">
           <template #prefix>
             <el-icon @click="search">
-              <Search />
+              <i-ep-search />
             </el-icon>
           </template>
         </el-input>
@@ -37,9 +36,7 @@ function search() {
       <div class="item" @click="nav('https://www.cnblogs.com', true)">博客园</div>
       <div class="item" @click="nav('/')">首页</div>
       <div class="item" @click="nav('/')">标签</div>
-      <div v-if="navor?.navs" class="item navs"
-           v-for="(item, index) in navor.navs" :key="index"
-      >
+      <div v-if="navor?.navs" class="item navs" v-for="(item, index) in navor.navs" :key="index">
         <div class="text" v-if="item.text" @click="nav(item.href, true)">{{ item.text }}</div>
         <div class="icon" v-else>
           <svg
@@ -70,8 +67,6 @@ svg {
 </style>
 
 <style scoped lang="scss">
-@import "../../scss/mixins";
-
 .navigator {
   box-sizing: border-box;
   padding: 10px 20px;

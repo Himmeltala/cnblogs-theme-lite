@@ -1,28 +1,26 @@
 <script setup lang="ts">
-import { watch } from "vue";
-import { $ref } from "vue/macros";
 import { useRoute, useRouter } from "vue-router";
-import * as Api from "../../../utils/api";
-import { closeLoader } from "../../../utils/loader";
+import * as Api from "@/utils/api";
+import { closeLoader } from "@/utils/loader";
 
 const route = useRoute();
 const router = useRouter();
 
-let taglist = $ref<any>();
+let taglist = ref<any>();
 let tagname = "";
-let loading = $ref(true);
+let loading = ref(true);
 
 function fetchTagPageList() {
   Api.getTagPageList(String(route.params.tag), res => {
     tagname = res.text;
-    taglist = res.list;
-    loading = false;
+    taglist.value = res.list;
+    loading.value = false;
     closeLoader();
   });
 }
 
 watch(route, () => {
-  loading = true;
+  loading.value = true;
   fetchTagPageList();
 });
 
@@ -46,7 +44,7 @@ fetchTagPageList();
         </div>
         <div class="browse">
           <el-icon>
-            <CaretRight />
+            <i-ep-caret-right />
           </el-icon>
           <router-link :to="'/e/' + item.id">阅读全文</router-link>
         </div>
@@ -59,8 +57,6 @@ fetchTagPageList();
 </template>
 
 <style scoped lang="scss">
-@import "../../../scss/mixins";
-
 .tagpage {
   .tagname {
     font-size: 20px;

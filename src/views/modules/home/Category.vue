@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { watch, ref } from "vue";
-import { $ref } from "vue/macros";
 import { useRoute } from "vue-router";
-import * as DataType from "../../../types/data-type";
-import * as RemoteApi from "../../../utils/api";
-import { closeLoader } from "../../../utils/loader";
+import * as DataType from "@/types/data-type";
+import * as RemoteApi from "@/utils/api";
+import { closeLoader } from "@/utils/loader";
 
 const route = useRoute();
 
-let data = $ref<Array<DataType.Essay>>();
-let label = $ref<any>();
-let loading = $ref<boolean>(true);
+let data = ref<Array<DataType.Essay>>();
+let label = ref<any>();
+let loading = ref<boolean>(true);
 
 /**
  * 获取该随笔分类下的所有随笔列表。
@@ -22,11 +20,11 @@ function fetchData(
   complete?: ((pages: string[]) => void) | null,
   calcPage: boolean = false, pageIndex: number = 1
 ) {
-  loading = true;
+  loading.value = true;
   RemoteApi.getCategories(route.params.id, calcPage, pageIndex, res => {
-    data = res.list;
-    loading = false;
-    label = res.label;
+    data.value = res.list;
+    loading.value = false;
+    label.value = res.label;
     complete && complete(res.pages);
   });
 }
@@ -36,17 +34,17 @@ fetchData(() => {
   closeLoader();
 });
 
-let isCalc = $ref<boolean>(true);
+let isCalc = ref<boolean>(true);
 const pagination = ref();
 
 // 监听路由状态，左侧边栏随笔分类发生变化时，触发 pagination 子组件，更新 pageCount 和 pageIndex
 watch(route, () => {
-  isCalc = true;
+  isCalc.value = true;
   pagination.value.updateProps();
   fetchData();
 });
 
-let pageCount = $ref<number>(2);
+let pageCount = ref<number>(2);
 
 /**
  * 触发左或右时，该函数获取 page 对象，包含当前分类的总页数以及当前页数 index
@@ -56,12 +54,12 @@ function floatChange(page: any) {
   fetchData(pages => {
     if (isCalc) {
       // 获取 pages，即分页情况，只获取第一次，页面第一页默认时没有分页情况，只有第二页才有
-      pageCount = parseInt(pages[pages.length - 1]);
+      pageCount.value = parseInt(pages[pages.length - 1]);
       // 如果页数总数只有 1 页，防止错误发生，将变量设置为 2
-      if (pageCount === 1) pageCount = 2;
-      isCalc = false;
+      if (pageCount.value === 1) pageCount.value = 2;
+      isCalc.value = false;
     }
-  }, isCalc, page.currentIndex);
+  }, isCalc.value, page.currentIndex);
 }
 
 /**
@@ -110,8 +108,6 @@ function fixedChange(page: any) {
 </template>
 
 <style scoped lang="scss">
-@import "../../../scss/mixins";
-
 .category {
   .label {
     font-size: 20px;

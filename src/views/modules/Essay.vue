@@ -1,43 +1,40 @@
 <script setup lang="ts">
-import { $ref } from "vue/macros";
 import { useRoute, useRouter } from "vue-router";
-import { ArrowLeft, CaretBottom, CaretTop } from "@element-plus/icons-vue";
-import { ElMessage } from "element-plus";
-import * as Api from "../../utils/api";
-import * as DataType from "../../types/data-type";
-import { closeLoader } from "../../utils/loader";
-import { __LITE_CONFIG__ } from "../../config";
+import * as Api from "@/utils/api";
+import * as DataType from "@/types/data-type";
+import { closeLoader } from "@/utils/loader";
+import { __LITE_CONFIG__ } from "@/config";
 
 const route = useRoute();
 const router = useRouter();
 const postId: any = route.params.id;
 
-let essay = $ref<DataType.Essay>();
-let prevNext = $ref<any>();
-let essayVote = $ref<DataType.BlogEssayVote>();
-let tagscatoies = $ref<any>({ categories: {}, tags: {} });
+let essay = ref<DataType.Essay>();
+let prevNext = ref<any>();
+let essayVote = ref<DataType.BlogEssayVote>();
+let tagscatoies = ref<any>({ categories: {}, tags: {} });
 
-let holeSkeleton = $ref(true);
+let holeSkeleton = ref(true);
 
 Api.getEssay(postId, (res) => {
-  essay = res;
+  essay.value = res;
   Api.getEssayTagsAndCategories(postId, res => {
-    tagscatoies = res;
-    holeSkeleton = false;
+    tagscatoies.value = res;
+    holeSkeleton.value = false;
     closeLoader();
     Api.getPrevNext(postId, res => {
-      prevNext = res;
+      prevNext.value = res;
       Api.getEssayVote([postId], res => {
-        essayVote = res[0];
+        essayVote.value = res[0];
       });
     });
   });
 });
 
-let fontSize = $ref(17);
+let fontSize = ref(17);
 
 function zoomIn() {
-  fontSize >= 24 ? (fontSize = 16) : fontSize++;
+  fontSize.value >= 24 ? (fontSize.value = 16) : fontSize.value++;
 }
 
 function nav(path: string, out?: boolean) {
@@ -48,8 +45,8 @@ function nav(path: string, out?: boolean) {
 function voteEssay(voteType: DataType.VoteType) {
   Api.voteEssay({ postId, isAbandoned: false, voteType }, ajax => {
     if (ajax.isSuccess) {
-      if (voteType == "Bury") essayVote!.buryCount = essayVote!.buryCount! + 1;
-      else essayVote!.diggCount = essayVote!.diggCount! + 1;
+      if (voteType == "Bury") essayVote.value!.buryCount = essayVote.value!.buryCount! + 1;
+      else essayVote.value!.diggCount = essayVote.value!.diggCount! + 1;
     }
     ElMessage({ message: ajax.message, grouping: true, type: ajax.isSuccess ? "success" : "error" });
   });
@@ -61,7 +58,10 @@ function voteEssay(voteType: DataType.VoteType) {
     <Card class="essay__packer" padding="20px 20px" margin="0 10px 12px 10px">
       <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="holeSkeleton" />
       <div v-if="!holeSkeleton">
-        <el-page-header :icon="ArrowLeft" @back="nav('/')">
+        <el-page-header @back="nav('/')">
+          <template #icon>
+            <i-ep-arrow-left />
+          </template>
           <template #content>
             <div class="title">{{ essay?.text }}</div>
           </template>
@@ -69,25 +69,25 @@ function voteEssay(voteType: DataType.VoteType) {
         <div class="head-info">
           <div class="date">
             <el-icon>
-              <Clock />
+              <i-ep-clock />
             </el-icon>
             <span>{{ essay?.date }}</span>
           </div>
           <div class="view-count">
             <el-icon>
-              <View />
+              <i-ep-view />
             </el-icon>
             <span>{{ essay?.view }}次阅读</span>
           </div>
           <div class="comm-count">
             <el-icon>
-              <ChatLineSquare />
+              <i-ep-chat-line-square />
             </el-icon>
             <span>{{ essay?.comm }}条评论</span>
           </div>
           <div class="zoom-in" @click="zoomIn">
             <el-icon>
-              <ZoomIn />
+              <i-ep-zoom-in />
             </el-icon>
             <span>放大</span>
           </div>
@@ -96,7 +96,7 @@ function voteEssay(voteType: DataType.VoteType) {
                @click="nav('https://i.cnblogs.com/EditPosts.aspx?postid=' + postId, true)"
           >
             <el-icon>
-              <EditPen />
+              <i-ep-edit-pen />
             </el-icon>
             <span>编辑</span>
           </div>
@@ -105,7 +105,7 @@ function voteEssay(voteType: DataType.VoteType) {
           <div class="categories">
             <div class="caption">
               <el-icon>
-                <FolderOpened />
+                <i-ep-folder-opened />
               </el-icon>
               <span>分类：</span>
             </div>
@@ -118,7 +118,7 @@ function voteEssay(voteType: DataType.VoteType) {
           <div class="tags">
             <div class="caption">
               <el-icon>
-                <PriceTag />
+                <i-ep-price-tag />
               </el-icon>
               <span>标签：</span>
             </div>
@@ -136,19 +136,19 @@ function voteEssay(voteType: DataType.VoteType) {
         <div class="tail-info">
           <div class="date">
             <el-icon>
-              <Clock />
+              <i-ep-clock />
             </el-icon>
             <span>{{ essay?.date }}</span>
           </div>
           <div class="view-count">
             <el-icon>
-              <View />
+              <i-ep-view />
             </el-icon>
             <span>{{ essay?.view }}次阅读</span>
           </div>
           <div class="comm-count">
             <el-icon>
-              <ChatLineSquare />
+              <i-ep-chat-line-square />
             </el-icon>
             <span>{{ essay?.comm }}条评论</span>
           </div>
@@ -156,29 +156,33 @@ function voteEssay(voteType: DataType.VoteType) {
         <div class="prev-next">
           <div class="prev" v-if="prevNext?.prev?.href">
             <el-icon>
-              <DArrowLeft />
+              <i-ep-d-arrow-left />
             </el-icon>
             <a :href="prevNext.prev.href">上一篇：{{ prevNext.prev.text }}</a>
           </div>
           <div class="next" v-if="prevNext?.next?.href">
             <el-icon>
-              <DArrowRight />
+              <i-ep-d-arrow-right />
             </el-icon>
             <a :href="prevNext.next.href">下一篇：{{ prevNext.next.text }}</a>
           </div>
         </div>
         <div class="vote-essay">
           <div class="digg">
-            <el-button style="color: #a7a7a7" :icon="CaretTop" plain @click="voteEssay('Digg')"
-            >点赞 {{ essayVote?.diggCount }}
-            </el-button
-            >
+            <el-button style="color: #a7a7a7" plain @click="voteEssay('Digg')">
+              点赞 {{ essayVote?.diggCount }}
+              <template #icon>
+                <i-ep-caret-top />
+              </template>
+            </el-button>
           </div>
           <div class="bury">
-            <el-button style="color: #a7a7a7" :icon="CaretBottom" plain @click="voteEssay('Bury')"
-            >反对 {{ essayVote?.buryCount }}
-            </el-button
-            >
+            <el-button style="color: #a7a7a7" plain @click="voteEssay('Bury')">
+              反对 {{ essayVote?.buryCount }}
+              <template #icon>
+                <i-ep-caret-bottom />
+              </template>
+            </el-button>
           </div>
         </div>
         <Comments :post-id="parseInt(postId)" />
@@ -188,8 +192,6 @@ function voteEssay(voteType: DataType.VoteType) {
 </template>
 
 <style lang="scss">
-@import "../../scss/mixins";
-
 h1,
 h2,
 h3 {
@@ -345,8 +347,6 @@ code {
 </style>
 
 <style lang="scss">
-@import "../../scss/mixins";
-
 $color: #a7a7a7;
 
 .essay {

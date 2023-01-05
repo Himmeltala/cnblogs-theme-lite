@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { __LITE_CONFIG__ } from "../../config";
+import { __LITE_CONFIG__ } from "@/config";
 </script>
 
 <template>

@@ -10,9 +10,9 @@
 import axios from "axios";
 import $ from "jquery";
 import * as Parser from "./parser";
-import * as DataType from "../types/data-type";
-import * as HttpType from "../types/http-type";
-import { __LITE_CONFIG__, BaseAPI } from "../config";
+import * as DataType from "@/types/data-type";
+import * as HttpType from "@/types/http-type";
+import { __LITE_CONFIG__, BaseAPI } from "@/config";
 
 /**
  * 获取首页的随笔列表

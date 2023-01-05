@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { watch } from "vue";
-import { $ref } from "vue/macros";
-import { ElMessage } from "element-plus";
-
 const props = defineProps({
   pageCount: {
     type: Number,
@@ -11,16 +7,16 @@ const props = defineProps({
 });
 
 // 由于 local prop bindings are not writable. element-plus 的分页器是双向绑定的，因此不可以直接给 props
-let _pageCount = $ref<number>(props.pageCount);
-let currentIndex = $ref<number>(1);
+let _pageCount = ref<number>(props.pageCount);
+let currentIndex = ref<number>(1);
 
 /**
  * 暴露一个函数，当页面发生变化时，或其他情况时，可以调用该函数，把 pageCount
  * 和 currentIndex 恢复到默认值
  */
 const updateProps = () => {
-  _pageCount = 2;
-  currentIndex = 1;
+  _pageCount.value = 2;
+  currentIndex.value = 1;
 };
 
 // 暴露函数
@@ -28,7 +24,7 @@ defineExpose({ updateProps });
 
 // 监听 pageCount，如果 pageCount 发生了变化，就把父组件传递过来的新的 pageCount 赋值给 _pageCount
 watch(() => props.pageCount, () => {
-  _pageCount = props.pageCount;
+  _pageCount.value = props.pageCount;
 });
 
 // 声明触发函数
@@ -36,19 +32,19 @@ const emits = defineEmits(["floatChange", "fixedChange"]);
 
 function floatSorterChange(direction: "left" | "right") {
   if (direction === "left") {
-    if (currentIndex >= 0) {
-      currentIndex--;
+    if (currentIndex.value >= 0) {
+      currentIndex.value--;
       emits("floatChange", {
         pageCount: _pageCount,
         currentIndex: currentIndex
       });
     }
   } else {
-    if (currentIndex <= _pageCount - 1) {
-      currentIndex++;
+    if (currentIndex.value <= _pageCount.value - 1) {
+      currentIndex.value++;
       emits("floatChange", {
-        pageCount: _pageCount,
-        currentIndex: currentIndex
+        pageCount: _pageCount.value,
+        currentIndex: currentIndex.value
       });
     } else {
       ElMessage({ message: "已经是最后一页！", grouping: true, showClose: true, type: "warning" });
@@ -79,7 +75,7 @@ function fixedSorterChange() {
     <div v-show="currentIndex > 1" class="float-sorter left-sorter" @click="floatSorterChange('left')">
       <el-tooltip effect="dark" content="上一页" placement="left">
         <el-icon>
-          <ArrowLeftBold />
+          <i-ep-arrow-left-bold />
         </el-icon>
       </el-tooltip>
     </div>
@@ -87,7 +83,7 @@ function fixedSorterChange() {
     <div class="float-sorter right-sorter" @click="floatSorterChange('right')">
       <el-tooltip effect="dark" content="下一页" placement="left">
         <el-icon>
-          <ArrowRightBold />
+          <i-ep-arrow-right-bold />
         </el-icon>
       </el-tooltip>
     </div>
@@ -105,8 +101,6 @@ function fixedSorterChange() {
 </template>
 
 <style scoped lang="scss">
-@import "../scss/mixins";
-
 .pagination-page {
   position: relative;
 

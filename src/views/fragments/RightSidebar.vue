@@ -1,23 +1,21 @@
 <script setup lang="ts">
-import { watch } from "vue";
-import { $ref } from "vue/macros";
 import { useRoute } from "vue-router";
-import { useAnchorStore } from "../../store";
-import { RouteName } from "../../utils/route-helper";
-import { __LITE_CONFIG__ } from "../../config";
+import { useAnchorStore } from "@/store";
+import { RouteName } from "@/utils/route-helper";
+import { __LITE_CONFIG__ } from "@/config";
 
 const route = useRoute();
 const links = __LITE_CONFIG__.links;
 const books = __LITE_CONFIG__.books;
 
-let anchors = $ref<any>();
+let anchors = ref<any>();
 const anchorsStore = useAnchorStore();
 anchorsStore.$onAction(({ store, args }) => {
-  anchors = args[0];
+  anchors.value = args[0];
 }, true);
 
 watch(route, (value) => {
-  if (value.name === RouteName.HOME) anchors = [];
+  if (value.name === RouteName.HOME) anchors.value = [];
 });
 </script>
 
@@ -27,7 +25,7 @@ watch(route, (value) => {
       <SideItem text="随笔目录" v-if="anchors && anchors.length > 0">
         <template #icon>
           <el-icon style="margin-right: 5px">
-            <Location />
+            <i-ep-location />
           </el-icon>
         </template>
         <div class="catalog">
@@ -37,7 +35,7 @@ watch(route, (value) => {
       <SideItem text="我的技术栈" v-if="__LITE_CONFIG__.graph">
         <template #icon>
           <el-icon style="margin-right: 5px">
-            <Aim />
+            <i-ep-aim />
           </el-icon>
         </template>
         <SkillGraph />
@@ -45,7 +43,7 @@ watch(route, (value) => {
       <SideItem text="常用链接" v-if="links && links.length > 0">
         <template #icon>
           <el-icon style="margin-right: 5px">
-            <Link />
+            <i-ep-link />
           </el-icon>
         </template>
         <div class="link" v-for="(item, index) in links" :key="index">
@@ -58,7 +56,7 @@ watch(route, (value) => {
       <SideItem text="推荐书籍" v-if="books && books.length > 0">
         <template #icon>
           <el-icon style="margin-right: 5px">
-            <Notebook />
+            <i-ep-notebook />
           </el-icon>
         </template>
         <div class="book" v-for="(item, index) in books" :key="index">
@@ -76,8 +74,6 @@ watch(route, (value) => {
 </template>
 
 <style lang="scss">
-@import "../../scss/mixins";
-
 .catalog {
   .item {
     margin-bottom: 7px;
