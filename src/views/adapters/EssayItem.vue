@@ -9,7 +9,7 @@ defineProps({
     default: true
   },
   data: {
-    type: Object as PropType<Array<DataType.Essay>>,
+    type: Array as PropType<DataType.Essay[]>,
     required: true
   }
 });

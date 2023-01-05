@@ -21,6 +21,11 @@ const routes = [
     name: RouteName.TAG_PAGE,
     path: "/t/:tag",
     component: () => import("./views/modules/home/TagPage.vue")
+  },
+  {
+    name: RouteName.TAGS,
+    path: "/tags",
+    component: () => import("./views/modules/home/MyTags.vue")
   }
 ];
 

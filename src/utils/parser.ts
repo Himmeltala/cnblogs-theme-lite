@@ -10,6 +10,7 @@
 import $ from "jquery";
 import * as TextUtils from "./text-helper";
 import * as DataType from "@/types/data-type";
+import { parseUnit } from "./numeric-helper";
 
 /**
  * 由于一些问题，有时候请求过来的 DOM 不是真实的 DOM，所以不能被 JQ 解析，必须先调用该函数进行转换
@@ -300,7 +301,29 @@ export function parseSideBloggerInfo(strDOM: string): Array<DataType.BloggerInfo
 export function parseSideBlogInfo(strDOM: string): any {
   let list = <any>[];
   $(parseStrToDom(strDOM)).find("span").each((i, d) => {
-    if ($(d).attr("id")) list.push(TextUtils.regTrim($(d).text(), [/\n+/g]));
+    if ($(d).attr("id")) {
+      let t = $(d).text();
+      let text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
+      let digg = t.match(/\d+/g)[0];
+      if (i === 3) digg = parseUnit(digg);
+      list.push({ text, digg });
+    }
+  });
+  return list;
+}
+
+/**
+ * 忽哟去侧边栏博客排行信息。
+ *
+ * @param strDOM 真实 DOM
+ */
+export function parseSideRank(strDOM: string): any[] {
+  let list = <any>[];
+  $(parseStrToDom(strDOM)).find("li").each((i, d) => {
+    let t = $(d).text().trim();
+    let text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
+    let digg = t.match(/\d+/g)[0];
+    list.push({ text, digg });
   });
   return list;
 }

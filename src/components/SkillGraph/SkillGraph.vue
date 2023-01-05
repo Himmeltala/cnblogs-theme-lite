@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
 import { createRadar, calcSize } from "./index";
 import { __LITE_CONFIG__ } from "@/config";
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import * as RemoteApi from "@/utils/api";
 import { __LITE_CONFIG__ } from "@/config";
@@ -11,21 +12,25 @@ function nav(path: string, out?: boolean) {
   else router.push(path);
 }
 
-let tags = ref<any>();
-let blogger = ref<any>();
-let blogInfo = ref<any>();
-let toplist = ref<any>();
-let categories = ref<any>();
+let tags = <any>[];
+let blogger = <any>[];
+let blogInfo = <any>[];
+let toplist = <any>[];
+let categories = <any>[];
+let rank = <any>[];
 
 RemoteApi.getSideBloggerInfoLocal(res => {
-  blogger.value = res;
+  blogger = res;
   RemoteApi.getSideBlogInfoLocal(res => {
-    blogInfo.value = res;
+    blogInfo = res;
     RemoteApi.getSideCategoriesLocal(res => {
-      tags.value = res.tags;
-      categories.value = res.categories;
+      tags = res.tags;
+      categories = res.categories;
       RemoteApi.getSideTopListLocal(res => {
-        toplist.value = res;
+        toplist = res;
+        RemoteApi.getSideBlogRank(res => {
+          rank = res;
+        });
       });
     });
   });
@@ -82,10 +87,12 @@ const tabName = ref("随笔");
         </div>
         <el-tooltip effect="dark" placement="bottom">
           <template #content>
-            暂时没有更多数据...
+            <span style="margin-right: 8px" v-for="(item, index) in rank" :key="index">
+              {{ item.text }} - {{ item.digg }}
+            </span>
           </template>
           <div class="blog-data">
-            <span v-for="(item, index) in blogInfo" :key="index">{{ item }}</span>
+            <span v-for="(item, index) in blogInfo" :key="index">{{ item.text }} - {{ item.digg }}</span>
           </div>
         </el-tooltip>
       </SideItem>
@@ -118,6 +125,9 @@ const tabName = ref("随笔");
             <div class="text" @click="nav('/t/' + item.id)">
               {{ item.text }}
             </div>
+          </div>
+          <div class="item">
+            <div class="text" @click="nav('/tags')">更多...</div>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -176,6 +186,14 @@ const tabName = ref("随笔");
       cursor: pointer;
       font-size: 14px;
       margin-top: 10px;
+
+      span {
+        margin-right: 8px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
     }
   }
 

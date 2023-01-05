@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import * as Api from "@/utils/api";
 import * as DataType from "@/types/data-type";
@@ -102,7 +103,7 @@ function voteEssay(voteType: DataType.VoteType) {
           </div>
         </div>
         <div class="labels">
-          <div class="categories">
+          <div class="categories" v-if="tagscatoies.categories">
             <div class="caption">
               <el-icon>
                 <i-ep-folder-opened />
@@ -115,7 +116,7 @@ function voteEssay(voteType: DataType.VoteType) {
               </Tag>
             </div>
           </div>
-          <div class="tags">
+          <div class="tags" v-if="tagscatoies.tags">
             <div class="caption">
               <el-icon>
                 <i-ep-price-tag />

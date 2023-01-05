@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { __LITE_CONFIG__ } from "@/config";
 import * as DataType from "@/types/data-type";

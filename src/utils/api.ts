@@ -285,6 +285,13 @@ export function getSideBlogInfoLocal(response: (res: any) => void) {
 }
 
 /**
+ * 忽哟去侧边栏博客排行信息。
+ */
+export function getSideBlogRank(response: (res: any) => void) {
+  response(Parser.parseSideRank($("#home").find("#sidebar_scorerank").html()));
+}
+
+/**
  * 获取侧边栏阅读排行榜列表
  *
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。

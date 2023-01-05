@@ -4,13 +4,15 @@ export enum RouteName {
   ESSAY = "Essay",
   HOME = "Home",
   CATEGORY = "Category",
-  TAG_PAGE = "TagPage"
+  TAG_PAGE = "TagPage",
+  TAGS = "MyTags"
 }
 
 const Reg = {
   ESSAY: /\/p\/\d+/g,
   CATEGORY: /\/category\/\d+/g,
-  TAG_PAGE: /\/tag\/[\d\w\s\u4e00-\u9fa5\n.\-|_]+/g
+  TAG_PAGE: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
+  MyTags: /\d/g
 };
 
 export function redirect(href: string): any {
@@ -31,6 +33,8 @@ export function redirect(href: string): any {
       type: RouteName.TAG_PAGE,
       tag: decodeURI(href).match(Reg.TAG_PAGE)![0].split("/")[2]
     };
+  } else if (Reg.MyTags.test(href)) {
+
   }
 }
 

@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import * as RemoteApi from "@/utils/api";
 import * as DataType from "@/types/data-type";
 import { closeLoader } from "@/utils/loader";
 
-let data = ref<Array<DataType.Essay>>();
+let data = ref<DataType.Essay[]>();
 let loading = ref<boolean>(true);
 let pageCount = ref<number>(2);
 
@@ -77,7 +78,7 @@ function fixedChange(page: any) {
         </el-skeleton>
       </template>
       <template #content>
-        <EssayItem :data="data" :loading="loading" />
+        <EssayItem v-if="data" :data="data" :loading="loading" />
       </template>
     </PaginationPage>
   </div>

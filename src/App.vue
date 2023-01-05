@@ -8,11 +8,18 @@
     <LeftSidebar />
     <div id="app-vessel">
       <router-view v-slot="{ Component }">
-        <Transition name="fade">
-          <KeepAlive :exclude="['Essay', 'Category', 'MyTags', 'TagPage']">
-            <component :is="Component" />
-          </KeepAlive>
-        </Transition>
+        <template v-if="Component">
+          <Transition name="fade">
+            <KeepAlive :exclude="['Essay', 'Category', 'MyTags', 'TagPage']">
+              <Suspense>
+                <component :is="Component" />
+                <template #fallback>
+                  Loading...
+                </template>
+              </Suspense>
+            </KeepAlive>
+          </Transition>
+        </template>
       </router-view>
     </div>
     <RightSidebar />

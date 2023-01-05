@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import * as DataType from "@/types/data-type";
 import * as RemoteApi from "@/utils/api";
@@ -101,7 +102,7 @@ function fixedChange(page: any) {
       </template>
       <template #content>
         <div class="label">{{ label }}</div>
-        <EssayItem :data="data" :loading="loading" />
+        <EssayItem v-if="data" :data="data" :loading="loading" />
       </template>
     </PaginationPage>
   </div>
