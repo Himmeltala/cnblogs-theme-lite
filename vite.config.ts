@@ -65,7 +65,7 @@ export default defineConfig(({ command, mode }) => {
     build: {
       rollupOptions: {
         output: {
-          manualChunks(id: any) {
+          manualChunks() {
             return "components";
           },
           entryFileNames: "[name].js",

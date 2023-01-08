@@ -2,45 +2,30 @@
 </script>
 
 <template>
-  <div id="app-pack">
-    <GitHub />
-    <Navigator />
-    <LeftSidebar />
-    <div id="app-vessel">
-      <router-view v-slot="{ Component }">
-        <template v-if="Component">
-          <Transition name="fade">
-            <KeepAlive :exclude="['Essay', 'Category', 'MyTags', 'TagPage']">
-              <Suspense>
-                <component :is="Component" />
-                <template #fallback>
-                  Loading...
-                </template>
-              </Suspense>
-            </KeepAlive>
-          </Transition>
-        </template>
-      </router-view>
-    </div>
-    <RightSidebar />
+  <GitHub />
+  <Navigator />
+  <LeftSidebar />
+  <div class="app">
+    <router-view v-slot="{ Component }">
+      <Transition name="fade">
+        <KeepAlive :include="['Home']">
+          <component :is="Component" />
+        </KeepAlive>
+      </Transition>
+    </router-view>
   </div>
+  <RightSidebar />
 </template>
 
 <style scoped>
-#app-pack {
-  width: 100vw;
-  height: 100vh;
+.app {
   z-index: 999;
-  position: relative;
-}
-
-#app-vessel {
   width: 52.5vw;
   height: 90vh;
   top: 10vh;
   left: 23.8vw;
-  position: absolute;
   overflow-x: hidden;
+  position: absolute;
 }
 
 .fade-enter-active,

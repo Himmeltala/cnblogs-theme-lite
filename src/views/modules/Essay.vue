@@ -8,7 +8,7 @@ import { __LITE_CONFIG__ } from "@/config";
 
 const route = useRoute();
 const router = useRouter();
-const postId: any = route.params.id;
+const postId: number = parseInt(String(route.params.id));
 
 let essay = ref<DataType.Essay>();
 let prevNext = ref<any>();
@@ -103,7 +103,7 @@ function voteEssay(voteType: DataType.VoteType) {
           </div>
         </div>
         <div class="labels">
-          <div class="categories" v-if="tagscatoies.categories">
+          <div class="categories" v-if="tagscatoies.categories.length > 0">
             <div class="caption">
               <el-icon>
                 <i-ep-folder-opened />
@@ -116,7 +116,7 @@ function voteEssay(voteType: DataType.VoteType) {
               </Tag>
             </div>
           </div>
-          <div class="tags" v-if="tagscatoies.tags">
+          <div class="tags" v-if="tagscatoies.tags.length > 0">
             <div class="caption">
               <el-icon>
                 <i-ep-price-tag />
@@ -186,7 +186,7 @@ function voteEssay(voteType: DataType.VoteType) {
             </el-button>
           </div>
         </div>
-        <Comments :post-id="parseInt(postId)" />
+        <Comments :post-id="postId" />
       </div>
     </Card>
   </div>

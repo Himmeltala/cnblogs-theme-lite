@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { redirect, reinstallUrl, RouteName } from "@/utils/route-helper";
+import { parseUrlData, compareUrl, reviseUrl, RouteName } from "@/utils/route-helper";
 
 const routes = [
   {
@@ -34,23 +34,18 @@ const router = createRouter({
   routes
 });
 
-// @ts-ignore
-function allocateUrl(url?: any, route: string) {
-  return url?.type && url.type === route;
-}
-
 router.beforeEach((to, from, next) => {
   if (to.name === RouteName.HOME) {
-    let url = redirect(window.location.href);
-    if (allocateUrl(url, RouteName.ESSAY)) {
-      window.history.pushState("", "", reinstallUrl(`e/${url.text}`));
-      next({ name: RouteName.ESSAY, params: { id: url.text } });
-    } else if (allocateUrl(url, RouteName.CATEGORY)) {
-      window.history.pushState("", "", reinstallUrl(`c/${url.id}/${url.page}`));
-      next({ name: RouteName.CATEGORY, params: { id: url.id, page: url.page } });
-    } else if (allocateUrl(url, RouteName.TAG_PAGE)) {
-      window.history.pushState("", "", reinstallUrl(`t/${url.tag}`));
-      next({ name: RouteName.TAG_PAGE, params: { tag: url.tag } });
+    let data = parseUrlData(window.location.href);
+    if (compareUrl(data, RouteName.ESSAY)) {
+      reviseUrl(`e/${data.text}`);
+      next({ name: RouteName.ESSAY, params: { id: data.text } });
+    } else if (compareUrl(data, RouteName.CATEGORY)) {
+      reviseUrl(`c/${data.id}/${data.page}`);
+      next({ name: RouteName.CATEGORY, params: { id: data.id, page: data.page } });
+    } else if (compareUrl(data, RouteName.TAG_PAGE)) {
+      reviseUrl(`t/${data.tag}`);
+      next({ name: RouteName.TAG_PAGE, params: { tag: data.tag } });
     } else {
       next();
     }

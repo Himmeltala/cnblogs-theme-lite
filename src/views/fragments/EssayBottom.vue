@@ -64,9 +64,7 @@ defineProps({
     }
   }
 
-  .date,
-  .view,
-  .comm {
+  .date, .view, .comm {
     margin-right: 10px;
   }
 }

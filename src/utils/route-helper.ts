@@ -8,36 +8,45 @@ export enum RouteName {
   TAGS = "MyTags"
 }
 
-const Reg = {
+const Regulars = {
   ESSAY: /\/p\/\d+/g,
   CATEGORY: /\/category\/\d+/g,
   TAG_PAGE: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
   MyTags: /\d/g
 };
 
-export function redirect(href: string): any {
-  if (Reg.ESSAY.test(href)) {
+export function parseUrlData(url: string): any {
+  if (Regulars.ESSAY.test(url)) {
     return {
       type: RouteName.ESSAY,
-      text: String(href.match(Reg.ESSAY)).split("/")[2].split(",")[0]
+      text: String(url.match(Regulars.ESSAY)).split("/")[2].split(",")[0]
     };
-  } else if (Reg.CATEGORY.test(href)) {
-    let page = String(href.match(/page=\d/g)).split("=")[1];
+  } else if (Regulars.CATEGORY.test(url)) {
+    let page = String(url.match(/page=\d/g)).split("=")[1];
     return {
       type: RouteName.CATEGORY,
       page: page ? page : "1",
-      id: String(href.match(Reg.CATEGORY)).split("/")[2].split(",")[0]
+      id: String(url.match(Regulars.CATEGORY)).split("/")[2].split(",")[0]
     };
-  } else if (Reg.TAG_PAGE.test(href)) {
+  } else if (Regulars.TAG_PAGE.test(url)) {
     return {
       type: RouteName.TAG_PAGE,
-      tag: decodeURI(href).match(Reg.TAG_PAGE)![0].split("/")[2]
+      tag: decodeURI(url).match(Regulars.TAG_PAGE)![0].split("/")[2]
     };
-  } else if (Reg.MyTags.test(href)) {
+  } else if (Regulars.MyTags.test(url)) {
 
   }
 }
 
-export function reinstallUrl(redirection: any): string {
-  return `${window.location.protocol}//${window.location.host}${Belongs}/#/${redirection}`;
+function joinUrl(redirect: string): string {
+  return `${window.location.protocol}//${window.location.host}${Belongs}/#/${redirect}`;
+}
+
+// @ts-ignore
+export function compareUrl(url?: any, route: string): boolean {
+  return url?.type && url.type === route;
+}
+
+export function reviseUrl(url: string): void {
+  window.history.pushState("", "", joinUrl(url));
 }
