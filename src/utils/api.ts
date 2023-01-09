@@ -309,3 +309,7 @@ export function getSideTopList(response: (res: any) => void) {
 export function getSideTopListLocal(response: (res: any) => void) {
   response(Parser.parseSideBlogTopList($("#home").find("#sidebar_topviewedposts").html()));
 }
+
+export function getGalleryImg(): string {
+  return $("#ViewPicture1_OriginalImage").attr("href");
+}

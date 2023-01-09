@@ -99,7 +99,7 @@ const tabName = ref("随笔");
       <el-tabs type="card" v-model="tabName">
         <el-tab-pane label="随笔" name="随笔">
           <template #label>
-            <div class="flex-align-center flex-justify-center">
+            <div class="align-center justify-center">
               <el-icon style="margin-right: 5px">
                 <i-ep-folder />
               </el-icon>
@@ -114,7 +114,7 @@ const tabName = ref("随笔");
         </el-tab-pane>
         <el-tab-pane label="标签" name="标签">
           <template #label>
-            <div class="flex-align-center flex-justify-center">
+            <div class="align-center justify-center">
               <el-icon style="margin-right: 5px">
                 <i-ep-collection-tag />
               </el-icon>

@@ -8,7 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Card: typeof import('./src/components/Card.vue')['default']
-    Category: typeof import('./src/views/modules/home/Category.vue')['default']
+    Category: typeof import('./src/views/modules/Category.vue')['default']
     Comments: typeof import('./src/views/fragments/Comments.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElEmpty: typeof import('element-plus/es')['ElEmpty']
@@ -19,6 +19,7 @@ declare module '@vue/runtime-core' {
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
     ElRate: typeof import('element-plus/es')['ElRate']
+    ElResult: typeof import('element-plus/es')['ElResult']
     ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
     ElSkeletonItem: typeof import('element-plus/es')['ElSkeletonItem']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
@@ -27,8 +28,9 @@ declare module '@vue/runtime-core' {
     Essay: typeof import('./src/views/modules/Essay.vue')['default']
     EssayBottom: typeof import('./src/views/fragments/EssayBottom.vue')['default']
     EssayItem: typeof import('./src/views/adapters/EssayItem.vue')['default']
+    Gallery: typeof import('./src/views/modules/Gallery.vue')['default']
     GitHub: typeof import('./src/views/fragments/GitHub.vue')['default']
-    Home: typeof import('./src/views/modules/home/Home.vue')['default']
+    Home: typeof import('./src/views/modules/Home.vue')['default']
     IEpAim: typeof import('~icons/ep/aim')['default']
     IEpArrowLeft: typeof import('~icons/ep/arrow-left')['default']
     IEpArrowLeftBold: typeof import('~icons/ep/arrow-left-bold')['default']
@@ -63,7 +65,7 @@ declare module '@vue/runtime-core' {
     IEpView: typeof import('~icons/ep/view')['default']
     IEpZoomIn: typeof import('~icons/ep/zoom-in')['default']
     LeftSidebar: typeof import('./src/views/fragments/LeftSidebar.vue')['default']
-    MyTags: typeof import('./src/views/modules/home/MyTags.vue')['default']
+    MyTags: typeof import('./src/views/modules/MyTags.vue')['default']
     Navigator: typeof import('./src/views/fragments/Navigator.vue')['default']
     PaginationPage: typeof import('./src/components/PaginationPage.vue')['default']
     RightSidebar: typeof import('./src/views/fragments/RightSidebar.vue')['default']
@@ -72,6 +74,6 @@ declare module '@vue/runtime-core' {
     SideItem: typeof import('./src/views/adapters/SideItem.vue')['default']
     SkillGraph: typeof import('./src/components/SkillGraph/SkillGraph.vue')['default']
     Tag: typeof import('./src/components/Tag.vue')['default']
-    TagPage: typeof import('./src/views/modules/home/TagPage.vue')['default']
+    TagPage: typeof import('./src/views/modules/TagPage.vue')['default']
   }
 }

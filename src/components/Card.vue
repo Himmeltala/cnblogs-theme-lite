@@ -20,8 +20,9 @@ defineProps({
     class="card"
     :style="{
       'padding': padding,
-      'width': width ? width : '',
-      'height': height, 'margin': margin ? margin : ''
+      'width': width,
+      'height': height,
+      'margin': margin
     }"
   >
     <slot />

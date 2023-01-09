@@ -1,9 +1,21 @@
-.flex-align-center {
+.flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
   display: flex;
   align-items: center;
   align-content: center;
 }
 
-.flex-justify-center {
-  justify-content: center;
+.align-start {
+  display: flex;
+  align-items: start;
+  align-content: start;
 }
+
+

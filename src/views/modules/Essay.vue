@@ -494,6 +494,5 @@ $color: #a7a7a7;
   .head-info, .labels, .tail-info, .prev-next {
     color: #878787;
   }
-
 }
 </style>
