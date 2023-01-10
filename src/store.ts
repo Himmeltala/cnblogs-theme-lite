@@ -10,3 +10,13 @@ export const useAnchorStore = defineStore("anchor", () => {
 
   return { anchors: _anchors, setAnchors };
 });
+
+export const useCommentsAnchorStore = defineStore("commentsAnchor", () => {
+  let _commentAnchor = ref<number>(0);
+
+  function setAnchor(commentAnchor: number) {
+    _commentAnchor.value = commentAnchor;
+  }
+
+  return { commentAnchor: _commentAnchor, setAnchor };
+});

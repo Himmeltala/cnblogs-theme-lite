@@ -141,13 +141,19 @@ export function replayComment(comment: DataType.BlogComment, response: (ajax: Ht
  *
  * @param postId 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
  * @param pageIndex 1 页最多有 50 条评论
+ * @param anchorCommentId 当进入的是一个回复评论时，需要传递该参数，默认可以不传递
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
 export function getCommentList(
-  postId: number | string, pageIndex: number,
-  response: (res: Array<DataType.Comment>) => void
+  postId: number | string, pageIndex: number = 0,
+  response: (res: Array<DataType.Comment>) => void,
+  anchorCommentId?: number
 ) {
-  axios.get(`${BaseAPI}/ajax/GetComments.aspx?postId=${postId}&pageIndex=${pageIndex}`).then(({ data }) => {
+  let url = `${BaseAPI}/ajax/GetComments.aspx?postId=${postId}&pageIndex=${pageIndex}`;
+  if (anchorCommentId) {
+    url += `&anchorCommentId=${anchorCommentId}&isDesc=false`;
+  }
+  axios.get(url).then(({ data }) => {
     response(Parser.parseCommentList(data));
   });
 }

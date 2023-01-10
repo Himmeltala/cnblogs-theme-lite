@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { nextTick, onMounted, ref, watch, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
+import $ from "jquery";
 import { __LITE_CONFIG__ } from "@/config";
 import * as DataType from "@/types/data-type";
 import * as Native from "@/utils/native";
 import * as RemoteApi from "@/utils/api";
+import { useCommentsAnchorStore } from "@/store";
 
 const props = defineProps({
   postId: { type: Number, required: true }
@@ -34,15 +37,17 @@ function fetchComment(
     RemoteApi.getCommentCount(props.postId, count => {
       commentCount.value = count;
       currentIndex.value = count;
+
       RemoteApi.getCommentList(props.postId, currentIndex.value,
-        (res: Array<DataType.Essay>) => {
+        (res: Array<DataType.Comment>) => {
           if (y && y.success) {
             y.success(res);
             if (y.message) {
               ElMessage({ message: y.message, grouping: true, type: "success" });
             }
           }
-        });
+        }, commentAnchor.value
+      );
     });
   } else {
     if (n && n.error) {
@@ -54,12 +59,24 @@ function fetchComment(
   }
 }
 
+const commentAnchorRef = ref<any>(null);
+const store = useCommentsAnchorStore();
+const { commentAnchor } = storeToRefs(store);
+
 fetchComment(true, {
   message: "", success: (res) => {
     comments.value = res;
     skeleton.value = false;
   }
-}, undefined, undefined);
+});
+
+watch(commentAnchorRef, () => {
+  if (commentAnchorRef.value.length > 0) {
+    const top = commentAnchorRef.value[0].offsetTop;
+    $("#content").animate({ scrollTop: top }, 200, "linear");
+  }
+  commentAnchor.value = 0;
+});
 
 function uploadImage() {
   Native.openImageUploadWindow((imgUrl: any) => form.value.content += `\n\n${imgUrl}\n\n`);
@@ -217,7 +234,11 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
           <div>
             <div class="space" @click="nav('' + item.space, true)">{{ item.author }}</div>
             <div class="brief">
-              <div class="layer">{{ item.layer }}</div>
+              <div v-if="commentAnchor === item.commentId" ref="commentAnchorRef" :id="'#' + item.commentId"
+                   class="layer">
+                {{ item.layer }}
+              </div>
+              <div v-else :id="'#' + item.commentId" class="layer">{{ item.layer }}</div>
               <div class="date">{{ item.date }}</div>
             </div>
           </div>

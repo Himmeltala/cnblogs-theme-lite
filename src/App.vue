@@ -5,7 +5,7 @@
   <GitHub />
   <Navigator />
   <LeftSidebar />
-  <div class="app">
+  <div id="content">
     <router-view v-slot="{ Component }">
       <Transition name="fade">
         <KeepAlive :include="['Home']">
@@ -18,7 +18,7 @@
 </template>
 
 <style scoped>
-.app {
+#content {
   z-index: 999;
   width: 52.5vw;
   height: 90vh;

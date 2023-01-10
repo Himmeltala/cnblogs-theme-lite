@@ -40,7 +40,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  let data = parseUrlData(window.location.href);
+  const data = parseUrlData(window.location.href);
   if (to.name === RouteName.HOME) {
     if (compareUrl(data, RouteName.ESSAY)) {
       reviseUrl(`e/${data.text}`);

@@ -45,11 +45,11 @@ export function makeAnchor(dom: string) {
 
   for (const item of clasps) {
     $(".side-item .catalog").find(`.${item.id}`).on("click", (e) => {
-      $("#app-vessel").animate({ scrollTop: item.top }, 800, "linear");
+      $("#content").animate({ scrollTop: item.top }, 800, "linear");
     });
   }
 
-  $("#app-vessel").on("scroll", function(e) {
+  $("#content").on("scroll", function(e) {
     const scrollTop = e.target.scrollTop;
     for (const item of clasps) {
       if (scrollTop >= item.top - 75 && scrollTop <= item.top) {

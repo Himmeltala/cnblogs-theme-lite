@@ -1,4 +1,5 @@
 import { Belongs } from "@/config";
+import { useCommentsAnchorStore } from "@/store";
 
 export enum RouteName {
   ESSAY = "Essay",
@@ -19,6 +20,11 @@ const Regs = {
 
 export function parseUrlData(url: string): any {
   if (Regs.ESSAY.test(url)) {
+    const commentAnchor = url.match(/#\/\d+/g)[0].split("#/")[1];
+    if (commentAnchor) {
+      const { setAnchor } = useCommentsAnchorStore();
+      setAnchor(parseInt(commentAnchor));
+    }
     return {
       type: RouteName.ESSAY,
       id: String(url.match(Regs.ESSAY)).split("/")[2].split(",")[0]
