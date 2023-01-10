@@ -155,7 +155,7 @@ function replayComment(comment: DataType.Comment) {
     }, (ajax: any) => {
       fetchComment(ajax.isSuccess, {
         message: "回复成功！😀",
-        success: res => comments = res
+        success: res => comments.value = res
       }, {
         message: "回复失败！😑"
       });
@@ -210,7 +210,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
     </div>
     <h3>评论列表</h3>
     <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="skeleton" />
-    <div class="comment-list" v-if="comments?.length && !skeleton">
+    <div class="comment-list" v-if="comments?.length && !skeleton && __LITE_CONFIG__.isLogined">
       <div class="item" v-for="(item, index) in comments" :key="index">
         <div class="header">
           <el-image class="avatar" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
@@ -310,7 +310,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
       </div>
     </div>
     <el-empty v-if="__LITE_CONFIG__.isLogined && !comments?.length" description="没有评论，来一条友善的评论吧🤨" />
-    <el-empty v-if="!__LITE_CONFIG__.isLogined" description="你没有登录所以看不到评论哦~" />
+    <el-empty v-if="!__LITE_CONFIG__.isLogined" description="你没有登录或没有申请博客权限，所以看不到评论哦~" />
   </div>
 </template>
 

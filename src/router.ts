@@ -40,10 +40,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  let data = parseUrlData(window.location.href);
   if (to.name === RouteName.HOME) {
-    // 解析 url 所携带的数据
-    let data = parseUrlData(window.location.href);
-    // 匹配从原本的 url 点击跳转之后所对应的 route-view
     if (compareUrl(data, RouteName.ESSAY)) {
       reviseUrl(`e/${data.text}`);
       next({ name: RouteName.ESSAY, params: { id: data.id } });
@@ -60,7 +58,12 @@ router.beforeEach((to, from, next) => {
       next();
     }
   } else {
-    next();
+    if (compareUrl(data, RouteName.ESSAY)) {
+      reviseUrl(`e/${data.text}`);
+      next({ name: RouteName.ESSAY, params: { id: data.id } });
+    } else {
+      next();
+    }
   }
 });
 
