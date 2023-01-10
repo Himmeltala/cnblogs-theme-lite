@@ -130,7 +130,7 @@ function drawFloatingPanel(axis: any) {
   let cnp = $("#floating");
   let timeout: any = null;
   $("#graph").on({
-    mousemove: function(e) {
+    mousemove: function (e) {
       if (timeout != null) clearTimeout(timeout);
       timeout = setTimeout(() => {
         axis.forEach((v: any) => {

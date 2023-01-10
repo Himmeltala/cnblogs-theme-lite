@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="tag" :style="{'font-size': fontSize ? fontSize : '12px'}">
+  <div class="tag" :style="{ 'font-size': fontSize ? fontSize : '12px' }">
     <slot />
   </div>
 </template>

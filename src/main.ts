@@ -4,6 +4,7 @@ import App from "@/App.vue";
 import router from "@/router";
 
 // CSS
+import "uno.css";
 import "./style.scss";
 import "element-plus/theme-chalk/dark/css-vars.css";
 import "element-plus/dist/index.css";
@@ -18,11 +19,14 @@ app.use(router);
 app.use(createPinia());
 new Directive(app).parseCode();
 
-initLite(() => {
-  app.mount("#app");
-}, () => {
-  // @ts-ignore
-  window["__LITE_CONFIG__"].onLoaded = () => {
+initLite(
+  () => {
     app.mount("#app");
-  };
-});
+  },
+  () => {
+    // @ts-ignore
+    window["__LITE_CONFIG__"].onLoaded = () => {
+      app.mount("#app");
+    };
+  }
+);

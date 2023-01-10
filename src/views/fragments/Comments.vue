@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref, watch, watchEffect } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
 import $ from "jquery";
 import { __LITE_CONFIG__ } from "@/config";
 import * as DataType from "@/types/data-type";
@@ -29,8 +26,10 @@ let currentIndex = ref(0);
 let skeleton = ref(true);
 
 function fetchComment(
-  f: boolean, y?: { message?: string, success?: (res: any) => void },
-  n?: { message?: string, error?: () => void }, bf?: Function
+  f: boolean,
+  y?: { message?: string; success?: (res: any) => void },
+  n?: { message?: string; error?: () => void },
+  bf?: Function
 ) {
   if (f) {
     bf && bf();
@@ -38,7 +37,9 @@ function fetchComment(
       commentCount.value = count;
       currentIndex.value = count;
 
-      RemoteApi.getCommentList(props.postId, currentIndex.value,
+      RemoteApi.getCommentList(
+        props.postId,
+        currentIndex.value,
         (res: Array<DataType.Comment>) => {
           if (y && y.success) {
             y.success(res);
@@ -46,7 +47,8 @@ function fetchComment(
               ElMessage({ message: y.message, grouping: true, type: "success" });
             }
           }
-        }, commentAnchor.value
+        },
+        commentAnchor.value
       );
     });
   } else {
@@ -64,7 +66,8 @@ const store = useCommentsAnchorStore();
 const { commentAnchor } = storeToRefs(store);
 
 fetchComment(true, {
-  message: "", success: (res) => {
+  message: "",
+  success: res => {
     comments.value = res;
     skeleton.value = false;
   }
@@ -79,7 +82,7 @@ watch(commentAnchorRef, () => {
 });
 
 function uploadImage() {
-  Native.openImageUploadWindow((imgUrl: any) => form.value.content += `\n\n${imgUrl}\n\n`);
+  Native.openImageUploadWindow((imgUrl: any) => (form.value.content += `\n\n${imgUrl}\n\n`));
 }
 
 function paginationChange() {
@@ -93,24 +96,30 @@ function paginationChange() {
 function insertComment() {
   if (form.value.content) {
     loading.value = true;
-    RemoteApi.setComment({
+    RemoteApi.setComment(
+      {
         postId: form.value.postId,
         body: form.value.content,
         parentCommentId: form.value.parentCommentId
       },
       ({ data }) => {
-        fetchComment(data.isSuccess, {
+        fetchComment(
+          data.isSuccess,
+          {
             message: "你的评论传达成功！😀",
             success(res: any) {
               comments.value = res;
               loading.value = false;
             }
-          }, {
+          },
+          {
             message: "你的评论似乎没有发出去！😑",
-            error: () => loading.value = false
-          }, () => form.value.content = ""
+            error: () => (loading.value = false)
+          },
+          () => (form.value.content = "")
         );
-      });
+      }
+    );
   } else {
     ElMessage({ message: "评论不能为空，或字数不够⚠️", grouping: true, type: "error" });
   }
@@ -137,7 +146,7 @@ function confirmDeleteComment(comment: DataType.Comment, index: number) {
 function updateComment(comment: DataType.Comment) {
   comment.updateEditable = !comment.updateEditable;
   if (comment.replayEditable) comment.replayEditable = false;
-  if (comment.updateEditable) RemoteApi.getComment({ commentId: comment.commentId }, ({ data }) => comment.content = data);
+  if (comment.updateEditable) RemoteApi.getComment({ commentId: comment.commentId }, ({ data }) => (comment.content = data));
 
   if (!comment.updateEditable) {
     RemoteApi.updateComment(
@@ -165,18 +174,25 @@ function replayComment(comment: DataType.Comment) {
   if (comment.updateEditable) comment.updateEditable = false;
 
   if (!comment.replayEditable) {
-    RemoteApi.replayComment({
-      body: reCommentBody.value,
-      postId: props.postId,
-      parentCommentId: comment.commentId
-    }, (ajax: any) => {
-      fetchComment(ajax.isSuccess, {
-        message: "回复成功！😀",
-        success: res => comments.value = res
-      }, {
-        message: "回复失败！😑"
-      });
-    });
+    RemoteApi.replayComment(
+      {
+        body: reCommentBody.value,
+        postId: props.postId,
+        parentCommentId: comment.commentId
+      },
+      (ajax: any) => {
+        fetchComment(
+          ajax.isSuccess,
+          {
+            message: "回复成功！😀",
+            success: res => (comments.value = res)
+          },
+          {
+            message: "回复失败！😑"
+          }
+        );
+      }
+    );
   } else {
     reCommentBody.value = "";
     reCommentBody.value += `回复 ${comment.layer} [@${comment.author}](${comment.space})\n\n`;
@@ -185,16 +201,13 @@ function replayComment(comment: DataType.Comment) {
 }
 
 function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
-  RemoteApi.voteComment(
-    { isAbandoned: false, commentId: comment.commentId, postId: props.postId, voteType: voteType },
-    ajax => {
-      if (ajax.isSuccess) {
-        if (voteType == "Bury") comment.bury = comment.bury! + 1;
-        else comment.digg = comment.digg! + 1;
-      }
-      ElMessage({ message: ajax.message, grouping: true, type: ajax.isSuccess ? "success" : "error" });
+  RemoteApi.voteComment({ isAbandoned: false, commentId: comment.commentId, postId: props.postId, voteType: voteType }, ajax => {
+    if (ajax.isSuccess) {
+      if (voteType == "Bury") comment.bury = comment.bury! + 1;
+      else comment.digg = comment.digg! + 1;
     }
-  );
+    ElMessage({ message: ajax.message, grouping: true, type: ajax.isSuccess ? "success" : "error" });
+  });
 }
 </script>
 
@@ -210,18 +223,12 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
         </el-tooltip>
       </div>
       <div class="edit-area">
-        <textarea
-          v-model="form.content"
-          placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"
-        ></textarea>
+        <textarea v-model="form.content" placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
       </div>
       <div class="img-link__packer">
         <textarea id="img-link" />
       </div>
-      <el-button
-        type="primary" :disabled="!__LITE_CONFIG__.isLogined" :loading="loading"
-        class="upload" @click="insertComment"
-      >
+      <el-button type="primary" :disabled="!__LITE_CONFIG__.isLogined" :loading="loading" class="upload" @click="insertComment">
         发送评论
       </el-button>
     </div>
@@ -234,8 +241,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
           <div>
             <div class="space" @click="nav('' + item.space, true)">{{ item.author }}</div>
             <div class="brief">
-              <div v-if="commentAnchor === item.commentId" ref="commentAnchorRef" :id="'#' + item.commentId"
-                   class="layer">
+              <div v-if="commentAnchor === item.commentId" ref="commentAnchorRef" :id="'#' + item.commentId" class="layer">
                 {{ item.layer }}
               </div>
               <div v-else :id="'#' + item.commentId" class="layer">{{ item.layer }}</div>
@@ -249,15 +255,13 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
             <textarea
               v-show="item.updateEditable"
               v-model="item.content"
-              placeholder="请编辑一条友善的评论，支持 Markdown 语法"
-            />
+              placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
           </div>
           <div class="replay-area">
             <textarea
               v-show="item.replayEditable"
               v-model="reCommentBody"
-              placeholder="请回复一条友善的评论，支持 Markdown 语法"
-            />
+              placeholder="请回复一条友善的评论，支持 Markdown 语法" />
           </div>
           <div>
             <div class="replay actions" @click="replayComment(item)">
@@ -292,8 +296,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
                 cancel-button-text="取消"
                 icon-color="#626AEF"
                 title="确定删除该评论？"
-                @confirm="confirmDeleteComment(item, index)"
-              >
+                @confirm="confirmDeleteComment(item, index)">
                 <template #reference>
                   <div class="delete">
                     <el-icon>
@@ -326,8 +329,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
           @current-change="paginationChange"
           layout="prev, pager, next"
           v-model:current-page="currentIndex"
-          v-model:page-count="commentCount"
-        />
+          v-model:page-count="commentCount" />
       </div>
     </div>
     <el-empty v-if="__LITE_CONFIG__.isLogined && !comments?.length" description="没有评论，来一条友善的评论吧🤨" />
@@ -460,7 +462,8 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
       margin: 4px 0 12px 0;
     }
 
-    .edit-area, .replay-area {
+    .edit-area,
+    .replay-area {
       margin-bottom: 15px;
       @include textarea-style($box: no, $height: 150px);
     }
@@ -473,7 +476,8 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
 
       .replay > div,
       .update > div,
-      .actions, .delete {
+      .actions,
+      .delete {
         margin-right: 15px;
         @include flex();
         @include ahover();

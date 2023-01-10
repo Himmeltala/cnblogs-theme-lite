@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import * as RemoteApi from "@/utils/api";
 import * as DataType from "@/types/data-type";
 import { closeLoader } from "@/utils/loader";
@@ -10,10 +9,7 @@ let pageCount = ref<number>(2);
 
 const pagination = ref();
 
-function fetchData(
-  complete?: ((pages: string[]) => void) | null,
-  isCalc: boolean = false, pageIndex: number = 1
-) {
+function fetchData(complete?: ((pages: string[]) => void) | null, isCalc: boolean = false, pageIndex: number = 1) {
   loading.value = true;
   RemoteApi.getEssayList(pageIndex, isCalc, res => {
     if (res.list.length === 0) {
@@ -33,15 +29,17 @@ fetchData(() => {
 let isCalc = true;
 
 function floatChange(page: any) {
-  fetchData(pages => {
-    if (isCalc) {
-      // 获取 pages，即分页情况，只获取第一次，页面第一页默认时没有分页情况，只有第二页才有
-      pageCount.value = parseInt(pages[pages.length - 1]);
-      // 如果页数总数只有 1 页，防止错误发生，将变量设置为 2
-      if (pageCount.value === 1) pageCount.value = 2;
-      isCalc = false;
-    }
-  }, isCalc, page.currentIndex);
+  fetchData(
+    pages => {
+      if (isCalc) {
+        pageCount.value = parseInt(pages[pages.length - 1]);
+        if (pageCount.value === 1) pageCount.value = 2;
+        isCalc = false;
+      }
+    },
+    isCalc,
+    page.currentIndex
+  );
 }
 
 function fixedChange(page: any) {
@@ -51,17 +49,11 @@ function fixedChange(page: any) {
 
 <template>
   <div class="home">
-    <PaginationPage
-      ref="pagination"
-      @fixed-change="fixedChange"
-      @float-change="floatChange"
-      :page-count="pageCount">
+    <PaginationPage ref="pagination" @fixed-change="fixedChange" @float-change="floatChange" :page-count="pageCount">
       <template #loading>
         <el-skeleton style="margin-top: 10px" :loading="loading" animated>
           <template #template>
-            <Card v-for="item in 10" :key="item" width="auto" padding="15px 25px"
-                  margin="12px 10px 12px 10px"
-            >
+            <Card v-for="item in 10" :key="item" width="auto" padding="15px 25px" margin="12px 10px 12px 10px">
               <el-skeleton-item variant="p" style="width: 60%" />
               <div style="display: flex; align-items: center">
                 <el-skeleton-item variant="text" style="margin-right: 16px; margin-top: 8px" />
@@ -84,5 +76,4 @@ function fixedChange(page: any) {
   </div>
 </template>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

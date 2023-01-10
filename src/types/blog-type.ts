@@ -25,8 +25,7 @@ export interface BlogComment extends BlogRestriction {
   parentCommentId?: number;
 }
 
-export interface BlogEssay extends BlogRestriction {
-}
+export interface BlogEssay extends BlogRestriction {}
 
 export interface BlogEssayVote {
   // 反对数量

@@ -23,7 +23,8 @@ import { __LITE_CONFIG__, BaseAPI } from "@/config";
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
 export function getEssayList(
-  page: number, calcPage: boolean,
+  page: number,
+  calcPage: boolean,
   response: (res: { pages: string[]; list: Array<DataType.Essay> }) => void
 ) {
   axios.get(`${BaseAPI}/default.html?page=${page}`).then(({ data }) => {
@@ -145,7 +146,8 @@ export function replayComment(comment: DataType.BlogComment, response: (ajax: Ht
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
 export function getCommentList(
-  postId: number | string, pageIndex: number = 0,
+  postId: number | string,
+  pageIndex: number = 0,
   response: (res: Array<DataType.Comment>) => void,
   anchorCommentId?: number
 ) {
@@ -206,7 +208,6 @@ export function getEssayVote(data: any[], response: (ajax: Array<DataType.BlogEs
   });
 }
 
-
 /**
  * 获取分类列表
  *
@@ -216,7 +217,9 @@ export function getEssayVote(data: any[], response: (ajax: Array<DataType.BlogEs
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
 export function getCategories(
-  id: any, calcPage: boolean, page: any,
+  id: any,
+  calcPage: boolean,
+  page: any,
   response: (res: { pages: string[]; label: string; list: Array<DataType.Essay> }) => void
 ) {
   axios.get(`${BaseAPI}/category/${id}.html?page=${page}`).then(({ data }) => {

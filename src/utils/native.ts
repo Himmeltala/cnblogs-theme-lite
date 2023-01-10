@@ -15,7 +15,9 @@ export function openImageUploadWindow(afterUpload: any) {
       afterUpload ? afterUpload(url.replace("[img]", "![](").replace("[/img]", ")")) : "";
       link.val("");
     });
-    let w = `${location.protocol}//upload.cnblogs${location.hostname.substring(location.hostname.lastIndexOf("."))}/imageuploader/upload?host=www.cnblogs.com&editor=0#img-link`;
+    let w = `${location.protocol}//upload.cnblogs${location.hostname.substring(
+      location.hostname.lastIndexOf(".")
+    )}/imageuploader/upload?host=www.cnblogs.com&editor=0#img-link`;
     document.domain = `cnblogs.${location.hostname.substring(location.hostname.lastIndexOf(".") + 1, location.hostname.length)}`;
     openWindow(w, 450, 120, 200);
   } catch (e) {

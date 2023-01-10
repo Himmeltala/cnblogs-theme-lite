@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { PropType } from "vue";
-import { useRouter } from "vue-router";
 import * as DataType from "@/types/data-type";
 
 defineProps({
@@ -24,15 +23,10 @@ function nav(path: string, out?: boolean) {
 
 <template>
   <div class="essay">
-    <Card class="item"
-          v-if="!loading"
-          width="auto"
-          padding="15px 25px"
-          v-for="(item, index) in data" :key="index"
-    >
+    <Card class="item" v-if="!loading" width="auto" padding="15px 25px" v-for="(item, index) in data" :key="index">
       <div class="header">
         <el-image v-if="index % 2 !== 0 && item.surface" class="cover" :src="item.surface" fit="cover" />
-        <div class="header__middle" :class="{ 'nocover': !item.surface }">
+        <div class="header__middle" :class="{ nocover: !item.surface }">
           <div class="title" @click="nav('/e/' + item.id)">{{ item.text }}</div>
           <div class="desc">{{ item.desc }}</div>
         </div>
@@ -44,10 +38,7 @@ function nav(path: string, out?: boolean) {
         </el-icon>
         <router-link :to="'/e/' + item.id">阅读全文</router-link>
       </div>
-      <EssayBottom
-        align="flex-end"
-        :data="{date: item.date, comm: item.comm, digg: item.digg, view: item.view}"
-      />
+      <EssayBottom align="flex-end" :data="{ date: item.date, comm: item.comm, digg: item.digg, view: item.view }" />
     </Card>
   </div>
 </template>

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import { useRoute } from "vue-router";
 import { useAnchorStore } from "@/store";
 import { RouteName } from "@/utils/route-helper";
 import { __LITE_CONFIG__ } from "@/config";
@@ -15,7 +13,7 @@ anchorsStore.$onAction(({ store, args }) => {
   anchors.value = args[0];
 }, true);
 
-watch(route, (value) => {
+watch(route, value => {
   if (value.name === RouteName.HOME) anchors.value = [];
 });
 </script>

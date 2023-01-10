@@ -71,17 +71,24 @@ export interface LiteConfigType {
   };
   // 导航栏配置项
   navor?: {
-    header?: string; search?: boolean;
-    navs?: { href: string; text: string; svg?: string; img?: string; }[]
+    header?: string;
+    search?: boolean;
+    navs?: { href: string; text: string; svg?: string; img?: string }[];
   };
   graph?: {
     fillColor?: string;
-    strokeColor?: string; alpha?: number; sides?: number;
-    layer?: number; lineWidth?: number;
-    textSize?: number; lineColor?: string; textColor?: string; data?: { title: string; star: number } []
-  },
+    strokeColor?: string;
+    alpha?: number;
+    sides?: number;
+    layer?: number;
+    lineWidth?: number;
+    textSize?: number;
+    lineColor?: string;
+    textColor?: string;
+    data?: { title: string; star: number }[];
+  };
   // github 链接
   github?: string;
-  links?: { href: string; text: string; tip?: string; }[],
-  books?: { href?: string; text: string; img: string, author: string; rate: number }[]
+  links?: { href: string; text: string; tip?: string }[];
+  books?: { href?: string; text: string; img: string; author: string; rate: number }[];
 }

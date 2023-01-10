@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { __LITE_CONFIG__ } from "@/config";
 
 const router = useRouter();
@@ -19,11 +17,8 @@ function search() {
 </script>
 
 <template>
-  <div class="navigator"
-       :style="{'justify-content': navor?.header ? 'space-between': 'flex-end'}"
-  >
-    <div v-if="navor?.header" v-html="navor.header" class="header" @click="nav('/')">
-    </div>
+  <div class="navigator" :style="{ 'justify-content': navor?.header ? 'space-between' : 'flex-end' }">
+    <div v-if="navor?.header" v-html="navor.header" class="header" @click="nav('/')"></div>
     <div class="menus">
       <div v-if="navor?.search" class="item search">
         <el-input @keyup.enter="search" v-model="input" class="w-50 m-2" placeholder="输入查询关键字">
@@ -47,13 +42,13 @@ function search() {
             xmlns="http://www.w3.org/2000/svg"
             width="25"
             height="25"
-            v-html="item.svg"
-          >
-          </svg>
-          <img alt="FAILED" v-else @click="nav(item.href, true)"
-               style="width: 25px; height: 25px; object-fit: cover; border-radius: 50px"
-               :src="item.img"
-          />
+            v-html="item.svg"></svg>
+          <img
+            alt="FAILED"
+            v-else
+            @click="nav(item.href, true)"
+            style="width: 25px; height: 25px; object-fit: cover; border-radius: 50px"
+            :src="item.img" />
         </div>
       </div>
     </div>

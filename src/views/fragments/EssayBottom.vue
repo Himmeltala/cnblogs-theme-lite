@@ -6,7 +6,7 @@ type DataType = {
   view: string;
   comm: string;
   digg: string;
-}
+};
 
 type AlignType = "flex-start" | "flex-end";
 
@@ -23,7 +23,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="bottom-data" :style="{'justify-content': align}">
+  <div class="bottom-data" :style="{ 'justify-content': align }">
     <div class="date">
       <el-icon>
         <i-ep-clock />
@@ -64,7 +64,9 @@ defineProps({
     }
   }
 
-  .date, .view, .comm {
+  .date,
+  .view,
+  .comm {
     margin-right: 10px;
   }
 }

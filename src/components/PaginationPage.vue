@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
-
 const props = defineProps({
   pageCount: {
     type: Number,
@@ -25,9 +23,12 @@ const updateProps = () => {
 defineExpose({ updateProps });
 
 // 监听 pageCount，如果 pageCount 发生了变化，就把父组件传递过来的新的 pageCount 赋值给 _pageCount
-watch(() => props.pageCount, () => {
-  _pageCount.value = props.pageCount;
-});
+watch(
+  () => props.pageCount,
+  () => {
+    _pageCount.value = props.pageCount;
+  }
+);
 
 // 声明触发函数
 const emits = defineEmits(["floatChange", "fixedChange"]);
@@ -70,8 +71,7 @@ function fixedSorterChange() {
         v-model:current-page="currentIndex"
         v-model:page-count="_pageCount"
         :background="true"
-        layout="prev, pager, next, jumper"
-      />
+        layout="prev, pager, next, jumper" />
     </div>
     <slot name="loading" />
     <div v-show="currentIndex > 1" class="float-sorter left-sorter" @click="floatSorterChange('left')">
@@ -96,8 +96,7 @@ function fixedSorterChange() {
         v-model:current-page="currentIndex"
         v-model:page-count="_pageCount"
         :background="true"
-        layout="prev, pager, next, jumper"
-      />
+        layout="prev, pager, next, jumper" />
     </div>
   </div>
 </template>

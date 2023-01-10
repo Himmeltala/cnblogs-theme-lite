@@ -9,20 +9,16 @@ export default class Directive {
     this.Vue = Vue;
   }
 
-  mathJax(MathJax: any) {
-    MathJax.startup.promise
-      .then(() => {
-        return MathJax.typesetPromise();
-      })
-      .catch((err: any) => console.error(`MathJax render failed => ${err}`));
-  }
-
   parseCode() {
     this.Vue.directive("parse-code", (el: any, binding: any) => {
       let blocks = $(el).find("pre code");
 
       $(blocks).each((i, elem) => {
-        let lang = String($(elem).attr("class")?.match(/(language-\w*){0,1}/g))
+        let lang = String(
+          $(elem)
+            .attr("class")
+            ?.match(/(language-\w*){0,1}/g)
+        )
           .split(",")[0]
           .split("-")[1]
           .toUpperCase();
@@ -39,10 +35,6 @@ export default class Directive {
           });
         makeAnchor(el);
       }
-
-      // @ts-ignore
-      // let MathJax: any = window.MathJax;
-      // this.mathJax(MathJax);
     });
   }
 }

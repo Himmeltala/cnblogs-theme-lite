@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
 import * as Api from "@/utils/api";
 import * as DataType from "@/types/data-type";
 import { closeLoader } from "@/utils/loader";
@@ -17,7 +15,7 @@ let tagscatoies = ref<any>({ categories: {}, tags: {} });
 
 let holeSkeleton = ref(true);
 
-Api.getEssay(postId, (res) => {
+Api.getEssay(postId, res => {
   essay.value = res;
   Api.getEssayTagsAndCategories(postId, res => {
     tagscatoies.value = res;
@@ -32,7 +30,7 @@ Api.getEssay(postId, (res) => {
   });
 });
 
-let fontSize = ref(17);
+let fontSize = ref(16);
 
 function zoomIn() {
   fontSize.value >= 24 ? (fontSize.value = 16) : fontSize.value++;
@@ -92,10 +90,10 @@ function voteEssay(voteType: DataType.VoteType) {
             </el-icon>
             <span>放大</span>
           </div>
-          <div class="edit-essay"
-               v-if="__LITE_CONFIG__.isBlogOwner"
-               @click="nav('https://i.cnblogs.com/EditPosts.aspx?postid=' + postId, true)"
-          >
+          <div
+            class="edit-essay"
+            v-if="__LITE_CONFIG__.isBlogOwner"
+            @click="nav('https://i.cnblogs.com/EditPosts.aspx?postid=' + postId, true)">
             <el-icon>
               <i-ep-edit-pen />
             </el-icon>
@@ -130,9 +128,7 @@ function voteEssay(voteType: DataType.VoteType) {
             </div>
           </div>
         </div>
-        <div class="essay-content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code="true"
-             v-html="essay?.content"
-        />
+        <div class="essay-content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code="true" v-html="essay?.content" />
         <div class="divider"></div>
         <div class="tail-info">
           <div class="date">
@@ -305,9 +301,10 @@ code {
   }
 
   p {
-    margin: 13px 0 !important;
+    margin: 8px 0 !important;
+
     @include font() {
-      line-height: 1.5;
+      line-height: 1.7;
     }
   }
 
@@ -404,7 +401,7 @@ $color: #a7a7a7;
       left: 0;
       right: 0;
       bottom: 10px;
-    };
+    }
     border: {
       top: 0;
       left: 0;
@@ -412,7 +409,7 @@ $color: #a7a7a7;
       bottom: 1px;
       style: dashed;
       color: #444444;
-    };
+    }
   }
 
   .tail-info {
@@ -453,7 +450,8 @@ $color: #a7a7a7;
     }
   }
 
-  .head-info, .tail-info {
+  .head-info,
+  .tail-info {
     font-size: 14px;
     margin-top: 20px;
 
@@ -491,7 +489,10 @@ $color: #a7a7a7;
     }
   }
 
-  .head-info, .labels, .tail-info, .prev-next {
+  .head-info,
+  .labels,
+  .tail-info,
+  .prev-next {
     color: #878787;
   }
 }

@@ -26,8 +26,7 @@ export function parseUrlData(url: string): any {
         const { setAnchor } = useCommentsAnchorStore();
         setAnchor(parseInt(commentAnchor));
       }
-    } catch (e) {
-    }
+    } catch (e) {}
     return {
       type: RouteName.ESSAY,
       id: url.match(Regs.ESSAY)[0].split("/")[2].split(".")[0]

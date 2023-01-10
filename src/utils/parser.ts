@@ -61,9 +61,18 @@ export function parseEssayList(realDOM: any, calc: boolean): { pages: string[]; 
   $(describe).each((i, e) => {
     let surface = $(e).find(".desc_img").attr("src");
     list.push({
-      id: parseInt($(id[i]).attr("href")!.match(/[0-9]+/g)![0]),
-      text: $(title[i]).text().trim(), desc: TextUtils.regTrim($(describe[i]).text(), [/阅读全文/g]),
-      date: date![i], view: view![i], comm: comm![i], digg: digg![i], surface: surface || ""
+      id: parseInt(
+        $(id[i])
+          .attr("href")!
+          .match(/[0-9]+/g)![0]
+      ),
+      text: $(title[i]).text().trim(),
+      desc: TextUtils.regTrim($(describe[i]).text(), [/阅读全文/g]),
+      date: date![i],
+      view: view![i],
+      comm: comm![i],
+      digg: digg![i],
+      surface: surface || ""
     });
   });
 
@@ -144,7 +153,11 @@ export function parseEssayTagsAndCategories(strDOM: any): any {
     .find("#BlogPostCategory > a")
     .map((i, d) => {
       list.categories[i] = {
-        href: $(d).attr("href")!.match(/\/category\/\d+/g)![0].split("/")[2].split(",")[0],
+        href: $(d)
+          .attr("href")!
+          .match(/\/category\/\d+/g)![0]
+          .split("/")[2]
+          .split(",")[0],
         text: $(d).text()
       };
     });
@@ -211,9 +224,18 @@ export function parseCategoryList(realDOM: any, calc: boolean): { pages: string[
   $(dom).each((i, e) => {
     let surface = $(e).find(".c_b_p_desc > .desc_img").attr("src");
     list.push({
-      id: parseInt($(id[i]).attr("href")!.match(/[0-9]+/g)![0]),
-      text: $(title[i]).text(), desc: $(describe[i]).text(), date: date![i],
-      view: view![i], comm: comm![i], digg: digg![i], surface: surface ? surface : ""
+      id: parseInt(
+        $(id[i])
+          .attr("href")!
+          .match(/[0-9]+/g)![0]
+      ),
+      text: $(title[i]).text(),
+      desc: $(describe[i]).text(),
+      date: date![i],
+      view: view![i],
+      comm: comm![i],
+      digg: digg![i],
+      surface: surface ? surface : ""
     });
   });
 
@@ -237,10 +259,16 @@ export function parseTagPageList(realDOM: any): DataType.TagPage {
 
   $(title).each((i, e) => {
     list[i] = {
-      id: parseInt($(e).attr("href")!.match(/[0-9]+/g)![0]),
+      id: parseInt(
+        $(e)
+          .attr("href")!
+          .match(/[0-9]+/g)![0]
+      ),
       title: $(e).text().trim(),
       href: $(e).attr("href"),
-      date: $(describe[i]).text().match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g)![0],
+      date: $(describe[i])
+        .text()
+        .match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g)![0],
       view: $(describe[i]).find(".post-view-count").text().split(":")[1],
       comm: $(describe[i]).find(".post-comment-count").text().split(":")[1],
       digg: $(describe[i]).find(".post-digg-count").text().split(":")[1]
@@ -273,7 +301,12 @@ export function parseSideCategories(strDOM: string): any {
 
   let li = $(dom).find("#sidebar_postcategory > ul > li > a");
   $(li).each((i, e) => {
-    list.categories.push({ id: $(e).attr("href")!.match(/[0-9]+/g)![0], text: $(e).text() });
+    list.categories.push({
+      id: $(e)
+        .attr("href")!
+        .match(/[0-9]+/g)![0],
+      text: $(e).text()
+    });
   });
 
   return list;
@@ -300,15 +333,17 @@ export function parseSideBloggerInfo(strDOM: string): Array<DataType.BloggerInfo
  */
 export function parseSideBlogInfo(strDOM: string): any {
   let list = <any>[];
-  $(parseStrToDom(strDOM)).find("span").each((i, d) => {
-    if ($(d).attr("id")) {
-      let t = $(d).text();
-      let text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
-      let digg = t.match(/\d+/g)[0];
-      if (i === 3) digg = parseUnit(digg);
-      list.push({ text, digg });
-    }
-  });
+  $(parseStrToDom(strDOM))
+    .find("span")
+    .each((i, d) => {
+      if ($(d).attr("id")) {
+        let t = $(d).text();
+        let text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
+        let digg = t.match(/\d+/g)[0];
+        if (i === 3) digg = parseUnit(digg);
+        list.push({ text, digg });
+      }
+    });
   return list;
 }
 
@@ -319,12 +354,14 @@ export function parseSideBlogInfo(strDOM: string): any {
  */
 export function parseSideRank(strDOM: string): any[] {
   let list = <any>[];
-  $(parseStrToDom(strDOM)).find("li").each((i, d) => {
-    let t = $(d).text().trim();
-    let text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
-    let digg = t.match(/\d+/g)[0];
-    list.push({ text, digg });
-  });
+  $(parseStrToDom(strDOM))
+    .find("li")
+    .each((i, d) => {
+      let t = $(d).text().trim();
+      let text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
+      let digg = t.match(/\d+/g)[0];
+      list.push({ text, digg });
+    });
   return list;
 }
 
@@ -335,11 +372,16 @@ export function parseSideRank(strDOM: string): any[] {
  */
 export function parseSideBlogTopList(strDOM: string): any {
   let list = <any>[];
-  $(parseStrToDom(strDOM)).find("#TopViewPostsBlock ul > li > a").each((i, e) => {
-    list.push({
-      id: $(e).attr("href")?.match(/\/p\/\d+/g)![0].split("/")[2],
-      text: TextUtils.regTrim($(e).text().trim(), [/\n+/g])
+  $(parseStrToDom(strDOM))
+    .find("#TopViewPostsBlock ul > li > a")
+    .each((i, e) => {
+      list.push({
+        id: $(e)
+          .attr("href")
+          ?.match(/\/p\/\d+/g)![0]
+          .split("/")[2],
+        text: TextUtils.regTrim($(e).text().trim(), [/\n+/g])
+      });
     });
-  });
   return list;
 }

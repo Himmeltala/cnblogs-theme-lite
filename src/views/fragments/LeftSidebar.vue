@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRouter } from "vue-router";
 import * as RemoteApi from "@/utils/api";
 import { __LITE_CONFIG__ } from "@/config";
 
@@ -87,9 +85,7 @@ const tabName = ref("随笔");
         </div>
         <el-tooltip effect="dark" placement="bottom">
           <template #content>
-            <span style="margin-right: 8px" v-for="(item, index) in rank" :key="index">
-              {{ item.text }} - {{ item.digg }}
-            </span>
+            <span style="margin-right: 8px" v-for="(item, index) in rank" :key="index"> {{ item.text }} - {{ item.digg }} </span>
           </template>
           <div class="blog-data">
             <span v-for="(item, index) in blogInfo" :key="index">{{ item.text }} - {{ item.digg }}</span>

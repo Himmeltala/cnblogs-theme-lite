@@ -3,13 +3,7 @@ import { useAnchorStore } from "@/store";
 
 export function makeAnchor(dom: string) {
   const anchorStore = useAnchorStore();
-  let h = $(dom).children()
-    .not("p")
-    .not("table")
-    .not("img")
-    .not("ul")
-    .not("ol")
-    .not("pre");
+  let h = $(dom).children().not("p").not("table").not("img").not("ul").not("ol").not("pre");
   let anchors = <any>[];
   let clasps = <any>[];
 
@@ -44,12 +38,14 @@ export function makeAnchor(dom: string) {
   let lastAnchor: any;
 
   for (const item of clasps) {
-    $(".side-item .catalog").find(`.${item.id}`).on("click", (e) => {
-      $("#content").animate({ scrollTop: item.top }, 800, "linear");
-    });
+    $(".side-item .catalog")
+      .find(`.${item.id}`)
+      .on("click", e => {
+        $("#content").animate({ scrollTop: item.top }, 800, "linear");
+      });
   }
 
-  $("#content").on("scroll", function(e) {
+  $("#content").on("scroll", function (e) {
     const scrollTop = e.target.scrollTop;
     for (const item of clasps) {
       if (scrollTop >= item.top - 75 && scrollTop <= item.top) {

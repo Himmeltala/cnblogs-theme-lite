@@ -19,12 +19,11 @@ defineProps({
   <div
     class="card"
     :style="{
-      'padding': padding,
-      'width': width,
-      'height': height,
-      'margin': margin
-    }"
-  >
+      padding: padding,
+      width: width,
+      height: height,
+      margin: margin
+    }">
     <slot />
   </div>
 </template>
