@@ -1,8 +1,5 @@
 <script setup lang="ts">
 defineProps({
-  padding: {
-    default: "10px 20px"
-  },
   width: {
     default: ""
   },
@@ -19,7 +16,6 @@ defineProps({
   <div
     class="card"
     :style="{
-      padding: padding,
       width: width,
       height: height,
       margin: margin

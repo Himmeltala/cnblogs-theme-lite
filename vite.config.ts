@@ -21,7 +21,16 @@ export default defineConfig(({ command, mode }) => {
     plugins: [
       vue(),
       Unocss({
-        presets: [presetAttributify({}), presetUno()]
+        presets: [presetAttributify({}), presetUno()],
+        rules: [
+          [/^fs-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "font-size": `${d}px` })],
+          [/^lts-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "letter-spacing": `${d}px` })],
+          [/^leh-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "line-height": `${d}` })],
+          [/^wpe-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ width: `${d}%` })],
+          [/^brd-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "border-radius": `${d}px` })],
+          [/^hrm-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ height: `${d}rem` })],
+          [/^hpx-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ height: `${d}px` })]
+        ]
       }),
       AutoImport({
         imports: ["vue", "vue-router", "pinia"],
