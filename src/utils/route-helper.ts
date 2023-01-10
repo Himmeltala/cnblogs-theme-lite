@@ -11,7 +11,7 @@ export enum RouteName {
 }
 
 const Regs = {
-  ESSAY: /\/p\/\d+/g,
+  ESSAY: /\/p\/\d+.html/g,
   CATEGORY: /\/category\/\d+/g,
   TAG_PAGE: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
   MyTags: /\d/g,
@@ -20,14 +20,17 @@ const Regs = {
 
 export function parseUrlData(url: string): any {
   if (Regs.ESSAY.test(url)) {
-    const commentAnchor = url.match(/#\/\d+/g)[0].split("#/")[1];
-    if (commentAnchor) {
-      const { setAnchor } = useCommentsAnchorStore();
-      setAnchor(parseInt(commentAnchor));
+    try {
+      const commentAnchor = url.match(/#\/\d+/g)[0].split("#/")[1];
+      if (commentAnchor) {
+        const { setAnchor } = useCommentsAnchorStore();
+        setAnchor(parseInt(commentAnchor));
+      }
+    } catch (e) {
     }
     return {
       type: RouteName.ESSAY,
-      id: String(url.match(Regs.ESSAY)).split("/")[2].split(",")[0]
+      id: url.match(Regs.ESSAY)[0].split("/")[2].split(".")[0]
     };
   } else if (Regs.CATEGORY.test(url)) {
     let page = String(url.match(/page=\d/g)).split("=")[1];
