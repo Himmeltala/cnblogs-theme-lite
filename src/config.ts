@@ -24,7 +24,8 @@ export function initLite(dev?: Function, pro?: Function) {
     pro && pro();
   } else if (import.meta.env.DEV) {
     __LITE_CONFIG__ = {
-      currentBlogId: import.meta.env.VITE_BLOG_ID, currentBlogApp: import.meta.env.VITE_BLOG_APP
+      currentBlogId: import.meta.env.VITE_BLOG_ID,
+      currentBlogApp: import.meta.env.VITE_BLOG_APP
     };
     BaseAPI = "/api";
     dev && dev();

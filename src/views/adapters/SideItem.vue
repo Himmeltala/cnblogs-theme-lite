@@ -5,26 +5,18 @@ defineProps({
 </script>
 
 <template>
-  <div class="side-item">
+  <div>
     <h3>
-      <slot name="icon" class="icon" />
+      <slot name="icon" />
       {{ text }}
     </h3>
-    <div class="side-item__slot">
-      <slot />
-    </div>
+    <slot />
   </div>
 </template>
 
 <style scoped lang="scss">
 h3 {
-  @include flex($justify: flex-start);
-  margin: 20px 0;
-  font-weight: 300 !important;
-  font-size: 18px !important;
-  text-align: left;
+  --at-apply: flex justify-start items-center content-center my-5 fsz-p-18 p-l-1.5 font-300 b-rd-1;
   border-left: 4px solid var(--el-color-primary);
-  border-radius: 4px;
-  padding-left: 7px;
 }
 </style>

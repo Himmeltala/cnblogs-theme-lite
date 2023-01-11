@@ -12,6 +12,8 @@ import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 // unocss
 import Unocss from "unocss/vite";
 import { presetAttributify, presetUno } from "unocss";
+import transformerDirective from "@unocss/transformer-directives";
+import { UnoRules } from "./uno-rules";
 import { resolve } from "path";
 
 export default defineConfig(({ command, mode }) => {
@@ -21,16 +23,13 @@ export default defineConfig(({ command, mode }) => {
     plugins: [
       vue(),
       Unocss({
+        transformers: [
+          transformerDirective({
+            applyVariable: ["--at-apply", "--uno-apply", "--uno"]
+          })
+        ],
         presets: [presetAttributify({}), presetUno()],
-        rules: [
-          [/^fs-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "font-size": `${d}px` })],
-          [/^lts-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "letter-spacing": `${d}px` })],
-          [/^leh-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "line-height": `${d}` })],
-          [/^wpe-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ width: `${d}%` })],
-          [/^brd-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "border-radius": `${d}px` })],
-          [/^hrm-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ height: `${d}rem` })],
-          [/^hpx-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ height: `${d}px` })]
-        ]
+        rules: UnoRules
       }),
       AutoImport({
         imports: ["vue", "vue-router", "pinia"],

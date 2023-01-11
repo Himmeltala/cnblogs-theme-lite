@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import * as Api from "@/utils/api";
 import * as DataType from "@/types/data-type";
+import { nav } from "@/utils/route-helper";
 import { closeLoader } from "@/utils/loader";
 import { __LITE_CONFIG__ } from "@/config";
 
@@ -36,11 +37,6 @@ function zoomIn() {
   fontSize.value >= 24 ? (fontSize.value = 16) : fontSize.value++;
 }
 
-function nav(path: string, out?: boolean) {
-  if (out) window.open(path, "_blank");
-  else router.push(path);
-}
-
 function voteEssay(voteType: DataType.VoteType) {
   Api.voteEssay({ postId, isAbandoned: false, voteType }, ajax => {
     if (ajax.isSuccess) {
@@ -57,7 +53,7 @@ function voteEssay(voteType: DataType.VoteType) {
     <Card class="essay__packer" padding="20px 20px" margin="0 10px 12px 10px">
       <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="holeSkeleton" />
       <div v-if="!holeSkeleton">
-        <el-page-header @back="nav('/')">
+        <el-page-header @back="nav(router, '/')">
           <template #icon>
             <i-ep-arrow-left />
           </template>
@@ -93,7 +89,7 @@ function voteEssay(voteType: DataType.VoteType) {
           <div
             class="edit-essay"
             v-if="__LITE_CONFIG__.isBlogOwner"
-            @click="nav('https://i.cnblogs.com/EditPosts.aspx?postid=' + postId, true)">
+            @click="nav(router, 'https://i.cnblogs.com/EditPosts.aspx?postid=' + postId, true)">
             <el-icon>
               <i-ep-edit-pen />
             </el-icon>
@@ -109,7 +105,7 @@ function voteEssay(voteType: DataType.VoteType) {
               <span>分类：</span>
             </div>
             <div class="item" v-for="(item, index) in tagscatoies.categories" :key="index">
-              <Tag :color="item.color" @click="nav('/c/' + item.href + '/1')">
+              <Tag :color="item.color" @click="nav(router, '/c/' + item.href + '/1')">
                 {{ item.text }}
               </Tag>
             </div>
@@ -122,7 +118,7 @@ function voteEssay(voteType: DataType.VoteType) {
               <span>标签：</span>
             </div>
             <div class="item" v-for="(item, index) in tagscatoies.tags" :key="index">
-              <Tag :color="item.color" @click="nav('/t/' + item.text)">
+              <Tag :color="item.color" @click="nav(router, '/t/' + item.text)">
                 {{ item.text }}
               </Tag>
             </div>

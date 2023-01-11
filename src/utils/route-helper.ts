@@ -1,3 +1,4 @@
+import { Router } from "vue-router";
 import { Belongs } from "@/config";
 import { useCommentsAnchorStore } from "@/store";
 
@@ -59,4 +60,9 @@ export function compareUrl(url?: any, route: string): boolean {
 
 export function reviseUrl(url: string): void {
   window.history.pushState("", "", joinUrl(url));
+}
+
+export function nav(router: Router, path: string, out?: boolean) {
+  if (out) window.open(path, "_blank");
+  else router.push(path);
 }

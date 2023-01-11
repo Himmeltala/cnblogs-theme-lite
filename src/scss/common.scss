@@ -24,3 +24,13 @@
     border-bottom-color: var(--el-color-primary);
   }
 }
+
+.noscroll {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #a7a7a7;
+  }
+}
