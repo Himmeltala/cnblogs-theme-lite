@@ -26,6 +26,8 @@ export function initLite(dev?: Function, pro?: Function) {
     __LITE_CONFIG__ = {
       currentBlogId: import.meta.env.VITE_BLOG_ID,
       currentBlogApp: import.meta.env.VITE_BLOG_APP,
+      isBlogOwner: true,
+      isLogined: true,
       navor: {
         header: "<span style='font-size: 20px'>CNBLOGS</span>",
         search: true,

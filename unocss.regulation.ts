@@ -3,6 +3,7 @@ import { Rule } from "unocss";
 const regulation = <Rule<any>[]>[
   // dynamic
   [/^fsz-p-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "font-size": `${d}px` })],
+  [/^fsz-r-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "font-size": `${d}rem` })],
   [/^lts-p-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "letter-spacing": `${d}px` })],
   [/^leh-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "line-height": `${d}` })],
   [/^w-d-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ width: `${d}%` })],

@@ -31,12 +31,6 @@ Api.getEssay(postId, res => {
   });
 });
 
-let fontSize = ref(16);
-
-function zoomIn() {
-  fontSize.value >= 24 ? (fontSize.value = 16) : fontSize.value++;
-}
-
 function voteEssay(voteType: DataType.VoteType) {
   Api.voteEssay({ postId, isAbandoned: false, voteType }, ajax => {
     if (ajax.isSuccess) {
@@ -80,12 +74,6 @@ function voteEssay(voteType: DataType.VoteType) {
             </el-icon>
             <span>{{ essay?.comm }}条评论</span>
           </div>
-          <div class="zoom-in" @click="zoomIn">
-            <el-icon>
-              <i-ep-zoom-in />
-            </el-icon>
-            <span>放大</span>
-          </div>
           <div
             class="edit-essay"
             v-if="__LITE_CONFIG__.isBlogOwner"
@@ -124,7 +112,7 @@ function voteEssay(voteType: DataType.VoteType) {
             </div>
           </div>
         </div>
-        <div id="e-content" :style="{ 'font-size': fontSize + 'px' }" v-parse-code="true" v-html="essay?.content" />
+        <div id="e-content" v-parse-code="true" v-html="essay?.content" />
         <div class="divider"></div>
         <div class="tail-info">
           <div class="date">
@@ -223,7 +211,7 @@ pre {
   code {
     font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace !important;
     font-weight: 300;
-    font-size: 15px;
+    font-size: 14px;
     margin: 0 !important;
     border-radius: 6px;
     background-color: #2b2b2b !important;
@@ -243,7 +231,7 @@ pre {
     &,
     span {
       line-height: 1.3;
-      letter-spacing: 1px;
+      letter-spacing: 0.7px;
       word-break: break-all;
     }
   }
@@ -275,6 +263,8 @@ code {
 }
 
 #e-content {
+  --at-apply: fsz-r-1;
+
   img {
     border-radius: 6px;
     max-width: 100%;
@@ -282,7 +272,7 @@ code {
   }
 
   @mixin font() {
-    letter-spacing: 1.2px;
+    @include font-space();
     word-break: break-all;
     @content;
   }
@@ -293,24 +283,20 @@ code {
     border-bottom: 1px dotted #a7a7a7;
 
     @include hover() {
-      border-bottom: 1px dotted var(--el-color-primary);
+      border-bottom-color: var(--el-color-primary);
     }
   }
 
   p {
     margin: 8px 0 !important;
 
-    @include font() {
-      line-height: 1.7;
-    }
+    @include font();
   }
 
   ol,
   ul {
     li {
-      @include font() {
-        line-height: 1.5;
-      }
+      @include font();
     }
 
     li:last-child {
@@ -465,23 +451,20 @@ $color: #a7a7a7;
       @include flex();
     }
 
-    .edit-essay,
-    .zoom-in {
+    .edit-essay {
       cursor: pointer;
     }
 
     .date,
     .view-count,
     .edit-essay,
-    .zoom-in,
     .comm-count {
       margin-right: 10px;
     }
 
     .view-count,
     .comm-count,
-    .edit-essay,
-    .zoom-in {
+    .edit-essay {
       @include flex();
     }
   }

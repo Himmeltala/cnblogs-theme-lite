@@ -55,8 +55,7 @@ function fetchComment(
 }
 
 const commentAnchorRef = ref<any>(null);
-const store = useCommentsAnchorStore();
-const { commentAnchor } = storeToRefs(store);
+const { commentAnchor } = storeToRefs(useCommentsAnchorStore());
 
 fetchComment(true, {
   message: "",
@@ -212,101 +211,119 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
 <template>
   <div class="comments">
     <h3>发表评论</h3>
-    <div class="edit-form">
-      <div class="tools">
+    <div class="mb-12 relative">
+      <div class="tools mb-2 flex justify-end content-center items-center">
         <el-tooltip effect="dark" content="插入图片" placement="top-start">
-          <el-icon class="upload-img" @click="uploadImage">
+          <el-icon class="cursor-pointer" @click="uploadImage">
             <i-ep-picture-rounded />
           </el-icon>
         </el-tooltip>
       </div>
-      <div class="edit-area">
+      <div class="pusharea">
         <textarea v-model="form.content" placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
       </div>
-      <div class="img-link__packer">
+      <div class="absolute opacity-0 top-0 left-0">
         <textarea id="img-link" />
       </div>
       <el-button
+        class="mt-4"
         type="primary"
         :disabled="!__LITE_CONFIG__.isLogined"
         :loading="loading"
-        class="upload"
         @click="insertComment">
         发送评论
       </el-button>
     </div>
     <h3>评论列表</h3>
     <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="skeleton" />
-    <div class="comment-list" v-if="comments?.length && !skeleton && __LITE_CONFIG__.isLogined">
-      <div class="item" v-for="(item, index) in comments" :key="index">
-        <div class="header">
-          <el-image class="avatar" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
+    <div class="mt-10" v-if="comments?.length && !skeleton && __LITE_CONFIG__.isLogined">
+      <div class="mb-9" v-for="(item, index) in comments" :key="index">
+        <div class="flex items-center content-center justify-start">
+          <el-image class="mr-4 b-rd-50" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
           <div>
-            <div class="space" @click="nav(item.space)">{{ item.author }}</div>
-            <div class="brief">
+            <div class="fsz-r-0.95 hover cursor-pointer" @click="nav(item.space)">{{ item.author }}</div>
+            <div class="fsz-r-0.8 color-#8D9095 mt-1.5 flex items-center content-center justify-center">
               <div
                 v-if="commentAnchor === item.commentId"
                 ref="commentAnchorRef"
                 :id="'#' + item.commentId"
-                class="layer">
+                class="mr-2">
                 {{ item.layer }}
               </div>
-              <div v-else :id="'#' + item.commentId" class="layer">{{ item.layer }}</div>
-              <div class="date">{{ item.date }}</div>
+              <div v-else :id="'#' + item.commentId" class="mr-2">
+                {{ item.layer }}
+              </div>
+              <div>{{ item.date }}</div>
             </div>
           </div>
         </div>
-        <div class="bottom">
+        <div class="mt-5" style="margin-left: calc(45px + 1rem)">
           <div class="c-content" v-show="!item.updateEditable" v-html="item.content" v-parse-code="false"></div>
-          <div class="edit-area">
+          <div class="editarea">
             <textarea
               v-show="item.updateEditable"
               v-model="item.content"
               placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
           </div>
-          <div class="replay-area">
+          <div class="replayarea">
             <textarea
               v-show="item.replayEditable"
               v-model="reCommentBody"
               placeholder="请回复一条友善的评论，支持 Markdown 语法" />
           </div>
-          <div>
-            <div class="replay actions" @click="replayComment(item)">
-              <div v-if="!item.replayEditable">
-                <el-icon>
-                  <i-ep-chat-round />
-                </el-icon>
-                <span>回复</span>
-              </div>
-              <div v-else>
-                <el-icon>
-                  <i-ep-check />
-                </el-icon>
-                <span>完成</span>
-              </div>
+          <div class="fsz-p-12 cursor-pointer color-#a8abb2 flex justify-end items-center content-center">
+            <div
+              class="hover mr-3 flex justify-end items-center content-center"
+              v-if="!item.replayEditable"
+              @click="item.replayEditable = !item.replayEditable">
+              <el-icon class="mr-0.3">
+                <i-ep-chat-round />
+              </el-icon>
+              <span>回复</span>
             </div>
-            <div class="digg actions" @click="voteComment(item, 'Digg')">
-              <el-icon>
+            <div
+              class="hover mr-3 flex justify-end items-center content-center"
+              v-if="item.replayEditable"
+              @click="replayComment(item)">
+              <el-icon class="mr-0.3">
+                <i-ep-check />
+              </el-icon>
+              <span>完成回复</span>
+            </div>
+            <div
+              class="hover mr-3 flex justify-end items-center content-center"
+              v-if="item.replayEditable"
+              @click="item.replayEditable = !item.replayEditable">
+              <el-icon class="mr-0.3">
+                <i-ep-close />
+              </el-icon>
+              <span>取消回复</span>
+            </div>
+            <div
+              class="hover mr-3 flex justify-end items-center content-center actions"
+              @click="voteComment(item, 'Digg')">
+              <el-icon class="mr-0.3">
                 <i-ep-caret-top />
               </el-icon>
               <span>{{ item.digg }}</span>
             </div>
-            <div class="bury actions" @click="voteComment(item, 'Bury')">
-              <el-icon>
+            <div
+              class="hover mr-3 flex justify-end items-center content-center actions"
+              @click="voteComment(item, 'Bury')">
+              <el-icon class="mr-0.3">
                 <i-ep-caret-bottom />
               </el-icon>
               <span>{{ item.bury }}</span>
             </div>
-            <div class="actions">
+            <div class="mr-3">
               <el-popconfirm
                 confirm-button-text="确定"
                 cancel-button-text="取消"
-                icon-color="#626AEF"
                 title="确定删除该评论？"
                 @confirm="confirmDeleteComment(item, index)">
                 <template #reference>
-                  <div class="delete">
-                    <el-icon>
+                  <div class="hover flex justify-end items-center content-center">
+                    <el-icon class="mr-0.3">
                       <i-ep-delete />
                     </el-icon>
                     <span>删除</span>
@@ -314,24 +331,44 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
                 </template>
               </el-popconfirm>
             </div>
-            <div class="update actions" @click="updateComment(item)">
-              <div v-if="!item.updateEditable">
-                <el-icon>
-                  <i-ep-edit-pen />
-                </el-icon>
-                <span>编辑</span>
-              </div>
-              <div v-else>
-                <el-icon>
-                  <i-ep-circle-check />
-                </el-icon>
-                <span>完成</span>
-              </div>
+            <div
+              class="hover flex justify-end items-center content-center"
+              @click="item.updateEditable = !item.updateEditable"
+              v-if="!item.updateEditable">
+              <el-icon class="mr-0.3">
+                <i-ep-edit-pen />
+              </el-icon>
+              <span>编辑</span>
+            </div>
+            <div
+              class="hover mr-3 flex justify-end items-center content-center"
+              v-if="item.updateEditable"
+              @click="updateComment(item)">
+              <el-icon class="mr-0.3">
+                <i-ep-circle-check />
+              </el-icon>
+              <span>完成编辑</span>
+            </div>
+            <div class="hover" v-if="item.updateEditable">
+              <el-popconfirm
+                confirm-button-text="确定"
+                cancel-button-text="取消"
+                title="确定取消编辑该评论？"
+                @confirm="item.updateEditable = !item.updateEditable">
+                <template #reference>
+                  <div class="hover flex justify-end items-center content-center">
+                    <el-icon class="mr-0.3">
+                      <i-ep-circle-close />
+                    </el-icon>
+                    <span>取消编辑</span>
+                  </div>
+                </template>
+              </el-popconfirm>
             </div>
           </div>
         </div>
       </div>
-      <div class="pagination" v-if="!comments?.length">
+      <div class="mt-10 flex items-center content-center justify-end" v-if="!comments?.length">
         <el-pagination
           @current-change="paginationChange"
           layout="prev, pager, next"
@@ -345,23 +382,9 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
 </template>
 
 <style lang="scss">
-.comment-list {
-  .bottom {
-    img {
-      border-radius: 6px;
-      max-width: 100%;
-    }
-
-    p {
-      margin: 13px 0 !important;
-    }
-  }
-}
-
 .c-content {
-  font-size: 14px;
-  word-break: break-all;
-  margin: 4px 0 12px 0;
+  --at-apply: fsz-r-0.9 break-all;
+  @include font-space();
 
   img {
     border-radius: 6px;
@@ -371,147 +394,52 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
 
   a {
     color: #a7a7a7;
+    padding-bottom: 1px;
+    border-bottom: 1px dotted #a7a7a7;
+
     @include hover() {
-      border-bottom: 1px dotted var(--el-color-primary);
+      border-bottom-color: var(--el-color-primary);
     }
   }
 }
 </style>
 
 <style scoped lang="scss">
-@mixin textarea-style($box: yes, $height: 300px) {
-  border-radius: 8px;
-  box-sizing: border-box;
+@mixin textarea($box: yes, $height: 280px) {
+  --at-apply: b-rd-2 box-border;
 
   @if $box == yes {
     border: 1px solid var(--el-border-color-lighter);
   }
 
-  @include ahover() {
+  @include hover() {
     border: 1px solid var(--el-color-primary);
   }
 
   textarea {
-    font-family: sans-serif;
-    border: none;
+    --at-apply: b-rd-2 box-border p-2.5;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+      sans-serif;
     background-color: #202020;
     width: 100%;
+    border: none;
     outline: none;
-    border-radius: 8px;
-    box-sizing: border-box;
     font-weight: 300;
     color: #a7a7a7;
-    padding: 10px;
     height: $height;
     line-height: 1.3;
-    font-size: 15px;
+    font-size: 14px;
     resize: none;
   }
 }
 
-.edit-form {
-  margin-bottom: 50px;
-  position: relative;
-
-  .img-link__packer {
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-
-  .edit-area {
-    @include textarea-style($box: yes);
-  }
-
-  .tools {
-    margin-bottom: 10px;
-    @include flex($justify: flex-end);
-
-    .upload-img {
-      cursor: pointer;
-    }
-  }
-
-  .upload {
-    margin-top: 15px;
-  }
+.pusharea {
+  @include textarea();
 }
 
-.comment-list {
-  margin-top: 35px;
-
-  .item {
-    margin-bottom: 15px;
-  }
-
-  .item:last-child {
-    margin-bottom: 0;
-  }
-
-  .header {
-    font-size: 14px;
-    @include flex($justify: flex-start);
-
-    .avatar {
-      margin-right: 15px;
-      border-radius: 6px;
-    }
-
-    .space {
-      font-size: 16px;
-      cursor: pointer;
-
-      @include ahover();
-    }
-
-    .brief {
-      color: var(--el-text-color-placeholder);
-      @include flex($justify: flex-start);
-      font-size: 13px;
-      margin-top: 8px;
-
-      .layer {
-        @include flex($justify: flex-start);
-        margin-right: 10px;
-      }
-    }
-  }
-
-  .bottom {
-    margin-top: 12px;
-    margin-left: 60px;
-
-    .edit-area,
-    .replay-area {
-      margin-bottom: 15px;
-      @include textarea-style($box: no, $height: 150px);
-    }
-
-    & > div + div + div {
-      color: var(--el-text-color-placeholder);
-      cursor: pointer;
-      font-size: 12px;
-      @include flex($justify: flex-end);
-
-      .replay > div,
-      .update > div,
-      .actions,
-      .delete {
-        margin-right: 15px;
-        @include flex();
-        @include ahover();
-
-        &:last-child {
-          margin-right: 0 !important;
-        }
-      }
-    }
-  }
-
-  .pagination {
-    margin-top: 30px;
-    @include flex($justify: flex-end);
-  }
+.editarea,
+.replayarea {
+  --at-apply: mb-5;
+  @include textarea($box: no, $height: 150px);
 }
 </style>
