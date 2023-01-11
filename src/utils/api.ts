@@ -12,7 +12,7 @@ import $ from "jquery";
 import * as Parser from "./parser";
 import * as DataType from "@/types/data-type";
 import * as HttpType from "@/types/http-type";
-import { __LITE_CONFIG__, BaseAPI } from "@/config";
+import { __LITE_CONFIG__, BaseAPI } from "@/lite.config";
 
 /**
  * 获取首页的随笔列表
@@ -167,9 +167,11 @@ export function getCommentList(
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
 export function getEssayTagsAndCategories(postId: number, response: (res: any) => void) {
-  axios.get(`${BaseAPI}/ajax/CategoriesTags.aspx?blogId=${__LITE_CONFIG__.currentBlogId}&postId=${postId}`).then(({ data }) => {
-    response(Parser.parseEssayTagsAndCategories(data));
-  });
+  axios
+    .get(`${BaseAPI}/ajax/CategoriesTags.aspx?blogId=${__LITE_CONFIG__.currentBlogId}&postId=${postId}`)
+    .then(({ data }) => {
+      response(Parser.parseEssayTagsAndCategories(data));
+    });
 }
 
 /**

@@ -6,16 +6,16 @@ defineProps({
 
 <template>
   <div>
-    <h3>
+    <div class="title">
       <slot name="icon" />
       {{ text }}
-    </h3>
+    </div>
     <slot />
   </div>
 </template>
 
 <style scoped lang="scss">
-h3 {
+.title {
   --at-apply: flex justify-start items-center content-center my-5 fsz-p-18 p-l-1.5 font-300 b-rd-1;
   border-left: 4px solid var(--el-color-primary);
 }

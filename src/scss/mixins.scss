@@ -17,3 +17,15 @@
     @content;
   }
 }
+
+@mixin hover() {
+  transition: 0.3s !important;
+  cursor: pointer !important;
+
+  &:hover {
+    transition: 0.3s !important;
+    color: var(--el-color-primary) !important;
+    border-bottom-color: var(--el-color-primary) !important;
+    @content;
+  }
+}

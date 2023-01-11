@@ -1,3 +1,5 @@
+import { resolve } from "path";
+
 import vue from "@vitejs/plugin-vue";
 import { defineConfig, loadEnv } from "vite";
 // plugins
@@ -13,8 +15,7 @@ import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import Unocss from "unocss/vite";
 import { presetAttributify, presetUno } from "unocss";
 import transformerDirective from "@unocss/transformer-directives";
-import { UnoRules } from "./uno-rules";
-import { resolve } from "path";
+import { regulation } from "./unocss.regulation";
 
 export default defineConfig(({ command, mode }) => {
   const { VITE_BLOG_APP } = loadEnv(mode, "./");
@@ -29,7 +30,7 @@ export default defineConfig(({ command, mode }) => {
           })
         ],
         presets: [presetAttributify({}), presetUno()],
-        rules: UnoRules
+        rules: regulation
       }),
       AutoImport({
         imports: ["vue", "vue-router", "pinia"],

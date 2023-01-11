@@ -122,13 +122,13 @@ function fixedSorterChange() {
 
   .left-sorter {
     border-radius: 60px 0 0 60px;
-    left: calc(23.5vw);
+    left: calc(23.2vw);
     top: 50vh;
   }
 
   .right-sorter {
     border-radius: 0 60px 60px 0;
-    right: calc(23.5vw);
+    right: calc(23.2vw);
     top: 50vh;
   }
 }

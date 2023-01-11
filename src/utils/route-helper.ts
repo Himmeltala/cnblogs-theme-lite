@@ -1,5 +1,5 @@
 import { Router } from "vue-router";
-import { Belongs } from "@/config";
+import { Belongs } from "@/lite.config";
 import { useCommentsAnchorStore } from "@/store";
 
 export enum RouteName {
@@ -62,7 +62,7 @@ export function reviseUrl(url: string): void {
   window.history.pushState("", "", joinUrl(url));
 }
 
-export function nav(router: Router, path: string, out?: boolean) {
-  if (out) window.open(path, "_blank");
-  else router.push(path);
+export function nav(path: string, router?: Router) {
+  if (router) router.push(path);
+  else window.open(path, "_blank");
 }

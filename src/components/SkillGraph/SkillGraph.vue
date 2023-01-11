@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { createRadar, calcSize } from "./index";
-import { __LITE_CONFIG__ } from "@/config";
+import { __LITE_CONFIG__ } from "@/lite.config";
+
 
 const vw = calcSize(13.5);
 

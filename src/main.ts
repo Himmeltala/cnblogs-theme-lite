@@ -11,7 +11,7 @@ import "element-plus/dist/index.css";
 import "highlight.js/styles/atom-one-dark.css";
 
 import Directive from "./directive";
-import { initLite } from "./config";
+import { initLite } from "./lite.config";
 
 const app = createApp(App);
 

@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { __LITE_CONFIG__ } from "../../config";
+import { __LITE_CONFIG__ } from "../../lite.config";
 
 let fillColor = "",
   strokeColor = "";

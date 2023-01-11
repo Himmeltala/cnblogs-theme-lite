@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import $ from "jquery";
-import { __LITE_CONFIG__ } from "@/config";
+import { __LITE_CONFIG__ } from "@/lite.config";
+import { nav } from "@/utils/route-helper";
 import * as DataType from "@/types/data-type";
 import * as Native from "@/utils/native";
 import * as RemoteApi from "@/utils/api";
@@ -9,14 +10,6 @@ import { useCommentsAnchorStore } from "@/store";
 const props = defineProps({
   postId: { type: Number, required: true }
 });
-
-const route = useRoute();
-const router = useRouter();
-
-function nav(path: string, out?: boolean) {
-  if (out) window.open(path, "_blank");
-  else router.push(path);
-}
 
 let form = ref<DataType.Comment>({ postId: props.postId, parentCommentId: 0, content: "" });
 let loading = ref(false);
@@ -146,7 +139,8 @@ function confirmDeleteComment(comment: DataType.Comment, index: number) {
 function updateComment(comment: DataType.Comment) {
   comment.updateEditable = !comment.updateEditable;
   if (comment.replayEditable) comment.replayEditable = false;
-  if (comment.updateEditable) RemoteApi.getComment({ commentId: comment.commentId }, ({ data }) => (comment.content = data));
+  if (comment.updateEditable)
+    RemoteApi.getComment({ commentId: comment.commentId }, ({ data }) => (comment.content = data));
 
   if (!comment.updateEditable) {
     RemoteApi.updateComment(
@@ -170,7 +164,8 @@ let lastReComment = ref<any>();
 
 function replayComment(comment: DataType.Comment) {
   comment.replayEditable = !comment.replayEditable;
-  if (lastReComment.value && lastReComment.value.commentId !== comment.commentId) lastReComment.value.replayEditable = false;
+  if (lastReComment.value && lastReComment.value.commentId !== comment.commentId)
+    lastReComment.value.replayEditable = false;
   if (comment.updateEditable) comment.updateEditable = false;
 
   if (!comment.replayEditable) {
@@ -201,13 +196,16 @@ function replayComment(comment: DataType.Comment) {
 }
 
 function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
-  RemoteApi.voteComment({ isAbandoned: false, commentId: comment.commentId, postId: props.postId, voteType: voteType }, ajax => {
-    if (ajax.isSuccess) {
-      if (voteType == "Bury") comment.bury = comment.bury! + 1;
-      else comment.digg = comment.digg! + 1;
+  RemoteApi.voteComment(
+    { isAbandoned: false, commentId: comment.commentId, postId: props.postId, voteType: voteType },
+    ajax => {
+      if (ajax.isSuccess) {
+        if (voteType == "Bury") comment.bury = comment.bury! + 1;
+        else comment.digg = comment.digg! + 1;
+      }
+      ElMessage({ message: ajax.message, grouping: true, type: ajax.isSuccess ? "success" : "error" });
     }
-    ElMessage({ message: ajax.message, grouping: true, type: ajax.isSuccess ? "success" : "error" });
-  });
+  );
 }
 </script>
 
@@ -228,7 +226,12 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
       <div class="img-link__packer">
         <textarea id="img-link" />
       </div>
-      <el-button type="primary" :disabled="!__LITE_CONFIG__.isLogined" :loading="loading" class="upload" @click="insertComment">
+      <el-button
+        type="primary"
+        :disabled="!__LITE_CONFIG__.isLogined"
+        :loading="loading"
+        class="upload"
+        @click="insertComment">
         发送评论
       </el-button>
     </div>
@@ -239,9 +242,13 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
         <div class="header">
           <el-image class="avatar" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
           <div>
-            <div class="space" @click="nav('' + item.space, true)">{{ item.author }}</div>
+            <div class="space" @click="nav(item.space)">{{ item.author }}</div>
             <div class="brief">
-              <div v-if="commentAnchor === item.commentId" ref="commentAnchorRef" :id="'#' + item.commentId" class="layer">
+              <div
+                v-if="commentAnchor === item.commentId"
+                ref="commentAnchorRef"
+                :id="'#' + item.commentId"
+                class="layer">
                 {{ item.layer }}
               </div>
               <div v-else :id="'#' + item.commentId" class="layer">{{ item.layer }}</div>
@@ -250,7 +257,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
           </div>
         </div>
         <div class="bottom">
-          <div class="content" v-show="!item.updateEditable" v-html="item.content" v-parse-code="false"></div>
+          <div class="c-content" v-show="!item.updateEditable" v-html="item.content" v-parse-code="false"></div>
           <div class="edit-area">
             <textarea
               v-show="item.updateEditable"
@@ -350,6 +357,25 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
     }
   }
 }
+
+.c-content {
+  font-size: 14px;
+  word-break: break-all;
+  margin: 4px 0 12px 0;
+
+  img {
+    border-radius: 6px;
+    max-width: 100%;
+    object-fit: cover;
+  }
+
+  a {
+    color: #a7a7a7;
+    @include hover() {
+      border-bottom: 1px dotted var(--el-color-primary);
+    }
+  }
+}
 </style>
 
 <style scoped lang="scss">
@@ -433,7 +459,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
     }
 
     .space {
-      font-size: 18px;
+      font-size: 16px;
       cursor: pointer;
 
       @include ahover();
@@ -456,12 +482,6 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
     margin-top: 12px;
     margin-left: 60px;
 
-    .content {
-      font-size: 16px;
-      word-break: break-all;
-      margin: 4px 0 12px 0;
-    }
-
     .edit-area,
     .replay-area {
       margin-bottom: 15px;
@@ -471,7 +491,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
     & > div + div + div {
       color: var(--el-text-color-placeholder);
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
       @include flex($justify: flex-end);
 
       .replay > div,

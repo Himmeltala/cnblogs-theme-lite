@@ -1,5 +1,6 @@
 import $ from "jquery";
 import { useAnchorStore } from "@/store";
+import { __LITE_CONFIG__ } from "@/lite.config";
 
 export function makeAnchor(dom: string) {
   const anchorStore = useAnchorStore();
@@ -10,35 +11,42 @@ export function makeAnchor(dom: string) {
   let h1 = 0;
   let h2 = 0;
   let h3 = 0;
+  let level = ``;
 
   $(h).each((i, e) => {
-    let top = $(e).offset()?.top;
-    let type: string = $(e)[0].localName;
-    let text = $(e).attr("id");
+    const id = $(e).attr("id");
+    const text = $(e).text();
+    const top = $(e).offset()?.top;
+    const type: string = $(e)[0].localName;
+    const hasLevel = __LITE_CONFIG__.catalog?.level;
     let content = ``;
+    level = `${text}`;
 
     if (type === "h1") {
       h1++;
       h2 = 0;
       h3 = 0;
-      content = `<a class="${text} anchor">${h1} ${text}</a>`;
+      if (hasLevel) level = `${h1}.${text}`;
+      content = `<a class="${id} anchor hover">${level}</a>`;
     } else if (type === "h2") {
       h2++;
       h3 = 0;
-      content = `<a class="${text} anchor" style="margin-left: 10px">${h1}.${h2} ${text}</a>`;
+      if (hasLevel) level = `${h1}.${h2}.${text}`;
+      content = `<a class="${id} anchor hover" style="margin-left: 10px">${level}</a>`;
     } else if (type === "h3") {
       h3++;
-      content = `<a class="${text} anchor" style="margin-left: 20px">${h1}.${h2}.${h3} ${text}</a>`;
+      if (hasLevel) level = `${h1}.${h2}.${h3}.${text}`;
+      content = `<a class="${id} anchor hover" style="margin-left: 20px">${level}</a>`;
     }
 
-    clasps.push({ id: text, top });
+    clasps.push({ id, top });
     anchors.push({ text, type, content });
   });
 
   let lastAnchor: any;
 
   for (const item of clasps) {
-    $(".side-item .catalog")
+    $(".catalog")
       .find(`.${item.id}`)
       .on("click", e => {
         $("#content").animate({ scrollTop: item.top }, 800, "linear");
@@ -49,7 +57,7 @@ export function makeAnchor(dom: string) {
     const scrollTop = e.target.scrollTop;
     for (const item of clasps) {
       if (scrollTop >= item.top - 75 && scrollTop <= item.top) {
-        let anchor = $(".side-item .catalog").find(`.${item.id}`);
+        let anchor = $(".catalog").find(`.${item.id}`);
         if (lastAnchor) $(lastAnchor).removeClass("anchor-active");
         $(anchor).addClass("anchor-active");
         lastAnchor = anchor;

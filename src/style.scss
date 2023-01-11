@@ -21,20 +21,8 @@ body {
   background: var(--el-color-primary);
 }
 
-a {
-  color: #a7a7a7;
-}
-
 a:link {
   text-decoration: none;
-}
-
-a:hover {
-  color: var(--el-color-primary);
-}
-
-a:active {
-  color: #a7a7a7;
 }
 
 ::-webkit-scrollbar {

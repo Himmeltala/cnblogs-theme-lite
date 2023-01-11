@@ -69,11 +69,14 @@ export interface LiteConfigType {
     avatar?: string;
     signature?: string;
   };
+  catalog?: {
+    level?: boolean;
+  };
   // 导航栏配置项
   navor?: {
     header?: string;
     search?: boolean;
-    navs?: { href: string; text: string; svg?: string; img?: string }[];
+    navs?: { href: string; text?: string; svg?: string; img?: string }[];
   };
   graph?: {
     fillColor?: string;
@@ -89,6 +92,6 @@ export interface LiteConfigType {
   };
   // github 链接
   github?: string;
-  links?: { href: string; text: string; tip?: string }[];
+  links?: { href: string; text: string }[];
   books?: { href?: string; text: string; img: string; author: string; rate: number }[];
 }

@@ -1,73 +1,48 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 
-type DataType = {
-  date: string;
-  view: string;
-  comm: string;
-  digg: string;
-};
-
-type AlignType = "flex-start" | "flex-end";
-
 defineProps({
   data: {
-    type: Object as PropType<DataType>,
+    type: Object as PropType<{
+      date: string;
+      view: string;
+      comm: string;
+      digg: string;
+    }>,
     required: true
   },
   align: {
-    type: String as PropType<AlignType>,
+    type: String as PropType<"flex-start" | "flex-end">,
     default: "flex-start"
   }
 });
 </script>
 
 <template>
-  <div class="bottom-data" :style="{ 'justify-content': align }">
-    <div class="date">
-      <el-icon>
+  <div class="fsz-p-14 color-#989898 flex content-center items-center" :style="{ 'justify-content': align }">
+    <div class="mr-2.5 flex content-center items-center justify-between">
+      <el-icon class="mr-1">
         <i-ep-clock />
       </el-icon>
       <span>{{ data.date }}</span>
     </div>
-    <div class="view">
-      <el-icon>
+    <div class="mr-2.5 flex content-center items-center justify-between">
+      <el-icon class="mr-1">
         <i-ep-view />
       </el-icon>
       <span>{{ data.view }}</span>
     </div>
-    <div class="comm">
-      <el-icon>
+    <div class="mr-2.5 flex content-center items-center justify-between">
+      <el-icon class="mr-1">
         <i-ep-chat-line-square />
       </el-icon>
       <span>{{ data.comm }}</span>
     </div>
-    <div class="digg">
-      <el-icon>
+    <div class="flex content-center items-center justify-between">
+      <el-icon class="mr-1">
         <i-ep-star />
       </el-icon>
       <span> {{ data.digg }}</span>
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-.bottom-data {
-  color: #989898;
-  @include flex();
-
-  & > div {
-    @include flex($justify: space-between);
-
-    & > i {
-      margin-right: 3px;
-    }
-  }
-
-  .date,
-  .view,
-  .comm {
-    margin-right: 10px;
-  }
-}
-</style>
