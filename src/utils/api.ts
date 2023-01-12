@@ -152,12 +152,8 @@ export function getCommentList(
   anchorCommentId?: number
 ) {
   let url = `${BaseAPI}/ajax/GetComments.aspx?postId=${postId}&pageIndex=${pageIndex}`;
-  if (anchorCommentId) {
-    url += `&anchorCommentId=${anchorCommentId}&isDesc=false`;
-  }
-  axios.get(url).then(({ data }) => {
-    response(Parser.parseCommentList(data));
-  });
+  if (anchorCommentId) url += `&anchorCommentId=${anchorCommentId}&isDesc=false`;
+  axios.get(url).then(({ data }) => response(Parser.parseCommentList(data)));
 }
 
 /**
@@ -169,9 +165,7 @@ export function getCommentList(
 export function getEssayTagsAndCategories(postId: number, response: (res: any) => void) {
   axios
     .get(`${BaseAPI}/ajax/CategoriesTags.aspx?blogId=${__LITE_CONFIG__.currentBlogId}&postId=${postId}`)
-    .then(({ data }) => {
-      response(Parser.parseEssayTagsAndCategories(data));
-    });
+    .then(({ data }) => response(Parser.parseEssayTagsAndCategories(data)));
 }
 
 /**
