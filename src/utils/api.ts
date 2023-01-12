@@ -54,10 +54,15 @@ export function getEssay(postId: number, response: (res: DataType.Essay) => void
 function sendPost(url: string, data: any, response: (res: any) => void) {
   axios
     .post(url, data, {
+      timeout: 5000,
       headers: { RequestVerificationToken: $("#antiforgery_token").attr("value") }
     })
     .then(res => {
       response(res);
+    })
+    .catch(err => {
+      ElMessage({ message: `${err.code}: ${err.message}`, grouping: true, type: "error" });
+      response(500);
     });
 }
 
