@@ -51,34 +51,6 @@ fetchComment(true, {
   message: "",
   success: res => {
     comments.value = res;
-
-    comments.value = [
-      {
-        commentId: 1,
-        layer: "#1楼",
-        date: "2022-11-29 14:47",
-        author: "Himmelbleu",
-        content: "这只是一个测试评论......",
-        replayEditable: false,
-        updateEditable: false,
-        digg: " 支持(0) ",
-        bury: " 反对(0) ",
-        avatar: "https://img0.baidu.com/it/u=2322283728,1741375128&fm=253&fmt=auto&app=138&f=JPEG?w=504&h=500"
-      },
-      {
-        commentId: 2,
-        layer: "#2楼",
-        date: "2022-11-29 15:21",
-        replayEditable: false,
-        updateEditable: false,
-        author: "Himmelbleu",
-        content: "这只是一个测试评论......",
-        digg: " 支持(0) ",
-        bury: " 反对(0) ",
-        avatar: "https://img0.baidu.com/it/u=2322283728,1741375128&fm=253&fmt=auto&app=138&f=JPEG?w=504&h=500"
-      }
-    ];
-
     skeleton.value = false;
   }
 });
@@ -89,13 +61,16 @@ const { commentAnchor } = storeToRefs(useCommentsAnchorStore());
 watch(commentAnchorRef, () => {
   if (commentAnchorRef.value.length > 0) {
     const top = commentAnchorRef.value[0].offsetTop;
-    $("#content").animate({ scrollTop: top }, 200, "linear");
+    $("#h-content").animate({ scrollTop: top }, 200, "linear");
   }
   commentAnchor.value = 0;
 });
 
-function uploadImage() {
-  Native.openImageUploadWindow((imgUrl: any) => (form.value.content += `\n\n${imgUrl}\n\n`));
+function uploadImage(el: string, comment?: DataType.Comment) {
+  Native.openImageUploadWindow(el, (imgUrl: any) => {
+    if (comment) commentContent.value += `\n\n${imgUrl}\n\n`;
+    else form.value.content += `\n\n${imgUrl}\n\n`;
+  });
 }
 
 function paginationChange() {
@@ -160,11 +135,12 @@ function cancelUpdateComment(comment: DataType.Comment) {
 }
 
 function beforeUpdateComment(comment: DataType.Comment) {
-  comment.updateEditable = !comment.updateEditable;
   if (comment.replayEditable) comment.replayEditable = false;
   htmlComment = comment.content;
-  if (comment.updateEditable)
-    RemoteApi.getComment({ commentId: comment.commentId }, ({ data }) => (comment.content = data));
+  RemoteApi.getComment({ commentId: comment.commentId }, ({ data }) => {
+    comment.content = data;
+    comment.updateEditable = !comment.updateEditable;
+  });
 }
 
 function finishUpdateComment(comment: DataType.Comment) {
@@ -192,14 +168,15 @@ function finishUpdateComment(comment: DataType.Comment) {
     );
 }
 
-let commentContent = ref<string>();
+let commentContent = ref<string>("");
 let tempComment: DataType.Comment;
 
 function beforeReplayComment(comment: DataType.Comment) {
+  if (comment.updateEditable) comment.updateEditable = false;
+  if (tempComment && tempComment.commentId !== comment.commentId) tempComment.replayEditable = false;
   comment.replayEditable = !comment.replayEditable;
   commentContent.value = "";
   commentContent.value += `回复 ${comment.layer} [@${comment.author}](${comment.space})\n\n`;
-  if (tempComment && tempComment.commentId !== comment.commentId) tempComment.replayEditable = false;
   tempComment = comment;
 }
 
@@ -250,7 +227,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
     <div class="mb-12 relative">
       <div class="tools mb-2 flex justify-end content-center items-center">
         <el-tooltip effect="dark" content="插入图片" placement="top-start">
-          <el-icon class="cursor-pointer" @click="uploadImage">
+          <el-icon class="cursor-pointer" @click="uploadImage('main-upload-img')">
             <i-ep-picture-rounded />
           </el-icon>
         </el-tooltip>
@@ -259,7 +236,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
         <textarea v-model="form.content" placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
       </div>
       <div class="absolute opacity-0 top-0 left-0">
-        <textarea id="img-link" />
+        <textarea id="main-upload-img" />
       </div>
       <el-button
         class="mt-4"
@@ -293,30 +270,37 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
             </div>
           </div>
         </div>
-        <div class="mt-3" style="margin-left: 4.5rem">
+        <div class="mt-3 relative" style="margin-left: 4.5rem">
           <div class="c-content" v-show="!item.updateEditable" v-html="item.content" v-parse-code="false"></div>
+          <div class="absolute opacity-0 top-0 left-0">
+            <textarea :id="'upload-img-' + index" />
+          </div>
           <div class="editarea" v-show="item.updateEditable">
             <div class="tools mb-2 flex justify-end content-center items-center">
               <el-tooltip effect="dark" content="插入图片" placement="top-start">
-                <el-icon class="cursor-pointer" @click="uploadImage">
+                <el-icon class="cursor-pointer" @click="uploadImage('upload-img-' + index, item)">
                   <i-ep-picture-rounded />
                 </el-icon>
               </el-tooltip>
             </div>
-            <textarea ref="editarea" v-model="item.content" placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
+            <div>
+              <textarea ref="editarea" v-model="item.content" placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
+            </div>
           </div>
           <div class="replayarea" v-show="item.replayEditable">
             <div class="tools mb-2 flex justify-end content-center items-center">
               <el-tooltip effect="dark" content="插入图片" placement="top-start">
-                <el-icon class="cursor-pointer" @click="uploadImage">
+                <el-icon class="cursor-pointer" @click="uploadImage('upload-img-' + index, item)">
                   <i-ep-picture-rounded />
                 </el-icon>
               </el-tooltip>
             </div>
-            <textarea
-              ref="replayarea"
-              v-model="commentContent"
-              placeholder="请回复一条友善的评论，支持 Markdown 语法" />
+            <div>
+              <textarea
+                ref="replayarea"
+                v-model="commentContent"
+                placeholder="请回复一条友善的评论，支持 Markdown 语法" />
+            </div>
           </div>
           <div class="fsz-0.8 cursor-pointer color-#a8abb2 flex justify-end items-center content-center">
             <div
@@ -452,7 +436,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
 </style>
 
 <style scoped lang="scss">
-@mixin textarea($height: 280px) {
+@mixin textarea($height: 270px) {
   --at-apply: rd-2 box-border p-2.5;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
     sans-serif;
@@ -468,12 +452,9 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
   resize: none;
 }
 
-@mixin container($box: yes) {
-  --at-apply: rd-2 box-border;
-
-  @if $box == yes {
-    border: 1px solid var(--el-border-color-lighter);
-  }
+@mixin container() {
+  --at-apply: mb-5 rd-2 box-border;
+  border: 1px solid var(--el-border-color-lighter);
 
   @include hover() {
     border: 1px solid var(--el-color-primary);
@@ -481,18 +462,20 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
 }
 
 .pusharea {
+  @include container();
+
   textarea {
-    @include container();
     @include textarea();
   }
 }
 
 .editarea,
 .replayarea {
-  --at-apply: mb-5;
+  & > div + div {
+    @include container();
+  }
 
   textarea {
-    @include container($box: no);
     @include textarea($height: 150px);
   }
 }

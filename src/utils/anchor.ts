@@ -27,40 +27,38 @@ export function makeAnchor(dom: string) {
       h2 = 0;
       h3 = 0;
       if (hasLevel) level = `${h1}.${text}`;
-      content = `<a class="${id} anchor hover">${level}</a>`;
+      content = `<a id="anchor-${id}" class=" hover">${level}</a>`;
     } else if (type === "h2") {
       h2++;
       h3 = 0;
       if (hasLevel) level = `${h1}.${h2}.${text}`;
-      content = `<a class="${id} anchor hover" style="margin-left: 10px">${level}</a>`;
+      content = `<a id="anchor-${id}" class="hover" style="margin-left: 10px">${level}</a>`;
     } else if (type === "h3") {
       h3++;
       if (hasLevel) level = `${h1}.${h2}.${h3}.${text}`;
-      content = `<a class="${id} anchor hover" style="margin-left: 20px">${level}</a>`;
+      content = `<a id="anchor-${id}" class="hover" style="margin-left: 20px">${level}</a>`;
     }
 
     clasps.push({ id, top });
     anchors.push({ text, type, content });
   });
 
-  let lastAnchor: any;
+  let tempAnchor: any;
 
   for (const item of clasps) {
-    $(".catalog")
-      .find(`.${item.id}`)
-      .on("click", e => {
-        $("#content").animate({ scrollTop: item.top }, 800, "linear");
-      });
+    $(`#anchor-${item.id}`).on("click", e => {
+      $("#h-content").animate({ scrollTop: item.top }, 800, "linear");
+    });
   }
 
-  $("#content").on("scroll", function (e) {
+  $("#h-content").on("scroll", function (e) {
     const scrollTop = e.target.scrollTop;
     for (const item of clasps) {
       if (scrollTop >= item.top - 75 && scrollTop <= item.top) {
-        let anchor = $(".catalog").find(`.${item.id}`);
-        if (lastAnchor) $(lastAnchor).removeClass("anchor-active");
+        let anchor = $(`#anchor-${item.id}`);
+        if (tempAnchor) $(tempAnchor).removeClass("anchor-active");
         $(anchor).addClass("anchor-active");
-        lastAnchor = anchor;
+        tempAnchor = anchor;
       }
     }
   });

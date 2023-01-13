@@ -86,7 +86,7 @@ const tabName = ref("随笔");
             {{ item.text }} - {{ item.digg }}
           </span>
         </template>
-        <div class="hover mb-3 fsz-1 cursor-pointer">
+        <div class="hover mb-3 fsz-0.9 cursor-pointer">
           <span :class="{ 'mr-2.5': index !== blogInfo.length - 1 }" v-for="(item, index) in blogInfo" :key="index">
             {{ item.text }} - {{ item.digg }}
           </span>
