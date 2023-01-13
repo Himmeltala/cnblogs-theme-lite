@@ -14,16 +14,17 @@ function search() {
 
 <template>
   <div
-    class="navigator flex content-center items-center fixed left-vw-10 w-vw-80 h-vh-9 bg-#252525 px-5 py-3"
+    id="navigator"
+    class="fixed ltv-10 px-5 py-3 wvw-80 hvh-9 flex content-center items-center bg-#252525"
     :style="{ 'justify-content': navor?.header ? 'space-between' : 'flex-end' }">
     <div
-      class="hover font-normal fsz-p-15 flex items-center content-center justify-center color-#878787"
+      class="hover font-normal flex items-center content-center justify-center color-#878787"
       @click="nav('/', router)"
       v-if="navor?.header"
       v-html="navor.header"></div>
-    <div class="fsz-p-17 flex items-center content-center justify-center">
+    <div class="flex items-center content-center justify-center fsz-1.1">
       <div class="mr-5 w-50" v-if="navor?.search">
-        <el-input @keyup.enter="search" v-model="input" placeholder="输入查询关键字">
+        <el-input @keyup.enter="search" v-model="input">
           <template #prefix>
             <el-icon @click="search">
               <i-ep-search />
@@ -70,7 +71,7 @@ svg {
 </style>
 
 <style scoped lang="scss">
-.navigator {
+#navigator {
   z-index: 999;
   box-sizing: border-box;
   border-radius: 0 0 6px 6px;

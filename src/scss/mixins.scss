@@ -30,7 +30,7 @@
   }
 }
 
-@mixin font-space($spacing: 1.7px, $line: 1.7) {
+@mixin font-space($spacing: 0.1rem, $line: 1.7) {
   letter-spacing: $spacing;
   line-height: $line;
 }

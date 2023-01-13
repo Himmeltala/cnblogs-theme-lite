@@ -1,3 +1,5 @@
+@import "./scss/responsive";
+
 :root,
 body {
   letter-spacing: 0.5px;
@@ -37,7 +39,8 @@ a:link {
 }
 
 .el-input__inner {
-  font-family: sans-serif;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+    sans-serif !important;
 }
 
 .el-rate__icon {

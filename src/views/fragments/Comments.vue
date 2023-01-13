@@ -47,16 +47,44 @@ function fetchComment(
   }
 }
 
-const commentAnchorRef = ref<any>(null);
-const { commentAnchor } = storeToRefs(useCommentsAnchorStore());
-
 fetchComment(true, {
   message: "",
   success: res => {
     comments.value = res;
+
+    comments.value = [
+      {
+        commentId: 1,
+        layer: "#1楼",
+        date: "2022-11-29 14:47",
+        author: "Himmelbleu",
+        content: "这只是一个测试评论......",
+        replayEditable: false,
+        updateEditable: false,
+        digg: " 支持(0) ",
+        bury: " 反对(0) ",
+        avatar: "https://img0.baidu.com/it/u=2322283728,1741375128&fm=253&fmt=auto&app=138&f=JPEG?w=504&h=500"
+      },
+      {
+        commentId: 2,
+        layer: "#2楼",
+        date: "2022-11-29 15:21",
+        replayEditable: false,
+        updateEditable: false,
+        author: "Himmelbleu",
+        content: "这只是一个测试评论......",
+        digg: " 支持(0) ",
+        bury: " 反对(0) ",
+        avatar: "https://img0.baidu.com/it/u=2322283728,1741375128&fm=253&fmt=auto&app=138&f=JPEG?w=504&h=500"
+      }
+    ];
+
     skeleton.value = false;
   }
 });
+
+const commentAnchorRef = ref<any>(null);
+const { commentAnchor } = storeToRefs(useCommentsAnchorStore());
 
 watch(commentAnchorRef, () => {
   if (commentAnchorRef.value.length > 0) {
@@ -247,10 +275,10 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
     <div class="mt-10" v-if="comments?.length && !skeleton && __LITE_CONFIG__.isLogined">
       <div class="mb-9" v-for="(item, index) in comments" :key="index">
         <div class="flex items-center content-center justify-start">
-          <el-image class="mr-4 b-rd-50" style="width: 45px; height: 45px" :src="item.avatar" fit="fill" />
+          <el-image class="mr-4 rd-50 w-14 h-14" :src="item.avatar" fit="fill" />
           <div>
-            <div class="fsz-r-0.95 hover cursor-pointer" @click="nav(item.space)">{{ item.author }}</div>
-            <div class="fsz-r-0.8 color-#8D9095 mt-1.5 flex items-center content-center justify-center">
+            <div class="fsz-0.95 hover cursor-pointer" @click="nav(item.space)">{{ item.author }}</div>
+            <div class="fsz-0.8 color-#8D9095 mt-1.5 flex items-center content-center justify-center">
               <div
                 v-if="commentAnchor === item.commentId"
                 ref="commentAnchorRef"
@@ -265,23 +293,32 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
             </div>
           </div>
         </div>
-        <div class="mt-5" style="margin-left: calc(45px + 1rem)">
+        <div class="mt-3" style="margin-left: 4.5rem">
           <div class="c-content" v-show="!item.updateEditable" v-html="item.content" v-parse-code="false"></div>
-          <div class="editarea">
-            <textarea
-              ref="editarea"
-              v-show="item.updateEditable"
-              v-model="item.content"
-              placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
+          <div class="editarea" v-show="item.updateEditable">
+            <div class="tools mb-2 flex justify-end content-center items-center">
+              <el-tooltip effect="dark" content="插入图片" placement="top-start">
+                <el-icon class="cursor-pointer" @click="uploadImage">
+                  <i-ep-picture-rounded />
+                </el-icon>
+              </el-tooltip>
+            </div>
+            <textarea ref="editarea" v-model="item.content" placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
           </div>
-          <div class="replayarea">
+          <div class="replayarea" v-show="item.replayEditable">
+            <div class="tools mb-2 flex justify-end content-center items-center">
+              <el-tooltip effect="dark" content="插入图片" placement="top-start">
+                <el-icon class="cursor-pointer" @click="uploadImage">
+                  <i-ep-picture-rounded />
+                </el-icon>
+              </el-tooltip>
+            </div>
             <textarea
               ref="replayarea"
-              v-show="item.replayEditable"
               v-model="commentContent"
               placeholder="请回复一条友善的评论，支持 Markdown 语法" />
           </div>
-          <div class="fsz-p-12 cursor-pointer color-#a8abb2 flex justify-end items-center content-center">
+          <div class="fsz-0.8 cursor-pointer color-#a8abb2 flex justify-end items-center content-center">
             <div
               class="hover mr-3 flex justify-end items-center content-center"
               v-if="!item.replayEditable"
@@ -350,16 +387,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
               </el-icon>
               <span>编辑</span>
             </div>
-            <div
-              class="hover mr-3 flex justify-end items-center content-center"
-              v-if="item.updateEditable"
-              @click="finishUpdateComment(item)">
-              <el-icon class="mr-0.3">
-                <i-ep-circle-check />
-              </el-icon>
-              <span>完成编辑</span>
-            </div>
-            <div class="hover" v-if="item.updateEditable">
+            <div class="hover mr-3" v-if="item.updateEditable">
               <el-popconfirm
                 confirm-button-text="确定"
                 cancel-button-text="取消"
@@ -374,6 +402,15 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
                   </div>
                 </template>
               </el-popconfirm>
+            </div>
+            <div
+              class="hover flex justify-end items-center content-center"
+              v-if="item.updateEditable"
+              @click="finishUpdateComment(item)">
+              <el-icon class="mr-0.3">
+                <i-ep-circle-check />
+              </el-icon>
+              <span>完成编辑</span>
             </div>
           </div>
         </div>
@@ -393,7 +430,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
 
 <style lang="scss">
 .c-content {
-  --at-apply: fsz-r-0.9 break-all;
+  --at-apply: fsz-0.9 break-all;
   @include font-space();
 
   img {
@@ -415,8 +452,24 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
 </style>
 
 <style scoped lang="scss">
-@mixin textarea($box: yes, $height: 280px) {
-  --at-apply: b-rd-2 box-border;
+@mixin textarea($height: 280px) {
+  --at-apply: rd-2 box-border p-2.5;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+    sans-serif;
+  background-color: #202020;
+  width: 100%;
+  border: none;
+  outline: none;
+  font-weight: 300;
+  color: #a7a7a7;
+  height: $height;
+  line-height: 1.3;
+  font-size: 14px;
+  resize: none;
+}
+
+@mixin container($box: yes) {
+  --at-apply: rd-2 box-border;
 
   @if $box == yes {
     border: 1px solid var(--el-border-color-lighter);
@@ -425,31 +478,22 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
   @include hover() {
     border: 1px solid var(--el-color-primary);
   }
-
-  textarea {
-    --at-apply: b-rd-2 box-border p-2.5;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
-      sans-serif;
-    background-color: #202020;
-    width: 100%;
-    border: none;
-    outline: none;
-    font-weight: 300;
-    color: #a7a7a7;
-    height: $height;
-    line-height: 1.3;
-    font-size: 14px;
-    resize: none;
-  }
 }
 
 .pusharea {
-  @include textarea();
+  textarea {
+    @include container();
+    @include textarea();
+  }
 }
 
 .editarea,
 .replayarea {
   --at-apply: mb-5;
-  @include textarea($box: no, $height: 150px);
+
+  textarea {
+    @include container($box: no);
+    @include textarea($height: 150px);
+  }
 }
 </style>

@@ -1,15 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="card mx-1.3 p-4.5">
+  <div class="card mx-1 p-4 bg-#252525 rd-2 border-box">
     <slot />
   </div>
 </template>
-
-<style scoped lang="scss">
-.card {
-  box-sizing: border-box;
-  background-color: #252525;
-  border-radius: 6px;
-}
-</style>

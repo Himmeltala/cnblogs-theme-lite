@@ -11,16 +11,21 @@ closeLoader();
 </script>
 
 <template>
-  <div class="gallery">
+  <div id="gallery" class="flex items-center content-center justify-center">
     <Card
       :class="{
-        'flex align-center justify-center': !url || !srcList.length,
+        'flex items-center content-center justify-center': !url || !srcList.length,
         'flex justify-center': url
       }"
       width="100%"
       margin="0 10px 7px 10px"
       height="calc(90vh - 7px)">
-      <el-image class="image" :src="url" fit="cover" :preview-src-list="srcList" />
+      <el-image
+        class="image"
+        style="max-width: 100%; height: 100%"
+        :src="url"
+        fit="cover"
+        :preview-src-list="srcList" />
       <el-result
         v-if="!url || !srcList.length"
         icon="error"
@@ -33,14 +38,3 @@ closeLoader();
     </Card>
   </div>
 </template>
-
-<style scoped lang="scss">
-.gallery {
-  @include flex();
-
-  .image {
-    max-width: 100%;
-    height: 100%;
-  }
-}
-</style>

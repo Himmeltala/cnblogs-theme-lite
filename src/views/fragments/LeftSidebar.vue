@@ -36,7 +36,7 @@ const tabName = ref("随笔");
 <template>
   <div
     id="l-showcase"
-    class="noscroll color-#878787 absolute bg-#252525 top-vh-10 left-vw-10 h-vh-90 w-vw-13.5 ofw-auto box-border px-5">
+    class="noscroll absolute tpv-10 ltv-10 bg-#252525 color-#878787 hvh-90 wvw-13.5 ofw-auto box-border rd-2 px-5">
     <SideItem text="博客信息">
       <template #icon>
         <el-icon class="mr-1">
@@ -45,7 +45,7 @@ const tabName = ref("随笔");
       </template>
       <div v-if="side?.avatar" class="flex items-center content-center justify-center my-5">
         <el-tooltip effect="dark" placement="right">
-          <img class="h-p-80 w-p-80 b-rd-50 object-cover cursor-pointer" alt="FAILED" :src="side?.avatar" />
+          <img class="h-1 w-1 rd-50 object-cover cursor-pointer" alt="FAILED" :src="side?.avatar" />
           <template #content>
             <div v-if="side?.signature" v-html="side.signature" />
             <div v-else>这个人很懒，什么也没有留下</div>
@@ -86,7 +86,7 @@ const tabName = ref("随笔");
             {{ item.text }} - {{ item.digg }}
           </span>
         </template>
-        <div class="hover mb-3 cursor-pointer fsz-p-14">
+        <div class="hover mb-3 fsz-1 cursor-pointer">
           <span :class="{ 'mr-2.5': index !== blogInfo.length - 1 }" v-for="(item, index) in blogInfo" :key="index">
             {{ item.text }} - {{ item.digg }}
           </span>
@@ -96,8 +96,8 @@ const tabName = ref("随笔");
     <el-tabs type="card" v-model="tabName">
       <el-tab-pane label="随笔" name="随笔">
         <template #label>
-          <div class="flex content-center items-center justify-center">
-            <el-icon style="margin-right: 5px">
+          <div class="fsz-0.9 flex content-center items-center justify-center">
+            <el-icon class="mr-1">
               <i-ep-folder />
             </el-icon>
             <div>随笔</div>
@@ -111,8 +111,8 @@ const tabName = ref("随笔");
       </el-tab-pane>
       <el-tab-pane label="标签" name="标签">
         <template #label>
-          <div class="flex content-center items-center justify-center">
-            <el-icon style="margin-right: 5px">
+          <div class="fsz-0.9 flex content-center items-center justify-center">
+            <el-icon class="mr-1">
               <i-ep-collection-tag />
             </el-icon>
             <div>标签</div>
@@ -145,7 +145,7 @@ const tabName = ref("随笔");
 
 <style scoped lang="scss">
 .item {
-  --at-apply: my-2.5 fsz-p-14 break-all;
+  --at-apply: my-2.5 fsz-0.9 break-all;
 
   .text {
     --at-apply: cursor-pointer;
