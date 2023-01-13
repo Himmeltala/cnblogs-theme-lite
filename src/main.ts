@@ -10,6 +10,7 @@ import "element-plus/theme-chalk/dark/css-vars.css";
 import "element-plus/dist/index.css";
 import "highlight.js/styles/atom-one-dark.css";
 
+// Lite
 import Directive from "./directive";
 import { initLite } from "./lite.config";
 

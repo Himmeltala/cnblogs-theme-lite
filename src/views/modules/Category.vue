@@ -72,12 +72,12 @@ function fixedChange(page: any) {
 </script>
 
 <template>
-  <div class="category">
+  <div id="category">
     <PaginationPage ref="pagination" @fixed-change="fixedChange" @float-change="floatChange" :page-count="pageCount">
       <template #loading>
         <el-skeleton style="margin-top: 10px" :loading="loading" animated>
           <template #template>
-            <Card v-for="item in 10" :key="item" width="auto" padding="15px 25px" margin="12px 10px 12px 10px">
+            <Card v-for="item in 10" :key="item">
               <el-skeleton-item variant="p" style="width: 60%" />
               <div style="display: flex; align-items: center">
                 <el-skeleton-item variant="text" style="margin-right: 16px; margin-top: 8px" />
@@ -94,18 +94,9 @@ function fixedChange(page: any) {
         </el-skeleton>
       </template>
       <template #content>
-        <div class="label">{{ label }}</div>
+        <div class="fsz-1.25 mx-1.3 mt-1 mb-3">{{ label }}</div>
         <EssayItem v-if="data" :data="data" :loading="loading" />
       </template>
     </PaginationPage>
   </div>
 </template>
-
-<style scoped lang="scss">
-.category {
-  .label {
-    font-size: 20px;
-    margin: 5px 10px 12px 10px;
-  }
-}
-</style>

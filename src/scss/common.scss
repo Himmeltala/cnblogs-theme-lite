@@ -34,3 +34,20 @@
     background-color: #a7a7a7;
   }
 }
+
+.divider {
+  margin: {
+    top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+  }
+  border: {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 1px;
+    style: dashed;
+    color: #444444;
+  }
+}

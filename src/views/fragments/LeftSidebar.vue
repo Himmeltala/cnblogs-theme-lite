@@ -45,7 +45,7 @@ const tabName = ref("随笔");
       </template>
       <div v-if="side?.avatar" class="flex items-center content-center justify-center my-5">
         <el-tooltip effect="dark" placement="right">
-          <img class="h-1 w-1 rd-50 object-cover cursor-pointer" alt="FAILED" :src="side?.avatar" />
+          <img class="h-20 w-20 rd-50 object-cover cursor-pointer" alt="FAILED" :src="side?.avatar" />
           <template #content>
             <div v-if="side?.signature" v-html="side.signature" />
             <div v-else>这个人很懒，什么也没有留下</div>

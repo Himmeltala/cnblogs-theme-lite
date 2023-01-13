@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import * as Api from "@/utils/api";
+import * as RemoteApi from "@/utils/api";
 import * as DataType from "@/types/data-type";
 import { nav } from "@/utils/route-helper";
 import { closeLoader } from "@/utils/loader";
@@ -16,15 +16,15 @@ let tagscatoies = ref<any>({ categories: {}, tags: {} });
 
 let holeSkeleton = ref(true);
 
-Api.getEssay(postId, res => {
+RemoteApi.getEssay(postId, res => {
   essay.value = res;
-  Api.getEssayTagsAndCategories(postId, res => {
+  RemoteApi.getEssayTagsAndCategories(postId, res => {
     tagscatoies.value = res;
     holeSkeleton.value = false;
     closeLoader();
-    Api.getPrevNext(postId, res => {
+    RemoteApi.getPrevNext(postId, res => {
       prevNext.value = res;
-      Api.getEssayVote([postId], res => {
+      RemoteApi.getEssayVote([postId], res => {
         essayVote.value = res[0];
       });
     });
@@ -32,7 +32,7 @@ Api.getEssay(postId, res => {
 });
 
 function voteEssay(voteType: DataType.VoteType) {
-  Api.voteEssay({ postId, isAbandoned: false, voteType }, ajax => {
+  RemoteApi.voteEssay({ postId, isAbandoned: false, voteType }, ajax => {
     if (ajax.isSuccess) {
       if (voteType == "Bury") essayVote.value!.buryCount = essayVote.value!.buryCount! + 1;
       else essayVote.value!.diggCount = essayVote.value!.diggCount! + 1;
@@ -43,8 +43,8 @@ function voteEssay(voteType: DataType.VoteType) {
 </script>
 
 <template>
-  <div class="essay">
-    <Card class="essay__packer" padding="20px 20px" margin="0 10px 12px 10px">
+  <div id="essay" class="color-#a7a7a7">
+    <Card class="relative">
       <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="holeSkeleton" />
       <div v-if="!holeSkeleton">
         <el-page-header @back="nav('/', router)">
@@ -52,60 +52,66 @@ function voteEssay(voteType: DataType.VoteType) {
             <i-ep-arrow-left />
           </template>
           <template #content>
-            <div class="title">{{ essay?.text }}</div>
+            <div class="leh-1.4 color-#a7a7a7 fsz-1.4 break-all">{{ essay?.text }}</div>
           </template>
         </el-page-header>
-        <div class="head-info">
-          <div class="date">
-            <el-icon>
+        <div class="color-#878787 flex justify-start items-center content-center mt-4 fsz-0.9">
+          <div class="flex justify-center items-center content-center mr-3">
+            <el-icon class="mr-0.9">
               <i-ep-clock />
             </el-icon>
             <span>{{ essay?.date }}</span>
           </div>
-          <div class="view-count">
-            <el-icon>
+          <div class="flex justify-center items-center content-center mr-3">
+            <el-icon class="mr-0.9">
               <i-ep-view />
             </el-icon>
             <span>{{ essay?.view }}次阅读</span>
           </div>
-          <div class="comm-count">
-            <el-icon>
+          <div class="flex justify-center items-center content-center mr-3">
+            <el-icon class="mr-0.9">
               <i-ep-chat-line-square />
             </el-icon>
             <span>{{ essay?.comm }}条评论</span>
           </div>
           <div
-            class="edit-essay"
+            class="flex justify-center items-center content-center hover"
             v-if="__LITE_CONFIG__.isBlogOwner"
             @click="nav('https://i.cnblogs.com/EditPosts.aspx?postid=' + postId)">
-            <el-icon>
+            <el-icon class="mr-0.9">
               <i-ep-edit-pen />
             </el-icon>
             <span>编辑</span>
           </div>
         </div>
-        <div class="labels">
-          <div class="categories" v-if="tagscatoies.categories.length > 0">
-            <div class="caption">
-              <el-icon>
+        <div class="color-#878787 mt-4 fsz-0.9">
+          <div class="mb-1 flex justify-start items-center content-center" v-if="tagscatoies.categories.length > 0">
+            <div class="flex justify-center items-center content-center">
+              <el-icon class="mr-0.9">
                 <i-ep-folder-opened />
               </el-icon>
               <span>分类：</span>
             </div>
-            <div class="item" v-for="(item, index) in tagscatoies.categories" :key="index">
+            <div
+              :class="{ 'mr-2': index !== tagscatoies.categories.length - 1 }"
+              v-for="(item, index) in tagscatoies.categories"
+              :key="index">
               <Tag :color="item.color" @click="nav('/c/' + item.href + '/1', router)">
                 {{ item.text }}
               </Tag>
             </div>
           </div>
-          <div class="tags" v-if="tagscatoies.tags.length > 0">
-            <div class="caption">
-              <el-icon>
+          <div class="mb-1 flex justify-start items-center content-center" v-if="tagscatoies.tags.length > 0">
+            <div class="flex justify-center items-center content-center">
+              <el-icon class="mr-0.9">
                 <i-ep-price-tag />
               </el-icon>
               <span>标签：</span>
             </div>
-            <div class="item" v-for="(item, index) in tagscatoies.tags" :key="index">
+            <div
+              :class="{ 'mr-2': index !== tagscatoies.tags.length - 1 }"
+              v-for="(item, index) in tagscatoies.tags"
+              :key="index">
               <Tag :color="item.color" @click="nav('/t/' + item.text, router)">
                 {{ item.text }}
               </Tag>
@@ -114,42 +120,42 @@ function voteEssay(voteType: DataType.VoteType) {
         </div>
         <div id="e-content" v-parse-code="true" v-html="essay?.content" />
         <div class="divider"></div>
-        <div class="tail-info">
-          <div class="date">
-            <el-icon>
+        <div class="color-#878787 flex justify-end items-center content-center fsz-0.9">
+          <div class="flex justify-center items-center content-center mr-2">
+            <el-icon class="mr-0.9">
               <i-ep-clock />
             </el-icon>
             <span>{{ essay?.date }}</span>
           </div>
-          <div class="view-count">
-            <el-icon>
+          <div class="flex justify-center items-center content-center mr-2">
+            <el-icon class="mr-0.9">
               <i-ep-view />
             </el-icon>
             <span>{{ essay?.view }}次阅读</span>
           </div>
-          <div class="comm-count">
-            <el-icon>
+          <div class="flex justify-center items-center content-center">
+            <el-icon class="mr-0.9">
               <i-ep-chat-line-square />
             </el-icon>
             <span>{{ essay?.comm }}条评论</span>
           </div>
         </div>
-        <div class="prev-next">
-          <div class="prev" v-if="prevNext?.prev?.href">
+        <div class="prev-next fsz-0.9 mt-10">
+          <div class="prev hover mb-2 flex justify-start items-center content-center" v-if="prevNext?.prev?.href">
             <el-icon>
               <i-ep-d-arrow-left />
             </el-icon>
-            <a :href="prevNext.prev.href">上一篇：{{ prevNext.prev.text }}</a>
+            <a class="hover color-#a7a7a7" :href="prevNext.prev.href">上一篇：{{ prevNext.prev.text }}</a>
           </div>
-          <div class="next" v-if="prevNext?.next?.href">
+          <div class="next hover flex justify-start items-center content-center" v-if="prevNext?.next?.href">
             <el-icon>
               <i-ep-d-arrow-right />
             </el-icon>
-            <a :href="prevNext.next.href">下一篇：{{ prevNext.next.text }}</a>
+            <a class="hover color-#a7a7a7" :href="prevNext.next.href">下一篇：{{ prevNext.next.text }}</a>
           </div>
         </div>
-        <div class="vote-essay">
-          <div class="digg">
+        <div class="my-10 flex justify-end items-center content-center">
+          <div class="digg mr-5">
             <el-button style="color: #a7a7a7" plain @click="voteEssay('Digg')">
               点赞 {{ essayVote?.diggCount }}
               <template #icon>
@@ -180,27 +186,27 @@ h3 {
 }
 
 h1 {
-  font-size: 21px !important;
+  font-size: 1.3rem !important;
 }
 
 h2 {
-  font-size: 19px !important;
+  font-size: 1.2rem !important;
 }
 
 h3 {
-  font-size: 18px !important;
+  font-size: 1.1rem !important;
 }
 
 h4 {
-  font-size: 17px !important;
+  font-size: 1rem !important;
 }
 
 h5 {
-  font-size: 17px !important;
+  font-size: 1rem !important;
 }
 
 h6 {
-  font-size: 17px !important;
+  font-size: 1rem !important;
 }
 
 pre {
@@ -250,7 +256,7 @@ code {
   box-sizing: border-box;
 }
 
-.code-type {
+.cblock {
   box-sizing: border-box;
   padding: 4px;
   font-size: 13px;
@@ -319,161 +325,6 @@ code {
         background-color: #2b2b2b;
       }
     }
-  }
-}
-
-.el-page-header__left {
-  margin-right: 0 !important;
-}
-</style>
-
-<style lang="scss">
-$color: #a7a7a7;
-
-.essay {
-  color: $color;
-
-  .essay__packer {
-    position: relative;
-  }
-
-  .title {
-    line-height: 1.3;
-    color: $color !important;
-    word-break: break-all;
-    font-size: 24px;
-  }
-
-  .head-info {
-    @include flex($justify: flex-start);
-  }
-
-  .labels {
-    font-size: 14px;
-    margin: 25px 0;
-
-    .categories {
-      margin-bottom: 8px;
-    }
-
-    .categories,
-    .tags {
-      @include flex($justify: flex-start);
-
-      .caption {
-        @include flex();
-
-        span {
-          margin-left: 4px;
-        }
-      }
-
-      .item {
-        margin-right: 4px;
-      }
-
-      .item:last-child {
-        margin-left: 0;
-      }
-    }
-  }
-
-  .divider {
-    margin: {
-      top: 50px;
-      left: 0;
-      right: 0;
-      bottom: 10px;
-    }
-    border: {
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 1px;
-      style: dashed;
-      color: #444444;
-    }
-  }
-
-  .tail-info {
-    @include flex($justify: flex-end);
-  }
-
-  .prev-next {
-    font-size: 14px;
-    margin-top: 40px;
-
-    a {
-      color: #878787;
-      margin-left: 6px;
-      @include ahover();
-    }
-
-    .prev,
-    .next {
-      @include flex($justify: flex-start);
-    }
-
-    .prev {
-      @include ahover();
-    }
-
-    .next {
-      @include ahover();
-      margin-top: 10px;
-    }
-  }
-
-  .vote-essay {
-    @include flex($justify: flex-end);
-    margin: 35px 0;
-
-    .digg {
-      margin-right: 30px;
-    }
-  }
-
-  .head-info,
-  .tail-info {
-    font-size: 14px;
-    margin-top: 20px;
-
-    div:last-child {
-      margin-right: 0 !important;
-    }
-
-    div > span {
-      user-select: none;
-      margin-left: 6px;
-    }
-
-    .date {
-      @include flex();
-    }
-
-    .edit-essay {
-      cursor: pointer;
-    }
-
-    .date,
-    .view-count,
-    .edit-essay,
-    .comm-count {
-      margin-right: 10px;
-    }
-
-    .view-count,
-    .comm-count,
-    .edit-essay {
-      @include flex();
-    }
-  }
-
-  .head-info,
-  .labels,
-  .tail-info,
-  .prev-next {
-    color: #878787;
   }
 }
 </style>

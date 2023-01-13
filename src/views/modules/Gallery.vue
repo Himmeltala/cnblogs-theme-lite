@@ -11,26 +11,24 @@ closeLoader();
 </script>
 
 <template>
-  <div id="gallery" class="flex items-center content-center justify-center">
+  <div id="gallery" style="height: 100%; width: 100%" class="flex items-center content-center justify-center">
     <Card
+      style="width: inherit; height: inherit"
       :class="{
         'flex items-center content-center justify-center': !url || !srcList.length,
         'flex justify-center': url
-      }"
-      width="100%"
-      margin="0 10px 7px 10px"
-      height="calc(90vh - 7px)">
+      }">
       <el-image
         class="image"
-        style="max-width: 100%; height: 100%"
-        :src="url"
+        style="max-width: 100%; height: inherit"
         fit="cover"
+        :src="url"
         :preview-src-list="srcList" />
       <el-result
         v-if="!url || !srcList.length"
         icon="error"
-        title="相册图片加载失败！"
-        sub-title="检查你的网络状态或相册图片已被移除">
+        title="图片加载失败！"
+        sub-title="检查你的网络状态或图片已从相册移除">
         <template #extra>
           <el-button @click="router.push('/')" type="primary">返回首页</el-button>
         </template>

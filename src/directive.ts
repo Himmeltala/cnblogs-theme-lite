@@ -10,27 +10,28 @@ export default class Directive {
   }
 
   parseCode() {
-    this.Vue.directive("parse-code", (el: any, binding: any) => {
-      // highlight format
-      $(el)
-        .find("pre code")
-        .each((i, elem) => {
-          let lang = String(
-            $(elem)
-              .attr("class")
-              ?.match(/(language-\w*){0,1}/g)
-          )
-            .split(",")[0]
-            .split("-")[1]
-            .toUpperCase();
-
-          $(elem).parent().prepend(`<span class="code-type">${lang}</span>`);
-          hljs.highlightElement(elem);
-        });
-
-      // 是否制作锚点？
-      if (binding.value) {
-        makeAnchor(el);
+    this.Vue.directive("parse-code", {
+      mounted(el: any, binding: any) {
+        // highlight format
+        $(el)
+          .find("pre code")
+          .each((i, elem) => {
+            let lang = String(
+              $(elem)
+                .attr("class")
+                ?.match(/(language-\w*){0,1}/g)
+            )
+              .split(",")[0]
+              .split("-")[1]
+              .toUpperCase();
+            $(elem).parent().prepend(`<span class="cblock">${lang}</span>`);
+            console.log("times", i);
+            hljs.highlightElement(elem);
+          });
+        // 是否制作锚点？
+        if (binding.value) {
+          makeAnchor(el);
+        }
       }
     });
   }
