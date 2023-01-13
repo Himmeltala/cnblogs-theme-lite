@@ -1,6 +1,6 @@
 import $ from "jquery";
 import hljs from "highlight.js";
-import { makeAnchor } from "@/utils/anchor";
+import { makeAnchor, setAnchorClick } from "@/utils/anchor";
 
 export default class Directive {
   private Vue;
@@ -25,13 +25,15 @@ export default class Directive {
               .split("-")[1]
               .toUpperCase();
             $(elem).parent().prepend(`<span class="cblock">${lang}</span>`);
-            console.log("times", i);
             hljs.highlightElement(elem);
           });
-        // 是否制作锚点？
+
         if (binding.value) {
           makeAnchor(el);
         }
+      },
+      updated() {
+        setAnchorClick();
       }
     });
   }

@@ -286,7 +286,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
           </div>
         </div>
         <div class="mt-3 relative" style="margin-left: 4.5rem">
-          <div class="c-content" v-show="!item.updateEditable" v-html="item.content" v-parse-code="false"></div>
+          <div class="c-content" v-show="!item.updateEditable" v-html="item.content" v-parse-code />
           <div class="absolute opacity-0 top-0 left-0">
             <textarea :id="'upload-img-' + index" />
           </div>
