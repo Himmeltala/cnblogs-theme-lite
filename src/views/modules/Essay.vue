@@ -96,7 +96,7 @@ function voteEssay(voteType: DataType.VoteType) {
               :class="{ 'mr-2': index !== tagscatoies.categories.length - 1 }"
               v-for="(item, index) in tagscatoies.categories"
               :key="index">
-              <Tag :color="item.color" @click="nav('/c/' + item.href + '/1', router)">
+              <Tag @click="nav('/c/' + item.href + '/1', router)">
                 {{ item.text }}
               </Tag>
             </div>
@@ -112,13 +112,13 @@ function voteEssay(voteType: DataType.VoteType) {
               :class="{ 'mr-2': index !== tagscatoies.tags.length - 1 }"
               v-for="(item, index) in tagscatoies.tags"
               :key="index">
-              <Tag :color="item.color" @click="nav('/t/' + item.text, router)">
+              <Tag @click="nav('/t/' + item.text, router)">
                 {{ item.text }}
               </Tag>
             </div>
           </div>
         </div>
-        <div id="e-content" v-parse-code="true" v-html="essay?.content" />
+        <div id="e-content" class="mt-4" v-parse-code="true" v-html="essay?.content" />
         <div class="divider"></div>
         <div class="color-#878787 flex justify-end items-center content-center fsz-0.9">
           <div class="flex justify-center items-center content-center mr-2">
@@ -269,7 +269,7 @@ code {
 }
 
 #e-content {
-  --at-apply: fsz-r-1;
+  --at-apply: fsz-1;
 
   img {
     border-radius: 6px;
@@ -278,8 +278,8 @@ code {
   }
 
   @mixin font() {
-    @include font-space();
     word-break: break-all;
+    @include font-space();
     @content;
   }
 
@@ -295,7 +295,6 @@ code {
 
   p {
     margin: 8px 0 !important;
-
     @include font();
   }
 

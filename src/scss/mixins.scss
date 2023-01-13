@@ -7,25 +7,18 @@
   flex-direction: $row;
 }
 
-@mixin ahover() {
-  transition: 0.3s;
-  cursor: pointer !important;
-
-  &:hover {
-    transition: 0.3s;
-    color: var(--el-color-primary) !important;
-    @content;
-  }
-}
-
-@mixin hover() {
+@mixin hover($border-color: yes) {
   transition: 0.3s !important;
   cursor: pointer !important;
 
   &:hover {
     transition: 0.3s !important;
     color: var(--el-color-primary) !important;
-    border-bottom-color: var(--el-color-primary) !important;
+    @if $border-color == yes {
+      border-bottom-color: var(--el-color-primary) !important;
+    } @else if $border-color == all {
+      border-color: var(--el-color-primary) !important;
+    }
     @content;
   }
 }

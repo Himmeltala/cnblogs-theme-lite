@@ -115,7 +115,7 @@ function fixedSorterChange() {
     cursor: pointer;
     opacity: 0.6;
     @include flex();
-    @include ahover() {
+    @include hover() {
       opacity: 1;
     }
   }
