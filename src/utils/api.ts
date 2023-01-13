@@ -26,7 +26,12 @@ function sendGet(url: string, response: (res: any) => void) {
       timeout: 5000
     })
     .then(res => {
-      response(res);
+      // response(res);
+      if (res.data) {
+        response(res);
+      } else {
+        ElMessage({ message: `获取不到数据，请检查网络！`, grouping: true, type: "error" });
+      }
     })
     .catch(err => {
       ElMessage({ message: `${err.code}: ${err.message}`, grouping: true, type: "error" });
@@ -47,6 +52,7 @@ function sendPost(url: string, data: any, response: (res: any) => void) {
       headers: { RequestVerificationToken: $("#antiforgery_token").attr("value") }
     })
     .then(res => {
+      // response(res);
       if (res.data) {
         response(res);
       } else {

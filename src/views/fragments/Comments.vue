@@ -10,20 +10,18 @@ import { useCommentsAnchorStore } from "@/store";
 const props = defineProps({
   postId: { type: Number, required: true }
 });
-
-const commentAnchorRef = ref<any>(null);
+const commentAnchorQuote = ref<any>(null);
 const { commentAnchor } = storeToRefs(useCommentsAnchorStore());
 
 let form = ref<DataType.Comment>({ postId: props.postId, parentCommentId: 0, content: "" });
 let loading = ref(false);
+let skeleton = ref(true);
 let comments = ref<Array<DataType.Comment>>();
 let commentCount = ref(1);
 let currentIndex = ref(0);
-let skeleton = ref(true);
 let commentContent = ref("");
 let tempReplayComment: DataType.Comment;
 let tempUpdateComment: DataType.Comment;
-let htmlComment = "";
 
 function fetchComment(
   f: boolean,
@@ -58,39 +56,12 @@ fetchComment(true, {
   success: res => {
     comments.value = res;
     skeleton.value = false;
-
-    comments.value = [
-      {
-        commentId: 1,
-        layer: "#1楼",
-        date: "2022-11-29 14:47",
-        author: "Enziandom",
-        content: "这只是一个测试评论......",
-        replayEditable: false,
-        updateEditable: false,
-        digg: " 支持(0) ",
-        bury: " 反对(0) ",
-        avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
-      },
-      {
-        commentId: 2,
-        layer: "#2楼",
-        date: "2022-11-29 15:21",
-        replayEditable: false,
-        updateEditable: false,
-        author: "Himmelbleu",
-        content: "这只是一个测试评论......",
-        digg: " 支持(0) ",
-        bury: " 反对(0) ",
-        avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
-      }
-    ];
   }
 });
 
-watch(commentAnchorRef, () => {
-  if (commentAnchorRef.value.length > 0) {
-    const top = commentAnchorRef.value[0].offsetTop;
+watch(commentAnchorQuote, () => {
+  if (commentAnchorQuote.value.length > 0) {
+    const top = commentAnchorQuote.value[0].offsetTop;
     $("#h-content").animate({ scrollTop: top }, 200, "linear");
   }
   commentAnchor.value = 0;
@@ -165,7 +136,6 @@ function cancelUpdateComment(comment: DataType.Comment) {
 
 function beforeUpdateComment(comment: DataType.Comment) {
   comment.htmlContent = comment.content;
-  if (comment.replayEditable) comment.replayEditable = false;
   if (tempUpdateComment && tempUpdateComment.commentId !== comment.commentId) {
     if (tempUpdateComment.updateEditable) tempUpdateComment.updateEditable = false;
     if (tempUpdateComment.isEditingUpdate) tempUpdateComment.isEditingUpdate = false;
@@ -181,76 +151,75 @@ function beforeUpdateComment(comment: DataType.Comment) {
 }
 
 function finishUpdateComment(comment: DataType.Comment) {
-  if (!comment.updateEditable)
-    RemoteApi.updateComment(
-      {
-        body: comment.content,
-        commentId: comment.commentId
-      },
-      ({ data }) => {
-        if (data.isSuccess) {
-          fetchComment(true, {
-            success: res => {
-              comments.value = res;
-              comment.updateEditable = !comment.updateEditable;
-              comment.isEditingUpdate = !comment.isEditingUpdate;
-              ElMessage({ message: "修改评论成功！", grouping: true, type: "success" });
-            }
-          });
-        } else {
-          comment.content = htmlComment;
-          ElMessage({ message: "这不是你的评论，没有权限编辑！", grouping: true, type: "error" });
-        }
+  RemoteApi.updateComment(
+    {
+      body: comment.content,
+      commentId: comment.commentId
+    },
+    ({ data }) => {
+      if (data.isSuccess) {
+        fetchComment(true, {
+          success: res => {
+            comments.value = res;
+            comment.updateEditable = !comment.updateEditable;
+            comment.isEditingUpdate = !comment.isEditingUpdate;
+            ElMessage({ message: "修改评论成功！", grouping: true, type: "success" });
+          }
+        });
+      } else {
+        ElMessage({ message: "这不是你的评论，没有权限编辑！", grouping: true, type: "error" });
       }
-    );
+    }
+  );
 }
 
 function cancelReplayComment(comment: DataType.Comment) {
   comment.replayEditable = !comment.replayEditable;
-  comment.content = htmlComment;
+  comment.isEditingReplay = !comment.isEditingReplay;
+  comment.content = comment.htmlContent;
 }
 
 function beforeReplayComment(comment: DataType.Comment) {
-  if (comment.updateEditable) comment.updateEditable = false;
-  if (tempUpdateComment && tempUpdateComment.commentId !== comment.commentId) {
-    if (tempUpdateComment.updateEditable) {
-      tempUpdateComment.updateEditable = false;
-    }
-  }
-  if (tempReplayComment && tempReplayComment.commentId !== comment.commentId) tempReplayComment.replayEditable = false;
-
-  htmlComment = comment.content;
+  comment.htmlContent = comment.content;
   comment.replayEditable = !comment.replayEditable;
+  comment.isEditingReplay = !comment.isEditingReplay;
+
+  if (tempReplayComment && tempReplayComment.commentId !== comment.commentId) {
+    if (tempReplayComment.replayEditable) tempReplayComment.replayEditable = false;
+    if (tempReplayComment.isEditingReplay) tempReplayComment.isEditingReplay = false;
+    tempReplayComment.content = tempReplayComment.htmlContent;
+  }
+
   commentContent.value = "";
   commentContent.value += `回复 ${comment.layer} [@${comment.author}](${comment.space})\n\n`;
   tempReplayComment = comment;
 }
 
 function finishReplayComment(comment: DataType.Comment) {
-  comment.replayEditable = !comment.replayEditable;
-  if (comment.updateEditable) comment.updateEditable = false;
-
-  if (!comment.replayEditable)
-    RemoteApi.replayComment(
-      {
-        body: commentContent.value,
-        postId: props.postId,
-        parentCommentId: comment.commentId
-      },
-      (ajax: any) => {
-        fetchComment(
-          ajax.isSuccess,
-          {
-            message: `成功回复 ${comment.author} 的评论！`,
-            success: res => (comments.value = res)
-          },
-          {
-            message: ajax.message
+  RemoteApi.replayComment(
+    {
+      body: commentContent.value,
+      postId: props.postId,
+      parentCommentId: comment.commentId
+    },
+    (ajax: any) => {
+      fetchComment(
+        ajax.isSuccess,
+        {
+          message: `成功回复 ${comment.author} 的评论！`,
+          success: res => {
+            comments.value = res;
+            comment.replayEditable = !comment.replayEditable;
+            comment.isEditingReplay = !comment.isEditingReplay;
           }
-        );
-        commentContent.value = "";
-      }
-    );
+        },
+        {
+          message: ajax.message
+        }
+      );
+      commentContent.value = "";
+    }
+  );
 }
 
 function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
@@ -294,7 +263,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
       </el-button>
     </div>
     <h3>评论列表</h3>
-    <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="skeleton" />
+    <el-skeleton v-if="comments?.length" style="margin-top: 10px" :rows="20" animated :loading="skeleton" />
     <div class="mt-10" v-if="comments?.length && !skeleton && __LITE_CONFIG__.isLogined">
       <div class="mb-9" v-for="(item, index) in comments" :key="index">
         <div class="flex items-center content-center justify-start">
@@ -304,7 +273,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
             <div class="fsz-0.8 color-#8D9095 mt-1.5 flex items-center content-center justify-center">
               <div
                 v-if="commentAnchor === item.commentId"
-                ref="commentAnchorRef"
+                ref="commentAnchorQuote"
                 :id="'#' + item.commentId"
                 class="mr-2">
                 {{ item.layer }}
@@ -353,7 +322,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
               v-show="!item.replayEditable && !item.isEditingUpdate"
               class="hover mr-3 flex justify-end items-center content-center"
               @click="beforeReplayComment(item)">
-              <el-icon class="mr-0.3">
+              <el-icon class="mr-0.5">
                 <i-ep-chat-round />
               </el-icon>
               <span>回复</span>
@@ -362,7 +331,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
               v-show="item.replayEditable && !item.isEditingUpdate"
               class="hover mr-3 flex justify-end items-center content-center"
               @click="finishReplayComment(item)">
-              <el-icon class="mr-0.3">
+              <el-icon class="mr-0.5">
                 <i-ep-check />
               </el-icon>
               <span>完成回复</span>
@@ -371,7 +340,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
               v-show="item.replayEditable && !item.isEditingUpdate"
               class="hover mr-3 flex justify-end items-center content-center"
               @click="cancelReplayComment(item)">
-              <el-icon class="mr-0.3">
+              <el-icon class="mr-0.5">
                 <i-ep-close />
               </el-icon>
               <span>取消回复</span>
@@ -380,7 +349,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
               v-show="!item.isEditingUpdate && !item.isEditingReplay"
               class="hover mr-3 flex justify-end items-center content-center actions"
               @click="voteComment(item, 'Digg')">
-              <el-icon class="mr-0.3">
+              <el-icon class="mr-0.5">
                 <i-ep-caret-top />
               </el-icon>
               <span>{{ item.digg }}</span>
@@ -389,7 +358,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
               v-show="!item.isEditingUpdate && !item.isEditingReplay"
               class="hover mr-3 flex justify-end items-center content-center actions"
               @click="voteComment(item, 'Bury')">
-              <el-icon class="mr-0.3">
+              <el-icon class="mr-0.5">
                 <i-ep-caret-bottom />
               </el-icon>
               <span>{{ item.bury }}</span>
@@ -402,7 +371,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
                 @confirm="confirmDeleteComment(item, index)">
                 <template #reference>
                   <div class="hover flex justify-end items-center content-center">
-                    <el-icon class="mr-0.3">
+                    <el-icon class="mr-0.5">
                       <i-ep-delete />
                     </el-icon>
                     <span>删除</span>
@@ -414,12 +383,21 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
               v-show="!item.updateEditable && !item.isEditingReplay"
               class="hover flex justify-end items-center content-center"
               @click="beforeUpdateComment(item)">
-              <el-icon class="mr-0.3">
+              <el-icon class="mr-0.5">
                 <i-ep-edit-pen />
               </el-icon>
               <span>编辑</span>
             </div>
-            <div class="hover mr-3" v-if="item.updateEditable && !item.isEditingReplay">
+            <div
+              v-show="item.updateEditable && !item.isEditingReplay"
+              class="hover mr-3 flex justify-end items-center content-center"
+              @click="finishUpdateComment(item)">
+              <el-icon class="mr-0.5">
+                <i-ep-circle-check />
+              </el-icon>
+              <span>完成编辑</span>
+            </div>
+            <div class="hover" v-if="item.updateEditable && !item.isEditingReplay">
               <el-popconfirm
                 confirm-button-text="确定"
                 cancel-button-text="取消"
@@ -427,22 +405,13 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
                 @confirm="cancelUpdateComment(item)">
                 <template #reference>
                   <div class="hover flex justify-end items-center content-center">
-                    <el-icon class="mr-0.3">
+                    <el-icon class="mr-0.5">
                       <i-ep-circle-close />
                     </el-icon>
                     <span>取消编辑</span>
                   </div>
                 </template>
               </el-popconfirm>
-            </div>
-            <div
-              v-show="item.updateEditable && !item.isEditingReplay"
-              class="hover flex justify-end items-center content-center"
-              @click="finishUpdateComment(item)">
-              <el-icon class="mr-0.3">
-                <i-ep-circle-check />
-              </el-icon>
-              <span>完成编辑</span>
             </div>
           </div>
         </div>
