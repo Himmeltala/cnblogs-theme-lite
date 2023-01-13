@@ -18,7 +18,6 @@
 
 <style scoped>
 #h-content {
-  z-index: 999;
   width: 52.5vw;
   height: 90vh;
   top: 10vh;

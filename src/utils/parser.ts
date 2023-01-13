@@ -113,6 +113,9 @@ export function parseCommentList(strDOM: any): Array<DataType.Comment> {
       comments[i] = {
         updateEditable: false,
         replayEditable: false,
+        isEditingUpdate: false,
+        isEditingReplay: false,
+        htmlContent: "",
         commentId: parseInt(anchor),
         space: $(elem).find(`#a_comment_author_${anchor}`).attr("href"),
         author: $(elem).find(`#a_comment_author_${anchor}`).text(),
@@ -208,7 +211,10 @@ export function parsePrevNext(strDOM: any): any {
  * @param realDOM 真实 DOM
  * @param calc 是否计算页数
  */
-export function parseCategoryList(realDOM: any, calc: boolean): { pages: string[]; label: string; list: Array<DataType.Essay> } {
+export function parseCategoryList(
+  realDOM: any,
+  calc: boolean
+): { pages: string[]; label: string; list: Array<DataType.Essay> } {
   let dom = $(realDOM).find(".entrylistItem");
 
   let id = $(dom).find(".entrylistItemTitle");

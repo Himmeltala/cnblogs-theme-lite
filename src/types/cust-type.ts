@@ -24,6 +24,12 @@ export interface Comment {
   updateEditable?: boolean;
   // 回复是否可以被编辑，默认是 false
   replayEditable?: boolean;
+  // 是否正在编辑
+  isEditingUpdate?: boolean;
+  // 是否正在回复
+  isEditingReplay?: boolean;
+  // 临时存储 html 内容
+  htmlContent?: string;
   // 评论 ID
   commentId?: number;
   // 个人主页地址

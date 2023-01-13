@@ -72,7 +72,6 @@ svg {
 
 <style scoped lang="scss">
 #navigator {
-  z-index: 999;
   box-sizing: border-box;
   border-radius: 0 0 6px 6px;
 }

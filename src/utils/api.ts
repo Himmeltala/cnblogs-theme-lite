@@ -15,33 +15,22 @@ import * as HttpType from "@/types/http-type";
 import { __LITE_CONFIG__, BaseAPI } from "@/lite.config";
 
 /**
- * 获取首页的随笔列表
+ * 发送 get 请求，这里对获取数据失败的请求进行统一处理
  *
- * @param page 页数，从 1 开始
- * @param calcPage 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
- * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
- * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
+ * @param url 请求路径
+ * @param response 获取响应的消息
  */
-export function getEssayList(
-  page: number,
-  calcPage: boolean,
-  response: (res: { pages: string[]; list: Array<DataType.Essay> }) => void
-) {
-  axios.get(`${BaseAPI}/default.html?page=${page}`).then(({ data }) => {
-    response(Parser.parseEssayList(data, calcPage));
-  });
-}
-
-/**
- * 通过随笔 ID 获取随笔
- *
- * @param postId 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
- * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
- */
-export function getEssay(postId: number, response: (res: DataType.Essay) => void) {
-  axios.get(`${BaseAPI}/p/${postId}.html`).then(({ data }) => {
-    response(Parser.parseEssay(postId, data));
-  });
+function sendGet(url: string, response: (res: any) => void) {
+  axios
+    .get(url, {
+      timeout: 5000
+    })
+    .then(res => {
+      response(res);
+    })
+    .catch(err => {
+      ElMessage({ message: `${err.code}: ${err.message}`, grouping: true, type: "error" });
+    });
 }
 
 /**
@@ -58,12 +47,45 @@ function sendPost(url: string, data: any, response: (res: any) => void) {
       headers: { RequestVerificationToken: $("#antiforgery_token").attr("value") }
     })
     .then(res => {
-      response(res);
+      if (res.data) {
+        response(res);
+      } else {
+        ElMessage({ message: `获取不到数据，请检查网络！`, grouping: true, type: "error" });
+      }
     })
     .catch(err => {
       ElMessage({ message: `${err.code}: ${err.message}`, grouping: true, type: "error" });
-      response(500);
     });
+}
+
+/**
+ * 获取首页的随笔列表
+ *
+ * @param page 页数，从 1 开始
+ * @param calcPage 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
+ * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
+ * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
+ */
+export function getEssayList(
+  page: number,
+  calcPage: boolean,
+  response: (res: { pages: string[]; list: Array<DataType.Essay> }) => void
+) {
+  sendGet(`${BaseAPI}/default.html?page=${page}`, ({ data }) => {
+    response(Parser.parseEssayList(data, calcPage));
+  });
+}
+
+/**
+ * 通过随笔 ID 获取随笔
+ *
+ * @param postId 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
+ * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
+ */
+export function getEssay(postId: number, response: (res: DataType.Essay) => void) {
+  sendGet(`${BaseAPI}/p/${postId}.html`, ({ data }) => {
+    response(Parser.parseEssay(postId, data));
+  });
 }
 
 /**
@@ -113,7 +135,7 @@ export function updateComment(comment: DataType.BlogComment, response: (res: any
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
 export function getCommentCount(postId: number | string, response: (res: any) => void) {
-  axios.get(`${BaseAPI}/ajax/GetCommentCount.aspx?postId=${postId}`).then(({ data }) => {
+  sendGet(`${BaseAPI}/ajax/GetCommentCount.aspx?postId=${postId}`, ({ data }) => {
     response(Parser.parseCommentPages(data));
   });
 }
@@ -158,7 +180,9 @@ export function getCommentList(
 ) {
   let url = `${BaseAPI}/ajax/GetComments.aspx?postId=${postId}&pageIndex=${pageIndex}`;
   if (anchorCommentId) url += `&anchorCommentId=${anchorCommentId}&isDesc=false`;
-  axios.get(url).then(({ data }) => response(Parser.parseCommentList(data)));
+  sendGet(url, ({ data }) => {
+    response(Parser.parseCommentList(data));
+  });
 }
 
 /**
@@ -168,9 +192,12 @@ export function getCommentList(
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
 export function getEssayTagsAndCategories(postId: number, response: (res: any) => void) {
-  axios
-    .get(`${BaseAPI}/ajax/CategoriesTags.aspx?blogId=${__LITE_CONFIG__.currentBlogId}&postId=${postId}`)
-    .then(({ data }) => response(Parser.parseEssayTagsAndCategories(data)));
+  sendGet(
+    `${BaseAPI}/ajax/CategoriesTags.aspx?blogId=${__LITE_CONFIG__.currentBlogId}&postId=${postId}`,
+    ({ data }) => {
+      response(Parser.parseEssayTagsAndCategories(data));
+    }
+  );
 }
 
 /**
@@ -180,7 +207,7 @@ export function getEssayTagsAndCategories(postId: number, response: (res: any) =
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
 export function getPrevNext(postId: number | string, response: (res: any) => void) {
-  axios.get(`${BaseAPI}/ajax/post/prevnext?postId=${postId}`).then(({ data }) => {
+  sendGet(`${BaseAPI}/ajax/post/prevnext?postId=${postId}`, ({ data }) => {
     response(Parser.parsePrevNext(data));
   });
 }
@@ -223,7 +250,7 @@ export function getCategories(
   page: any,
   response: (res: { pages: string[]; label: string; list: Array<DataType.Essay> }) => void
 ) {
-  axios.get(`${BaseAPI}/category/${id}.html?page=${page}`).then(({ data }) => {
+  sendGet(`${BaseAPI}/category/${id}.html?page=${page}`, ({ data }) => {
     response(Parser.parseCategoryList(data, calcPage));
   });
 }
@@ -235,7 +262,7 @@ export function getCategories(
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
 export function getTagPageList(tag: string, response: (res: DataType.TagPage) => void) {
-  axios.get(`${BaseAPI}/tag/${tag}`).then(({ data }) => {
+  sendGet(`${BaseAPI}/tag/${tag}`, ({ data }) => {
     response(Parser.parseTagPageList(data));
   });
 }
@@ -246,7 +273,7 @@ export function getTagPageList(tag: string, response: (res: DataType.TagPage) =>
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
 export function getSideCategories(response: (res: any) => void) {
-  axios.get(`${BaseAPI}/ajax/sidecolumn.aspx`).then(({ data }) => {
+  sendGet(`${BaseAPI}/ajax/sidecolumn.aspx`, ({ data }) => {
     response(Parser.parseSideCategories(data));
   });
 }
@@ -264,7 +291,7 @@ export function getSideCategoriesLocal(response: (res: any) => void) {
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
 export function getSideBloggerInfo(response: (res: Array<DataType.BloggerInfo>) => void) {
-  axios.get(`${BaseAPI}/ajax/news.aspx`).then(({ data }) => {
+  sendGet(`${BaseAPI}/ajax/news.aspx`, ({ data }) => {
     response(Parser.parseSideBloggerInfo(data));
   });
 }
@@ -282,7 +309,7 @@ export function getSideBloggerInfoLocal(response: (res: Array<DataType.BloggerIn
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
 export function getSideBlogInfo(response: (res: any) => void) {
-  axios.get(`${BaseAPI}/ajax/blogStats`).then(({ data }) => {
+  sendGet(`${BaseAPI}/ajax/blogStats`, ({ data }) => {
     response(Parser.parseSideBlogInfo(data));
   });
 }
@@ -307,7 +334,7 @@ export function getSideBlogRank(response: (res: any) => void) {
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
 export function getSideTopList(response: (res: any) => void) {
-  axios.get(`${BaseAPI}/ajax/TopLists.aspx`).then(({ data }) => {
+  sendGet(`${BaseAPI}/ajax/TopLists.aspx`, ({ data }) => {
     response(Parser.parseSideBlogTopList(data));
   });
 }
