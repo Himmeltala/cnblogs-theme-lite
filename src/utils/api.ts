@@ -26,16 +26,16 @@ function sendGet(url: string, response: (res: any) => void) {
       timeout: 5000
     })
     .then(res => {
-      // response(res);
-      if (res.data) {
-        response(res);
-      } else {
-        ElMessage({ message: `获取不到数据，请检查网络！`, grouping: true, type: "error" });
-      }
+      response(res);
     })
     .catch(err => {
-      ElMessage({ message: `${err.code}: ${err.message}`, grouping: true, type: "error" });
+      // ElMessage({ message: `${err.code}: ${err.message}`, grouping: true, type: "error" });
+      console.error(`${err.code}: ${err.message}`);
     });
+}
+
+async function sendAwaitGet(url: string) {
+  return await axios.get(url, { timeout: 5000 });
 }
 
 /**
@@ -52,12 +52,7 @@ function sendPost(url: string, data: any, response: (res: any) => void) {
       headers: { RequestVerificationToken: $("#antiforgery_token").attr("value") }
     })
     .then(res => {
-      // response(res);
-      if (res.data) {
-        response(res);
-      } else {
-        ElMessage({ message: `获取不到数据，请检查网络！`, grouping: true, type: "error" });
-      }
+      response(res);
     })
     .catch(err => {
       ElMessage({ message: `${err.code}: ${err.message}`, grouping: true, type: "error" });
@@ -355,4 +350,12 @@ export function getSideTopListLocal(response: (res: any) => void) {
 
 export function getGalleryImg(): string {
   return $("#ViewPicture1_OriginalImage").attr("href");
+}
+
+/**
+ * 获取所有标签列表
+ */
+export async function getTag(): Promise<Array<DataType.Tag>> {
+  const { data } = await sendAwaitGet(`${BaseAPI}/tag`);
+  return Parser.parseTags(data);
 }

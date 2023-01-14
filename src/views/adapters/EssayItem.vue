@@ -39,14 +39,10 @@ const router = useRouter();
       <el-icon>
         <i-ep-caret-right />
       </el-icon>
-      <router-link class="hover ml-0.5 b-b-1 b-b-dotted b-b-#cccccc" :to="'/e/' + item.id">阅读全文</router-link>
+      <router-link class="hover color-#a7a7a7 ml-0.5 b-b-1 b-b-dotted b-b-#cccccc" :to="'/e/' + item.id">
+        阅读全文
+      </router-link>
     </div>
     <EssayBottom :align="'flex-end'" :data="{ date: item.date, comm: item.comm, digg: item.digg, view: item.view }" />
   </Card>
 </template>
-
-<style scoped lang="css">
-a {
-  color: #a7a7a7;
-}
-</style>

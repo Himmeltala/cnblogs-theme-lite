@@ -104,7 +104,7 @@ const tabName = ref("随笔");
           </div>
         </template>
         <div class="item" v-for="(item, index) in categories" :key="index">
-          <div class="text hover" @click="nav('/c/' + item.id + '/1', router)">
+          <div class="text hover" @click="nav('/c/' + item.id, router)">
             {{ item.text }}
           </div>
         </div>

@@ -5,13 +5,17 @@
   <Navigator />
   <LeftSidebar />
   <div id="h-content">
-    <router-view v-slot="{ Component }">
-      <Transition name="fade">
-        <KeepAlive :include="['Home']">
-          <component :is="Component" />
-        </KeepAlive>
-      </Transition>
-    </router-view>
+    <RouterView v-slot="{ Component }">
+      <template v-if="Component">
+        <Transition mode="out-in">
+          <KeepAlive :include="['Home']">
+            <Suspense>
+              <component :is="Component" />
+            </Suspense>
+          </KeepAlive>
+        </Transition>
+      </template>
+    </RouterView>
   </div>
   <RightSidebar />
 </template>
@@ -24,15 +28,5 @@
   left: 23.8vw;
   overflow-x: hidden;
   position: absolute;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.15s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
 }
 </style>

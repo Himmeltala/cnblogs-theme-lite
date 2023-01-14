@@ -96,7 +96,7 @@ function voteEssay(voteType: DataType.VoteType) {
               :class="{ 'mr-2': index !== tagscatoies.categories.length - 1 }"
               v-for="(item, index) in tagscatoies.categories"
               :key="index">
-              <Tag @click="nav('/c/' + item.href + '/1', router)">
+              <Tag @click="nav('/c/' + item.href, router)">
                 {{ item.text }}
               </Tag>
             </div>

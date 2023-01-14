@@ -101,3 +101,9 @@ export interface LiteConfigType {
   links?: { href: string; text: string }[];
   books?: { href?: string; text: string; img: string; author: string; rate: number }[];
 }
+
+export interface Tag {
+  count: number;
+  href: string;
+  text: string;
+}

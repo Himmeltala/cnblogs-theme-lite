@@ -391,3 +391,17 @@ export function parseSideBlogTopList(strDOM: string): any {
     });
   return list;
 }
+
+export function parseTags(dom: any): Array<DataType.Tag> {
+  const list: Array<DataType.Tag> = [];
+  $(dom)
+    .find("#MyTag1_dtTagList")
+    .find("td")
+    .each(function (i, el) {
+      let count = parseInt($(el).attr("data-use-count"));
+      let href = $(el).find("a").attr("href");
+      let text = $(el).find("a").text();
+      list.push({ count, href, text });
+    });
+  return list;
+}

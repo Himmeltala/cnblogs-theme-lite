@@ -14,7 +14,7 @@ const routes = [
   },
   {
     name: RouteName.CATEGORY,
-    path: "/c/:id/:page",
+    path: "/c/:id",
     component: () => import("./views/modules/Category.vue")
   },
   {

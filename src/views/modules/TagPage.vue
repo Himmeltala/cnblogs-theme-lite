@@ -32,20 +32,17 @@ fetchTagPageList();
       <Card v-if="loading" style="flex: 1 1 40%" :class="{ 'mb-2.5': item < 8 }" v-for="item in 10" :key="item">
         <el-skeleton animated :loading="loading"></el-skeleton>
       </Card>
-      <Card
-        style="flex: 1 1 40%"
-        :class="{ 'mb-2.5': index < taglist.length - 2 }"
-        v-if="!loading"
-        v-for="(item, index) in taglist"
-        :key="index">
+      <Card style="flex: 1 1 40%" class="mb-2.5" v-if="!loading" v-for="(item, index) in taglist" :key="index">
         <div class="fsz-1.1 break-all">
-          <router-link class="hover" :to="'/e/' + item.id">{{ item.title }}</router-link>
+          <router-link class="hover color-#a7a7a7" :to="'/e/' + item.id">{{ item.title }}</router-link>
         </div>
         <div class="flex content-center items-center justify-start fsz-0.9 mt-6">
           <el-icon>
             <i-ep-caret-right />
           </el-icon>
-          <router-link class="hover b-b-#cccccc b-b-dotted b-b-1 p-b-0.3" :to="'/e/' + item.id">阅读全文</router-link>
+          <router-link class="hover color-#a7a7a7 b-b-#cccccc b-b-dotted b-b-1 p-b-0.3" :to="'/e/' + item.id">
+            阅读全文
+          </router-link>
         </div>
         <EssayBottom class="mt-4" :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
       </Card>
@@ -54,13 +51,7 @@ fetchTagPageList();
 </template>
 
 <style scoped lang="scss">
-#tagpage {
-  a {
-    color: #a7a7a7;
-  }
-
-  #t-content {
-    @include flex($justify: space-between, $items: stretch, $content: stretch);
-  }
+#t-content {
+  @include flex($justify: space-between, $items: stretch, $content: stretch);
 }
 </style>
