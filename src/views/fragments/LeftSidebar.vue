@@ -1,34 +1,24 @@
 <script setup lang="ts">
-import * as RemoteApi from "@/utils/api";
+import {
+  getSideBloggerInfo,
+  getSideBlogInfo,
+  getSideCategories,
+  getSideTopList,
+  getSideBlogRank
+} from "@/utils/local-api";
 import { nav } from "@/utils/route-helper";
 import { __LITE_CONFIG__ } from "@/lite.config";
 
 const side = __LITE_CONFIG__.side;
 const router = useRouter();
 
-let tags = ref<any>([]);
-let blogger = ref<any>([]);
-let blogInfo = ref<any>([]);
-let toplist = ref<any>([]);
-let categories = ref<any>([]);
-let rank = ref<any>([]);
-
-RemoteApi.getSideBloggerInfoLocal(res => {
-  blogger.value = res;
-  RemoteApi.getSideBlogInfoLocal(res => {
-    blogInfo.value = res;
-    RemoteApi.getSideCategoriesLocal(res => {
-      tags.value = res.tags;
-      categories.value = res.categories;
-      RemoteApi.getSideTopListLocal(res => {
-        toplist.value = res;
-        RemoteApi.getSideBlogRank(res => {
-          rank.value = res;
-        });
-      });
-    });
-  });
-});
+const cl = getSideCategories();
+const tags = cl.tags;
+const categories = cl.categories;
+const blogger = getSideBloggerInfo();
+const blogInfo = getSideBlogInfo();
+const toplist = getSideTopList();
+const rank = getSideBlogRank();
 
 const tabName = ref("随笔");
 </script>

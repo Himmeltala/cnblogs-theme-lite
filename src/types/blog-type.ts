@@ -4,9 +4,9 @@ export type VoteType = "Bury" | "Digg";
  * 博客园评论和随笔的基础字段，一般是调用接口之后返回过来的字段
  */
 interface Blog {
-  isAbandoned?: boolean;
   postId?: number;
   voteType?: VoteType;
+  isAbandoned?: boolean;
 }
 
 /**
@@ -29,14 +29,14 @@ export interface BlogEssay extends Blog {}
 
 export interface BlogEssayVote {
   // 反对数量
-  buryCount?: number;
+  buryCount: number;
   // 点赞数量
-  diggCount?: number;
-  feedbackCount?: number;
+  diggCount: number;
+  feedbackCount: number;
   // 随笔 ID
-  postId?: number;
+  postId: number;
   // 阅读数量
-  viewCount?: number;
+  viewCount: number;
 }
 
 export interface BloggerInfo {

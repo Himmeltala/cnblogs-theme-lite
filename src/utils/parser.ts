@@ -292,7 +292,16 @@ export function parseTagPageList(realDOM: any): DataType.TagPage {
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideCategories(strDOM: string): any {
+export function parseSideCategories(strDOM: string): {
+  categories: {
+    id: string;
+    text: string;
+  }[];
+  tags: {
+    id: string;
+    text: string;
+  }[];
+} {
   let dom = parseStrToDom(strDOM);
   let list: any = { categories: [], tags: [] };
 
@@ -337,7 +346,7 @@ export function parseSideBloggerInfo(strDOM: string): Array<DataType.BloggerInfo
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideBlogInfo(strDOM: string): any {
+export function parseSideBlogInfo(strDOM: string): Array<{ text: string; digg: string }> {
   let list = <any>[];
   $(parseStrToDom(strDOM))
     .find("span")
@@ -358,7 +367,10 @@ export function parseSideBlogInfo(strDOM: string): any {
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideRank(strDOM: string): any[] {
+export function parseSideRank(strDOM: string): {
+  text: string;
+  digg: string;
+}[] {
   let list = <any>[];
   $(parseStrToDom(strDOM))
     .find("li")
@@ -376,7 +388,10 @@ export function parseSideRank(strDOM: string): any[] {
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideBlogTopList(strDOM: string): any {
+export function parseSideBlogTopList(strDOM: string): {
+  id: string;
+  text: string;
+}[] {
   let list = <any>[];
   $(parseStrToDom(strDOM))
     .find("#TopViewPostsBlock ul > li > a")

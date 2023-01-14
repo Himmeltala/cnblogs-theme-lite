@@ -12,11 +12,25 @@ export const useAnchorStore = defineStore("anchor", () => {
 });
 
 export const useCommentsAnchorStore = defineStore("commentsAnchor", () => {
-  let _commentAnchor = ref<number>(0);
+  let _commentAnchor = ref(0);
 
   function setAnchor(commentAnchor: number) {
     _commentAnchor.value = commentAnchor;
   }
 
   return { commentAnchor: _commentAnchor, setAnchor };
+});
+
+export const useLoadingStore = defineStore("loaing", () => {
+  let _loading = ref(true);
+
+  function setLoading(bool: boolean) {
+    _loading.value = bool;
+  }
+
+  function convertLoading() {
+    _loading.value = !_loading.value;
+  }
+
+  return { loading: _loading, setLoading, convertLoading };
 });

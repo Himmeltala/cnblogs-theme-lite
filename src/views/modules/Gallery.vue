@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { getGalleryImg } from "@/utils/api";
+import { getGalleryImg } from "@/utils/local-api";
 import { closeLoader } from "@/utils/loader";
 
 const router = useRouter();
-
 const url = getGalleryImg();
 const srcList = <string[]>[url];
 

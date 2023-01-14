@@ -3,7 +3,6 @@ import { getTag } from "@/utils/api";
 import { closeLoader } from "@/utils/loader";
 
 const tags = await getTag();
-
 closeLoader();
 </script>
 

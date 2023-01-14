@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 import { nav } from "@/utils/route-helper";
-import * as DataType from "@/types/data-type";
+import { Essay } from "@/types/data-type";
 
 defineProps({
-  loading: {
-    type: Boolean,
-    default: true
-  },
   data: {
-    type: Array as PropType<DataType.Essay[]>,
+    type: Array as PropType<Essay[]>,
     required: true
   }
 });
@@ -18,7 +14,7 @@ const router = useRouter();
 </script>
 
 <template>
-  <Card :class="{ 'mb-2': index !== data.length - 1 }" v-if="!loading" v-for="(item, index) in data" :key="index">
+  <Card :class="{ 'mb-2': index !== data.length - 1 }" v-for="(item, index) in data" :key="index">
     <div class="header flex content-center items-center justify-between">
       <el-image v-if="index % 2 !== 0 && item.surface" class="surface h-9 rd-3 wd-25" :src="item.surface" fit="cover" />
       <div :class="{ 'wd-100': !item.surface, 'wd-73': item.surface }">

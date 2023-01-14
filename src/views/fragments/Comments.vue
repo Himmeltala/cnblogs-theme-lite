@@ -15,7 +15,6 @@ const { commentAnchor } = storeToRefs(useCommentsAnchorStore());
 
 let form = ref<DataType.Comment>({ postId: props.postId, parentCommentId: 0, content: "" });
 let loading = ref(false);
-let skeleton = ref(true);
 let comments = ref<Array<DataType.Comment>>();
 let commentCount = ref(1);
 let currentIndex = ref(0);
@@ -55,34 +54,6 @@ function fetchComment(
 fetchComment(true, {
   success: res => {
     comments.value = res;
-    skeleton.value = false;
-
-    comments.value = [
-      {
-        commentId: 1,
-        layer: "#1楼",
-        date: "2022-11-29 14:47",
-        author: "Enziandom",
-        content: "这只是一个测试评论......",
-        replayEditable: false,
-        updateEditable: false,
-        digg: " 支持(0) ",
-        bury: " 反对(0) ",
-        avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
-      },
-      {
-        commentId: 2,
-        layer: "#2楼",
-        date: "2022-11-29 15:21",
-        replayEditable: false,
-        updateEditable: false,
-        author: "Himmelbleu",
-        content: "这只是一个测试评论......",
-        digg: " 支持(0) ",
-        bury: " 反对(0) ",
-        avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
-      }
-    ];
   }
 });
 
@@ -102,10 +73,8 @@ function uploadImage(el: string, comment?: DataType.Comment) {
 }
 
 function paginationChange() {
-  skeleton.value = true;
   RemoteApi.getCommentList(props.postId, currentIndex.value, (res: Array<DataType.Essay>) => {
     comments.value = res;
-    skeleton.value = false;
   });
 }
 
@@ -290,8 +259,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
       </el-button>
     </div>
     <h3>评论列表</h3>
-    <el-skeleton v-if="comments?.length" style="margin-top: 10px" :rows="20" animated :loading="skeleton" />
-    <div class="mt-10" v-if="comments?.length && !skeleton && __LITE_CONFIG__.isLogined">
+    <div class="mt-10" v-if="comments?.length && __LITE_CONFIG__.isLogined">
       <div class="mb-9" v-for="(item, index) in comments" :key="index">
         <div class="flex items-center content-center justify-start">
           <el-image class="mr-4 rd-50 w-14 h-14" :src="item.avatar" fit="fill" />

@@ -1,38 +1,27 @@
 <script setup lang="ts">
-import * as RemoteApi from "@/utils/api";
+import { getTagPageList } from "@/utils/api";
 import { closeLoader } from "@/utils/loader";
 
 const route = useRoute();
+const data = await getTagPageList(String(route.params.tag));
 
-let taglist = ref<any>();
-let tagname = "";
-let loading = ref(true);
+let tagname = ref(data.text);
+let taglist = ref(data.list);
 
-function fetchTagPageList() {
-  RemoteApi.getTagPageList(String(route.params.tag), res => {
-    tagname = res.text;
-    taglist.value = res.list;
-    loading.value = false;
-    closeLoader();
-  });
-}
+closeLoader();
 
-watch(route, () => {
-  loading.value = true;
-  fetchTagPageList();
+watch(route, async () => {
+  const data = await getTagPageList(String(route.params.tag));
+  tagname.value = data.text;
+  taglist.value = data.list;
 });
-
-fetchTagPageList();
 </script>
 
 <template>
   <div id="tagpage">
     <div class="fsz-1.25 mx-1.3 mt-1 mb-3">{{ tagname }}</div>
     <div id="t-content">
-      <Card v-if="loading" style="flex: 1 1 40%" :class="{ 'mb-2.5': item < 8 }" v-for="item in 10" :key="item">
-        <el-skeleton animated :loading="loading"></el-skeleton>
-      </Card>
-      <Card style="flex: 1 1 40%" class="mb-2.5" v-if="!loading" v-for="(item, index) in taglist" :key="index">
+      <Card style="flex: 1 1 40%" class="mb-2.5" v-for="(item, index) in taglist" :key="index">
         <div class="fsz-1.1 break-all">
           <router-link class="hover color-#a7a7a7" :to="'/e/' + item.id">{{ item.title }}</router-link>
         </div>

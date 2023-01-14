@@ -1,58 +1,45 @@
 <script setup lang="ts">
-import * as RemoteApi from "@/utils/api";
-import * as DataType from "@/types/data-type";
+import { useLoadingStore } from "@/store";
+import { getEssay, getEssayTagsAndCategories, getPrevNext, getEssayVote, voteEssay } from "@/utils/api";
+import { VoteType } from "@/types/data-type";
 import { nav } from "@/utils/route-helper";
 import { closeLoader } from "@/utils/loader";
 import { __LITE_CONFIG__ } from "@/lite.config";
 
 const route = useRoute();
 const router = useRouter();
-const postId: number = parseInt(String(route.params.id));
+const { setLoading } = useLoadingStore();
+const postId = parseInt(String(route.params.id));
 
-let essay = ref<DataType.Essay>();
-let prevNext = ref<any>();
-let essayVote = ref<DataType.BlogEssayVote>();
-let tagscatoies = ref<any>({ categories: {}, tags: {} });
+const essay = await getEssay(postId);
+const tagscatoies = await getEssayTagsAndCategories(postId);
+const prevNext = await getPrevNext(postId);
+const essayVote = ref(await getEssayVote(postId));
 
-let holeSkeleton = ref(true);
+closeLoader();
+setLoading(false);
 
-RemoteApi.getEssay(postId, res => {
-  essay.value = res;
-  RemoteApi.getEssayTagsAndCategories(postId, res => {
-    tagscatoies.value = res;
-    holeSkeleton.value = false;
-    closeLoader();
-    RemoteApi.getPrevNext(postId, res => {
-      prevNext.value = res;
-      RemoteApi.getEssayVote([postId], res => {
-        essayVote.value = res[0];
-      });
-    });
-  });
-});
-
-function voteEssay(voteType: DataType.VoteType) {
-  RemoteApi.voteEssay({ postId, isAbandoned: false, voteType }, ajax => {
-    if (ajax.isSuccess) {
-      if (voteType == "Bury") essayVote.value!.buryCount = essayVote.value!.buryCount! + 1;
-      else essayVote.value!.diggCount = essayVote.value!.diggCount! + 1;
-    }
-    ElMessage({ message: ajax.message, grouping: true, type: ajax.isSuccess ? "success" : "error" });
-  });
+async function vote(voteType: VoteType) {
+  const data = await voteEssay({ postId, isAbandoned: false, voteType });
+  if (data) {
+    if (data.isSuccess)
+      if (voteType == "Bury") essayVote.value.buryCount = essayVote.value.buryCount + 1;
+      else essayVote.value.diggCount = essayVote.value.diggCount + 1;
+    ElMessage({ message: data.message, grouping: true, type: data.isSuccess ? "success" : "error" });
+  }
 }
 </script>
 
 <template>
   <div id="essay" class="color-#a7a7a7">
     <Card class="relative">
-      <el-skeleton style="margin-top: 10px" :rows="20" animated :loading="holeSkeleton" />
-      <div v-if="!holeSkeleton">
+      <div>
         <el-page-header @back="nav('/', router)">
           <template #icon>
             <i-ep-arrow-left />
           </template>
           <template #content>
-            <div class="leh-1.4 color-#a7a7a7 fsz-1.4 break-all">{{ essay?.text }}</div>
+            <div class="leh-1.4 color-#a7a7a7 fsz-1.4 break-all">{{ essay.text }}</div>
           </template>
         </el-page-header>
         <div class="color-#878787 flex justify-start items-center content-center mt-4 fsz-0.9">
@@ -60,19 +47,19 @@ function voteEssay(voteType: DataType.VoteType) {
             <el-icon class="mr-0.9">
               <i-ep-clock />
             </el-icon>
-            <span>{{ essay?.date }}</span>
+            <span>{{ essay.date }}</span>
           </div>
           <div class="flex justify-center items-center content-center mr-3">
             <el-icon class="mr-0.9">
               <i-ep-view />
             </el-icon>
-            <span>{{ essay?.view }}次阅读</span>
+            <span>{{ essay.view }}次阅读</span>
           </div>
           <div class="flex justify-center items-center content-center mr-3">
             <el-icon class="mr-0.9">
               <i-ep-chat-line-square />
             </el-icon>
-            <span>{{ essay?.comm }}条评论</span>
+            <span>{{ essay.comm }}条评论</span>
           </div>
           <div
             class="flex justify-center items-center content-center hover"
@@ -125,19 +112,19 @@ function voteEssay(voteType: DataType.VoteType) {
             <el-icon class="mr-0.9">
               <i-ep-clock />
             </el-icon>
-            <span>{{ essay?.date }}</span>
+            <span>{{ essay.date }}</span>
           </div>
           <div class="flex justify-center items-center content-center mr-2">
             <el-icon class="mr-0.9">
               <i-ep-view />
             </el-icon>
-            <span>{{ essay?.view }}次阅读</span>
+            <span>{{ essay.view }}次阅读</span>
           </div>
           <div class="flex justify-center items-center content-center">
             <el-icon class="mr-0.9">
               <i-ep-chat-line-square />
             </el-icon>
-            <span>{{ essay?.comm }}条评论</span>
+            <span>{{ essay.comm }}条评论</span>
           </div>
         </div>
         <div class="prev-next fsz-0.9 mt-10">
@@ -159,8 +146,8 @@ function voteEssay(voteType: DataType.VoteType) {
             <el-button
               style="color: #a7a7a7; height: 2.2rem; width: 5.5rem; border-radius: 0.4rem"
               plain
-              @click="voteEssay('Digg')">
-              <span class="fsz-0.9"> 点赞 {{ essayVote?.diggCount }} </span>
+              @click="vote('Digg')">
+              <span class="fsz-0.9"> 点赞 {{ essayVote.diggCount }} </span>
               <template #icon>
                 <i-ep-caret-top />
               </template>
@@ -170,8 +157,8 @@ function voteEssay(voteType: DataType.VoteType) {
             <el-button
               style="color: #a7a7a7; height: 2.2rem; width: 5.5rem; border-radius: 0.4rem"
               plain
-              @click="voteEssay('Bury')">
-              <span class="fsz-0.9"> 反对 {{ essayVote?.buryCount }} </span>
+              @click="vote('Bury')">
+              <span class="fsz-0.9"> 反对 {{ essayVote.buryCount }} </span>
               <template #icon>
                 <i-ep-caret-bottom />
               </template>
