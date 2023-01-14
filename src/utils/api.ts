@@ -10,12 +10,9 @@
 import $ from "jquery";
 import axios from "axios";
 import * as Parser from "./parser";
-import { useLoadingStore } from "@/store";
 import * as DataType from "@/types/data-type";
 import * as HttpType from "@/types/http-type";
 import { __LITE_CONFIG__, BaseAPI } from "@/lite.config";
-
-const { setLoading } = useLoadingStore();
 
 /**
  * 发送 get 请求，这里对获取数据失败的请求进行统一处理
@@ -24,31 +21,25 @@ const { setLoading } = useLoadingStore();
  * @param response 获取响应的消息
  */
 function sendGet(url: string, response: (res: any) => void) {
-  setLoading(true);
   axios
     .get(url, {
       timeout: 5000
     })
     .then(res => {
       response(res);
-      setLoading(false);
     })
     .catch(err => {
       // ElMessage({ message: `${err.code}: ${err.message}`, grouping: true, type: "error" });
       console.error(`${err.code}: ${err.message}`);
-      setLoading(false);
     });
 }
 
 async function sendAwaitGet(url: string): Promise<any> {
-  setLoading(true);
   let awt;
   try {
     awt = await axios.get(url, { timeout: 5000 });
-    setLoading(false);
   } catch (e) {
     console.error(e);
-    setLoading(false);
   }
   return awt;
 }
@@ -61,7 +52,6 @@ async function sendAwaitGet(url: string): Promise<any> {
  * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
 function sendPost(url: string, data: any, response: (res: any) => void) {
-  setLoading(true);
   axios
     .post(url, data, {
       timeout: 5000,
@@ -69,27 +59,22 @@ function sendPost(url: string, data: any, response: (res: any) => void) {
     })
     .then(res => {
       response(res);
-      setLoading(false);
     })
     .catch(err => {
       ElMessage({ message: `${err.code}: ${err.message}`, grouping: true, type: "error" });
       console.error(`${err.code}: ${err.message}`);
-      setLoading(false);
     });
 }
 
 async function sendAwaitPost(url: string, data: any): Promise<any> {
-  setLoading(true);
   let awt;
   try {
     awt = await axios.post(url, data, {
       timeout: 5000,
       headers: { RequestVerificationToken: $("#antiforgery_token").attr("value") }
     });
-    setLoading(false);
   } catch (e) {
     console.error(e);
-    setLoading(false);
   }
   return awt;
 }

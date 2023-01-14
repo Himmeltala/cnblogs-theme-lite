@@ -3,8 +3,8 @@ import { getGalleryImg } from "@/utils/local-api";
 import { closeLoader } from "@/utils/loader";
 
 const router = useRouter();
-const url = getGalleryImg();
-const srcList = <string[]>[url];
+const imgUrl = getGalleryImg();
+const srcList = <string[]>[imgUrl];
 
 closeLoader();
 </script>
@@ -14,17 +14,17 @@ closeLoader();
     <Card
       style="width: inherit; height: inherit"
       :class="{
-        'flex items-center content-center justify-center': !url || !srcList.length,
-        'flex justify-center': url
+        'flex items-center content-center justify-center': !imgUrl || !srcList.length,
+        'flex justify-center': imgUrl
       }">
       <el-image
         class="image"
         style="max-width: 100%; height: inherit"
         fit="cover"
-        :src="url"
+        :src="imgUrl"
         :preview-src-list="srcList" />
       <el-result
-        v-if="!url || !srcList.length"
+        v-if="!imgUrl || !srcList.length"
         icon="error"
         title="图片加载失败！"
         sub-title="检查你的网络状态或图片已从相册移除">

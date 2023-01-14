@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useLoadingStore } from "@/store";
 import { getEssay, getEssayTagsAndCategories, getPrevNext, getEssayVote, voteEssay } from "@/utils/api";
 import { VoteType } from "@/types/data-type";
 import { nav } from "@/utils/route-helper";
@@ -8,7 +7,6 @@ import { __LITE_CONFIG__ } from "@/lite.config";
 
 const route = useRoute();
 const router = useRouter();
-const { setLoading } = useLoadingStore();
 const postId = parseInt(String(route.params.id));
 
 const essay = await getEssay(postId);
@@ -17,7 +15,6 @@ const prevNext = await getPrevNext(postId);
 const essayVote = ref(await getEssayVote(postId));
 
 closeLoader();
-setLoading(false);
 
 async function vote(voteType: VoteType) {
   const data = await voteEssay({ postId, isAbandoned: false, voteType });

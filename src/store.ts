@@ -20,17 +20,3 @@ export const useCommentsAnchorStore = defineStore("commentsAnchor", () => {
 
   return { commentAnchor: _commentAnchor, setAnchor };
 });
-
-export const useLoadingStore = defineStore("loaing", () => {
-  let _loading = ref(true);
-
-  function setLoading(bool: boolean) {
-    _loading.value = bool;
-  }
-
-  function convertLoading() {
-    _loading.value = !_loading.value;
-  }
-
-  return { loading: _loading, setLoading, convertLoading };
-});

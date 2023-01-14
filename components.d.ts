@@ -20,8 +20,6 @@ declare module '@vue/runtime-core' {
     ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
     ElRate: typeof import('element-plus/es')['ElRate']
     ElResult: typeof import('element-plus/es')['ElResult']
-    ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
-    ElSkeletonItem: typeof import('element-plus/es')['ElSkeletonItem']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
@@ -68,7 +66,7 @@ declare module '@vue/runtime-core' {
     LeftSidebar: typeof import('./src/views/fragments/LeftSidebar.vue')['default']
     MyTags: typeof import('./src/views/modules/MyTags.vue')['default']
     Navigator: typeof import('./src/views/fragments/Navigator.vue')['default']
-    PaginationPage: typeof import('./src/components/PaginationPage.vue')['default']
+    Pagination: typeof import('./src/components/Pagination.vue')['default']
     RightSidebar: typeof import('./src/views/fragments/RightSidebar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -76,8 +74,5 @@ declare module '@vue/runtime-core' {
     SkillGraph: typeof import('./src/components/SkillGraph/SkillGraph.vue')['default']
     Tag: typeof import('./src/components/Tag.vue')['default']
     TagPage: typeof import('./src/views/modules/TagPage.vue')['default']
-  }
-  export interface ComponentCustomProperties {
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

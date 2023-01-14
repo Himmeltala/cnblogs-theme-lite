@@ -15,11 +15,11 @@ function fixedChange(page: any) {}
 
 <template>
   <div class="home">
-    <PaginationPage ref="pagination" @fixed-change="fixedChange" @float-change="floatChange" :page-count="pageCount">
+    <Pagination ref="pagination" @fixed-change="fixedChange" @float-change="floatChange" :page-count="pageCount">
       <template #content>
         <EssayItem v-if="data" :data="data" />
       </template>
-    </PaginationPage>
+    </Pagination>
   </div>
 </template>
 
