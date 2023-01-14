@@ -18,12 +18,12 @@ function search() {
     class="fixed ltv-10 px-5 py-3 wvw-80 hvh-9 flex content-center items-center bg-#252525"
     :style="{ 'justify-content': navor?.header ? 'space-between' : 'flex-end' }">
     <div
-      class="hover font-normal flex items-center content-center justify-center color-#878787"
+      class="hover fsz-1.5 font-normal flex items-center content-center justify-center color-#878787"
       @click="nav('/', router)"
       v-if="navor?.header"
       v-html="navor.header"></div>
     <div class="flex items-center content-center justify-center fsz-1.1">
-      <div class="mr-5 w-50" v-if="navor?.search">
+      <div class="mr-5" v-if="navor?.search">
         <el-input @keyup.enter="search" v-model="input">
           <template #prefix>
             <el-icon @click="search">
@@ -45,34 +45,26 @@ function search() {
         <div class="flex items-center content-center justify-center" v-else>
           <svg
             v-if="(item.svg || item.img) && item.svg"
+            class="w-6 h-6"
+            fill="#a7a7a7"
             @click="nav(item.href)"
             viewBox="0 0 1024 1024"
-            xmlns="http://www.w3.org/2000/svg"
-            width="25"
-            height="25"
-            v-html="item.svg"></svg>
-          <img
-            v-else
-            alt="FAILED"
-            @click="nav(item.href)"
-            style="width: 25px; height: 25px; object-fit: cover; border-radius: 50px"
-            :src="item.img" />
+            v-html="item.svg" />
+          <img v-else class="object-cover rd-50 w-6 h-6" alt="FAILED" @click="nav(item.href)" :src="item.img" />
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
-svg {
-  fill: #a7a7a7;
-  cursor: pointer;
-}
-</style>
-
-<style scoped lang="scss">
+<style lang="scss">
 #navigator {
   box-sizing: border-box;
   border-radius: 0 0 6px 6px;
+
+  .el-input__wrapper {
+    height: 1.8rem !important;
+    width: 10rem !important;
+  }
 }
 </style>

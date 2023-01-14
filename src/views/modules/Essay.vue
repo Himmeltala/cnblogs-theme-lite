@@ -156,16 +156,22 @@ function voteEssay(voteType: DataType.VoteType) {
         </div>
         <div class="my-10 flex justify-end items-center content-center">
           <div class="digg mr-5">
-            <el-button style="color: #a7a7a7" plain @click="voteEssay('Digg')">
-              点赞 {{ essayVote?.diggCount }}
+            <el-button
+              style="color: #a7a7a7; height: 2.2rem; width: 5.5rem; border-radius: 0.4rem"
+              plain
+              @click="voteEssay('Digg')">
+              <span class="fsz-0.9"> 点赞 {{ essayVote?.diggCount }} </span>
               <template #icon>
                 <i-ep-caret-top />
               </template>
             </el-button>
           </div>
           <div class="bury">
-            <el-button style="color: #a7a7a7" plain @click="voteEssay('Bury')">
-              反对 {{ essayVote?.buryCount }}
+            <el-button
+              style="color: #a7a7a7; height: 2.2rem; width: 5.5rem; border-radius: 0.4rem"
+              plain
+              @click="voteEssay('Bury')">
+              <span class="fsz-0.9"> 反对 {{ essayVote?.buryCount }} </span>
               <template #icon>
                 <i-ep-caret-bottom />
               </template>
@@ -215,11 +221,10 @@ pre {
   box-sizing: border-box;
 
   code {
+    --at-apply: fsz-0.95 box-border break-all rd-2;
     font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace !important;
     font-weight: 300;
-    font-size: 14px;
     margin: 0 !important;
-    border-radius: 6px;
     background-color: #2b2b2b !important;
 
     &::-webkit-scrollbar {
@@ -244,26 +249,23 @@ pre {
 }
 
 code {
+  --at-apply: fsz-0.9 box-border break-all rd-2;
   font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace !important;
-  font-size: 14px;
   font-weight: 300;
   background: #2e2e2e;
   color: var(--el-color-danger-light-3);
-  padding: 3px 6px;
-  border-radius: 6px;
-  word-break: break-all;
-  margin: 0 4px;
-  box-sizing: border-box;
+  padding: 0.15rem 0.4rem;
+  margin: 0 0.4rem;
 }
 
 .cblock {
   box-sizing: border-box;
   padding: 4px;
-  font-size: 13px;
+  --at-apply: fsz-0.8 absolute;
   color: #6d6d6d;
-  font-weight: 300;
-  font-family: sans-serif;
-  position: absolute;
+  font-weight: 400;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+    sans-serif !important;
   right: 4px;
   top: 0;
 }

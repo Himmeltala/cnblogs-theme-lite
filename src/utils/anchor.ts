@@ -1,20 +1,29 @@
+/**
+ * 制作随笔目录，以及点击目录跳转对应的标题
+ *
+ * @author Himmelbleu
+ * @since 1.0
+ * @date 2022 年 12 月 1 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
+
 import $ from "jquery";
 import { useAnchorStore } from "@/store";
 import { __LITE_CONFIG__ } from "@/lite.config";
 
-let clasps = <any>[];
+const clasps: any = [];
 
 export function makeAnchor(dom: string) {
   const anchorStore = useAnchorStore();
-  let h = $(dom).children().not("p").not("table").not("img").not("ul").not("ol").not("pre");
-  let anchors = <any>[];
+  const title = $(dom).children().not("p").not("table").not("img").not("ul").not("ol").not("pre");
+  const anchors:any = [];
 
   let h1 = 0;
   let h2 = 0;
   let h3 = 0;
   let level = ``;
 
-  $(h).each((i, e) => {
+  $(title).each((i, e) => {
     const id = $(e).attr("id");
     const text = $(e).text();
     const top = $(e).offset()?.top;

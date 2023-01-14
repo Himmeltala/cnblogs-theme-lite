@@ -56,6 +56,33 @@ fetchComment(true, {
   success: res => {
     comments.value = res;
     skeleton.value = false;
+
+    comments.value = [
+      {
+        commentId: 1,
+        layer: "#1楼",
+        date: "2022-11-29 14:47",
+        author: "Enziandom",
+        content: "这只是一个测试评论......",
+        replayEditable: false,
+        updateEditable: false,
+        digg: " 支持(0) ",
+        bury: " 反对(0) ",
+        avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
+      },
+      {
+        commentId: 2,
+        layer: "#2楼",
+        date: "2022-11-29 15:21",
+        replayEditable: false,
+        updateEditable: false,
+        author: "Himmelbleu",
+        content: "这只是一个测试评论......",
+        digg: " 支持(0) ",
+        bury: " 反对(0) ",
+        avatar: " https://pic.cnblogs.com/face/2271881/20221121232108.png "
+      }
+    ];
   }
 });
 
@@ -254,8 +281,8 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
         <textarea id="main-upload-img" />
       </div>
       <el-button
-        class="mt-4"
         type="primary"
+        style="height: 2.2rem; width: 5.5rem; border-radius: 0.4rem; font-size: 0.9rem"
         :disabled="!__LITE_CONFIG__.isLogined"
         :loading="loading"
         @click="insertComment">
@@ -453,8 +480,8 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
 </style>
 
 <style scoped lang="scss">
-@mixin textarea($height: 270px) {
-  --at-apply: rd-2 box-border p-2.5;
+@mixin textarea($height: 15rem) {
+  --at-apply: rd-2 box-border p-2.5 fsz-0.9;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
     sans-serif;
   background-color: #202020;
@@ -465,7 +492,6 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
   color: #a7a7a7;
   height: $height;
   line-height: 1.3;
-  font-size: 14px;
   resize: none;
 }
 
@@ -493,7 +519,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
   }
 
   textarea {
-    @include textarea($height: 150px);
+    @include textarea($height: 10rem);
   }
 }
 </style>

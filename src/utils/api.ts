@@ -7,8 +7,8 @@
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */
 
-import axios from "axios";
 import $ from "jquery";
+import axios from "axios";
 import * as Parser from "./parser";
 import * as DataType from "@/types/data-type";
 import * as HttpType from "@/types/http-type";
@@ -34,7 +34,7 @@ function sendGet(url: string, response: (res: any) => void) {
     });
 }
 
-async function sendAwaitGet(url: string) {
+async function sendAwaitGet(url: string): Promise<any> {
   return await axios.get(url, { timeout: 5000 });
 }
 
@@ -56,25 +56,36 @@ function sendPost(url: string, data: any, response: (res: any) => void) {
     })
     .catch(err => {
       ElMessage({ message: `${err.code}: ${err.message}`, grouping: true, type: "error" });
+      console.error(`${err.code}: ${err.message}`);
     });
+}
+
+async function sendAwaitPost(url: string, data: any): Promise<any> {
+  let aw: any;
+  try {
+    aw = await axios.post(url, data, {
+      timeout: 5000,
+      headers: { RequestVerificationToken: $("#antiforgery_token").attr("value") }
+    });
+  } catch (e) {
+    console.error(e);
+  }
+  return aw;
 }
 
 /**
  * 获取首页的随笔列表
  *
  * @param page 页数，从 1 开始
- * @param calcPage 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
+ * @param isCalc 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
  * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
- * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
-export function getEssayList(
+export async function getEssayList(
   page: number,
-  calcPage: boolean,
-  response: (res: { pages: string[]; list: Array<DataType.Essay> }) => void
-) {
-  sendGet(`${BaseAPI}/default.html?page=${page}`, ({ data }) => {
-    response(Parser.parseEssayList(data, calcPage));
-  });
+  isCalc: boolean
+): Promise<{ pages: string[]; list: Array<DataType.Essay> }> {
+  const { data } = await sendAwaitGet(`${BaseAPI}/default.html?page=${page}`);
+  return Parser.parseEssayList(data, isCalc);
 }
 
 /**

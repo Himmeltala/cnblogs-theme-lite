@@ -1,3 +1,12 @@
+/**
+ * Vue Router 工具，解析 url，跳转对应的 router
+ *
+ * @author Himmelbleu
+ * @since 1.0
+ * @date 2022 年 12 月 1 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
+
 import { Router } from "vue-router";
 import { Belongs } from "@/lite.config";
 import { useCommentsAnchorStore } from "@/store";

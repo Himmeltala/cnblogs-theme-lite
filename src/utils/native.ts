@@ -1,3 +1,12 @@
+/**
+ * 提供博客园原本的 API，如上传图片
+ *
+ * @author Himmelbleu
+ * @since 1.0
+ * @date 2022 年 12 月 1 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
+
 import $ from "jquery";
 
 function openWindow(n: string, t: number, i: number, r: number) {

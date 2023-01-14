@@ -61,7 +61,7 @@ export interface TagPage {
   list: Array<{ id: string; title: string; href: string; date: string; view: string; comm: string; digg: string }>;
 }
 
-export interface LiteConfigType {
+export interface Lite {
   // 当前博客的名称
   currentBlogApp?: string;
   // 当前博客的 ID

@@ -3,7 +3,7 @@ export type VoteType = "Bury" | "Digg";
 /**
  * 博客园评论和随笔的基础字段，一般是调用接口之后返回过来的字段
  */
-interface BlogRestriction {
+interface Blog {
   isAbandoned?: boolean;
   postId?: number;
   voteType?: VoteType;
@@ -12,7 +12,7 @@ interface BlogRestriction {
 /**
  * 博客园评论实体，区别于上面定义的评论实体，这个实体是根据博客园的数据库字段而来
  */
-export interface BlogComment extends BlogRestriction {
+export interface BlogComment extends Blog {
   // 评论 ID
   commentId?: number;
   // 评论内容
@@ -25,7 +25,7 @@ export interface BlogComment extends BlogRestriction {
   parentCommentId?: number;
 }
 
-export interface BlogEssay extends BlogRestriction {}
+export interface BlogEssay extends Blog {}
 
 export interface BlogEssayVote {
   // 反对数量

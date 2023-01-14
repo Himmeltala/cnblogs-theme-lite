@@ -1,4 +1,13 @@
 /**
+ * 字符、文本工具
+ *
+ * @author Himmelbleu
+ * @since 1.0
+ * @date 2022 年 12 月 1 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
+
+/**
  * 替换字符串，默认替换 ""。传递 regExps，一个正则表达式数组。
  *
  * @param source 被修剪的字符串

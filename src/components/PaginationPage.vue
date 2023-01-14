@@ -64,8 +64,8 @@ function fixedSorterChange() {
 </script>
 
 <template>
-  <div class="pagination-page">
-    <div class="pg pg-top" v-if="currentIndex > 1 && _pageCount >= 1">
+  <div class="pagination relative">
+    <div class="mb-2 flex justify-end" v-if="currentIndex > 1 && _pageCount >= 1">
       <el-pagination
         @current-change="fixedSorterChange"
         v-model:current-page="currentIndex"
@@ -74,7 +74,7 @@ function fixedSorterChange() {
         layout="prev, pager, next, jumper" />
     </div>
     <slot name="loading" />
-    <div v-show="currentIndex > 1" class="float-sorter left-sorter" @click="floatSorterChange('left')">
+    <div v-show="currentIndex > 1" class="hover sorter l-sorter" @click="floatSorterChange('left')">
       <el-tooltip effect="dark" content="上一页" placement="left">
         <el-icon>
           <i-ep-arrow-left-bold />
@@ -82,14 +82,14 @@ function fixedSorterChange() {
       </el-tooltip>
     </div>
     <slot name="content" />
-    <div class="float-sorter right-sorter" @click="floatSorterChange('right')">
+    <div class="hover sorter r-sorter" @click="floatSorterChange('right')">
       <el-tooltip effect="dark" content="下一页" placement="left">
         <el-icon>
           <i-ep-arrow-right-bold />
         </el-icon>
       </el-tooltip>
     </div>
-    <div class="pg pg-bottom" v-if="currentIndex > 1 && _pageCount >= 1">
+    <div class="mt-2 flex justify-end" v-if="currentIndex > 1 && _pageCount >= 1">
       <el-pagination
         @current-change="fixedSorterChange"
         v-show="_pageCount"
@@ -102,43 +102,20 @@ function fixedSorterChange() {
 </template>
 
 <style scoped lang="scss">
-.pagination-page {
-  position: relative;
-
-  .float-sorter {
-    position: fixed;
-    font-size: 10px;
-    width: 15px;
-    height: 30px;
-    background-color: #3c3c3c;
-    z-index: 999;
-    cursor: pointer;
-    opacity: 0.6;
-    @include flex();
-    @include hover() {
-      opacity: 1;
-    }
-  }
-
-  .left-sorter {
-    border-radius: 60px 0 0 60px;
-    left: calc(23.2vw);
-    top: 50vh;
-  }
-
-  .right-sorter {
-    border-radius: 0 60px 60px 0;
-    right: calc(23.2vw);
-    top: 50vh;
-  }
+.sorter {
+  --at-apply: fixed fsz-0.7 w-4 h-8 z-9 bg-#3c3c3c flex content-center items-center justify-center;
+  opacity: 0.7;
 }
 
-.pg {
-  margin-bottom: 10px;
-  @include flex($justify: flex-end);
+.l-sorter {
+  --at-apply: rd-l-4;
+  left: calc(23vw);
+  top: 50vh;
 }
 
-.pg-top {
-  margin-top: 10px;
+.r-sorter {
+  --at-apply: rd-r-4;
+  right: calc(23.1vw);
+  top: 50vh;
 }
 </style>

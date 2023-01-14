@@ -1,50 +1,18 @@
 <script setup lang="ts">
-import * as RemoteApi from "@/utils/api";
-import * as DataType from "@/types/data-type";
+import { getEssayList } from "@/utils/api";
 import { closeLoader } from "@/utils/loader";
 
-let data = ref<DataType.Essay[]>();
-let loading = ref<boolean>(true);
-let pageCount = ref<number>(2);
-
+const data = ref((await getEssayList(1, false)).list);
+const loading = ref(true);
+const pageCount = ref(2);
 const pagination = ref();
 
-function fetchData(complete?: ((pages: string[]) => void) | null, isCalc: boolean = false, pageIndex: number = 1) {
-  loading.value = true;
-  RemoteApi.getEssayList(pageIndex, isCalc, res => {
-    if (res.list.length === 0) {
-      pagination.value.updateProps();
-    } else {
-      data.value = res.list;
-    }
-    loading.value = false;
-    complete && complete(res.pages);
-  });
-}
+closeLoader();
+loading.value = false;
 
-fetchData(() => {
-  closeLoader();
-});
+function floatChange(page: any) {}
 
-let isCalc = true;
-
-function floatChange(page: any) {
-  fetchData(
-    pages => {
-      if (isCalc) {
-        pageCount.value = parseInt(pages[pages.length - 1]);
-        if (pageCount.value === 1) pageCount.value = 2;
-        isCalc = false;
-      }
-    },
-    isCalc,
-    page.currentIndex
-  );
-}
-
-function fixedChange(page: any) {
-  fetchData(null, false, page.currentIndex);
-}
+function fixedChange(page: any) {}
 </script>
 
 <template>
