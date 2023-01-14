@@ -131,6 +131,7 @@ function cancelUpdateComment(comment: DataType.Comment) {
 }
 
 function beforeUpdateComment(comment: DataType.Comment) {
+  commentContent.value = "";
   comment.htmlContent = comment.content;
   if (tempUpdateComment && tempUpdateComment.commentId !== comment.commentId) {
     if (tempUpdateComment.updateEditable) tempUpdateComment.updateEditable = false;
@@ -139,7 +140,7 @@ function beforeUpdateComment(comment: DataType.Comment) {
   }
 
   RemoteApi.getComment({ commentId: comment.commentId }, ({ data }) => {
-    comment.content = data;
+    commentContent.value = data;
     comment.updateEditable = !comment.updateEditable;
     comment.isEditingUpdate = !comment.isEditingUpdate;
   });
@@ -149,7 +150,7 @@ function beforeUpdateComment(comment: DataType.Comment) {
 function finishUpdateComment(comment: DataType.Comment) {
   RemoteApi.updateComment(
     {
-      body: comment.content,
+      body: commentContent.value,
       commentId: comment.commentId
     },
     ({ data }) => {
@@ -294,7 +295,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
               </el-tooltip>
             </div>
             <div>
-              <textarea ref="editarea" v-model="item.content" placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
+              <textarea ref="editarea" v-model="commentContent" placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
             </div>
           </div>
           <div class="replayarea" v-show="item.replayEditable">
