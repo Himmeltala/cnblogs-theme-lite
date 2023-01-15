@@ -31,7 +31,7 @@ const router = useRouter();
         :src="item.surface"
         fit="cover" />
     </div>
-    <div class="read flex content-center items-center justify-start mt-2.5 mb-2 fsz-1">
+    <div class="read flex content-center items-center justify-start mt-2.5 mb-2 fsz-0.9">
       <el-icon>
         <i-ep-caret-right />
       </el-icon>

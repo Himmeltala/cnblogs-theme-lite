@@ -16,7 +16,7 @@ const clasps: any = [];
 export function makeAnchor(dom: string) {
   const anchorStore = useAnchorStore();
   const title = $(dom).children().not("p").not("table").not("img").not("ul").not("ol").not("pre");
-  const anchors:any = [];
+  const anchors: any = [];
 
   let h1 = 0;
   let h2 = 0;
@@ -76,4 +76,40 @@ export function setAnchorClick() {
       $("#h-content").animate({ scrollTop: item.top }, 800, "linear");
     });
   }
+}
+
+export function navor(top?: number) {
+  $("#h-content").animate({ scrollTop: top }, 200, "linear");
+}
+
+interface ContentScroll {
+  (scrollTop?: number, bottomHeight?: number): void;
+}
+
+export function onContentScroll(atTop?: ContentScroll, atMiddle?: ContentScroll, atBottom?: ContentScroll) {
+  let times = false;
+  let realChildHeight = 0;
+  let inTop = 0;
+  let inMiddle = 0;
+  let inBottom = 0;
+
+  $("#h-content").on("scroll", function (e) {
+    const scrollTop = e.target.scrollTop;
+    if (!times) {
+      // @ts-ignore
+      realChildHeight = e.target.firstChild.clientHeight - e.target.clientHeight;
+      inTop = realChildHeight * 0.1;
+      inMiddle = realChildHeight * 0.8;
+      inBottom = realChildHeight;
+      times = true;
+    }
+
+    if (scrollTop <= inTop) {
+      atTop && atTop(scrollTop, realChildHeight);
+    } else if (scrollTop > inTop && scrollTop <= inMiddle) {
+      atMiddle && atMiddle(scrollTop, realChildHeight);
+    } else if (scrollTop > inMiddle && scrollTop <= inBottom) {
+      atBottom && atBottom(scrollTop, realChildHeight);
+    }
+  });
 }

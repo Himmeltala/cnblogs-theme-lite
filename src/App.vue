@@ -2,8 +2,8 @@
 
 <template>
   <GitHub />
-  <Navigator />
-  <LeftSidebar />
+  <Navigation />
+  <LShowcase />
   <div id="h-content">
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
@@ -17,10 +17,11 @@
       </template>
     </RouterView>
   </div>
-  <RightSidebar />
+  <RShowcase />
+  <ToolKits />
 </template>
 
-<style scoped>
+<style>
 #h-content {
   width: 52.5vw;
   height: 90vh;

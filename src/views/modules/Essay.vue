@@ -286,9 +286,7 @@ blockquote {
     padding-bottom: 1px;
     border-bottom: 1px dotted #a7a7a7;
 
-    @include hover() {
-      border-bottom-color: var(--el-color-primary);
-    }
+    @include hover($border-color: bottom);
   }
 
   p {

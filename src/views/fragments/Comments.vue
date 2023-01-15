@@ -439,9 +439,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
     padding-bottom: 1px;
     border-bottom: 1px dotted #a7a7a7;
 
-    @include hover() {
-      border-bottom-color: var(--el-color-primary);
-    }
+    @include hover($border-color: bottom);
   }
 }
 </style>
@@ -466,9 +464,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
   --at-apply: mb-5 rd-2 box-border;
   border: 1px solid var(--el-border-color-lighter);
 
-  @include hover() {
-    border: 1px solid var(--el-color-primary);
-  }
+  @include hover($border-color: all);
 }
 
 .pusharea {

@@ -20,6 +20,40 @@ import { regulation } from "./unocss.regulation";
 export default defineConfig(({ command, mode }) => {
   const { VITE_BLOG_APP } = loadEnv(mode, "./");
   return {
+    plugins: [
+      vue(),
+      Unocss({
+        transformers: [
+          transformerDirective({
+            applyVariable: ["--at-apply", "--uno-apply", "--uno"]
+          })
+        ],
+        presets: [presetAttributify({}), presetUno()],
+        rules: regulation
+      }),
+      AutoImport({
+        imports: ["vue", "vue-router", "pinia"],
+        resolvers: [
+          ElementPlusResolver(),
+          IconsResolver({
+            prefix: "Icon"
+          })
+        ]
+      }),
+      Components({
+        resolvers: [
+          ElementPlusResolver(),
+          IconsResolver({
+            enabledCollections: ["ep"]
+          })
+        ],
+        dirs: ["./src/views/**", "./src/components/**"]
+      }),
+      Icons({
+        autoInstall: true
+      }),
+      viteCompression({})
+    ],
     resolve: {
       alias: [
         {
@@ -44,44 +78,6 @@ export default defineConfig(({ command, mode }) => {
         }
       }
     },
-    plugins: [
-      vue(),
-      Unocss({
-        transformers: [
-          transformerDirective({
-            applyVariable: ["--at-apply"]
-          })
-        ],
-        presets: [presetAttributify({}), presetUno()],
-        rules: regulation
-      }),
-      AutoImport({
-        imports: ["vue", "vue-router", "pinia"],
-        resolvers: [
-          ElementPlusResolver({
-            importStyle: "sass"
-          }),
-          IconsResolver({
-            prefix: "Icon"
-          })
-        ]
-      }),
-      Components({
-        resolvers: [
-          ElementPlusResolver({
-            importStyle: "sass"
-          }),
-          IconsResolver({
-            enabledCollections: ["ep"]
-          })
-        ],
-        dirs: ["./src/views/**", "./src/components/**"]
-      }),
-      Icons({
-        autoInstall: true
-      }),
-      viteCompression({})
-    ],
     build: {
       rollupOptions: {
         output: {

@@ -5,10 +5,10 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 
 /* Import CSS */
-// lite style
-import "./style.scss";
 // uno style
 import "uno.css";
+// lite style
+import "./style.scss";
 
 /* Import Lite */
 import Directive from "./directive";

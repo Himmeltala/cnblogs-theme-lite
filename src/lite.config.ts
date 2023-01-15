@@ -28,6 +28,7 @@ export function initLite(dev?: Function, pro?: Function) {
       currentBlogApp: import.meta.env.VITE_BLOG_APP,
       isBlogOwner: true,
       isLogined: true,
+      github: "https://github.com/Himmelbleu",
       navor: {
         header: "CNBLOGS",
         search: true,
