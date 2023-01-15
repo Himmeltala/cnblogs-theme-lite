@@ -86,21 +86,19 @@ interface ContentScroll {
   (scrollTop?: number, bottomHeight?: number): void;
 }
 
-export function onContentScroll(atTop?: ContentScroll, atMiddle?: ContentScroll, atBottom?: ContentScroll) {
+export function onContentScroll(atTop?: ContentScroll, atMiddle?: ContentScroll) {
   let times = false;
   let realChildHeight = 0;
   let inTop = 0;
   let inMiddle = 0;
-  let inBottom = 0;
 
   $("#h-content").on("scroll", function (e) {
     const scrollTop = e.target.scrollTop;
     if (!times) {
       // @ts-ignore
       realChildHeight = e.target.firstChild.clientHeight - e.target.clientHeight;
-      inTop = realChildHeight * 0.1;
-      inMiddle = realChildHeight * 0.8;
-      inBottom = realChildHeight;
+      inTop = realChildHeight * 0.5;
+      inMiddle = realChildHeight;
       times = true;
     }
 
@@ -108,8 +106,6 @@ export function onContentScroll(atTop?: ContentScroll, atMiddle?: ContentScroll,
       atTop && atTop(scrollTop, realChildHeight);
     } else if (scrollTop > inTop && scrollTop <= inMiddle) {
       atMiddle && atMiddle(scrollTop, realChildHeight);
-    } else if (scrollTop > inMiddle && scrollTop <= inBottom) {
-      atBottom && atBottom(scrollTop, realChildHeight);
     }
   });
 }

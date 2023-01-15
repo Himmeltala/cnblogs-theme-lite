@@ -17,8 +17,8 @@
       </template>
     </RouterView>
   </div>
-  <RShowcase />
   <ToolKits />
+  <RShowcase />
 </template>
 
 <style>

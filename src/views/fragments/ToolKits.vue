@@ -6,13 +6,12 @@ const navorTip = ref("跳转到底部");
 const scrollTop = ref(0);
 
 watch(route, () => {
-  scrollTop.value = 0;
   onContentScroll(
     (scrolling, bottom) => {
       scrollTop.value = bottom;
       navorTip.value = "跳转到底部";
     },
-    () => {
+    (scrolling, bottom) => {
       scrollTop.value = 0;
       navorTip.value = "跳转到顶部";
     }
