@@ -1,3 +1,12 @@
+/**
+ * 混合样式，适用于无法使用在 class 元素上，比 common.scss 更加智能化些
+ *
+ * @author Himmelbleu
+ * @since 1.0
+ * @date 2023 年 1 月 15 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
+
 @mixin flex($justify: center, $items: center, $content: center, $wrap: wrap, $row: row) {
   display: flex;
   align-content: $content;

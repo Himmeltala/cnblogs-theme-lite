@@ -20,13 +20,36 @@ import { regulation } from "./unocss.regulation";
 export default defineConfig(({ command, mode }) => {
   const { VITE_BLOG_APP } = loadEnv(mode, "./");
   return {
-    envDir: "./",
+    resolve: {
+      alias: [
+        {
+          find: "@",
+          replacement: resolve(__dirname, "src")
+        }
+      ]
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@use "@/scss/pre/element-plus.scss" as *; @use "@/scss/pre/mixins.scss" as *;`
+        }
+      }
+    },
+    server: {
+      proxy: {
+        "/api": {
+          target: `https://www.cnblogs.com/${VITE_BLOG_APP}`,
+          changeOrigin: true,
+          rewrite: (path: any) => path.replace(/^\/api/, "")
+        }
+      }
+    },
     plugins: [
       vue(),
       Unocss({
         transformers: [
           transformerDirective({
-            applyVariable: ["--at-apply", "--uno-apply", "--uno"]
+            applyVariable: ["--at-apply"]
           })
         ],
         presets: [presetAttributify({}), presetUno()],
@@ -43,7 +66,9 @@ export default defineConfig(({ command, mode }) => {
       }),
       Components({
         resolvers: [
-          ElementPlusResolver(),
+          ElementPlusResolver({
+            importStyle: "sass"
+          }),
           IconsResolver({
             enabledCollections: ["ep"]
           })
@@ -55,31 +80,6 @@ export default defineConfig(({ command, mode }) => {
       }),
       viteCompression({})
     ],
-    resolve: {
-      alias: [
-        {
-          find: "@",
-          replacement: resolve(__dirname, "src")
-        }
-      ]
-    },
-    css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData: `@import "@/scss/mixins.scss"; @import "@/scss/common.scss";`
-        }
-      }
-    },
-    base: "/",
-    server: {
-      proxy: {
-        "/api": {
-          target: `https://www.cnblogs.com/${VITE_BLOG_APP}`,
-          changeOrigin: true,
-          rewrite: (path: any) => path.replace(/^\/api/, "")
-        }
-      }
-    },
     build: {
       rollupOptions: {
         output: {

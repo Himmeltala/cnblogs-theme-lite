@@ -1,0 +1,63 @@
+/**
+ * 覆盖 element-plus 样式
+ *
+ * @author Himmelbleu
+ * @since 1.0
+ * @date 2023 年 1 月 15 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
+
+@forward "element-plus/theme-chalk/src/common/var.scss" with (
+  $colors: (
+    "white": #a7a7a7,
+    "black": #a7a7a7,
+    "primary": (
+      "base": #a7a7a7
+    ),
+    "success": (
+      "base": #a7a7a7
+    ),
+    "warning": (
+      "base": #a7a7a7
+    ),
+    "danger": (
+      "base": #a7a7a7
+    ),
+    "error": (
+      "base": #a7a7a7
+    ),
+    "info": (
+      "base": #a7a7a7
+    )
+  ),
+  $text-color: (
+    "primary": #a7a7a7,
+    "regular": #a7a7a7,
+    "secondary": #a7a7a7,
+    "placeholder": #a7a7a7,
+    "disabled": #a7a7a7
+  )
+);
+
+// .el-input__wrapper {
+//   height: 1.8rem !important;
+//   width: 10rem !important;
+// }
+
+// .el-input__inner {
+//   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+//     sans-serif !important;
+//   font-size: 0.9rem !important;
+// }
+
+// .el-rate__icon {
+//   margin: 0 !important;
+// }
+
+// .el-button {
+//   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+//     sans-serif !important;
+//   height: 2.2rem !important;
+//   width: 5.5rem !important;
+//   border-radius: 0.4rem !important;
+// }

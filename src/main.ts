@@ -1,19 +1,20 @@
+/* Import Vue */
 import App from "@/App.vue";
 import router from "@/router";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 
-// CSS
-import "uno.css";
+/* Import CSS */
+// lite style
 import "./style.scss";
-import "element-plus/theme-chalk/dark/css-vars.css";
-import "element-plus/dist/index.css";
-import "highlight.js/styles/atom-one-dark.css";
+// uno style
+import "uno.css";
 
-// Lite
+/* Import Lite */
 import Directive from "./directive";
 import { initLite } from "./lite.config";
 
+/* Start */
 const app = createApp(App);
 
 app.use(router);

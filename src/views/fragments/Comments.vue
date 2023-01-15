@@ -251,7 +251,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
         <textarea id="main-upload-img" />
       </div>
       <el-button
-        type="primary"
+        plain
         style="height: 2.2rem; width: 5.5rem; border-radius: 0.4rem; font-size: 0.9rem"
         :disabled="!__LITE_CONFIG__.isLogined"
         :loading="loading"
@@ -295,7 +295,10 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
               </el-tooltip>
             </div>
             <div>
-              <textarea ref="editarea" v-model="commentContent" placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
+              <textarea
+                ref="editarea"
+                v-model="commentContent"
+                placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
             </div>
           </div>
           <div class="replayarea" v-show="item.replayEditable">

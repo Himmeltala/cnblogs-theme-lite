@@ -14,7 +14,7 @@ function search() {
 
 <template>
   <div
-    id="navigator"
+    id="navigation"
     class="fixed ltv-10 px-5 py-3 wvw-80 hvh-9 flex content-center items-center bg-#252525"
     :style="{ 'justify-content': navor?.header ? 'space-between' : 'flex-end' }">
     <div
@@ -58,13 +58,8 @@ function search() {
 </template>
 
 <style lang="scss">
-#navigator {
+#navigation {
   box-sizing: border-box;
   border-radius: 0 0 6px 6px;
-
-  .el-input__wrapper {
-    height: 1.8rem !important;
-    width: 10rem !important;
-  }
 }
 </style>

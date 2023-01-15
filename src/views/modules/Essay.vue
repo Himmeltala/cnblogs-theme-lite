@@ -140,10 +140,7 @@ async function vote(voteType: VoteType) {
         </div>
         <div class="my-10 flex justify-end items-center content-center">
           <div class="digg mr-5">
-            <el-button
-              style="color: #a7a7a7; height: 2.2rem; width: 5.5rem; border-radius: 0.4rem"
-              plain
-              @click="vote('Digg')">
+            <el-button plain @click="vote('Digg')">
               <span class="fsz-0.9"> 点赞 {{ essayVote.diggCount }} </span>
               <template #icon>
                 <i-ep-caret-top />
@@ -151,10 +148,7 @@ async function vote(voteType: VoteType) {
             </el-button>
           </div>
           <div class="bury">
-            <el-button
-              style="color: #a7a7a7; height: 2.2rem; width: 5.5rem; border-radius: 0.4rem"
-              plain
-              @click="vote('Bury')">
+            <el-button plain @click="vote('Bury')">
               <span class="fsz-0.9"> 反对 {{ essayVote.buryCount }} </span>
               <template #icon>
                 <i-ep-caret-bottom />
@@ -243,9 +237,9 @@ code {
 }
 
 .cblock {
+  --at-apply: fsz-0.8 absolute;
   box-sizing: border-box;
   padding: 4px;
-  --at-apply: fsz-0.8 absolute;
   color: #6d6d6d;
   font-weight: 400;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
