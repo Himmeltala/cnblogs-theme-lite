@@ -1,0 +1,34 @@
+/**
+ * 覆盖 element-plus 样式
+ *
+ * @author Himmelbleu
+ * @since 1.0
+ * @date 2023 年 1 月 15 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
+
+:root,
+body {
+  --el-text-color-regular: #a7a7a7;
+  --el-text-color-primary: #a7a7a7;
+  --el-border-radius-base: 0.5rem;
+}
+
+.el-input__inner,
+.el-button {
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+    sans-serif !important;
+}
+
+.el-input__inner {
+  font-size: 0.9rem !important;
+}
+
+.el-input__wrapper {
+  height: 1.8rem !important;
+  width: 10rem !important;
+}
+
+.el-rate__icon {
+  margin: 0 !important;
+}

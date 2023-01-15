@@ -233,7 +233,7 @@ code {
   background: #2e2e2e;
   color: var(--el-color-danger-light-3);
   padding: 0.15rem 0.4rem;
-  margin: 0 0.4rem;
+  margin: 0;
 }
 
 .cblock {
@@ -246,6 +246,24 @@ code {
     sans-serif !important;
   right: 4px;
   top: 0;
+}
+
+blockquote {
+  --at-apply: box-border break-all rd-1 color-#8D9095;
+  margin: 0;
+  background-color: #2e2e2e;
+  padding: {
+    left: 0.5rem;
+    top: 0.1rem;
+    bottom: 0.1rem;
+  }
+  border: {
+    left: {
+      width: 0.3rem;
+      color: #409eff;
+      style: solid;
+    }
+  }
 }
 
 #e-content {

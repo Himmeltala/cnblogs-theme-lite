@@ -250,12 +250,7 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
       <div class="absolute opacity-0 top-0 left-0">
         <textarea id="main-upload-img" />
       </div>
-      <el-button
-        plain
-        style="height: 2.2rem; width: 5.5rem; border-radius: 0.4rem; font-size: 0.9rem"
-        :disabled="!__LITE_CONFIG__.isLogined"
-        :loading="loading"
-        @click="insertComment">
+      <el-button plain :disabled="!__LITE_CONFIG__.isLogined" :loading="loading" @click="insertComment">
         发送评论
       </el-button>
     </div>

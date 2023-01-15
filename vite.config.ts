@@ -31,7 +31,7 @@ export default defineConfig(({ command, mode }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@use "@/scss/pre/element-plus.scss" as *; @use "@/scss/pre/mixins.scss" as *;`
+          additionalData: `@use "@/scss/pre/mixins.scss" as *;`
         }
       }
     },
@@ -58,7 +58,9 @@ export default defineConfig(({ command, mode }) => {
       AutoImport({
         imports: ["vue", "vue-router", "pinia"],
         resolvers: [
-          ElementPlusResolver(),
+          ElementPlusResolver({
+            importStyle: "sass"
+          }),
           IconsResolver({
             prefix: "Icon"
           })

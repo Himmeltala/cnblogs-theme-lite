@@ -72,6 +72,6 @@ watch(route, value => {
 
 <style scoped lang="scss">
 a {
-  color: #878787;
+  --at-apply: color-#878787;
 }
 </style>
