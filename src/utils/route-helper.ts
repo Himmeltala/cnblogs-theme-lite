@@ -72,6 +72,10 @@ export function reviseUrl(url: string): void {
 }
 
 export function nav(path: string, router?: Router) {
-  if (router) router.push(path);
-  else window.open(path, "_blank");
+  if (path === "back") {
+    router.go(-1);
+  } else {
+    if (router) router.push(path);
+    else window.open(path, "_blank");
+  }
 }

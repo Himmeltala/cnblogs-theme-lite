@@ -8,11 +8,9 @@
  */
 
 import $ from "jquery";
-import { storeToRefs } from "pinia";
 import { useAnchorStore } from "@/store";
 import { __LITE_CONFIG__ } from "@/lite.config";
 
-// 制作锚点，用在随笔页面
 export function makeAnchor(dom: any) {
   const store = useAnchorStore();
   const title = $(dom).children("h1,h2,h3");
@@ -54,48 +52,12 @@ export function makeAnchor(dom: any) {
   store.setAnchors(anchors);
 }
 
-// 制作锚点事件（滑动页面、点击锚点进行跳转）
 export function makeAnchorEvent(binding: any) {
-  console.log(binding);
   $(`#anchor-${binding.id}`).on("click", e => {
-    console.log("click");
-
     document.querySelector(`#${binding.id}`).scrollIntoView({
       behavior: "smooth",
       block: "start",
       inline: "nearest"
     });
-  });
-}
-
-export function navor(top?: number) {
-  $("#lite-content").animate({ scrollTop: top }, 200, "linear");
-}
-
-interface ContentScroll {
-  (scrollTop?: number, bottomHeight?: number): void;
-}
-
-export function onContentScroll(atTop?: ContentScroll, atMiddle?: ContentScroll) {
-  let times = false;
-  let realChildHeight = 0;
-  let inTop = 0;
-  let inMiddle = 0;
-
-  $("#lite-content").on("scroll", function (e) {
-    const scrollTop = e.target.scrollTop;
-    if (!times) {
-      // @ts-ignore
-      realChildHeight = e.target.firstChild.clientHeight - e.target.clientHeight;
-      inTop = realChildHeight * 0.5;
-      inMiddle = realChildHeight;
-      times = true;
-    }
-
-    if (scrollTop <= inTop) {
-      atTop && atTop(scrollTop, realChildHeight);
-    } else if (scrollTop > inTop && scrollTop <= inMiddle) {
-      atMiddle && atMiddle(scrollTop, realChildHeight);
-    }
   });
 }

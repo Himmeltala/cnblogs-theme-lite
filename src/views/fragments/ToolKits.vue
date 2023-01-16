@@ -1,32 +1,9 @@
-<script setup lang="ts">
-import { navor, onContentScroll } from "@/utils/anchor";
-
-const route = useRoute();
-const navorTip = ref("跳转到底部");
-const scrollTop = ref(0);
-
-watch(route, () => {
-  onContentScroll(
-    (scrolling, bottom) => {
-      scrollTop.value = bottom;
-      navorTip.value = "跳转到底部";
-    },
-    (scrolling, bottom) => {
-      scrollTop.value = 0;
-      navorTip.value = "跳转到顶部";
-    }
-  );
-});
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div id="toolkits" class="fixed right-3.5 wvw-2.5 tpv-85">
-    <div class="kit hover" @click="navor(scrollTop)">
-      <el-tooltip effect="dark" :content="navorTip" placement="left-start">
-        <i-ep-arrow-up-bold
-          :class="{ 'arrow-from-top-to-down': scrollTop <= 0, 'arrow-from-down-to-top': scrollTop > 0 }"
-          class="kit-icon noselect" />
-      </el-tooltip>
+    <div class="kit hover">
+      <el-tooltip effect="dark" content="工具箱" placement="left-start"> </el-tooltip>
     </div>
   </div>
 </template>

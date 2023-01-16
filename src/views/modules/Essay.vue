@@ -47,7 +47,7 @@ watch(asyncComp, () => {
   <div ref="asyncComp" id="lite-essay" class="color-#a7a7a7">
     <Card class="relative">
       <div>
-        <el-page-header @back="nav('/', router)">
+        <el-page-header @back="nav('back', router)">
           <template #icon>
             <i-ep-arrow-left />
           </template>
