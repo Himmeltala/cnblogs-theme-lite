@@ -11,16 +11,24 @@ closeLoader();
 function floatChange(page: any) {}
 
 function fixedChange(page: any) {}
+
+const asyncComp = ref(null);
+const emits = defineEmits(["complete"]);
+watch(asyncComp, () => {
+  emits("complete", asyncComp);
+});
 </script>
 
 <template>
-  <div class="home">
-    <Pagination ref="pagination" @fixed-change="fixedChange" @float-change="floatChange" :page-count="pageCount">
+  <div id="lite-home" ref="asyncComp">
+    <Pagination
+      ref="pagination"
+      @fixed-change="fixedChange"
+      @float-change="floatChange"
+      :page-count="pageCount">
       <template #content>
         <EssayItem v-if="data" :data="data" />
       </template>
     </Pagination>
   </div>
 </template>
-
-<style scoped lang="scss"></style>

@@ -15,10 +15,16 @@ watch(route, async () => {
   tagname.value = data.text;
   taglist.value = data.list;
 });
+
+const asyncComp = ref(null);
+const emits = defineEmits(["complete"]);
+watch(asyncComp, () => {
+  emits("complete", asyncComp);
+});
 </script>
 
 <template>
-  <div id="tagpage">
+  <div ref="asyncComp" id="lite-tagpage">
     <div class="fsz-1.25 mx-1.3 mt-1 mb-3">{{ tagname }}</div>
     <div id="t-content">
       <Card style="flex: 1 1 40%" class="mb-2.5" v-for="(item, index) in taglist" :key="index">
@@ -33,7 +39,7 @@ watch(route, async () => {
             阅读全文
           </router-link>
         </div>
-        <EssayBottom class="mt-4" :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
+        <EssaySynopsis class="mt-4" :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
       </Card>
     </div>
   </div>

@@ -1,6 +1,6 @@
 import $ from "jquery";
 import hljs from "highlight.js";
-import { makeAnchor, setAnchorClick } from "@/utils/anchor";
+import { makeAnchor, makeAnchorEvent } from "@/utils/anchor";
 
 export default class Directive {
   private Vue;
@@ -12,7 +12,6 @@ export default class Directive {
   parseCode() {
     this.Vue.directive("parse-code", {
       mounted(el: any, binding: any) {
-        // highlight format
         $(el)
           .find("pre code")
           .each((i, elem) => {
@@ -27,13 +26,20 @@ export default class Directive {
             $(elem).parent().prepend(`<span class="cblock">${lang}</span>`);
             hljs.highlightElement(elem);
           });
+      }
+    });
+  }
 
-        if (binding.value) {
-          makeAnchor(el);
-        }
-      },
-      updated() {
-        setAnchorClick();
+  makeAnchor() {
+    this.Vue.directive("anchor", {
+      mounted(el: any) {
+        makeAnchor(el);
+      }
+    });
+
+    this.Vue.directive("anchor-events", {
+      mounted(el: any, binding: any) {
+        makeAnchorEvent(binding.value);
       }
     });
   }

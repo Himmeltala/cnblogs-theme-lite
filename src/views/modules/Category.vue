@@ -69,10 +69,16 @@ function floatChange(page: any) {
 function fixedChange(page: any) {
   fetchData(null, false, page.currentIndex);
 }
+
+const asyncComp = ref(null);
+const emits = defineEmits(["complete"]);
+watch(asyncComp, () => {
+  emits("complete", asyncComp);
+});
 </script>
 
 <template>
-  <div id="category">
+  <div ref="asyncComp" id="lite-category">
     <Pagination ref="pagination" @fixed-change="fixedChange" @float-change="floatChange" :page-count="pageCount">
       <template #content>
         <div class="fsz-1.25 mx-1.3 mt-1 mb-3">{{ label }}</div>

@@ -7,9 +7,10 @@ const route = useRoute();
 const links = __LITE_CONFIG__.links;
 const books = __LITE_CONFIG__.books;
 
-let anchors = ref<any>();
-const anchorsStore = useAnchorStore();
-anchorsStore.$onAction(({ store, args }) => {
+const anchors = ref();
+const store = useAnchorStore();
+
+store.$onAction(({ store, args }) => {
   anchors.value = args[0];
 }, true);
 
@@ -21,24 +22,29 @@ watch(route, value => {
 <template>
   <div
     id="r-showcase"
-    class="noscroll absolute tpv-10 rtv-10 bg-#252525 color-#878787 hvh-90 wvw-13.5 ofw-auto box-border rd-2 px-5">
-    <SideItem text="随笔目录" v-if="anchors && anchors.length > 0">
+    class="noscroll ofw-auto fixed tpv-10 rtv-10 bg-#191919 color-#878787 hvh-90 wvw-13.5 box-border rd-2 px-5">
+    <ShowcaseItem text="随笔目录" v-if="anchors && anchors.length > 0">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-location />
         </el-icon>
       </template>
-      <div class="catalog mb-2 break-all fsz-0.9" v-for="(item, index) in anchors" :key="index" v-html="item.content" />
-    </SideItem>
-    <SideItem text="我的技术栈" v-if="__LITE_CONFIG__.graph">
+      <div
+        class="catalog mb-2 break-all fsz-0.9"
+        v-for="(item, index) in anchors"
+        :key="index"
+        v-html="item.content"
+        v-anchor-events="item" />
+    </ShowcaseItem>
+    <ShowcaseItem text="我的技术栈" v-if="__LITE_CONFIG__.graph">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-aim />
         </el-icon>
       </template>
       <SkillGraph />
-    </SideItem>
-    <SideItem text="常用链接" v-if="links && links.length > 0">
+    </ShowcaseItem>
+    <ShowcaseItem text="常用链接" v-if="links && links.length > 0">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-link />
@@ -47,8 +53,8 @@ watch(route, value => {
       <div class="mb-2 break-all fsz-0.9" v-for="(item, index) in links" :key="index">
         <a class="hover" :key="index" :href="item.href" target="_blank">{{ item.text }}</a>
       </div>
-    </SideItem>
-    <SideItem text="推荐书籍" v-if="books && books.length > 0">
+    </ShowcaseItem>
+    <ShowcaseItem text="推荐书籍" v-if="books && books.length > 0">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-notebook />
@@ -66,7 +72,7 @@ watch(route, value => {
           <el-rate style="width: 100%" v-model="item.rate" disabled size="small" />
         </div>
       </div>
-    </SideItem>
+    </ShowcaseItem>
   </div>
 </template>
 

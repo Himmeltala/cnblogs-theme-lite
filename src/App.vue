@@ -1,33 +1,22 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+function complete(asyncComp: any) {}
+</script>
 
 <template>
   <GitHub />
-  <Navigation />
-  <LShowcase />
-  <div id="h-content">
+  <!-- <Navigation /> -->
+  <!-- <LShowcase /> -->
+  <div id="lite-content" class="wvw-55">
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
-        <Transition mode="out-in">
-          <KeepAlive :include="['Home']">
-            <Suspense>
-              <component :is="Component" />
-            </Suspense>
-          </KeepAlive>
-        </Transition>
+        <KeepAlive :include="['Home']">
+          <Suspense>
+            <component @complete="complete" :is="Component" />
+          </Suspense>
+        </KeepAlive>
       </template>
     </RouterView>
   </div>
-  <ToolKits />
   <RShowcase />
+  <ToolKits />
 </template>
-
-<style>
-#h-content {
-  width: 52.5vw;
-  height: 90vh;
-  top: 10vh;
-  left: 23.8vw;
-  overflow-x: hidden;
-  position: absolute;
-}
-</style>

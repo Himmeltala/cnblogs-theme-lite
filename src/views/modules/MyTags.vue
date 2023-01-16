@@ -5,10 +5,16 @@ import { closeLoader } from "@/utils/loader";
 const tags = await getTag();
 
 closeLoader();
+
+const asyncComp = ref(null);
+const emits = defineEmits(["complete"]);
+watch(asyncComp, () => {
+  emits("complete", asyncComp);
+});
 </script>
 
 <template>
-  <div id="mytags">
+  <div ref="asyncComp" id="lite-mytags">
     <Card style="width: 100%; min-height: 90vh">
       <Tag
         class="mb-3 px-3 py-3"

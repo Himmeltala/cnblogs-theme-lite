@@ -26,8 +26,8 @@ const tabName = ref("随笔");
 <template>
   <div
     id="l-showcase"
-    class="noscroll absolute tpv-10 ltv-10 bg-#252525 color-#878787 hvh-90 wvw-13.5 ofw-auto box-border rd-2 px-5">
-    <SideItem text="博客信息">
+    class="noscroll ofw-auto fixed tpv-10 ltv-10 bg-#191919 color-#878787 hvh-90 wvw-13.5 box-border rd-2 px-5">
+    <ShowcaseItem text="博客信息">
       <template #icon>
         <el-icon class="mr-1">
           <i-ep-house />
@@ -35,7 +35,10 @@ const tabName = ref("随笔");
       </template>
       <div v-if="side?.avatar" class="flex items-center content-center justify-center my-5">
         <el-tooltip effect="dark" placement="right">
-          <img class="h-20 w-20 rd-50 object-cover cursor-pointer" alt="FAILED" :src="side?.avatar" />
+          <img
+            class="h-20 w-20 rd-50 object-cover cursor-pointer"
+            alt="FAILED"
+            :src="side?.avatar" />
           <template #content>
             <div v-if="side?.signature" v-html="side.signature" />
             <div v-else>这个人很懒，什么也没有留下</div>
@@ -72,17 +75,23 @@ const tabName = ref("随笔");
       </div>
       <el-tooltip effect="dark" placement="bottom">
         <template #content>
-          <span :class="{ 'mr-3': index !== rank.length - 1 }" v-for="(item, index) in rank" :key="index">
+          <span
+            :class="{ 'mr-3': index !== rank.length - 1 }"
+            v-for="(item, index) in rank"
+            :key="index">
             {{ item.text }} - {{ item.digg }}
           </span>
         </template>
         <div class="hover mb-3 fsz-0.9 cursor-pointer">
-          <span :class="{ 'mr-2.5': index !== blogInfo.length - 1 }" v-for="(item, index) in blogInfo" :key="index">
+          <span
+            :class="{ 'mr-2.5': index !== blogInfo.length - 1 }"
+            v-for="(item, index) in blogInfo"
+            :key="index">
             {{ item.text }} - {{ item.digg }}
           </span>
         </div>
       </el-tooltip>
-    </SideItem>
+    </ShowcaseItem>
     <el-tabs type="card" v-model="tabName">
       <el-tab-pane label="随笔" name="随笔">
         <template #label>
@@ -118,7 +127,7 @@ const tabName = ref("随笔");
         </div>
       </el-tab-pane>
     </el-tabs>
-    <SideItem text="阅读排行榜">
+    <ShowcaseItem text="阅读排行榜">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-d-caret />
@@ -129,7 +138,7 @@ const tabName = ref("随笔");
           {{ item.text }}
         </div>
       </div>
-    </SideItem>
+    </ShowcaseItem>
   </div>
 </template>
 

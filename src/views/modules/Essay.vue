@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { getEssay, getEssayTagsAndCategories, getPrevNext, getEssayVote, voteEssay } from "@/utils/api";
+import {
+  getEssay,
+  getEssayTagsAndCategories,
+  getPrevNext,
+  getEssayVote,
+  voteEssay
+} from "@/utils/api";
 import { VoteType } from "@/types/data-type";
 import { nav } from "@/utils/route-helper";
 import { closeLoader } from "@/utils/loader";
@@ -22,13 +28,23 @@ async function vote(voteType: VoteType) {
     if (data.isSuccess)
       if (voteType == "Bury") essayVote.value.buryCount = essayVote.value.buryCount + 1;
       else essayVote.value.diggCount = essayVote.value.diggCount + 1;
-    ElMessage({ message: data.message, grouping: true, type: data.isSuccess ? "success" : "error" });
+    ElMessage({
+      message: data.message,
+      grouping: true,
+      type: data.isSuccess ? "success" : "error"
+    });
   }
 }
+
+const asyncComp = ref(null);
+const emits = defineEmits(["complete"]);
+watch(asyncComp, () => {
+  emits("complete", asyncComp);
+});
 </script>
 
 <template>
-  <div id="essay" class="color-#a7a7a7">
+  <div ref="asyncComp" id="lite-essay" class="color-#a7a7a7">
     <Card class="relative">
       <div>
         <el-page-header @back="nav('/', router)">
@@ -69,7 +85,9 @@ async function vote(voteType: VoteType) {
           </div>
         </div>
         <div class="color-#878787 mt-4 fsz-0.9">
-          <div class="mb-1 flex justify-start items-center content-center" v-if="tagscatoies.categories.length > 0">
+          <div
+            class="mb-1 flex justify-start items-center content-center"
+            v-if="tagscatoies.categories.length > 0">
             <div class="flex justify-center items-center content-center">
               <el-icon class="mr-0.9">
                 <i-ep-folder-opened />
@@ -85,7 +103,9 @@ async function vote(voteType: VoteType) {
               </Tag>
             </div>
           </div>
-          <div class="mb-1 flex justify-start items-center content-center" v-if="tagscatoies.tags.length > 0">
+          <div
+            class="mb-1 flex justify-start items-center content-center"
+            v-if="tagscatoies.tags.length > 0">
             <div class="flex justify-center items-center content-center">
               <el-icon class="mr-0.9">
                 <i-ep-price-tag />
@@ -102,7 +122,7 @@ async function vote(voteType: VoteType) {
             </div>
           </div>
         </div>
-        <div id="e-content" class="mt-4" v-parse-code="true" v-html="essay?.content" />
+        <div id="e-content" class="mt-4" v-html="essay?.content" v-parse-code v-anchor />
         <div class="divider"></div>
         <div class="color-#878787 flex justify-end items-center content-center fsz-0.9">
           <div class="flex justify-center items-center content-center mr-2">
@@ -125,17 +145,25 @@ async function vote(voteType: VoteType) {
           </div>
         </div>
         <div class="prev-next fsz-0.9 mt-10">
-          <div class="prev hover mb-2 flex justify-start items-center content-center" v-if="prevNext?.prev?.href">
+          <div
+            class="prev hover mb-2 flex justify-start items-center content-center"
+            v-if="prevNext?.prev?.href">
             <el-icon>
               <i-ep-d-arrow-left />
             </el-icon>
-            <a class="hover color-#a7a7a7" :href="prevNext.prev.href">上一篇：{{ prevNext.prev.text }}</a>
+            <a class="hover color-#a7a7a7" :href="prevNext.prev.href"
+              >上一篇：{{ prevNext.prev.text }}</a
+            >
           </div>
-          <div class="next hover flex justify-start items-center content-center" v-if="prevNext?.next?.href">
+          <div
+            class="next hover flex justify-start items-center content-center"
+            v-if="prevNext?.next?.href">
             <el-icon>
               <i-ep-d-arrow-right />
             </el-icon>
-            <a class="hover color-#a7a7a7" :href="prevNext.next.href">下一篇：{{ prevNext.next.text }}</a>
+            <a class="hover color-#a7a7a7" :href="prevNext.next.href"
+              >下一篇：{{ prevNext.next.text }}</a
+            >
           </div>
         </div>
         <div class="my-10 flex justify-end items-center content-center">
@@ -242,8 +270,8 @@ code {
   padding: 4px;
   color: #6d6d6d;
   font-weight: 400;
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
-    sans-serif !important;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "微软雅黑", Arial, sans-serif !important;
   right: 4px;
   top: 0;
 }

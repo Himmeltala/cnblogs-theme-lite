@@ -115,7 +115,8 @@ function deleteComment(comment: DataType.Comment, index: number) {
       if (data) {
         comments.value?.splice(index, 1);
         ElMessage({ message: "删除评论成功！", grouping: true, type: "success" });
-      } else ElMessage({ message: "这不是你的评论，没有权限删除！", grouping: true, type: "error" });
+      } else
+        ElMessage({ message: "这不是你的评论，没有权限删除！", grouping: true, type: "error" });
     }
   );
 }
@@ -227,7 +228,11 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
         if (voteType == "Bury") comment.bury = comment.bury! + 1;
         else comment.digg = comment.digg! + 1;
       }
-      ElMessage({ message: ajax.message, grouping: true, type: ajax.isSuccess ? "success" : "error" });
+      ElMessage({
+        message: ajax.message,
+        grouping: true,
+        type: ajax.isSuccess ? "success" : "error"
+      });
     }
   );
 }
@@ -245,12 +250,18 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
         </el-tooltip>
       </div>
       <div class="pusharea">
-        <textarea v-model="form.content" placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
+        <textarea
+          v-model="form.content"
+          placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
       </div>
       <div class="absolute opacity-0 top-0 left-0">
         <textarea id="main-upload-img" />
       </div>
-      <el-button plain :disabled="!__LITE_CONFIG__.isLogined" :loading="loading" @click="insertComment">
+      <el-button
+        plain
+        :disabled="!__LITE_CONFIG__.isLogined"
+        :loading="loading"
+        @click="insertComment">
         发送评论
       </el-button>
     </div>
@@ -260,8 +271,11 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
         <div class="flex items-center content-center justify-start">
           <el-image class="mr-4 rd-50 w-14 h-14" :src="item.avatar" fit="fill" />
           <div>
-            <div class="fsz-0.95 hover cursor-pointer" @click="nav(item.space)">{{ item.author }}</div>
-            <div class="fsz-0.8 color-#8D9095 mt-1.5 flex items-center content-center justify-center">
+            <div class="fsz-0.95 hover cursor-pointer" @click="nav(item.space)">
+              {{ item.author }}
+            </div>
+            <div
+              class="fsz-0.8 color-#8D9095 mt-1.5 flex items-center content-center justify-center">
               <div
                 v-if="commentAnchor === item.commentId"
                 ref="commentAnchorQuote"
@@ -311,7 +325,8 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
                 placeholder="请回复一条友善的评论，支持 Markdown 语法" />
             </div>
           </div>
-          <div class="actions fsz-0.8 cursor-pointer color-#a8abb2 flex justify-end items-center content-center">
+          <div
+            class="actions fsz-0.8 cursor-pointer color-#a8abb2 flex justify-end items-center content-center">
             <div
               v-show="!item.replayEditable && !item.isEditingUpdate"
               class="hover mr-3 flex justify-end items-center content-center"
@@ -418,8 +433,12 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
           v-model:page-count="commentCount" />
       </div>
     </div>
-    <el-empty v-else-if="__LITE_CONFIG__.isLogined && !comments?.length" description="没有评论，来一条友善的评论吧🤨" />
-    <el-empty v-else-if="!__LITE_CONFIG__.isLogined" description="你没有登录或没有申请博客权限，所以看不到评论哦~" />
+    <el-empty
+      v-else-if="__LITE_CONFIG__.isLogined && !comments?.length"
+      description="没有评论，来一条友善的评论吧🤨" />
+    <el-empty
+      v-else-if="!__LITE_CONFIG__.isLogined"
+      description="你没有登录或没有申请博客权限，所以看不到评论哦~" />
   </div>
 </template>
 
@@ -447,8 +466,8 @@ function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
 <style scoped lang="scss">
 @mixin textarea($height: 15rem) {
   --at-apply: rd-2 box-border p-2.5 fsz-0.9;
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
-    sans-serif;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "微软雅黑", Arial, sans-serif;
   background-color: #202020;
   width: 100%;
   border: none;

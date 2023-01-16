@@ -19,7 +19,10 @@ const app = createApp(App);
 
 app.use(router);
 app.use(createPinia());
-new Directive(app).parseCode();
+
+const dir = new Directive(app);
+dir.parseCode();
+dir.makeAnchor();
 
 initLite(
   () => {

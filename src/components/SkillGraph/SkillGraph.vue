@@ -2,7 +2,6 @@
 import { createRadar, calcSize } from "./index";
 import { __LITE_CONFIG__ } from "@/lite.config";
 
-
 const vw = calcSize(13.5);
 
 onMounted(() => {
@@ -38,7 +37,8 @@ onMounted(() => {
     display: none;
     white-space: nowrap;
     z-index: 999;
-    transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s, top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
+    transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s,
+      top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
     background-color: rgba(50, 50, 50, 0.85);
     color: var(--text-color);
     font: 14px / 21px "Microsoft YaHei";

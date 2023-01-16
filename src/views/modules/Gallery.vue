@@ -7,10 +7,20 @@ const imgUrl = getGalleryImg();
 const srcList = <string[]>[imgUrl];
 
 closeLoader();
+
+const asyncComp = ref(null);
+const emits = defineEmits(["complete"]);
+watch(asyncComp, () => {
+  emits("complete", asyncComp);
+});
 </script>
 
 <template>
-  <div id="gallery" style="height: 100%; width: 100%" class="flex items-center content-center justify-center">
+  <div
+    ref="asyncComp"
+    id="lite-gallery"
+    style="height: 100%; width: 100%"
+    class="flex items-center content-center justify-center">
     <Card
       style="width: inherit; height: inherit"
       :class="{

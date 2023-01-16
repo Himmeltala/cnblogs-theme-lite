@@ -8,15 +8,15 @@
  */
 
 import $ from "jquery";
+import { storeToRefs } from "pinia";
 import { useAnchorStore } from "@/store";
 import { __LITE_CONFIG__ } from "@/lite.config";
 
-const clasps: any = [];
-
-export function makeAnchor(dom: string) {
-  const anchorStore = useAnchorStore();
-  const title = $(dom).children().not("p").not("table").not("img").not("ul").not("ol").not("pre");
-  const anchors: any = [];
+// 制作锚点，用在随笔页面
+export function makeAnchor(dom: any) {
+  const store = useAnchorStore();
+  const title = $(dom).children("h1,h2,h3");
+  const anchors = <any>[];
 
   let h1 = 0;
   let h2 = 0;
@@ -24,9 +24,8 @@ export function makeAnchor(dom: string) {
   let level = ``;
 
   $(title).each((i, e) => {
-    const id = $(e).attr("id");
     const text = $(e).text();
-    const top = $(e).offset()?.top;
+    const id = $(e).attr("id");
     const type: string = $(e)[0].localName;
     const hasLevel = __LITE_CONFIG__.catalog?.level;
     let content = ``;
@@ -37,49 +36,40 @@ export function makeAnchor(dom: string) {
       h2 = 0;
       h3 = 0;
       if (hasLevel) level = `${h1}.${text}`;
-      content = `<a id="anchor-${id}" class="hover">${level}</a>`;
+      content = `<div id="anchor-${id}" href="${id}" class="hover">${level}</div>`;
     } else if (type === "h2") {
       h2++;
       h3 = 0;
       if (hasLevel) level = `${h1}.${h2}.${text}`;
-      content = `<a id="anchor-${id}" class="hover" style="margin-left: 10px">${level}</a>`;
+      content = `<div id="anchor-${id}" href="${id}" class="hover" style="margin-left: 10px">${level}</div>`;
     } else if (type === "h3") {
       h3++;
       if (hasLevel) level = `${h1}.${h2}.${h3}.${text}`;
-      content = `<a id="anchor-${id}" class="hover" style="margin-left: 20px">${level}</a>`;
+      content = `<div id="anchor-${id}" href="${id}" class="hover" style="margin-left: 20px">${level}</div>`;
     }
 
-    clasps.push({ id, top });
-    anchors.push({ text, type, content });
+    anchors.push({ id, text, type, content });
   });
 
-  let tempAnchor: any;
-
-  $("#h-content").on("scroll", function (e) {
-    const scrollTop = e.target.scrollTop;
-    for (const item of clasps) {
-      if (scrollTop >= item.top - 75 && scrollTop <= item.top) {
-        let anchor = $(`#anchor-${item.id}`);
-        if (tempAnchor) $(tempAnchor).removeClass("anchor-active");
-        $(anchor).addClass("anchor-active");
-        tempAnchor = anchor;
-      }
-    }
-  });
-
-  anchorStore.setAnchors(anchors);
+  store.setAnchors(anchors);
 }
 
-export function setAnchorClick() {
-  for (const item of clasps) {
-    $(`#anchor-${item.id}`).on("click", e => {
-      $("#h-content").animate({ scrollTop: item.top }, 800, "linear");
+// 制作锚点事件（滑动页面、点击锚点进行跳转）
+export function makeAnchorEvent(binding: any) {
+  console.log(binding);
+  $(`#anchor-${binding.id}`).on("click", e => {
+    console.log("click");
+
+    document.querySelector(`#${binding.id}`).scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
     });
-  }
+  });
 }
 
 export function navor(top?: number) {
-  $("#h-content").animate({ scrollTop: top }, 200, "linear");
+  $("#lite-content").animate({ scrollTop: top }, 200, "linear");
 }
 
 interface ContentScroll {
@@ -92,7 +82,7 @@ export function onContentScroll(atTop?: ContentScroll, atMiddle?: ContentScroll)
   let inTop = 0;
   let inMiddle = 0;
 
-  $("#h-content").on("scroll", function (e) {
+  $("#lite-content").on("scroll", function (e) {
     const scrollTop = e.target.scrollTop;
     if (!times) {
       // @ts-ignore

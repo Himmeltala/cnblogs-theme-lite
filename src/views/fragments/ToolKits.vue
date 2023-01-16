@@ -20,7 +20,7 @@ watch(route, () => {
 </script>
 
 <template>
-  <div id="toolkits" class="absolute right-3.5 wvw-2.5 tpv-85">
+  <div id="toolkits" class="fixed right-3.5 wvw-2.5 tpv-85">
     <div class="kit hover" @click="navor(scrollTop)">
       <el-tooltip effect="dark" :content="navorTip" placement="left-start">
         <i-ep-arrow-up-bold
