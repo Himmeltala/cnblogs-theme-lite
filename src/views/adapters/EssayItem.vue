@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 import { nav } from "@/utils/route-helper";
-import { Essay } from "@/types/data-type";
+import { CustType } from "@/types/data-type";
 
 defineProps({
   data: {
-    type: Array as PropType<Essay[]>,
+    type: Array as PropType<CustType.Essay[]>,
     required: true
   }
 });

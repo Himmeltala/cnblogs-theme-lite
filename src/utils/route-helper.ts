@@ -8,7 +8,7 @@
  */
 
 import { Router } from "vue-router";
-import { Belongs } from "@/lite.config";
+import { belongs } from "@/lite.config";
 import { useCommentsAnchorStore } from "@/store";
 
 export enum RouteName {
@@ -59,7 +59,7 @@ export function parseUrlData(url: string): any {
 }
 
 function joinUrl(redirect: string): string {
-  return `${window.location.protocol}//${window.location.host}${Belongs}/#/${redirect}`;
+  return `${window.location.protocol}//${window.location.host}${belongs}/#/${redirect}`;
 }
 
 // @ts-ignore

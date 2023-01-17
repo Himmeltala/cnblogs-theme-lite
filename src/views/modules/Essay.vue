@@ -1,12 +1,6 @@
 <script setup lang="ts">
-import {
-  getEssay,
-  getEssayTagsAndCategories,
-  getPrevNext,
-  getEssayVote,
-  voteEssay
-} from "@/utils/api";
-import { VoteType } from "@/types/data-type";
+import { getEssay, getEssayCatesAndTags, getPrevNext, getEssayVote, voteEssay } from "@/utils/api";
+import { BlogType } from "@/types/data-type";
 import { nav } from "@/utils/route-helper";
 import { closeLoader } from "@/utils/loader";
 import { __LITE_CONFIG__ } from "@/lite.config";
@@ -16,13 +10,13 @@ const router = useRouter();
 const postId = parseInt(String(route.params.id));
 
 const essay = await getEssay(postId);
-const tagscatoies = await getEssayTagsAndCategories(postId);
+const catesTags = await getEssayCatesAndTags(postId);
 const prevNext = await getPrevNext(postId);
 const essayVote = ref(await getEssayVote(postId));
 
 closeLoader();
 
-async function vote(voteType: VoteType) {
+async function vote(voteType: BlogType.VoteType) {
   const data = await voteEssay({ postId, isAbandoned: false, voteType });
   if (data) {
     if (data.isSuccess)
@@ -87,7 +81,7 @@ watch(asyncComp, () => {
         <div class="color-#878787 mt-4 fsz-0.9">
           <div
             class="mb-1 flex justify-start items-center content-center"
-            v-if="tagscatoies.categories.length > 0">
+            v-if="catesTags.cates.length > 0">
             <div class="flex justify-center items-center content-center">
               <el-icon class="mr-0.9">
                 <i-ep-folder-opened />
@@ -95,8 +89,8 @@ watch(asyncComp, () => {
               <span>分类：</span>
             </div>
             <div
-              :class="{ 'mr-2': index !== tagscatoies.categories.length - 1 }"
-              v-for="(item, index) in tagscatoies.categories"
+              :class="{ 'mr-2': index !== catesTags.cates.length - 1 }"
+              v-for="(item, index) in catesTags.cates"
               :key="index">
               <Tag @click="nav('/c/' + item.href, router)">
                 {{ item.text }}
@@ -105,7 +99,7 @@ watch(asyncComp, () => {
           </div>
           <div
             class="mb-1 flex justify-start items-center content-center"
-            v-if="tagscatoies.tags.length > 0">
+            v-if="catesTags.tags.length > 0">
             <div class="flex justify-center items-center content-center">
               <el-icon class="mr-0.9">
                 <i-ep-price-tag />
@@ -113,8 +107,8 @@ watch(asyncComp, () => {
               <span>标签：</span>
             </div>
             <div
-              :class="{ 'mr-2': index !== tagscatoies.tags.length - 1 }"
-              v-for="(item, index) in tagscatoies.tags"
+              :class="{ 'mr-2': index !== catesTags.tags.length - 1 }"
+              v-for="(item, index) in catesTags.tags"
               :key="index">
               <Tag @click="nav('/t/' + item.text, router)">
                 {{ item.text }}

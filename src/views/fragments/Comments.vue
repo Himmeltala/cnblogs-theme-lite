@@ -2,7 +2,7 @@
 import $ from "jquery";
 import { __LITE_CONFIG__ } from "@/lite.config";
 import { nav } from "@/utils/route-helper";
-import * as DataType from "@/types/data-type";
+import { CustType, BlogType } from "@/types/data-type";
 import * as Native from "@/utils/native";
 import * as RemoteApi from "@/utils/api";
 import { useCommentsAnchorStore } from "@/store";
@@ -13,14 +13,18 @@ const props = defineProps({
 const commentAnchorQuote = ref<any>(null);
 const { commentAnchor } = storeToRefs(useCommentsAnchorStore());
 
-let form = ref<DataType.Comment>({ postId: props.postId, parentCommentId: 0, content: "" });
+let form = ref<CustType.Comment>({
+  postId: props.postId,
+  parentCommentId: 0,
+  content: ""
+});
 let loading = ref(false);
-let comments = ref<Array<DataType.Comment>>();
+let comments = ref<Array<CustType.Comment>>();
 let commentCount = ref(1);
 let currentIndex = ref(0);
 let commentContent = ref("");
-let tempReplayComment: DataType.Comment;
-let tempUpdateComment: DataType.Comment;
+let tempReplayComment: CustType.Comment;
+let tempUpdateComment: CustType.Comment;
 
 function fetchComment(
   f: boolean,
@@ -65,7 +69,7 @@ watch(commentAnchorQuote, () => {
   commentAnchor.value = 0;
 });
 
-function uploadImage(el: string, comment?: DataType.Comment) {
+function uploadImage(el: string, comment?: CustType.Comment) {
   Native.openImageUploadWindow(el, (imgUrl: any) => {
     if (comment) commentContent.value += `\n\n${imgUrl}\n\n`;
     else form.value.content += `\n\n${imgUrl}\n\n`;
@@ -73,42 +77,38 @@ function uploadImage(el: string, comment?: DataType.Comment) {
 }
 
 function paginationChange() {
-  RemoteApi.getCommentList(props.postId, currentIndex.value, (res: Array<DataType.Essay>) => {
+  RemoteApi.getCommentList(props.postId, currentIndex.value, (res: Array<CustType.Essay>) => {
     comments.value = res;
   });
 }
 
-function insertComment() {
+async function insertComment() {
   if (form.value.content) {
     loading.value = true;
-    RemoteApi.setComment(
+    const data = await RemoteApi.setComment({
+      postId: form.value.postId,
+      body: form.value.content,
+      parentCommentId: form.value.parentCommentId
+    });
+    fetchComment(
+      data.isSuccess,
       {
-        postId: form.value.postId,
-        body: form.value.content,
-        parentCommentId: form.value.parentCommentId
+        message: "发送评论成功！",
+        success(res: any) {
+          comments.value = res;
+          loading.value = false;
+          form.value.content = "";
+        }
       },
-      ({ data }) => {
-        fetchComment(
-          data.isSuccess,
-          {
-            message: "发送评论成功！",
-            success(res: any) {
-              comments.value = res;
-              loading.value = false;
-              form.value.content = "";
-            }
-          },
-          {
-            message: "发送评论失败！",
-            error: () => (loading.value = false)
-          }
-        );
+      {
+        message: "发送评论失败！",
+        error: () => (loading.value = false)
       }
     );
   } else ElMessage({ message: "评论不能为空，或字数不够⚠️", grouping: true, type: "error" });
 }
 
-function deleteComment(comment: DataType.Comment, index: number) {
+function deleteComment(comment: CustType.Comment, index: number) {
   RemoteApi.deleteComment(
     { commentId: comment.commentId, pageIndex: currentIndex.value - 1, parentId: props.postId },
     ({ data }) => {
@@ -121,17 +121,17 @@ function deleteComment(comment: DataType.Comment, index: number) {
   );
 }
 
-function confirmDeleteComment(comment: DataType.Comment, index: number) {
+function confirmDeleteComment(comment: CustType.Comment, index: number) {
   deleteComment(comment, index);
 }
 
-function cancelUpdateComment(comment: DataType.Comment) {
+function cancelUpdateComment(comment: CustType.Comment) {
   comment.updateEditable = !comment.updateEditable;
   comment.isEditingUpdate = !comment.isEditingUpdate;
   comment.content = comment.htmlContent;
 }
 
-function beforeUpdateComment(comment: DataType.Comment) {
+function beforeUpdateComment(comment: CustType.Comment) {
   commentContent.value = "";
   comment.htmlContent = comment.content;
   if (tempUpdateComment && tempUpdateComment.commentId !== comment.commentId) {
@@ -148,7 +148,7 @@ function beforeUpdateComment(comment: DataType.Comment) {
   tempUpdateComment = comment;
 }
 
-function finishUpdateComment(comment: DataType.Comment) {
+function finishUpdateComment(comment: CustType.Comment) {
   RemoteApi.updateComment(
     {
       body: commentContent.value,
@@ -171,13 +171,13 @@ function finishUpdateComment(comment: DataType.Comment) {
   );
 }
 
-function cancelReplayComment(comment: DataType.Comment) {
+function cancelReplayComment(comment: CustType.Comment) {
   comment.replayEditable = !comment.replayEditable;
   comment.isEditingReplay = !comment.isEditingReplay;
   comment.content = comment.htmlContent;
 }
 
-function beforeReplayComment(comment: DataType.Comment) {
+function beforeReplayComment(comment: CustType.Comment) {
   comment.htmlContent = comment.content;
   comment.replayEditable = !comment.replayEditable;
   comment.isEditingReplay = !comment.isEditingReplay;
@@ -193,7 +193,7 @@ function beforeReplayComment(comment: DataType.Comment) {
   tempReplayComment = comment;
 }
 
-function finishReplayComment(comment: DataType.Comment) {
+function finishReplayComment(comment: CustType.Comment) {
   RemoteApi.replayComment(
     {
       body: commentContent.value,
@@ -220,7 +220,7 @@ function finishReplayComment(comment: DataType.Comment) {
   );
 }
 
-function voteComment(comment: DataType.Comment, voteType: DataType.VoteType) {
+function voteComment(comment: CustType.Comment, voteType: BlogType.VoteType) {
   RemoteApi.voteComment(
     { isAbandoned: false, commentId: comment.commentId, postId: props.postId, voteType: voteType },
     ajax => {

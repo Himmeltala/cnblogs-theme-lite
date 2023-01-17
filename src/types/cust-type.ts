@@ -58,7 +58,15 @@ export interface Comment {
 
 export interface TagPage {
   text: string;
-  list: Array<{ id: string; title: string; href: string; date: string; view: string; comm: string; digg: string }>;
+  list: Array<{
+    id: string;
+    title: string;
+    href: string;
+    date: string;
+    view: string;
+    comm: string;
+    digg: string;
+  }>;
 }
 
 export interface Lite {
@@ -106,4 +114,29 @@ export interface Tag {
   count: number;
   href: string;
   text: string;
+}
+
+/**
+ * 随笔列表，返回列表的页数、列表数组。
+ */
+export interface EssayList {
+  pages: string[];
+  list: Array<Essay>;
+}
+
+/**
+ * 随笔的分类和标签数组
+ */
+export interface EssayCateAndTagList {
+  tags: { text: string }[];
+  cates: { href: string; text: string }[];
+}
+
+/**
+ * 随笔分类列表，返回页数、分类名、列表数组
+ */
+export interface CateList {
+  pages: string[];
+  label: string;
+  array: Array<Essay>;
 }

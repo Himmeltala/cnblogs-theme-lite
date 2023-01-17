@@ -9,8 +9,8 @@
 
 import $ from "jquery";
 import * as TextUtils from "./text-helper";
-import * as DataType from "@/types/data-type";
 import { parseUnit } from "./numeric-helper";
+import { CustType, BlogType } from "@/types/data-type";
 
 /**
  * 由于一些问题，有时候请求过来的 DOM 不是真实的 DOM，所以不能被 JQ 解析，必须先调用该函数进行转换
@@ -47,25 +47,22 @@ function calcPages(sorter: any, calc: boolean): string[] {
  * @param calc 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
  * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
  */
-export function parseEssayList(
-  realDOM: any,
-  calc: boolean
-): { pages: string[]; list: Array<DataType.Essay> } {
-  let id = $(realDOM).find(".postTitle2");
-  let title = $(realDOM).find(".postTitle");
-  let describe = $(realDOM).find(".c_b_p_desc");
-  let record = $(realDOM).find(".postDesc").text();
-  let date = record.match(
+export function parseEssayList(realDOM: any, calc: boolean): CustType.EssayList {
+  const id = $(realDOM).find(".postTitle2");
+  const title = $(realDOM).find(".postTitle");
+  const describe = $(realDOM).find(".c_b_p_desc");
+  const record = $(realDOM).find(".postDesc").text();
+  const date = record.match(
     /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g
   );
-  let view = record.match(/阅读\([0-9]+\)/g);
-  let comm = record.match(/评论\([0-9]+\)/g);
-  let digg = record.match(/推荐\([0-9]+\)/g);
+  const view = record.match(/阅读\([0-9]+\)/g);
+  const comm = record.match(/评论\([0-9]+\)/g);
+  const digg = record.match(/推荐\([0-9]+\)/g);
+  const array: Array<CustType.Essay> = [];
 
-  let list: Array<DataType.Essay> = [];
   $(describe).each((i, e) => {
-    let surface = $(e).find(".desc_img").attr("src");
-    list.push({
+    const surface = $(e).find(".desc_img").attr("src");
+    array.push({
       id: parseInt(
         $(id[i])
           .attr("href")!
@@ -81,18 +78,21 @@ export function parseEssayList(
     });
   });
 
-  return { pages: calcPages($(realDOM).find("#homepage_top_pager > .pager > a"), calc), list };
+  return {
+    pages: calcPages($(realDOM).find("#homepage_top_pager > .pager > a"), calc),
+    list: array
+  };
 }
 
 /**
  * 解析随笔详细页面
  *
- * @param postId 随笔 ID
+ * @param id 随笔 ID
  * @param realDOM 请求响应消息
  */
-export function parseEssay(postId: number, realDOM: any): DataType.Essay {
+export function parseEssay(id: number, realDOM: any): CustType.Essay {
   return {
-    id: postId,
+    id: id,
     text: $(realDOM).find(".postTitle > a > span").text(),
     content: $(realDOM).find("#cnblogs_post_body").html(),
     date: $(realDOM).find("#post-date").text(),
@@ -108,8 +108,8 @@ export function parseEssay(postId: number, realDOM: any): DataType.Essay {
  *
  * @param strDOM 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parseCommentList(strDOM: any): Array<DataType.Comment> {
-  let comments: Array<DataType.Comment> = [];
+export function parseCommentList(strDOM: any): Array<CustType.Comment> {
+  let comments: Array<CustType.Comment> = [];
 
   $(parseStrToDom(strDOM))
     .find(".feedbackItem")
@@ -153,14 +153,14 @@ export function parseCommentPages(json: any): number {
  *
  * @param strDOM 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parseEssayTagsAndCategories(strDOM: any): any {
-  let list = <any>{ tags: [], categories: [] };
-  let dom = parseStrToDom(strDOM);
+export function parseEssayCatesAndTags(strDOM: any): CustType.EssayCateAndTagList {
+  const array = <CustType.EssayCateAndTagList>{ tags: [], cates: [] };
+  const dom = parseStrToDom(strDOM);
 
   $(dom)
     .find("#BlogPostCategory > a")
     .map((i, d) => {
-      list.categories[i] = {
+      array.cates[i] = {
         href: $(d)
           .attr("href")!
           .match(/\/category\/\d+/g)![0]
@@ -173,12 +173,12 @@ export function parseEssayTagsAndCategories(strDOM: any): any {
   $(dom)
     .find("#EntryTag > a")
     .map((i, d) => {
-      list.tags[i] = {
+      array.tags[i] = {
         text: $(d).text()
       };
     });
 
-  return list;
+  return array;
 }
 
 /**
@@ -216,10 +216,7 @@ export function parsePrevNext(strDOM: any): any {
  * @param realDOM 真实 DOM
  * @param calc 是否计算页数
  */
-export function parseCategoryList(
-  realDOM: any,
-  calc: boolean
-): { pages: string[]; label: string; list: Array<DataType.Essay> } {
+export function parseCateList(realDOM: any, calc: boolean): CustType.CateList {
   let dom = $(realDOM).find(".entrylistItem");
 
   let id = $(dom).find(".entrylistItemTitle");
@@ -233,10 +230,10 @@ export function parseCategoryList(
   let comm = record.match(/评论\([0-9]+\)/g);
   let digg = record.match(/推荐\([0-9]+\)/g);
 
-  let list: Array<DataType.Essay> = [];
+  let array: Array<CustType.Essay> = [];
   $(dom).each((i, e) => {
     let surface = $(e).find(".c_b_p_desc > .desc_img").attr("src");
-    list.push({
+    array.push({
       id: parseInt(
         $(id[i])
           .attr("href")!
@@ -253,8 +250,8 @@ export function parseCategoryList(
   });
 
   return {
+    array,
     pages: calcPages($(realDOM).find("#mainContent .pager")[0]?.querySelectorAll("a"), calc),
-    list,
     label: $(realDOM).find(".entrylistTitle").text() || ""
   };
 }
@@ -264,7 +261,7 @@ export function parseCategoryList(
  *
  * @param realDOM 真实 DOM
  */
-export function parseTagPageList(realDOM: any): DataType.TagPage {
+export function parseTagPageList(realDOM: any): CustType.TagPage {
   let title = $(realDOM).find(".PostList > .postTitl2 > a");
   let describe = $(realDOM).find(".PostList > .postDesc2");
   let tagTitle = $(realDOM).find(".PostListTitle").text().trim();
@@ -341,8 +338,8 @@ export function parseSideCategories(strDOM: string): {
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideBloggerInfo(strDOM: string): Array<DataType.BloggerInfo> {
-  let list: Array<DataType.BloggerInfo> = [];
+export function parseSideBloggerInfo(strDOM: string): Array<BlogType.BloggerInfo> {
+  let list: Array<BlogType.BloggerInfo> = [];
   let a = $(parseStrToDom(strDOM)).find("#profile_block > a");
   $(a).each((i, e) => {
     list.push({ text: $(e).text().trim(), href: $(e).attr("href")! });
@@ -416,8 +413,8 @@ export function parseSideBlogTopList(strDOM: string): {
   return list;
 }
 
-export function parseTags(dom: any): Array<DataType.Tag> {
-  const list: Array<DataType.Tag> = [];
+export function parseTags(dom: any): Array<CustType.Tag> {
+  const list: Array<CustType.Tag> = [];
   $(dom)
     .find("#MyTag1_dtTagList")
     .find("td")

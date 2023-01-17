@@ -1,4 +1,4 @@
-import { BlogComment, BlogEssay, BlogEssayVote, BloggerInfo, VoteType } from "./blog-type";
-import { Essay, TagPage, Comment, Lite, Tag } from "./cust-type";
+import * as BlogType from "./blog-type";
+import * as CustType from "./cust-type";
 
-export type { VoteType, BloggerInfo, BlogComment, BlogEssay, BlogEssayVote, Essay, TagPage, Comment, Lite, Tag };
+export type { BlogType, CustType };

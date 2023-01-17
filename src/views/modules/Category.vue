@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import * as DataType from "@/types/data-type";
+import { CustType } from "@/types/data-type";
 import * as RemoteApi from "@/utils/api";
 import { closeLoader } from "@/utils/loader";
 
 const route = useRoute();
 
-let data = ref<Array<DataType.Essay>>();
+let data = ref<Array<CustType.Essay>>();
 let label = ref<any>();
 let loading = ref<boolean>(true);
 
@@ -15,14 +15,17 @@ let loading = ref<boolean>(true);
  * @param calcPage 是否获取分页情况
  * @param pageIndex 当前页数
  */
-function fetchData(complete?: ((pages: string[]) => void) | null, calcPage: boolean = false, pageIndex: number = 1) {
+async function fetchData(
+  complete?: ((pages: string[]) => void) | null,
+  calcPage: boolean = false,
+  pageIndex: number = 1
+) {
   loading.value = true;
-  RemoteApi.getCategories(route.params.id, calcPage, pageIndex, res => {
-    data.value = res.list;
-    loading.value = false;
-    label.value = res.label;
-    complete && complete(res.pages);
-  });
+  const res = await RemoteApi.getCateList(route.params.id, calcPage, pageIndex);
+  loading.value = false;
+  data.value = res.array;
+  label.value = res.label;
+  complete && complete(res.pages);
 }
 
 // 组件初始化数据
@@ -79,7 +82,11 @@ watch(asyncComp, () => {
 
 <template>
   <div ref="asyncComp" id="lite-category">
-    <Pagination ref="pagination" @fixed-change="fixedChange" @float-change="floatChange" :page-count="pageCount">
+    <Pagination
+      ref="pagination"
+      @fixed-change="fixedChange"
+      @float-change="floatChange"
+      :page-count="pageCount">
       <template #content>
         <div class="fsz-1.25 mx-1.3 mt-1 mb-3">{{ label }}</div>
         <EssayItem v-if="data" :data="data" />

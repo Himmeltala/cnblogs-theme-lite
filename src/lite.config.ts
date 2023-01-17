@@ -1,9 +1,13 @@
 import $ from "jquery";
-import * as DataType from "@/types/data-type";
+import { CustType } from "@/types/data-type";
 
-export let __LITE_CONFIG__: DataType.Lite;
-export let BaseAPI = "";
-export let Belongs = "";
+export let __LITE_CONFIG__: CustType.Lite;
+export let baseAPI = "";
+export let belongs = "";
+export let blogId = 0;
+export let blogApp = "";
+export let isLogin = true;
+export let isOwner = true;
 
 export function initLite(dev?: Function, pro?: Function) {
   $("body").append(`<div id="app"></div>`);
@@ -12,15 +16,19 @@ export function initLite(dev?: Function, pro?: Function) {
   __LITE_CONFIG__ = window["__LITE_CONFIG__"];
   if (import.meta.env.PROD) {
     // @ts-ignore
-    __LITE_CONFIG__["currentBlogId"] = currentBlogId;
+    __LITE_CONFIG__.currentBlogId = currentBlogId;
     // @ts-ignore
-    __LITE_CONFIG__["currentBlogApp"] = currentBlogApp;
+    __LITE_CONFIG__.currentBlogApp = currentBlogApp;
     // @ts-ignore
-    __LITE_CONFIG__["isLogined"] = isLogined;
+    __LITE_CONFIG__.isLogined = isLogined;
     // @ts-ignore
-    __LITE_CONFIG__["isBlogOwner"] = isBlogOwner;
-    Belongs = `/${__LITE_CONFIG__.currentBlogApp}`;
-    BaseAPI = `https://www.cnblogs.com/${__LITE_CONFIG__.currentBlogApp}`;
+    __LITE_CONFIG__.isBlogOwner = isBlogOwner;
+    baseAPI = `https://www.cnblogs.com/${__LITE_CONFIG__.currentBlogApp}`;
+    belongs = `/${__LITE_CONFIG__.currentBlogApp}`;
+    blogId = __LITE_CONFIG__.currentBlogId;
+    blogApp = __LITE_CONFIG__.currentBlogApp;
+    isLogin = __LITE_CONFIG__.isLogined;
+    isOwner = __LITE_CONFIG__.isBlogOwner;
     pro && pro();
   } else if (import.meta.env.DEV) {
     __LITE_CONFIG__ = {
@@ -79,7 +87,7 @@ export function initLite(dev?: Function, pro?: Function) {
         }
       ]
     };
-    BaseAPI = "/api";
+    baseAPI = "/api";
     dev && dev();
   }
 }
