@@ -58,7 +58,7 @@ export interface Comment {
 
 export interface TagPage {
   text: string;
-  list: Array<{
+  array: Array<{
     id: string;
     title: string;
     href: string;
@@ -121,7 +121,7 @@ export interface Tag {
  */
 export interface EssayList {
   pages: string[];
-  list: Array<Essay>;
+  array: Array<Essay>;
 }
 
 /**
@@ -139,4 +139,15 @@ export interface CateList {
   pages: string[];
   label: string;
   array: Array<Essay>;
+}
+
+export interface SideCateAndTagList {
+  cates: {
+    id: string;
+    text: string;
+  }[];
+  tags: {
+    id: string;
+    text: string;
+  }[];
 }

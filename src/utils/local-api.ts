@@ -9,7 +9,7 @@
 
 import $ from "jquery";
 import {
-  parseSideCategories,
+  parseSideCateList,
   parseSideBloggerInfo,
   parseSideBlogInfo,
   parseSideBlogTopList,
@@ -19,8 +19,8 @@ import {
 /**
  * 获取侧边栏的部分随笔分类列表。直接调用解析函数解析 home 节点下的侧边栏。
  */
-export function getSideCategories() {
-  return parseSideCategories($("#home").find("#blog-sidecolumn").html());
+export function getSideCateList() {
+  return parseSideCateList($("#home").find("#blog-sidecolumn").html());
 }
 
 /**

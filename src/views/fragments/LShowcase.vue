@@ -2,7 +2,7 @@
 import {
   getSideBloggerInfo,
   getSideBlogInfo,
-  getSideCategories,
+  getSideCateList,
   getSideTopList,
   getSideBlogRank
 } from "@/utils/local-api";
@@ -12,9 +12,7 @@ import { __LITE_CONFIG__ } from "@/lite.config";
 const side = __LITE_CONFIG__.side;
 const router = useRouter();
 
-const cl = getSideCategories();
-const tags = cl.tags;
-const categories = cl.categories;
+const cl = getSideCateList();
 const blogger = getSideBloggerInfo();
 const blogInfo = getSideBlogInfo();
 const toplist = getSideTopList();
@@ -102,7 +100,7 @@ const tabName = ref("随笔");
             <div>随笔</div>
           </div>
         </template>
-        <div class="item" v-for="(item, index) in categories" :key="index">
+        <div class="item" v-for="(item, index) in cl.cates" :key="index">
           <div class="text hover" @click="nav('/c/' + item.id, router)">
             {{ item.text }}
           </div>
@@ -117,7 +115,7 @@ const tabName = ref("随笔");
             <div>标签</div>
           </div>
         </template>
-        <div class="item" v-for="(item, index) in tags" :key="index">
+        <div class="item" v-for="(item, index) in cl.tags" :key="index">
           <div class="text hover" @click="nav('/t/' + item.id, router)">
             {{ item.text }}
           </div>

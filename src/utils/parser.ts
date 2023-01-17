@@ -80,7 +80,7 @@ export function parseEssayList(realDOM: any, calc: boolean): CustType.EssayList 
 
   return {
     pages: calcPages($(realDOM).find("#homepage_top_pager > .pager > a"), calc),
-    list: array
+    array
   };
 }
 
@@ -262,13 +262,13 @@ export function parseCateList(realDOM: any, calc: boolean): CustType.CateList {
  * @param realDOM 真实 DOM
  */
 export function parseTagPageList(realDOM: any): CustType.TagPage {
-  let title = $(realDOM).find(".PostList > .postTitl2 > a");
-  let describe = $(realDOM).find(".PostList > .postDesc2");
-  let tagTitle = $(realDOM).find(".PostListTitle").text().trim();
-  let list: any = [];
+  const title = $(realDOM).find(".PostList > .postTitl2 > a");
+  const describe = $(realDOM).find(".PostList > .postDesc2");
+  const tagTitle = $(realDOM).find(".PostListTitle").text().trim();
+  const array: any = [];
 
   $(title).each((i, e) => {
-    list[i] = {
+    array[i] = {
       id: parseInt(
         $(e)
           .attr("href")!
@@ -288,7 +288,7 @@ export function parseTagPageList(realDOM: any): CustType.TagPage {
   });
 
   return {
-    list,
+    array,
     text: tagTitle
   };
 }
@@ -298,31 +298,22 @@ export function parseTagPageList(realDOM: any): CustType.TagPage {
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideCategories(strDOM: string): {
-  categories: {
-    id: string;
-    text: string;
-  }[];
-  tags: {
-    id: string;
-    text: string;
-  }[];
-} {
-  let dom = parseStrToDom(strDOM);
-  let list: any = { categories: [], tags: [] };
+export function parseSideCateList(strDOM: string): CustType.SideCateAndTagList {
+  const dom = parseStrToDom(strDOM);
+  const array: CustType.SideCateAndTagList = { tags: [], cates: [] };
 
-  let tags = $(dom).find("#sidebar_toptags ul li > a");
+  const tags = $(dom).find("#sidebar_toptags ul li > a");
   for (let i = 0; i < $(tags).length; i++) {
-    let uri = $(tags[i]).attr("href");
+    const uri = $(tags[i]).attr("href");
     if (uri) {
-      let decode = decodeURI(uri).match(/\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g);
-      if (decode) list.tags[i] = { id: decode[0].split("/")[2], text: $(tags[i]).text() };
+      const decode = decodeURI(uri).match(/\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g);
+      if (decode) array.tags[i] = { id: decode[0].split("/")[2], text: $(tags[i]).text() };
     }
   }
 
-  let li = $(dom).find("#sidebar_postcategory > ul > li > a");
+  const li = $(dom).find("#sidebar_postcategory > ul > li > a");
   $(li).each((i, e) => {
-    list.categories.push({
+    array.cates.push({
       id: $(e)
         .attr("href")!
         .match(/[0-9]+/g)![0],
@@ -330,7 +321,7 @@ export function parseSideCategories(strDOM: string): {
     });
   });
 
-  return list;
+  return array;
 }
 
 /**
@@ -339,12 +330,12 @@ export function parseSideCategories(strDOM: string): {
  * @param strDOM 真实 DOM
  */
 export function parseSideBloggerInfo(strDOM: string): Array<BlogType.BloggerInfo> {
-  let list: Array<BlogType.BloggerInfo> = [];
-  let a = $(parseStrToDom(strDOM)).find("#profile_block > a");
+  const array: Array<BlogType.BloggerInfo> = [];
+  const a = $(parseStrToDom(strDOM)).find("#profile_block > a");
   $(a).each((i, e) => {
-    list.push({ text: $(e).text().trim(), href: $(e).attr("href")! });
+    array.push({ text: $(e).text().trim(), href: $(e).attr("href")! });
   });
-  return list;
+  return array;
 }
 
 /**
@@ -353,19 +344,19 @@ export function parseSideBloggerInfo(strDOM: string): Array<BlogType.BloggerInfo
  * @param strDOM 真实 DOM
  */
 export function parseSideBlogInfo(strDOM: string): Array<{ text: string; digg: string }> {
-  let list = <any>[];
+  const array = <any>[];
   $(parseStrToDom(strDOM))
     .find("span")
     .each((i, d) => {
       if ($(d).attr("id")) {
-        let t = $(d).text();
-        let text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
+        const t = $(d).text();
+        const text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
         let digg = t.match(/\d+/g)[0];
         if (i === 3) digg = parseUnit(digg);
-        list.push({ text, digg });
+        array.push({ text, digg });
       }
     });
-  return list;
+  return array;
 }
 
 /**
@@ -377,16 +368,16 @@ export function parseSideRank(strDOM: string): {
   text: string;
   digg: string;
 }[] {
-  let list = <any>[];
+  const array = <any>[];
   $(parseStrToDom(strDOM))
     .find("li")
     .each((i, d) => {
-      let t = $(d).text().trim();
-      let text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
-      let digg = t.match(/\d+/g)[0];
-      list.push({ text, digg });
+      const t = $(d).text().trim();
+      const text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
+      const digg = t.match(/\d+/g)[0];
+      array.push({ text, digg });
     });
-  return list;
+  return array;
 }
 
 /**
@@ -398,11 +389,11 @@ export function parseSideBlogTopList(strDOM: string): {
   id: string;
   text: string;
 }[] {
-  let list = <any>[];
+  const array = <any>[];
   $(parseStrToDom(strDOM))
     .find("#TopViewPostsBlock ul > li > a")
     .each((i, e) => {
-      list.push({
+      array.push({
         id: $(e)
           .attr("href")
           ?.match(/\/p\/\d+/g)![0]
@@ -410,19 +401,19 @@ export function parseSideBlogTopList(strDOM: string): {
         text: TextUtils.regTrim($(e).text().trim(), [/\n+/g])
       });
     });
-  return list;
+  return array;
 }
 
 export function parseTags(dom: any): Array<CustType.Tag> {
-  const list: Array<CustType.Tag> = [];
+  const array: Array<CustType.Tag> = [];
   $(dom)
     .find("#MyTag1_dtTagList")
     .find("td")
     .each(function (i, el) {
-      let count = parseInt($(el).attr("data-use-count"));
-      let href = $(el).find("a").attr("href");
-      let text = $(el).find("a").text();
-      list.push({ count, href, text });
+      const count = parseInt($(el).attr("data-use-count"));
+      const href = $(el).find("a").attr("href");
+      const text = $(el).find("a").text();
+      array.push({ count, href, text });
     });
-  return list;
+  return array;
 }

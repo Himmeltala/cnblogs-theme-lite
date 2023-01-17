@@ -2,7 +2,7 @@
 import { getEssayList } from "@/utils/api";
 import { closeLoader } from "@/utils/loader";
 
-const data = ref((await getEssayList(1, false)).list);
+const data = ref((await getEssayList(1, false)).array);
 const pageCount = ref(2);
 const pagination = ref();
 

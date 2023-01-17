@@ -6,14 +6,14 @@ const route = useRoute();
 const data = await getTagPageList(String(route.params.tag));
 
 let tagname = ref(data.text);
-let taglist = ref(data.list);
+let taglist = ref(data.array);
 
 closeLoader();
 
 watch(route, async () => {
   const data = await getTagPageList(String(route.params.tag));
   tagname.value = data.text;
-  taglist.value = data.list;
+  taglist.value = data.array;
 });
 
 const asyncComp = ref(null);
@@ -29,17 +29,23 @@ watch(asyncComp, () => {
     <div id="t-content">
       <Card style="flex: 1 1 40%" class="mb-2.5" v-for="(item, index) in taglist" :key="index">
         <div class="fsz-1.1 break-all">
-          <router-link class="hover color-#a7a7a7" :to="'/e/' + item.id">{{ item.title }}</router-link>
+          <router-link class="hover color-#a7a7a7" :to="'/e/' + item.id">{{
+            item.title
+          }}</router-link>
         </div>
         <div class="flex content-center items-center justify-start fsz-0.9 mt-6">
           <el-icon>
             <i-ep-caret-right />
           </el-icon>
-          <router-link class="hover color-#a7a7a7 b-b-#cccccc b-b-dotted b-b-1 p-b-0.3" :to="'/e/' + item.id">
+          <router-link
+            class="hover color-#a7a7a7 b-b-#cccccc b-b-dotted b-b-1 p-b-0.3"
+            :to="'/e/' + item.id">
             阅读全文
           </router-link>
         </div>
-        <EssaySynopsis class="mt-4" :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
+        <EssaySynopsis
+          class="mt-4"
+          :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
       </Card>
     </div>
   </div>

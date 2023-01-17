@@ -271,60 +271,41 @@ export async function getTagPageList(tag: string) {
 
 /**
  * 获取侧边栏的部分随笔分类列表
- *
- * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
-export async function getSideCategories(): Promise<{
-  categories: {
-    id: string;
-    text: string;
-  }[];
-  tags: {
-    id: string;
-    text: string;
-  }[];
-}> {
+export async function getSideCateList() {
   const { data } = await sendAwaitGet(`${baseAPI}/ajax/sidecolumn.aspx`);
-  return Parser.parseSideCategories(data);
+  return Parser.parseSideCateList(data);
 }
 
 /**
  * 获取侧边栏的博主信息
  *
- * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
-export function getSideBloggerInfo(response: (res: Array<BlogType.BloggerInfo>) => void) {
-  sendGet(`${baseAPI}/ajax/news.aspx`, ({ data }) => {
-    response(Parser.parseSideBloggerInfo(data));
-  });
+export async function getSideBloggerInfo() {
+  const { data } = await sendAwaitGet(`${baseAPI}/ajax/news.aspx`);
+  return Parser.parseSideBloggerInfo(data);
 }
 
 /**
  * 获取侧边栏博客的数据
- *
- * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
-export function getSideBlogInfo(response: (res: any) => void) {
-  sendGet(`${baseAPI}/ajax/blogStats`, ({ data }) => {
-    response(Parser.parseSideBlogInfo(data));
-  });
+export async function getSideBlogInfo() {
+  const { data } = await sendAwaitGet(`${baseAPI}/ajax/blogStats`);
+  return Parser.parseSideBlogInfo(data);
 }
 
 /**
  * 获取侧边栏阅读排行榜列表
- *
- * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
-export function getSideTopList(response: (res: any) => void) {
-  sendGet(`${baseAPI}/ajax/TopLists.aspx`, ({ data }) => {
-    response(Parser.parseSideBlogTopList(data));
-  });
+export async function getSideTopList() {
+  const { data } = await sendAwaitGet(`${baseAPI}/ajax/TopLists.aspx`);
+  return Parser.parseSideBlogTopList(data);
 }
 
 /**
  * 获取所有标签列表
  */
-export async function getTag(): Promise<Array<CustType.Tag>> {
+export async function getTag() {
   const { data } = await sendAwaitGet(`${baseAPI}/tag`);
   return Parser.parseTags(data);
 }
