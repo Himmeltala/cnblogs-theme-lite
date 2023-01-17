@@ -141,6 +141,9 @@ export interface CateList {
   array: Array<Essay>;
 }
 
+/**
+ * 侧边栏标签和分类数组
+ */
 export interface SideCateAndTagList {
   cates: {
     id: string;
@@ -150,4 +153,42 @@ export interface SideCateAndTagList {
     id: string;
     text: string;
   }[];
+}
+
+/**
+ * 侧边栏博主排行榜、积分
+ */
+export interface SideRankList {
+  text: string;
+  digg: string;
+}
+
+/**
+ * 侧边栏阅读排行榜
+ */
+export interface SideTopList {
+  id: string;
+  text: string;
+}
+
+/**
+ * 博主信息，粉丝、昵称、关注、园龄，每一个都有对应的 a 链接，text 是文本信息
+ */
+export interface Blogger {
+  text: string;
+  href: string;
+}
+
+/**
+ * 侧边栏博客信息，随笔数量、文章数量、评论数量、阅读数量
+ */
+export interface SideBlog extends SideRankList {}
+
+/**
+ * 随笔上一篇或下一篇随笔数据类型
+ */
+type PrevNextType = { text?: string; href?: string };
+export interface PrevNext {
+  prev: PrevNextType;
+  next: PrevNextType;
 }

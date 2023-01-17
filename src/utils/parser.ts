@@ -10,7 +10,7 @@
 import $ from "jquery";
 import * as TextUtils from "./text-helper";
 import { parseUnit } from "./numeric-helper";
-import { CustType, BlogType } from "@/types/data-type";
+import { CustType } from "@/types/data-type";
 
 /**
  * 由于一些问题，有时候请求过来的 DOM 不是真实的 DOM，所以不能被 JQ 解析，必须先调用该函数进行转换
@@ -186,11 +186,10 @@ export function parseEssayCatesAndTags(strDOM: any): CustType.EssayCateAndTagLis
  *
  * @param strDOM 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parsePrevNext(strDOM: any): any {
-  let _dom = parseStrToDom(strDOM);
-  let prevNext = { prev: {}, next: {} };
+export function parsePrevNext(strDOM: any): CustType.PrevNext {
+  const prevNext: CustType.PrevNext = { prev: {}, next: {} };
 
-  $(_dom)
+  $(parseStrToDom(strDOM))
     .find("a")
     .each((i, e) => {
       let prefix = $(e).text().trim();
@@ -329,8 +328,8 @@ export function parseSideCateList(strDOM: string): CustType.SideCateAndTagList {
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideBloggerInfo(strDOM: string): Array<BlogType.BloggerInfo> {
-  const array: Array<BlogType.BloggerInfo> = [];
+export function parseSideBloggerInfo(strDOM: string): Array<CustType.Blogger> {
+  const array: Array<CustType.Blogger> = [];
   const a = $(parseStrToDom(strDOM)).find("#profile_block > a");
   $(a).each((i, e) => {
     array.push({ text: $(e).text().trim(), href: $(e).attr("href")! });
@@ -343,8 +342,8 @@ export function parseSideBloggerInfo(strDOM: string): Array<BlogType.BloggerInfo
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideBlogInfo(strDOM: string): Array<{ text: string; digg: string }> {
-  const array = <any>[];
+export function parseSideBlogInfo(strDOM: string): Array<CustType.SideBlog> {
+  const array: Array<CustType.SideBlog> = [];
   $(parseStrToDom(strDOM))
     .find("span")
     .each((i, d) => {
@@ -364,11 +363,8 @@ export function parseSideBlogInfo(strDOM: string): Array<{ text: string; digg: s
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideRank(strDOM: string): {
-  text: string;
-  digg: string;
-}[] {
-  const array = <any>[];
+export function parseSideRank(strDOM: string): CustType.SideRankList[] {
+  const array: Array<CustType.SideRankList> = [];
   $(parseStrToDom(strDOM))
     .find("li")
     .each((i, d) => {
@@ -385,11 +381,8 @@ export function parseSideRank(strDOM: string): {
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideBlogTopList(strDOM: string): {
-  id: string;
-  text: string;
-}[] {
-  const array = <any>[];
+export function parseSideBlogTopList(strDOM: string): CustType.SideTopList[] {
+  const array: Array<CustType.SideTopList> = [];
   $(parseStrToDom(strDOM))
     .find("#TopViewPostsBlock ul > li > a")
     .each((i, e) => {

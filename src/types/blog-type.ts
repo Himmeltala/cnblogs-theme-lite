@@ -25,8 +25,14 @@ export interface BlogComment extends Blog {
   parentCommentId?: number;
 }
 
+/**
+ * 获取随笔，返回的博客园接口的字段
+ */
 export interface BlogEssay extends Blog {}
 
+/**
+ * 随笔投票，博客园接口需要的正确字段
+ */
 export interface BlogEssayVote {
   // 反对数量
   buryCount: number;
@@ -39,11 +45,9 @@ export interface BlogEssayVote {
   viewCount: number;
 }
 
-export interface BloggerInfo {
-  text: string;
-  href: string;
-}
-
+/**
+ * 有些接口返回的数据类型是博客园的字段，需要该类型进行约束
+ */
 export interface AjaxType {
   id?: number;
   isSuccess?: boolean;

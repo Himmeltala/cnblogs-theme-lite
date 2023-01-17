@@ -141,7 +141,7 @@ watch(asyncComp, () => {
         <div class="prev-next fsz-0.9 mt-10">
           <div
             class="prev hover mb-2 flex justify-start items-center content-center"
-            v-if="prevNext?.prev?.href">
+            v-if="prevNext.prev.href">
             <el-icon>
               <i-ep-d-arrow-left />
             </el-icon>
@@ -151,7 +151,7 @@ watch(asyncComp, () => {
           </div>
           <div
             class="next hover flex justify-start items-center content-center"
-            v-if="prevNext?.next?.href">
+            v-if="prevNext.next.href">
             <el-icon>
               <i-ep-d-arrow-right />
             </el-icon>
