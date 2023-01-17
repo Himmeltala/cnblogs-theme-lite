@@ -47,12 +47,17 @@ function calcPages(sorter: any, calc: boolean): string[] {
  * @param calc 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
  * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
  */
-export function parseEssayList(realDOM: any, calc: boolean): { pages: string[]; list: Array<DataType.Essay> } {
+export function parseEssayList(
+  realDOM: any,
+  calc: boolean
+): { pages: string[]; list: Array<DataType.Essay> } {
   let id = $(realDOM).find(".postTitle2");
   let title = $(realDOM).find(".postTitle");
   let describe = $(realDOM).find(".c_b_p_desc");
   let record = $(realDOM).find(".postDesc").text();
-  let date = record.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
+  let date = record.match(
+    /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g
+  );
   let view = record.match(/阅读\([0-9]+\)/g);
   let comm = record.match(/评论\([0-9]+\)/g);
   let digg = record.match(/推荐\([0-9]+\)/g);
@@ -221,7 +226,9 @@ export function parseCategoryList(
   let title = $(dom).find(".entrylistItemTitle > span");
   let describe = $(dom).find(".c_b_p_desc");
   let record = $(dom).find(".entrylistItemPostDesc").text();
-  let date = record.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
+  let date = record.match(
+    /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g
+  );
   let view = record.match(/阅读\([0-9]+\)/g);
   let comm = record.match(/评论\([0-9]+\)/g);
   let digg = record.match(/推荐\([0-9]+\)/g);
@@ -274,7 +281,9 @@ export function parseTagPageList(realDOM: any): DataType.TagPage {
       href: $(e).attr("href"),
       date: $(describe[i])
         .text()
-        .match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g)![0],
+        .match(
+          /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g
+        )![0],
       view: $(describe[i]).find(".post-view-count").text().split(":")[1],
       comm: $(describe[i]).find(".post-comment-count").text().split(":")[1],
       digg: $(describe[i]).find(".post-digg-count").text().split(":")[1]

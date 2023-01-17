@@ -18,7 +18,7 @@ function search() {
 <template>
   <div
     id="navigation"
-    class="fixed z-99 w-200 h-15 flex content-center items-center bg-#191919"
+    class="fixed z-999 w-200 h-15 flex content-center items-center bg-#191919"
     :style="{ 'justify-content': navor?.header ? 'space-between' : 'flex-end' }">
     <div
       class="hover fsz-1.5 font-normal flex items-center content-center justify-center color-#878787"

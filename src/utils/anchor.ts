@@ -56,7 +56,7 @@ export function makeAnchorEvent(binding: any) {
   $(`#anchor-${binding.id}`).on("click", e => {
     document.querySelector(`#${binding.id}`).scrollIntoView({
       behavior: "smooth",
-      block: "start",
+      block: "center",
       inline: "nearest"
     });
   });

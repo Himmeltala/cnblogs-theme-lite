@@ -15,6 +15,8 @@ const regulation = <Rule<any>[]>[
   [/^wvh-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ width: `${d}vh` })],
   // vw 宽度
   [/^wvw-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ width: `${d}vw` })],
+  // 百分比高度
+  [/^hd-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ height: `${d}%` })],
   // px 高度
   [/^hp-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ height: `${d}px` })],
   // vh 高度
@@ -34,7 +36,10 @@ const regulation = <Rule<any>[]>[
   // vw right
   [/^rtv-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ right: `${d}vw` })],
   // overflow
-  [/^ofw-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/, ([, d]) => ({ overflow: `${d}` })]
+  [
+    /^ofw-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/,
+    ([, d]) => ({ overflow: `${d}` })
+  ]
 ];
 
 export { regulation };

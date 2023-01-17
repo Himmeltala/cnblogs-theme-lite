@@ -163,7 +163,10 @@ export function getCommentCount(postId: number | string, response: (res: any) =>
  * @param comment 被操作的评论的实体，需要 isAbandoned、postId、voteType 三个字段，其中 voteType 请见 DataType.VoteType，只有两种类型。
  * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
-export function voteComment(comment: DataType.BlogComment, response: (ajax: HttpType.AjaxType) => void) {
+export function voteComment(
+  comment: DataType.BlogComment,
+  response: (ajax: HttpType.AjaxType) => void
+) {
   sendPost(`${BaseAPI}/ajax/vote/comment`, comment, ({ data }) => {
     response(data);
   });
@@ -175,7 +178,10 @@ export function voteComment(comment: DataType.BlogComment, response: (ajax: Http
  * @param comment 博客园原有的评论实体，需要 body、parentCommentId、postId。parentCommentId 就是回复的那一条的 ID。
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。这里需要获取 AjaxType。利用其中的 isSuccess 查看是否回复成功。
  */
-export function replayComment(comment: DataType.BlogComment, response: (ajax: HttpType.AjaxType) => void) {
+export function replayComment(
+  comment: DataType.BlogComment,
+  response: (ajax: HttpType.AjaxType) => void
+) {
   sendPost(`${BaseAPI}/ajax/PostComment/Add.aspx`, comment, ({ data }) => {
     response(data);
   });
@@ -278,10 +284,18 @@ export async function getTagPageList(tag: string): Promise<DataType.TagPage> {
  *
  * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
-export function getSideCategories(response: (res: any) => void) {
-  sendGet(`${BaseAPI}/ajax/sidecolumn.aspx`, ({ data }) => {
-    response(Parser.parseSideCategories(data));
-  });
+export async function getSideCategories(): Promise<{
+  categories: {
+    id: string;
+    text: string;
+  }[];
+  tags: {
+    id: string;
+    text: string;
+  }[];
+}> {
+  const { data } = await sendAwaitGet(`${BaseAPI}/ajax/sidecolumn.aspx`);
+  return Parser.parseSideCategories(data);
 }
 
 /**

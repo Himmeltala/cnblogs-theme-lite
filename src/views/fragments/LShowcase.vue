@@ -26,7 +26,7 @@ const tabName = ref("随笔");
 <template>
   <div
     id="l-showcase"
-    class="noscroll fixed top-0 left-0 hvw-100 w-60 px-2 bg-#1c1c1c z-999 ofw-auto box-border">
+    class="noscroll fixed top-0 left-0 hd-100 ofw-auto w-60 px-2 bg-#1c1c1c z-999 box-border">
     <ShowcaseItem text="博客信息">
       <template #icon>
         <el-icon class="mr-1">
