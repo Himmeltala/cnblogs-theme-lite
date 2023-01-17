@@ -14,7 +14,7 @@ const router = useRouter();
 </script>
 
 <template>
-  <Card :class="{ 'mb-10': index !== data.length - 1 }" v-for="(item, index) in data" :key="index">
+  <Card v-for="(item, index) in data" :index="index" :length="data.length" :key="index">
     <div class="header flex content-center items-center justify-between">
       <el-image
         v-if="index % 2 !== 0 && item.surface"

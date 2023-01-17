@@ -1,7 +1,28 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineProps({
+  index: {
+    type: Number
+  },
+  length: {
+    type: Number
+  }
+});
+</script>
 
 <template>
-  <div class="card p-4 rd-2 box-border">
+  <div class="mb-4 pb-4 box-border" :class="{ 'bt-style': index !== length - 1 }">
     <slot />
   </div>
 </template>
+
+<style scoped lang="scss">
+.bt-style {
+  border: {
+    bottom: {
+      width: 1px;
+      style: dotted;
+      color: #464646;
+    }
+  }
+}
+</style>

@@ -44,7 +44,7 @@ watch(asyncComp, () => {
 </script>
 
 <template>
-  <div ref="asyncComp" id="lite-essay" class="color-#a7a7a7">
+  <div ref="asyncComp" id="lite-essay">
     <Card class="relative">
       <div>
         <el-page-header @back="nav('back', router)">
@@ -52,7 +52,7 @@ watch(asyncComp, () => {
             <i-ep-arrow-left />
           </template>
           <template #content>
-            <div class="leh-1.4 color-#a7a7a7 fsz-1.4 break-all">{{ essay.text }}</div>
+            <div class="leh-1.4 fsz-1.4 break-all">{{ essay.text }}</div>
           </template>
         </el-page-header>
         <div class="color-#878787 flex justify-start items-center content-center mt-4 fsz-0.9">

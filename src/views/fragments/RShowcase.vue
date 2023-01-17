@@ -22,7 +22,7 @@ watch(route, value => {
 <template>
   <div
     id="r-showcase"
-    class="noscroll ofw-auto fixed tpv-10 rtv-10 bg-#191919 color-#878787 hvh-90 wvw-13.5 box-border rd-2 px-5">
+    class="noscroll fixed top-0 right-0 hvw-100 w-60 px-2 bg-#1c1c1c z-999 ofw-auto box-border">
     <ShowcaseItem text="随笔目录" v-if="anchors && anchors.length > 0">
       <template #icon>
         <el-icon style="margin-right: 5px">

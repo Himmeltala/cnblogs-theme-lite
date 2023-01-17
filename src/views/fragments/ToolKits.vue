@@ -3,7 +3,7 @@
 <template>
   <div id="toolkits" class="fixed right-3.5 wvw-2.5 tpv-85">
     <div class="kit hover">
-      <el-tooltip effect="dark" content="工具箱" placement="left-start"> </el-tooltip>
+      <el-tooltip effect="dark" content="工具箱" placement="left-start"> Hello </el-tooltip>
     </div>
   </div>
 </template>
