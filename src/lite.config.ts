@@ -2,44 +2,49 @@ import $ from "jquery";
 import { CustType } from "@/types/data-type";
 
 export let __LITE_CONFIG__: CustType.Lite;
+export let blogId = 0;
 export let baseAPI = "";
 export let belongs = "";
-export let blogId = 0;
 export let blogApp = "";
 export let isLogin = true;
 export let isOwner = true;
 
+function log(title: string, msg: string) {
+  console.log(
+    `%c${title}%c${msg}`,
+    "background: #409eff; color: #fff; border-radius: 3px 0 0 3px; padding: 10px",
+    "background: #707070; color: #fff; border-radius: 0 3px 3px 0; padding: 10px"
+  );
+}
+
 export function useLite(dev?: Function, pro?: Function) {
   $("body").append(`<div id="app"></div>`);
   $("html").attr("class", "dark");
+
+  log("Lite Theme Ver 1.0.0", "Powered By Himmelbleu");
+  log("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
+
   // @ts-ignore
   __LITE_CONFIG__ = window["__LITE_CONFIG__"];
   if (import.meta.env.PROD) {
     // @ts-ignore
-    __LITE_CONFIG__.currentBlogId = currentBlogId;
+    blogId = currentBlogId;
     // @ts-ignore
-    __LITE_CONFIG__.currentBlogApp = currentBlogApp;
+    blogApp = currentBlogApp;
     // @ts-ignore
-    __LITE_CONFIG__.isLogined = isLogined;
+    isLogin = isLogined;
     // @ts-ignore
-    __LITE_CONFIG__.isBlogOwner = isBlogOwner;
-    baseAPI = `https://www.cnblogs.com/${__LITE_CONFIG__.currentBlogApp}`;
-    belongs = `/${__LITE_CONFIG__.currentBlogApp}`;
-    blogId = __LITE_CONFIG__.currentBlogId;
-    blogApp = __LITE_CONFIG__.currentBlogApp;
-    isLogin = __LITE_CONFIG__.isLogined;
-    isOwner = __LITE_CONFIG__.isBlogOwner;
+    isOwner = isBlogOwner;
+    baseAPI = `https://www.cnblogs.com/${blogApp}`;
     pro && pro();
   } else if (import.meta.env.DEV) {
+    blogId = import.meta.env.VITE_BLOG_ID;
+    blogApp = import.meta.env.VITE_BLOG_APP;
+    baseAPI = "/api";
     __LITE_CONFIG__ = {
-      currentBlogId: import.meta.env.VITE_BLOG_ID,
-      currentBlogApp: import.meta.env.VITE_BLOG_APP,
-      isBlogOwner: true,
-      isLogined: true,
       github: "https://github.com/Himmelbleu",
       navor: {
         header: "CNBLOGS",
-        search: true,
         navs: [
           {
             href: "https://i.cnblogs.com/posts/edit",
@@ -63,10 +68,6 @@ export function useLite(dev?: Function, pro?: Function) {
         { href: "http://ts.xcatliu.com/index.html", text: "TypeScript 入门教程" },
         { href: "https://zh.javascript.info/", text: "现代 JavaScript 教程" },
         { href: "https://ts.yayujs.com/", text: "TypeScript 中文文档" },
-        {
-          href: "https://niceboybao.github.io/2019/03/05/others/books/",
-          text: "前端免费高清电子书"
-        },
         { href: "http://zhongguose.com/", text: "Chinese Colors" },
         { href: "https://www.webfx.com/tools/emoji-cheat-sheet/", text: "Emoji Cheat Sheet" }
       ],
@@ -87,7 +88,6 @@ export function useLite(dev?: Function, pro?: Function) {
         }
       ]
     };
-    baseAPI = "/api";
     dev && dev();
   }
 }

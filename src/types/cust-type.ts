@@ -70,14 +70,6 @@ export interface TagPage {
 }
 
 export interface Lite {
-  // 当前博客的名称
-  currentBlogApp?: string;
-  // 当前博客的 ID
-  currentBlogId?: number;
-  // 访问的用户是否已经登录？
-  isLogined?: boolean;
-  // 是否为博客持有者？
-  isBlogOwner?: boolean;
   // 左侧边栏配置项
   side?: {
     avatar?: string;
@@ -89,7 +81,6 @@ export interface Lite {
   // 导航栏配置项
   navor?: {
     header?: string;
-    search?: boolean;
     navs?: { href: string; text?: string; svg?: string; img?: string }[];
   };
   graph?: {

@@ -2,7 +2,7 @@
 import { BlogType } from "@/types/data-type";
 import { closeLoader } from "@/utils/common";
 import { nav } from "@/helpers/route-helper";
-import { __LITE_CONFIG__ } from "@/lite.config";
+import { isOwner } from "@/lite.config";
 import {
   getEssay,
   getEssayCatesAndTags,
@@ -75,8 +75,8 @@ watch(asyncComp, () => {
             <span>{{ essay.comm }}条评论</span>
           </div>
           <div
+            v-if="isOwner"
             class="flex justify-center items-center content-center hover"
-            v-if="__LITE_CONFIG__.isBlogOwner"
             @click="nav('https://i.cnblogs.com/EditPosts.aspx?postid=' + postId)">
             <el-icon class="mr-0.9">
               <i-ep-edit-pen />

@@ -7,7 +7,7 @@ import {
   getSideBlogRank
 } from "@/utils/local-api";
 import { nav } from "@/helpers/route-helper";
-import { __LITE_CONFIG__ } from "@/lite.config";
+import { __LITE_CONFIG__, blogApp } from "@/lite.config";
 
 const side = __LITE_CONFIG__.side;
 const router = useRouter();
@@ -19,6 +19,11 @@ const toplist = getSideTopList();
 const rank = getSideBlogRank();
 
 const tabName = ref("随笔");
+
+const input = ref();
+function search() {
+  window.open(`https://zzk.cnblogs.com/s?w=blog:${blogApp}%${input.value}`, "__blank");
+}
 </script>
 
 <template>
@@ -89,42 +94,56 @@ const tabName = ref("随笔");
           </span>
         </div>
       </el-tooltip>
+      <el-input @keyup.enter="search" v-model="input">
+        <template #prefix>
+          <el-icon @click="search">
+            <i-ep-search />
+          </el-icon>
+        </template>
+      </el-input>
     </ShowcaseItem>
-    <el-tabs type="card" v-model="tabName">
-      <el-tab-pane label="随笔" name="随笔">
-        <template #label>
-          <div class="fsz-0.9 flex content-center items-center justify-center">
-            <el-icon class="mr-1">
-              <i-ep-folder />
-            </el-icon>
-            <div>随笔</div>
+    <ShowcaseItem text="随笔和标签">
+      <template #icon>
+        <el-icon class="mr-1">
+          <i-ep-collection />
+        </el-icon>
+      </template>
+      <el-tabs v-model="tabName">
+        <el-tab-pane label="随笔" name="随笔">
+          <template #label>
+            <div class="fsz-0.9 flex content-center items-center justify-center">
+              <el-icon class="mr-1">
+                <i-ep-folder />
+              </el-icon>
+              <div>随笔</div>
+            </div>
+          </template>
+          <div class="item" v-for="(item, index) in cl.cates" :key="index">
+            <div class="text hover" @click="nav('/c/' + item.id, router)">
+              {{ item.text }}
+            </div>
           </div>
-        </template>
-        <div class="item" v-for="(item, index) in cl.cates" :key="index">
-          <div class="text hover" @click="nav('/c/' + item.id, router)">
-            {{ item.text }}
+        </el-tab-pane>
+        <el-tab-pane label="标签" name="标签">
+          <template #label>
+            <div class="fsz-0.9 flex content-center items-center justify-center">
+              <el-icon class="mr-1">
+                <i-ep-collection-tag />
+              </el-icon>
+              <div>标签</div>
+            </div>
+          </template>
+          <div class="item" v-for="(item, index) in cl.tags" :key="index">
+            <div class="text hover" @click="nav('/t/' + item.id, router)">
+              {{ item.text }}
+            </div>
           </div>
-        </div>
-      </el-tab-pane>
-      <el-tab-pane label="标签" name="标签">
-        <template #label>
-          <div class="fsz-0.9 flex content-center items-center justify-center">
-            <el-icon class="mr-1">
-              <i-ep-collection-tag />
-            </el-icon>
-            <div>标签</div>
+          <div class="item">
+            <div class="text hover" @click="nav('/tags', router)">更多...</div>
           </div>
-        </template>
-        <div class="item" v-for="(item, index) in cl.tags" :key="index">
-          <div class="text hover" @click="nav('/t/' + item.id, router)">
-            {{ item.text }}
-          </div>
-        </div>
-        <div class="item">
-          <div class="text hover" @click="nav('/tags', router)">更多...</div>
-        </div>
-      </el-tab-pane>
-    </el-tabs>
+        </el-tab-pane>
+      </el-tabs>
+    </ShowcaseItem>
     <ShowcaseItem text="阅读排行榜">
       <template #icon>
         <el-icon style="margin-right: 5px">

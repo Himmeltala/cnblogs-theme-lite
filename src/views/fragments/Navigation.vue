@@ -4,15 +4,6 @@ import { nav } from "@/helpers/route-helper";
 
 const router = useRouter();
 const navor = __LITE_CONFIG__.navor;
-
-let input = ref("");
-
-function search() {
-  window.open(
-    `https://zzk.cnblogs.com/s?w=blog:${__LITE_CONFIG__.currentBlogApp}%${input.value}`,
-    "__blank"
-  );
-}
 </script>
 
 <template>
@@ -26,15 +17,6 @@ function search() {
       v-if="navor?.header"
       v-html="navor.header"></div>
     <div class="flex items-center content-center justify-center fsz-1">
-      <!-- <div class="mr-5" v-if="navor?.search">
-        <el-input @keyup.enter="search" v-model="input">
-          <template #prefix>
-            <el-icon @click="search">
-              <i-ep-search />
-            </el-icon>
-          </template>
-        </el-input>
-      </div> -->
       <div class="hover mr-4" @click="nav('https://www.cnblogs.com')">博客园</div>
       <div class="hover mr-4" @click="nav('/', router)">首页</div>
       <div class="hover" :class="{ 'mr-4': navor?.navs }" @click="nav('/', router)">标签</div>
