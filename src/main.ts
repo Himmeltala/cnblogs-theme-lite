@@ -11,8 +11,8 @@ import "uno.css";
 import "./style.scss";
 
 /* Import Lite */
-import Directive from "./directive";
-import { initLite } from "./lite.config";
+import { useDirective } from "./directive";
+import { useLite } from "./lite.config";
 
 /* Start */
 const app = createApp(App);
@@ -20,18 +20,11 @@ const app = createApp(App);
 app.use(router);
 app.use(createPinia());
 
-const dir = new Directive(app);
-dir.parseCode();
-dir.makeAnchor();
-
-initLite(
-  () => {
-    app.mount("#app");
-  },
+useDirective(app);
+useLite(
+  () => app.mount("#app"),
   () => {
     // @ts-ignore
-    window["__LITE_CONFIG__"].onLoaded = () => {
-      app.mount("#app");
-    };
+    window["__LITE_CONFIG__"].onLoaded = () => app.mount("#app");
   }
 );

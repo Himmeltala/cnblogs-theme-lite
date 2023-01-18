@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAnchorStore } from "@/store";
-import { RouteName } from "@/utils/route-helper";
 import { __LITE_CONFIG__ } from "@/lite.config";
+import { RouteName } from "@/helpers/route-helper";
 
 const route = useRoute();
 const links = __LITE_CONFIG__.links;

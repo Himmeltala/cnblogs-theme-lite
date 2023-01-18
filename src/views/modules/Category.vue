@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CustType } from "@/types/data-type";
-import * as RemoteApi from "@/utils/api";
-import { closeLoader } from "@/utils/loader";
+import { closeLoader } from "@/utils/common";
+import * as RemoteApi from "@/utils/remote-api";
 
 const route = useRoute();
 

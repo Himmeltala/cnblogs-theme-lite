@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getGalleryImg } from "@/utils/local-api";
-import { closeLoader } from "@/utils/loader";
+import { closeLoader } from "@/utils/common";
 
 const router = useRouter();
 const imgUrl = getGalleryImg();

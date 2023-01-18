@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getTag } from "@/utils/api";
-import { closeLoader } from "@/utils/loader";
+import { getTag } from "@/utils/remote-api";
+import { closeLoader } from "@/utils/common";
 
 const tags = await getTag();
 

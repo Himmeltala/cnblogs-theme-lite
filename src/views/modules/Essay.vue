@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import { getEssay, getEssayCatesAndTags, getPrevNext, getEssayVote, voteEssay } from "@/utils/api";
 import { BlogType } from "@/types/data-type";
-import { nav } from "@/utils/route-helper";
-import { closeLoader } from "@/utils/loader";
+import { closeLoader } from "@/utils/common";
+import { nav } from "@/helpers/route-helper";
 import { __LITE_CONFIG__ } from "@/lite.config";
+import {
+  getEssay,
+  getEssayCatesAndTags,
+  getPrevNext,
+  getEssayVote,
+  voteEssay
+} from "@/utils/remote-api";
 
 const route = useRoute();
 const router = useRouter();

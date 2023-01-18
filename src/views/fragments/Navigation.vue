@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { __LITE_CONFIG__ } from "@/lite.config";
-import { nav } from "@/utils/route-helper";
+import { nav } from "@/helpers/route-helper";
 
 const router = useRouter();
 const navor = __LITE_CONFIG__.navor;

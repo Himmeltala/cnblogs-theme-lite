@@ -6,7 +6,7 @@ import {
   getSideTopList,
   getSideBlogRank
 } from "@/utils/local-api";
-import { nav } from "@/utils/route-helper";
+import { nav } from "@/helpers/route-helper";
 import { __LITE_CONFIG__ } from "@/lite.config";
 
 const side = __LITE_CONFIG__.side;

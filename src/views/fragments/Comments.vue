@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import $ from "jquery";
-import { __LITE_CONFIG__ } from "@/lite.config";
-import { nav } from "@/utils/route-helper";
-import { CustType, BlogType } from "@/types/data-type";
-import * as Native from "@/utils/native";
-import * as RemoteApi from "@/utils/api";
+import { isLogin } from "@/lite.config";
+import { nav } from "@/helpers/route-helper";
+import * as RemoteApi from "@/utils/remote-api";
 import { useCommentsAnchorStore } from "@/store";
+import { openImageUploadWindow } from "@/utils/common";
+import { CustType, BlogType } from "@/types/data-type";
 
 const props = defineProps({
   postId: { type: Number, required: true }
@@ -70,7 +70,7 @@ watch(commentAnchorQuote, () => {
 });
 
 function uploadImage(el: string, comment?: CustType.Comment) {
-  Native.openImageUploadWindow(el, (imgUrl: any) => {
+  openImageUploadWindow(el, (imgUrl: any) => {
     if (comment) commentContent.value += `\n\n${imgUrl}\n\n`;
     else form.value.content += `\n\n${imgUrl}\n\n`;
   });
@@ -257,16 +257,12 @@ function voteComment(comment: CustType.Comment, voteType: BlogType.VoteType) {
       <div class="absolute opacity-0 top-0 left-0">
         <textarea id="main-upload-img" />
       </div>
-      <el-button
-        plain
-        :disabled="!__LITE_CONFIG__.isLogined"
-        :loading="loading"
-        @click="insertComment">
+      <el-button plain :disabled="!isLogin" :loading="loading" @click="insertComment">
         发送评论
       </el-button>
     </div>
     <h3>评论列表</h3>
-    <div class="mt-10" v-if="comments?.length && __LITE_CONFIG__.isLogined">
+    <div class="mt-10" v-if="comments?.length && isLogin">
       <div class="mb-9" v-for="(item, index) in comments" :key="index">
         <div class="flex items-center content-center justify-start">
           <el-image class="mr-4 rd-50 w-14 h-14" :src="item.avatar" fit="fill" />
@@ -434,11 +430,9 @@ function voteComment(comment: CustType.Comment, voteType: BlogType.VoteType) {
       </div>
     </div>
     <el-empty
-      v-else-if="__LITE_CONFIG__.isLogined && !comments?.length"
+      v-else-if="isLogin && !comments?.length"
       description="没有评论，来一条友善的评论吧🤨" />
-    <el-empty
-      v-else-if="!__LITE_CONFIG__.isLogined"
-      description="你没有登录或没有申请博客权限，所以看不到评论哦~" />
+    <el-empty v-else-if="!isLogin" description="你没有登录或没有申请博客权限，所以看不到评论哦~" />
   </div>
 </template>
 

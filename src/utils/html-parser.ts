@@ -8,9 +8,9 @@
  */
 
 import $ from "jquery";
-import * as TextUtils from "./text-helper";
-import { parseUnit } from "./numeric-helper";
 import { CustType } from "@/types/data-type";
+import { regTrim } from "../helpers/text-helper";
+import { parseUnit } from "../helpers/numeric-helper";
 
 /**
  * 由于一些问题，有时候请求过来的 DOM 不是真实的 DOM，所以不能被 JQ 解析，必须先调用该函数进行转换
@@ -69,7 +69,7 @@ export function parseEssayList(realDOM: any, calc: boolean): CustType.EssayList 
           .match(/[0-9]+/g)![0]
       ),
       text: $(title[i]).text().trim(),
-      desc: TextUtils.regTrim($(describe[i]).text(), [/阅读全文/g]),
+      desc: regTrim($(describe[i]).text(), [/阅读全文/g]),
       date: date![i],
       view: view![i],
       comm: comm![i],
@@ -391,7 +391,7 @@ export function parseSideBlogTopList(strDOM: string): CustType.SideTopList[] {
           .attr("href")
           ?.match(/\/p\/\d+/g)![0]
           .split("/")[2],
-        text: TextUtils.regTrim($(e).text().trim(), [/\n+/g])
+        text: regTrim($(e).text().trim(), [/\n+/g])
       });
     });
   return array;

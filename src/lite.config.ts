@@ -9,7 +9,7 @@ export let blogApp = "";
 export let isLogin = true;
 export let isOwner = true;
 
-export function initLite(dev?: Function, pro?: Function) {
+export function useLite(dev?: Function, pro?: Function) {
   $("body").append(`<div id="app"></div>`);
   $("html").attr("class", "dark");
   // @ts-ignore

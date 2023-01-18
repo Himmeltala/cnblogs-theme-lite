@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PropType } from "vue";
-import { nav } from "@/utils/route-helper";
 import { CustType } from "@/types/data-type";
+import { nav } from "@/helpers/route-helper";
 
 defineProps({
   data: {

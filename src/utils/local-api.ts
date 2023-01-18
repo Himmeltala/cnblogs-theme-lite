@@ -14,7 +14,7 @@ import {
   parseSideBlogInfo,
   parseSideBlogTopList,
   parseSideRank
-} from "@/utils/parser";
+} from "@/utils/html-parser";
 
 /**
  * 获取侧边栏的部分随笔分类列表。直接调用解析函数解析 home 节点下的侧边栏。

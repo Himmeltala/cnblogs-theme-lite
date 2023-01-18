@@ -21,8 +21,8 @@ onMounted(() => {
   <div
     id="n-mask"
     :class="{ 'top-15': !nhidden }"
-    class="fixed z-999 h-10 w-50 top-0"
-    style="left: calc(50vw - 6.25rem)"></div>
+    class="fixed z-999 h-10 w-80 top-0"
+    style="left: calc(50vw - 10rem)"></div>
   <Navigation :class="{ 'show-nav': !nhidden, 'hidden-nav': nhidden }" />
   <div
     id="l-mask"
@@ -39,7 +39,7 @@ onMounted(() => {
         </KeepAlive>
       </template>
     </RouterView>
-    <div class="copyright flex pb-2 justify-center fsz-0.8 color-#878787">
+    <div class="flex pb-2 justify-center fsz-0.8 color-#878787">
       Copyright @2023
       <a
         class="hover mx-1 color-#878787"

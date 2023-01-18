@@ -9,7 +9,7 @@
 
 import $ from "jquery";
 import axios from "axios";
-import * as Parser from "./parser";
+import * as Parser from "./html-parser";
 import { BlogType, CustType } from "@/types/data-type";
 import { __LITE_CONFIG__, baseAPI, blogId } from "@/lite.config";
 

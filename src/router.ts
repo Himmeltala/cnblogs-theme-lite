@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { compareUrl, parseUrlData, reviseUrl, RouteName } from "@/utils/route-helper";
+import { compareUrl, parseUrlData, reviseUrl, RouteName } from "@/helpers/route-helper";
 
 const routes = [
   {

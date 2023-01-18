@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getTagPageList } from "@/utils/api";
-import { closeLoader } from "@/utils/loader";
+import { getTagPageList } from "@/utils/remote-api";
+import { closeLoader } from "@/utils/common";
 
 const route = useRoute();
 const data = await getTagPageList(String(route.params.tag));

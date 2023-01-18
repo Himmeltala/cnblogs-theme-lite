@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getEssayList } from "@/utils/api";
-import { closeLoader } from "@/utils/loader";
+import { getEssayList } from "@/utils/remote-api";
+import { closeLoader } from "@/utils/common";
 
 const data = ref((await getEssayList(1, false)).array);
 const pageCount = ref(2);
