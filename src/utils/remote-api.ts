@@ -10,29 +10,15 @@
 import $ from "jquery";
 import axios from "axios";
 import * as Parser from "./html-parser";
-import { BlogType, CustType } from "@/types/data-type";
-import { __LITE_CONFIG__, baseAPI, blogId } from "@/lite.config";
+import { BlogType } from "@/types/data-type";
+import { baseAPI, blogId } from "@/lite.config";
 
 /**
- * 发送 get 请求，这里对获取数据失败的请求进行统一处理
+ * 以 async/await 风格写异步请求，代码更加简洁，逻辑更加清晰
  *
- * @param url 请求路径
- * @param response 获取响应的消息
+ * @param url 请求地址
+ * @returns 返回一个 Promise 对象
  */
-function sendGet(url: string, response: (res: any) => void) {
-  axios
-    .get(url, {
-      timeout: 5000
-    })
-    .then(res => {
-      response(res);
-    })
-    .catch(err => {
-      // ElMessage({ message: `${err.code}: ${err.message}`, grouping: true, type: "error" });
-      console.error(`${err.code}: ${err.message}`);
-    });
-}
-
 async function sendAwaitGet(url: string): Promise<any> {
   let awt;
   try {
@@ -44,27 +30,12 @@ async function sendAwaitGet(url: string): Promise<any> {
 }
 
 /**
- * 发送 post 请求必须要 token，找到标签 #antiforgery_token 来获取
+ * 以 async/await 风格写异步请求，代码更加简洁，逻辑更加清晰
  *
- * @param url 请求路径
- * @param data 请求实体
- * @param response 获取响应的消息，返回一个 axios 的完整消息
+ * @param url 请求地址
+ * @param data 请求体
+ * @returns 返回一个 Promise 对象
  */
-function sendPost(url: string, data: any, response: (res: any) => void) {
-  axios
-    .post(url, data, {
-      timeout: 5000,
-      headers: { RequestVerificationToken: $("#antiforgery_token").attr("value") }
-    })
-    .then(res => {
-      response(res);
-    })
-    .catch(err => {
-      ElMessage({ message: `${err.code}: ${err.message}`, grouping: true, type: "error" });
-      console.error(`${err.code}: ${err.message}`);
-    });
-}
-
 async function sendAwaitPost(url: string, data: any): Promise<any> {
   let awt;
   try {
@@ -93,7 +64,6 @@ export async function getEssayList(page: number, isCalc: boolean) {
  * 获取随笔
  *
  * @param id 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
- * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
  */
 export async function getEssay(id: number) {
   const { data } = await sendAwaitGet(`${baseAPI}/p/${id}.html`);
@@ -115,93 +85,74 @@ export async function setComment(comment: BlogType.BlogComment): Promise<BlogTyp
  * 删除其中一条评论
  *
  * @param comment 评论实体
- * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
-export function deleteComment(comment: BlogType.BlogComment, response: (res: any) => void) {
-  sendPost(`${baseAPI}/ajax/comment/DeleteComment.aspx`, comment, response);
+export async function deleteComment(comment: BlogType.BlogComment) {
+  const { data } = await sendAwaitPost(`${baseAPI}/ajax/comment/DeleteComment.aspx`, comment);
+  return data;
 }
 
 /**
  *  通过 ID 获取单个评论
  *
  * @param comment 评论实体，对应博客园默认的评论字段，需要传递一个包含评论 ID 的实体
- * @param response 获取响应的消息——该实体类与 DataType 中定义的评论实体类字段不一致。返回一个 axios 中 data 部分消息
  */
-export function getComment(comment: BlogType.BlogComment, response: (res: any) => void) {
-  sendPost(`${baseAPI}/ajax/comment/GetCommentBody.aspx`, comment, response);
+export async function getComment(comment: BlogType.BlogComment) {
+  const { data } = await sendAwaitPost(`${baseAPI}/ajax/comment/GetCommentBody.aspx`, comment);
+  return data;
 }
 
 /**
  * 修改评论
  *
  * @param comment 评论实体，对应博客园默认的评论字段，需要传递一个包含评论 ID、评论内容的实体
- * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
-export function updateComment(comment: BlogType.BlogComment, response: (res: any) => void) {
-  sendPost(`${baseAPI}/ajax/PostComment/Update.aspx`, comment, response);
+export async function updateComment(comment: BlogType.BlogComment): Promise<BlogType.AjaxType> {
+  const { data } = await sendAwaitPost(`${baseAPI}/ajax/PostComment/Update.aspx`, comment);
+  return data;
 }
 
 /**
  * 获取评论计数
  *
- * @param postId 随笔 ID
- * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
+ * @param id 随笔 ID
  */
-export function getCommentCount(postId: number | string, response: (res: any) => void) {
-  sendGet(`${baseAPI}/ajax/GetCommentCount.aspx?postId=${postId}`, ({ data }) => {
-    response(Parser.parseCommentPages(data));
-  });
+export async function getCommentCount(id: number | string) {
+  const { data } = await sendAwaitGet(`${baseAPI}/ajax/GetCommentCount.aspx?postId=${id}`);
+  return Parser.parseCommentPages(data);
 }
 
 /**
  * 点赞或反对评论
  *
  * @param comment 被操作的评论的实体，需要 isAbandoned、postId、voteType 三个字段，其中 voteType 请见 DataType.VoteType，只有两种类型。
- * @param response 获取响应的消息，返回一个 axios 的完整消息
  */
-export function voteComment(
-  comment: BlogType.BlogComment,
-  response: (ajax: BlogType.AjaxType) => void
-) {
-  sendPost(`${baseAPI}/ajax/vote/comment`, comment, ({ data }) => {
-    response(data);
-  });
+export async function voteComment(comment: BlogType.BlogComment): Promise<BlogType.AjaxType> {
+  const { data } = await sendAwaitPost(`${baseAPI}/ajax/vote/comment`, comment);
+  return data;
 }
 
 /**
  * 回复一条评论
  *
  * @param comment 博客园原有的评论实体，需要 body、parentCommentId、postId。parentCommentId 就是回复的那一条的 ID。
- * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。这里需要获取 AjaxType。利用其中的 isSuccess 查看是否回复成功。
  */
-export function replayComment(
-  comment: BlogType.BlogComment,
-  response: (ajax: BlogType.AjaxType) => void
-) {
-  sendPost(`${baseAPI}/ajax/PostComment/Add.aspx`, comment, ({ data }) => {
-    response(data);
-  });
+export async function replayComment(comment: BlogType.BlogComment): Promise<BlogType.AjaxType> {
+  const { data } = await sendAwaitPost(`${baseAPI}/ajax/PostComment/Add.aspx`, comment);
+  return data;
 }
 
 /**
  * 获取随笔的评论列表
  *
- * @param postId 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
- * @param pageIndex 1 页最多有 50 条评论
- * @param anchorCommentId 当进入的是一个回复评论时，需要传递该参数，默认可以不传递
- * @param response 获取响应的消息，返回一个 axios 中 data 部分消息
+ * @param id 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
+ * @param page 1 页最多有 50 条评论
+ * @param anchorId 当进入的是一个回复评论时，需要传递该参数，默认可以不传递
  */
-export function getCommentList(
-  postId: number | string,
-  pageIndex: number = 0,
-  response: (res: Array<CustType.Comment>) => void,
-  anchorCommentId?: number
-) {
-  let url = `${baseAPI}/ajax/GetComments.aspx?postId=${postId}&pageIndex=${pageIndex}`;
-  if (anchorCommentId) url += `&anchorCommentId=${anchorCommentId}&isDesc=false`;
-  sendGet(url, ({ data }) => {
-    response(Parser.parseCommentList(data));
-  });
+export async function getCommentList(id: number | string, page: number, anchorId?: number) {
+  let url = `${baseAPI}/ajax/GetComments.aspx?postId=${id}&pageIndex=${page}`;
+  if (anchorId) url += `&anchorCommentId=${anchorId}&isDesc=false`;
+  const { data } = await sendAwaitGet(url);
+  return Parser.parseCommentList(data);
 }
 
 /**
@@ -252,7 +203,6 @@ export async function getEssayVote(postId: number | string): Promise<BlogType.Bl
  * @param id 分类列表 id
  * @param calcPage 是否计算页数？参考 getEssayList 函数对其详细的售卖
  * @param page 页数
- * @param response 获取响应的消息，返回一个 axios 中 data 部分消息。
  */
 export async function getCateList(id: any, calcPage: boolean, page: any) {
   const { data } = await sendAwaitGet(`${baseAPI}/category/${id}.html?page=${page}`);

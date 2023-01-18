@@ -2,7 +2,16 @@
 import $ from "jquery";
 import { isLogin } from "@/lite.config";
 import { nav } from "@/helpers/route-helper";
-import * as RemoteApi from "@/utils/remote-api";
+import {
+  getComment,
+  getCommentCount,
+  getCommentList,
+  setComment,
+  deleteComment,
+  updateComment,
+  replayComment,
+  voteComment
+} from "@/utils/remote-api";
 import { useCommentsAnchorStore } from "@/store";
 import { openImageUploadWindow } from "@/utils/common";
 import { CustType, BlogType } from "@/types/data-type";
@@ -12,41 +21,34 @@ const props = defineProps({
 });
 const commentAnchorQuote = ref<any>(null);
 const { commentAnchor } = storeToRefs(useCommentsAnchorStore());
-
-let form = ref<CustType.Comment>({
+const form = ref<CustType.Comment>({
   postId: props.postId,
   parentCommentId: 0,
   content: ""
 });
-let loading = ref(false);
-let comments = ref<Array<CustType.Comment>>();
-let commentCount = ref(1);
-let currentIndex = ref(0);
-let commentContent = ref("");
+const loading = ref(false);
+const comments = ref<Array<CustType.Comment>>();
+const commentCount = ref(1);
+const currentIndex = ref(0);
+const commentContent = ref("");
+
 let tempReplayComment: CustType.Comment;
 let tempUpdateComment: CustType.Comment;
 
-function fetchComment(
+async function fetchComment(
   f: boolean,
   y?: { message?: string; success?: (res: any) => void },
   n?: { message?: string; error?: () => void }
 ) {
   if (f) {
-    RemoteApi.getCommentCount(props.postId, count => {
-      commentCount.value = count;
-      currentIndex.value = count;
-      RemoteApi.getCommentList(
-        props.postId,
-        currentIndex.value,
-        (res: any) => {
-          if (y && y.success) {
-            y.success(res);
-            if (y.message) ElMessage({ message: y.message, grouping: true, type: "success" });
-          }
-        },
-        commentAnchor.value
-      );
-    });
+    const count = await getCommentCount(props.postId);
+    commentCount.value = count;
+    currentIndex.value = count;
+    const comms = await getCommentList(props.postId, currentIndex.value, commentAnchor.value);
+    if (y && y.success) {
+      y.success(comms);
+      if (y.message) ElMessage({ message: y.message, grouping: true, type: "success" });
+    }
   } else {
     if (n) {
       n.error && n.error();
@@ -64,7 +66,7 @@ fetchComment(true, {
 watch(commentAnchorQuote, () => {
   if (commentAnchorQuote.value.length > 0) {
     const top = commentAnchorQuote.value[0].offsetTop;
-    $("#h-content").animate({ scrollTop: top }, 200, "linear");
+    $(document).animate({ scrollTop: top }, 200, "linear");
   }
   commentAnchor.value = 0;
 });
@@ -76,16 +78,15 @@ function uploadImage(el: string, comment?: CustType.Comment) {
   });
 }
 
-function paginationChange() {
-  RemoteApi.getCommentList(props.postId, currentIndex.value, (res: Array<CustType.Essay>) => {
-    comments.value = res;
-  });
+async function paginationChange() {
+  const comms = await getCommentList(props.postId, currentIndex.value);
+  comments.value = comms;
 }
 
 async function insertComment() {
   if (form.value.content) {
     loading.value = true;
-    const data = await RemoteApi.setComment({
+    const data = await setComment({
       postId: form.value.postId,
       body: form.value.content,
       parentCommentId: form.value.parentCommentId
@@ -108,21 +109,19 @@ async function insertComment() {
   } else ElMessage({ message: "评论不能为空，或字数不够⚠️", grouping: true, type: "error" });
 }
 
-function deleteComment(comment: CustType.Comment, index: number) {
-  RemoteApi.deleteComment(
-    { commentId: comment.commentId, pageIndex: currentIndex.value - 1, parentId: props.postId },
-    ({ data }) => {
-      if (data) {
-        comments.value?.splice(index, 1);
-        ElMessage({ message: "删除评论成功！", grouping: true, type: "success" });
-      } else
-        ElMessage({ message: "这不是你的评论，没有权限删除！", grouping: true, type: "error" });
-    }
-  );
-}
-
-function confirmDeleteComment(comment: CustType.Comment, index: number) {
-  deleteComment(comment, index);
+async function confirmDeleteComment(comment: CustType.Comment, index: number) {
+  const data = await deleteComment({
+    commentId: comment.commentId,
+    pageIndex: currentIndex.value - 1,
+    parentId: props.postId
+  });
+  if (data) {
+    comments.value?.splice(index, 1);
+    ElMessage({ message: "删除评论成功！", grouping: true, type: "success" });
+  } else {
+    ElMessage({ message: "这不是你的评论，没有权限删除！", grouping: true, type: "error" });
+  }
+  console.log(data);
 }
 
 function cancelUpdateComment(comment: CustType.Comment) {
@@ -131,7 +130,7 @@ function cancelUpdateComment(comment: CustType.Comment) {
   comment.content = comment.htmlContent;
 }
 
-function beforeUpdateComment(comment: CustType.Comment) {
+async function beforeUpdateComment(comment: CustType.Comment) {
   commentContent.value = "";
   comment.htmlContent = comment.content;
   if (tempUpdateComment && tempUpdateComment.commentId !== comment.commentId) {
@@ -140,35 +139,30 @@ function beforeUpdateComment(comment: CustType.Comment) {
     tempUpdateComment.content = tempUpdateComment.htmlContent;
   }
 
-  RemoteApi.getComment({ commentId: comment.commentId }, ({ data }) => {
-    commentContent.value = data;
-    comment.updateEditable = !comment.updateEditable;
-    comment.isEditingUpdate = !comment.isEditingUpdate;
-  });
+  const data = await getComment({ commentId: comment.commentId });
+  commentContent.value = data;
+  comment.updateEditable = !comment.updateEditable;
+  comment.isEditingUpdate = !comment.isEditingUpdate;
   tempUpdateComment = comment;
 }
 
-function finishUpdateComment(comment: CustType.Comment) {
-  RemoteApi.updateComment(
-    {
-      body: commentContent.value,
-      commentId: comment.commentId
-    },
-    ({ data }) => {
-      if (data.isSuccess) {
-        fetchComment(true, {
-          success: res => {
-            comments.value = res;
-            comment.updateEditable = !comment.updateEditable;
-            comment.isEditingUpdate = !comment.isEditingUpdate;
-            ElMessage({ message: "修改评论成功！", grouping: true, type: "success" });
-          }
-        });
-      } else {
-        ElMessage({ message: "这不是你的评论，没有权限编辑！", grouping: true, type: "error" });
+async function finishUpdateComment(comment: CustType.Comment) {
+  const data = await updateComment({
+    body: commentContent.value,
+    commentId: comment.commentId
+  });
+  if (data.isSuccess) {
+    fetchComment(true, {
+      success: res => {
+        comments.value = res;
+        comment.updateEditable = !comment.updateEditable;
+        comment.isEditingUpdate = !comment.isEditingUpdate;
+        ElMessage({ message: "修改评论成功！", grouping: true, type: "success" });
       }
-    }
-  );
+    });
+  } else {
+    ElMessage({ message: "这不是你的评论，没有权限编辑！", grouping: true, type: "error" });
+  }
 }
 
 function cancelReplayComment(comment: CustType.Comment) {
@@ -193,48 +187,45 @@ function beforeReplayComment(comment: CustType.Comment) {
   tempReplayComment = comment;
 }
 
-function finishReplayComment(comment: CustType.Comment) {
-  RemoteApi.replayComment(
+async function finishReplayComment(comment: CustType.Comment) {
+  const data = await replayComment({
+    body: commentContent.value,
+    postId: props.postId,
+    parentCommentId: comment.commentId
+  });
+  fetchComment(
+    data.isSuccess,
     {
-      body: commentContent.value,
-      postId: props.postId,
-      parentCommentId: comment.commentId
+      message: `成功回复 ${comment.author} 的评论！`,
+      success: res => {
+        comments.value = res;
+        comment.replayEditable = !comment.replayEditable;
+        comment.isEditingReplay = !comment.isEditingReplay;
+      }
     },
-    (ajax: any) => {
-      fetchComment(
-        ajax.isSuccess,
-        {
-          message: `成功回复 ${comment.author} 的评论！`,
-          success: res => {
-            comments.value = res;
-            comment.replayEditable = !comment.replayEditable;
-            comment.isEditingReplay = !comment.isEditingReplay;
-          }
-        },
-        {
-          message: ajax.message
-        }
-      );
-      commentContent.value = "";
+    {
+      message: data.message
     }
   );
+  commentContent.value = "";
 }
 
-function voteComment(comment: CustType.Comment, voteType: BlogType.VoteType) {
-  RemoteApi.voteComment(
-    { isAbandoned: false, commentId: comment.commentId, postId: props.postId, voteType: voteType },
-    ajax => {
-      if (ajax.isSuccess) {
-        if (voteType == "Bury") comment.bury = comment.bury! + 1;
-        else comment.digg = comment.digg! + 1;
-      }
-      ElMessage({
-        message: ajax.message,
-        grouping: true,
-        type: ajax.isSuccess ? "success" : "error"
-      });
-    }
-  );
+async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) {
+  const data = await voteComment({
+    isAbandoned: false,
+    commentId: comment.commentId,
+    postId: props.postId,
+    voteType: voteType
+  });
+  if (data.isSuccess) {
+    if (voteType == "Bury") comment.bury = comment.bury! + 1;
+    else comment.digg = comment.digg! + 1;
+  }
+  ElMessage({
+    message: data.message,
+    grouping: true,
+    type: data.isSuccess ? "success" : "error"
+  });
 }
 </script>
 
@@ -254,7 +245,7 @@ function voteComment(comment: CustType.Comment, voteType: BlogType.VoteType) {
           v-model="form.content"
           placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
       </div>
-      <div class="absolute opacity-0 top-0 left-0">
+      <div class="z--1 absolute opacity-0 top-0 left-0">
         <textarea id="main-upload-img" />
       </div>
       <el-button plain :disabled="!isLogin" :loading="loading" @click="insertComment">
@@ -287,10 +278,10 @@ function voteComment(comment: CustType.Comment, voteType: BlogType.VoteType) {
           </div>
         </div>
         <div class="mt-3 relative" style="margin-left: 4.5rem">
-          <div class="c-content" v-show="!item.updateEditable" v-html="item.content" v-parse-code />
-          <div class="absolute opacity-0 top-0 left-0">
+          <div class="z--1 absolute opacity-0 top-0 left-0">
             <textarea :id="'upload-img-' + index" />
           </div>
+          <div class="c-content" v-show="!item.updateEditable" v-html="item.content" v-parse-code />
           <div class="editarea" v-show="item.updateEditable">
             <div class="tools mb-2 flex justify-end content-center items-center">
               <el-tooltip effect="dark" content="插入图片" placement="top-start">
@@ -353,7 +344,7 @@ function voteComment(comment: CustType.Comment, voteType: BlogType.VoteType) {
             <div
               v-show="!item.isEditingUpdate && !item.isEditingReplay"
               class="hover mr-3 flex justify-end items-center content-center actions"
-              @click="voteComment(item, 'Digg')">
+              @click="voteComm(item, 'Digg')">
               <el-icon class="mr-0.5">
                 <i-ep-caret-top />
               </el-icon>
@@ -362,7 +353,7 @@ function voteComment(comment: CustType.Comment, voteType: BlogType.VoteType) {
             <div
               v-show="!item.isEditingUpdate && !item.isEditingReplay"
               class="hover mr-3 flex justify-end items-center content-center actions"
-              @click="voteComment(item, 'Bury')">
+              @click="voteComm(item, 'Bury')">
               <el-icon class="mr-0.5">
                 <i-ep-caret-bottom />
               </el-icon>
