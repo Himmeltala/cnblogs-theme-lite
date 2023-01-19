@@ -16,17 +16,12 @@ body {
 
 .el-input__inner,
 .el-button {
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
-    sans-serif !important;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "微软雅黑", Arial, sans-serif !important;
 }
 
 .el-input__inner {
   font-size: 0.9rem !important;
-}
-
-.el-input__wrapper {
-  height: 1.8rem !important;
-  width: 10rem !important;
 }
 
 .el-rate__icon {

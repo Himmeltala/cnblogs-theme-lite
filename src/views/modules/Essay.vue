@@ -86,7 +86,7 @@ watch(asyncComp, () => {
         </div>
         <div class="color-#878787 mt-4 fsz-0.9">
           <div
-            class="mb-1 flex justify-start items-center content-center"
+            class="mb-2 flex justify-start items-center content-center"
             v-if="catesTags.cates.length > 0">
             <div class="flex justify-center items-center content-center">
               <el-icon class="mr-0.9">
@@ -104,7 +104,7 @@ watch(asyncComp, () => {
             </div>
           </div>
           <div
-            class="mb-1 flex justify-start items-center content-center"
+            class="flex justify-start items-center content-center"
             v-if="catesTags.tags.length > 0">
             <div class="flex justify-center items-center content-center">
               <el-icon class="mr-0.9">
@@ -122,7 +122,7 @@ watch(asyncComp, () => {
             </div>
           </div>
         </div>
-        <div id="e-content" class="mt-4" v-html="essay?.content" v-parse-code v-anchor />
+        <div id="e-content" class="mt-8" v-html="essay?.content" v-parse-code v-anchor />
         <div class="divider"></div>
         <div class="color-#878787 flex justify-end items-center content-center fsz-0.9">
           <div class="flex justify-center items-center content-center mr-2">
@@ -198,19 +198,19 @@ h3 {
 }
 
 h1 {
-  font-size: 1.3rem !important;
+  font-size: 1.4rem !important;
 }
 
 h2 {
-  font-size: 1.2rem !important;
+  font-size: 1.3rem !important;
 }
 
 h3 {
-  font-size: 1.1rem !important;
+  font-size: 1.2rem !important;
 }
 
 h4 {
-  font-size: 1rem !important;
+  font-size: 1.1rem !important;
 }
 
 h5 {
@@ -227,7 +227,7 @@ pre {
   box-sizing: border-box;
 
   code {
-    --at-apply: fsz-0.95 box-border break-all rd-2;
+    --at-apply: fsz-1 box-border rd-2;
     font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace !important;
     font-weight: 300;
     margin: 0 !important;
@@ -247,9 +247,7 @@ pre {
 
     &,
     span {
-      line-height: 1.3;
-      letter-spacing: 0.7px;
-      word-break: break-all;
+      line-height: 1.4;
     }
   }
 }
@@ -277,7 +275,7 @@ code {
 }
 
 blockquote {
-  --at-apply: box-border break-all rd-1 color-#8D9095;
+  --at-apply: box-border rd-1 color-#8D9095;
   margin: 0;
   background-color: #2e2e2e;
   padding: {
@@ -295,37 +293,22 @@ blockquote {
 }
 
 #e-content {
-  --at-apply: fsz-1;
-
-  img {
-    border-radius: 6px;
-    max-width: 100%;
-    object-fit: cover;
-  }
-
-  @mixin font() {
-    word-break: break-all;
-    @include font-space();
-    @content;
-  }
-
   a {
     color: #a7a7a7;
     padding-bottom: 1px;
     border-bottom: 1px dotted #a7a7a7;
-
     @include hover($border-color: bottom);
   }
 
   p {
-    margin: 8px 0 !important;
-    @include font();
+    margin: 1.2rem 0 !important;
+    @include font-space();
   }
 
   ol,
   ul {
     li {
-      @include font();
+      @include font-space();
     }
 
     li:last-child {

@@ -94,7 +94,8 @@ function search() {
           </span>
         </div>
       </el-tooltip>
-      <el-input @keyup.enter="search" v-model="input">
+      <el-input clearable @keyup.enter="search" v-model="input">
+        <template #prepend>搜索</template>
         <template #prefix>
           <el-icon @click="search">
             <i-ep-search />
@@ -108,16 +109,9 @@ function search() {
           <i-ep-collection />
         </el-icon>
       </template>
-      <el-tabs v-model="tabName">
+      <el-tabs stretch type="card" v-model="tabName">
         <el-tab-pane label="随笔" name="随笔">
-          <template #label>
-            <div class="fsz-0.9 flex content-center items-center justify-center">
-              <el-icon class="mr-1">
-                <i-ep-folder />
-              </el-icon>
-              <div>随笔</div>
-            </div>
-          </template>
+          <template #label> 随笔 </template>
           <div class="item" v-for="(item, index) in cl.cates" :key="index">
             <div class="text hover" @click="nav('/c/' + item.id, router)">
               {{ item.text }}
@@ -125,14 +119,7 @@ function search() {
           </div>
         </el-tab-pane>
         <el-tab-pane label="标签" name="标签">
-          <template #label>
-            <div class="fsz-0.9 flex content-center items-center justify-center">
-              <el-icon class="mr-1">
-                <i-ep-collection-tag />
-              </el-icon>
-              <div>标签</div>
-            </div>
-          </template>
+          <template #label> 标签 </template>
           <div class="item" v-for="(item, index) in cl.tags" :key="index">
             <div class="text hover" @click="nav('/t/' + item.id, router)">
               {{ item.text }}
@@ -161,7 +148,7 @@ function search() {
 
 <style scoped lang="scss">
 .item {
-  --at-apply: my-2.5 fsz-0.9 break-all;
+  --at-apply: my-2.5 fsz-0.9;
 
   .text {
     --at-apply: cursor-pointer;

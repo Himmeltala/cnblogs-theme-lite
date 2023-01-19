@@ -429,20 +429,13 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
 
 <style lang="scss">
 .c-content {
-  --at-apply: fsz-0.9 break-all;
+  --at-apply: fsz-0.9;
   @include font-space();
-
-  img {
-    border-radius: 6px;
-    max-width: 100%;
-    object-fit: cover;
-  }
 
   a {
     color: #a7a7a7;
     padding-bottom: 1px;
     border-bottom: 1px dotted #a7a7a7;
-
     @include hover($border-color: bottom);
   }
 }
@@ -467,7 +460,6 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
 @mixin container() {
   --at-apply: mb-5 rd-2 box-border;
   border: 1px solid var(--el-border-color-lighter);
-
   @include hover($border-color: all);
 }
 
