@@ -21,7 +21,7 @@ defineProps({
     bottom: {
       width: 1px;
       style: dotted;
-      color: #464646;
+      color: var(--divider-color);
     }
   }
 }

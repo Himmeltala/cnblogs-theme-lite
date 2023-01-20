@@ -70,11 +70,20 @@ export interface TagPage {
 }
 
 export interface Lite {
-  // 左侧边栏配置项
+  // github
+  github?: string;
+  // 网站 icon
+  icon?: string;
+  // 主题配置项
+  theme?: {
+    mode?: "dark" | "light";
+  };
+  // 侧边栏配置项
   side?: {
     avatar?: string;
     signature?: string;
   };
+  // 目录配置项
   catalog?: {
     level?: boolean;
   };
@@ -83,6 +92,7 @@ export interface Lite {
     header?: string;
     navs?: { href: string; text?: string; svg?: string; img?: string }[];
   };
+  // 技能栈配置项
   graph?: {
     fillColor?: string;
     strokeColor?: string;
@@ -95,9 +105,9 @@ export interface Lite {
     textColor?: string;
     data?: { title: string; star: number }[];
   };
-  // github 链接
-  github?: string;
+  // 我的链接配置项
   links?: { href: string; text: string }[];
+  // 推荐书籍配置项
   books?: { href?: string; text: string; img: string; author: string; rate: number }[];
 }
 
@@ -111,7 +121,7 @@ export interface Tag {
  * 随笔列表，返回列表的页数、列表数组。
  */
 export interface EssayList {
-  pages: string[];
+  pages: number[];
   array: Array<Essay>;
 }
 
@@ -127,7 +137,7 @@ export interface EssayCateAndTagList {
  * 随笔分类列表，返回页数、分类名、列表数组
  */
 export interface CateList {
-  pages: string[];
+  pages: number[];
   label: string;
   array: Array<Essay>;
 }

@@ -41,7 +41,7 @@
     right: 0;
     bottom: 1px;
     style: dashed;
-    color: #444444;
+    color: var(--divider-color);
   }
 }
 
@@ -51,4 +51,8 @@
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+}
+
+.min-height {
+  min-height: calc(100vh - 3.25rem);
 }

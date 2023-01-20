@@ -21,25 +21,25 @@ const router = useRouter();
     :index="index"
     :length="data.length"
     :key="index">
-    <div class="f-c">
+    <div class="f-c-b" :class="{ 'mb-5': item.surface }">
       <el-image
         v-if="index % 2 !== 0 && item.surface"
-        class="h-9 rd-2 wd-25"
+        class="h-35 rd-2 wd-25"
         :src="item.surface"
         fit="cover" />
       <div :class="{ 'wd-100': !item.surface, 'wd-73': item.surface }">
         <div class="hover mb-5 fsz-1.3 cursor-pointer" @click="nav('/e/' + item.id, router)">
           {{ item.text }}
         </div>
-        <div class="thr-color mb-6">{{ item.desc }}</div>
+        <div class="thr-color" :class="{ 'mb-5': !item.surface }">{{ item.desc }}</div>
       </div>
       <el-image
         v-if="index % 2 === 0 && item.surface"
-        class="h-9 rd-2 wd-25"
+        class="h-35 rd-2 wd-25"
         :src="item.surface"
         fit="cover" />
     </div>
-    <div class="f-c-s mb-6 fsz-0.9">
+    <div class="f-c-s mb-5 fsz-0.9">
       <el-icon>
         <i-ep-caret-right />
       </el-icon>

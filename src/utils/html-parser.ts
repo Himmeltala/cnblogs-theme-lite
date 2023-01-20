@@ -22,20 +22,18 @@ export function parseStrToDom(strDOM: any) {
   return new DOMParser().parseFromString(strDOM, "text/html");
 }
 
-function calcPages(sorter: any, calc: boolean): string[] {
-  let pages: string[] = [];
+function calcPages(sorter: any, calc: boolean): number[] {
+  const pages: number[] = [];
   if (calc && sorter) {
     if ($(sorter).length > 1) {
       $(sorter).each((i, e) => {
         let text = $(e).text();
         if (!(/下一页/g.test(text) || /上一页/g.test(text))) {
-          pages.push(text);
+          pages.push(parseInt(text));
         }
         // if (i != 0 && (i != $(sorter).length - 1 || $(sorter).length - 1 === 1)) pages.push($(e).text());
       });
     }
-  } else {
-    pages.push("Do not calculate pages.");
   }
   return pages;
 }

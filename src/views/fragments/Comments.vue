@@ -445,7 +445,6 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
   width: 100%;
   border: none;
   outline: none;
-  font-weight: 300;
   color: var(--pri-text-color);
   height: $height;
   resize: none;
@@ -454,6 +453,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
 @mixin container() {
   --at-apply: mb-5 rd-2 box-border;
   border: 1px solid var(--el-border-color-lighter);
+  background-color: var(--textarea-bg-color);
   @include hover($border-color: all);
 }
 

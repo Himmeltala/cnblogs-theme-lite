@@ -32,14 +32,20 @@ html[class="dark"] {
   --thr-text-color: #878787;
   --bg-color: #191919;
   --textarea-bg-color: #202020;
+  --precode-bg-color: #1f1f1f;
+  --code-bg-color: #2b2b2b;
+  --divider-color: #464646;
 }
 
 html[class="light"] {
-  --pri-text-color: #a7a7a7;
-  --sec-text-color: #8d9095;
-  --thr-text-color: #878787;
-  --bg-color: #191919;
-  --textarea-bg-color: #202020;
+  --pri-text-color: #3c3c3c;
+  --sec-text-color: #575757;
+  --thr-text-color: #868686;
+  --bg-color: #f6f6f6;
+  --textarea-bg-color: #f0f0f0;
+  --precode-bg-color: #f3f3f3;
+  --code-bg-color: #efefef;
+  --divider-color: #d3d3d3;
 }
 
 #app {

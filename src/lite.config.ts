@@ -19,9 +19,8 @@ function log(title: string, msg: string) {
 
 export function useLite(dev?: Function, pro?: Function) {
   $("body").append(`<div id="app"></div>`);
-  $("html").attr("class", "dark");
 
-  log("Lite Theme Ver 1.0.1", "Powered By Himmelbleu");
+  log("Lite Theme Ver 1.0.0", "Powered By Himmelbleu");
   log("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
 
   // @ts-ignore
@@ -90,4 +89,7 @@ export function useLite(dev?: Function, pro?: Function) {
     };
     dev && dev();
   }
+
+  $("head").append(`<link rel="shortcut icon" href="${__LITE_CONFIG__.icon}">`);
+  $("html").attr("class", __LITE_CONFIG__.theme?.mode ?? "dark");
 }

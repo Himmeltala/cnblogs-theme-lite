@@ -1,80 +1,67 @@
 <script setup lang="ts">
 const props = defineProps({
   pageCount: {
-    type: Number,
-    default: 2
+    type: Number
   }
 });
 
-// 由于 local prop bindings are not writable. element-plus 的分页器是双向绑定的，因此不可以直接给 props
-let _pageCount = ref<number>(props.pageCount);
-let currentIndex = ref<number>(1);
+const currentIndex = ref(1);
+const index = ref(1);
 
-/**
- * 暴露一个函数，当页面发生变化时，或其他情况时，可以调用该函数，把 pageCount
- * 和 currentIndex 恢复到默认值
- */
-const updateProps = () => {
-  _pageCount.value = 2;
-  currentIndex.value = 1;
+type EmitType = {
+  pageCount: number;
+  currentIndex: number;
+  elIndex: number;
 };
 
-// 暴露函数
-defineExpose({ updateProps });
+const emits = defineEmits<{
+  (e: "next", data: EmitType): void;
+  (e: "prev", data: EmitType): void;
+  (e: "nexpr", data: EmitType): void;
+}>();
 
-// 监听 pageCount，如果 pageCount 发生了变化，就把父组件传递过来的新的 pageCount 赋值给 _pageCount
-watch(
-  () => props.pageCount,
-  () => {
-    _pageCount.value = props.pageCount;
-  }
-);
-
-// 声明触发函数
-const emits = defineEmits(["floatChange", "fixedChange"]);
-
-function floatSorterChange(direction: "left" | "right") {
-  if (direction === "left") {
-    if (currentIndex.value >= 0) {
-      currentIndex.value--;
-      emits("floatChange", {
-        pageCount: _pageCount,
-        currentIndex: currentIndex
-      });
-    }
+function nextChange() {
+  if (currentIndex.value < props.pageCount) {
+    currentIndex.value++;
+    index.value = currentIndex.value;
+    emits("next", {
+      elIndex: index.value,
+      pageCount: props.pageCount,
+      currentIndex: currentIndex.value
+    });
   } else {
-    if (currentIndex.value <= _pageCount.value - 1) {
-      currentIndex.value++;
-      emits("floatChange", {
-        pageCount: _pageCount.value,
-        currentIndex: currentIndex.value
-      });
-    } else {
-      ElMessage({ message: "已经是最后一页！", grouping: true, showClose: true, type: "warning" });
-    }
+    ElMessage({ message: "已经到末页！", grouping: true, type: "warning" });
   }
 }
 
-function fixedSorterChange() {
-  emits("fixedChange", {
-    pageCount: _pageCount,
-    currentIndex: currentIndex
+function prevChange() {
+  if (currentIndex.value > 1) {
+    currentIndex.value--;
+    index.value = currentIndex.value;
+    emits("prev", {
+      elIndex: index.value,
+      pageCount: props.pageCount,
+      currentIndex: currentIndex.value
+    });
+  } else {
+    ElMessage({ message: "已经到首页！", grouping: true, type: "warning" });
+  }
+}
+
+function nexprChange(elIndex: number) {
+  currentIndex.value = elIndex;
+  emits("nexpr", {
+    elIndex: index.value,
+    pageCount: props.pageCount,
+    currentIndex: currentIndex.value
   });
 }
 </script>
 
 <template>
   <div class="pagination relative">
-    <div class="mb-2 f-c-e" v-if="currentIndex > 1 && _pageCount >= 1">
-      <el-pagination
-        @current-change="fixedSorterChange"
-        v-model:current-page="currentIndex"
-        v-model:page-count="_pageCount"
-        :background="true"
-        layout="prev, pager, next, jumper" />
-    </div>
     <slot name="loading" />
-    <div v-show="currentIndex > 1" class="hover sorter l-sorter" @click="floatSorterChange('left')">
+    <div class="hover sorter rd-l-4 ltv-23 tpv-50" @click="prevChange">
       <el-tooltip effect="dark" content="上一页" placement="left">
         <el-icon>
           <i-ep-arrow-left-bold />
@@ -82,21 +69,19 @@ function fixedSorterChange() {
       </el-tooltip>
     </div>
     <slot name="content" />
-    <div class="hover sorter r-sorter" @click="floatSorterChange('right')">
+    <div class="hover sorter rd-r-4 rtv-23 tpv-50" @click="nextChange">
       <el-tooltip effect="dark" content="下一页" placement="left">
         <el-icon>
           <i-ep-arrow-right-bold />
         </el-icon>
       </el-tooltip>
     </div>
-    <div class="mt-2 f-c-e" v-if="currentIndex > 1 && _pageCount >= 1">
+    <div class="f-c-e my-4">
       <el-pagination
-        @current-change="fixedSorterChange"
-        v-show="_pageCount"
-        v-model:current-page="currentIndex"
-        v-model:page-count="_pageCount"
-        :background="true"
-        layout="prev, pager, next, jumper" />
+        layout="prev, pager, next"
+        v-model:current-page="index"
+        @current-change="nexprChange"
+        :page-count="pageCount" />
     </div>
   </div>
 </template>
@@ -105,17 +90,5 @@ function fixedSorterChange() {
 .sorter {
   --at-apply: fixed fsz-0.7 w-4 h-8 z-9 bg-#3c3c3c f-c-c;
   opacity: 0.7;
-}
-
-.l-sorter {
-  --at-apply: rd-l-4;
-  left: calc(23vw);
-  top: 50vh;
-}
-
-.r-sorter {
-  --at-apply: rd-r-4;
-  right: calc(23.1vw);
-  top: 50vh;
 }
 </style>

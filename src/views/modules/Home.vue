@@ -3,29 +3,28 @@ import { getEssayList } from "@/utils/remote-api";
 import { closeLoader } from "@/utils/common";
 
 const data = ref((await getEssayList(1, false)).array);
-const pageCount = ref(2);
+const pages = (await getEssayList(1, true)).pages;
+const pageCount = ref(pages[pages.length - 1]);
 const pagination = ref();
 
 closeLoader();
 
-function floatChange(page: any) {}
+async function next(e: any) {
+  data.value = (await getEssayList(e.currentIndex, false)).array;
+}
 
-function fixedChange(page: any) {}
+async function prev(e: any) {
+  data.value = (await getEssayList(e.currentIndex, false)).array;
+}
 
-const asyncComp = ref(null);
-const emits = defineEmits(["complete"]);
-watch(asyncComp, () => {
-  emits("complete", asyncComp);
-});
+async function nexpr(e: any) {
+  data.value = (await getEssayList(e.currentIndex, false)).array;
+}
 </script>
 
 <template>
-  <div id="lite-home" ref="asyncComp">
-    <Pagination
-      ref="pagination"
-      @fixed-change="fixedChange"
-      @float-change="floatChange"
-      :page-count="pageCount">
+  <div id="lite-home">
+    <Pagination ref="pagination" @prev="prev" @next="next" @nexpr="nexpr" :page-count="pageCount">
       <template #content>
         <EssayItem v-if="data" :data="data" />
       </template>

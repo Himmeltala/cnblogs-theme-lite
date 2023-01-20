@@ -15,16 +15,10 @@ watch(route, async () => {
   tagname.value = data.text;
   taglist.value = data.array;
 });
-
-const asyncComp = ref(null);
-const emits = defineEmits(["complete"]);
-watch(asyncComp, () => {
-  emits("complete", asyncComp);
-});
 </script>
 
 <template>
-  <div ref="asyncComp" id="lite-tagpage">
+  <div id="lite-tagpage">
     <div class="fsz-1.25 mb-8">{{ tagname }}</div>
     <div id="t-content">
       <Card

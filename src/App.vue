@@ -39,7 +39,7 @@ onMounted(() => {
         </KeepAlive>
       </template>
     </RouterView>
-    <div class="flex justify-center pb-2 fsz-0.8 sec-color">
+    <div class="f-c-c py-2 fsz-0.8 sec-color h-4">
       Copyright @2023
       <a
         class="hover mx-1 sec-color"
@@ -55,7 +55,7 @@ onMounted(() => {
     :class="{ 'right-60': !rhidden }"
     class="z-999 fixed right-0 tpv-25 hvh-50 w-15"></div>
   <RShowcase :class="{ 'show-rcase': !rhidden, 'hidden-rcase': rhidden }" />
-  <ToolKits />
+  <!-- <ToolKits /> -->
 </template>
 
 <style scoped lang="scss">
