@@ -22,7 +22,7 @@ watch(asyncComp, () => {
         style="flex: 1 1 20%"
         v-for="(item, index) in tags"
         :key="index">
-        <router-link class="hover color-#a7a7a7" :to="'/t/' + item.text">
+        <router-link class="hover pri-color" :to="'/t/' + item.text">
           {{ item.text }} ({{ item.count }})
         </router-link>
       </Tag>

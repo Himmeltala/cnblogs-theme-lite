@@ -11,25 +11,41 @@
 
 :root,
 body {
-  padding: 0;
-  margin: 0;
-  font-weight: 300;
+  padding: 0 !important;
+  margin: 0 !important;
+  background-color: var(--bg-color);
+  color: var(--pri-text-color);
+}
+
+* {
+  font-weight: 300 !important;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
     "微软雅黑", Arial, sans-serif !important;
-  color: #a7a7a7;
-  background-color: #1c1c1c;
-  letter-spacing: 0.05rem;
-  word-break: break-all;
+  letter-spacing: 0.05rem !important;
+  word-break: break-all !important;
+  line-break: anywhere !important;
+}
+
+html[class="dark"] {
+  --pri-text-color: #a7a7a7;
+  --sec-text-color: #878787;
+  --bg-color: #1c1c1c;
+}
+
+html[class="light"] {
+  --pri-text-color: #fff;
+  --sec-text-color: #878787;
+  --bg-color: #1c1c1c;
 }
 
 #app {
-  --at-apply: flex justify-center;
+  --at-apply: f-c-c;
 }
 
 img {
   max-width: 100%;
-  object-fit: cover;
   --at-apply: rd-2;
+  object-fit: cover;
 }
 
 a:link {

@@ -22,7 +22,7 @@ watch(route, value => {
 <template>
   <div
     id="r-showcase"
-    class="noscroll fixed top-0 right-0 hd-100 ofw-auto w-60 px-2 bg-#1c1c1c z-999 box-border">
+    class="noscroll fixed top-0 right-0 hd-100 ofw-auto bg-#191919 w-60 px-2 z-999 box-border">
     <ShowcaseItem text="随笔目录" v-if="anchors && anchors.length > 0">
       <template #icon>
         <el-icon style="margin-right: 5px">
@@ -30,7 +30,7 @@ watch(route, value => {
         </el-icon>
       </template>
       <div
-        class="catalog mb-2 break-all fsz-0.9"
+        class="catalog mb-2 fsz-0.9"
         v-for="(item, index) in anchors"
         :key="index"
         v-html="item.content"
@@ -50,9 +50,14 @@ watch(route, value => {
           <i-ep-link />
         </el-icon>
       </template>
-      <div class="mb-2 break-all fsz-0.9" v-for="(item, index) in links" :key="index">
-        <a class="hover" :key="index" :href="item.href" target="_blank">{{ item.text }}</a>
-      </div>
+      <a
+        class="hover block mb-2 fsz-0.9 pri-color"
+        v-for="(item, index) in links"
+        :key="index"
+        :href="item.href"
+        target="_blank">
+        {{ item.text }}
+      </a>
     </ShowcaseItem>
     <ShowcaseItem text="推荐书籍" v-if="books && books.length > 0">
       <template #icon>
@@ -60,24 +65,17 @@ watch(route, value => {
           <i-ep-notebook />
         </el-icon>
       </template>
-      <div
-        class="mb-2.5 flex content-center items-center justify-center fsz-1"
-        v-for="(item, index) in books"
-        :key="index">
-        <img class="hvh-10 wvw-3.8 rd-1.5 object-cover" :src="item.img" alt="FAILED" />
-        <div class="ml-2 break-all" style="width: calc(100% - 3.8vw - 0.5rem)">
+      <div class="mb-2.5 f-c-c" v-for="(item, index) in books" :key="index">
+        <img class="hvh-10 wvw-3.8" :src="item.img" alt="FAILED" />
+        <div class="ml-2" style="width: calc(100% - 3.8vw - 0.5rem)">
           <span v-if="!item.href">{{ item.text }}</span>
-          <a class="hover fsz-0.9" v-else :href="item.href" target="_blank">{{ item.text }}</a>
-          <div class="fsz-0.8">{{ item.author }}</div>
+          <a class="hover fsz-0.9 pri-color" v-else :href="item.href" target="_blank">
+            {{ item.text }}
+          </a>
+          <div class="fsz-0.8 sec-color">{{ item.author }}</div>
           <el-rate style="width: 100%" v-model="item.rate" disabled size="small" />
         </div>
       </div>
     </ShowcaseItem>
   </div>
 </template>
-
-<style scoped lang="scss">
-a {
-  --at-apply: color-#878787;
-}
-</style>

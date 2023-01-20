@@ -14,8 +14,8 @@ import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 // unocss
 import Unocss from "unocss/vite";
 import { presetAttributify, presetUno } from "unocss";
+import { rules, theme, shortcuts } from "./unocss.config";
 import transformerDirective from "@unocss/transformer-directives";
-import { regulation } from "./unocss.regulation";
 
 export default defineConfig(({ command, mode }) => {
   const { VITE_BLOG_APP } = loadEnv(mode, "./");
@@ -23,13 +23,15 @@ export default defineConfig(({ command, mode }) => {
     plugins: [
       vue(),
       Unocss({
+        theme,
+        rules,
+        shortcuts,
         transformers: [
           transformerDirective({
             applyVariable: ["--at-apply", "--uno-apply", "--uno"]
           })
         ],
-        presets: [presetAttributify({}), presetUno()],
-        rules: regulation
+        presets: [presetAttributify({}), presetUno()]
       }),
       AutoImport({
         imports: ["vue", "vue-router", "pinia"],

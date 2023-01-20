@@ -233,7 +233,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
   <div class="comments">
     <h3>发表评论</h3>
     <div class="mb-12 relative">
-      <div class="tools mb-2 flex justify-end content-center items-center">
+      <div class="tools mb-2 f-c-e">
         <el-tooltip effect="dark" content="插入图片" placement="top-start">
           <el-icon class="cursor-pointer" @click="uploadImage('main-upload-img')">
             <i-ep-picture-rounded />
@@ -255,14 +255,13 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
     <h3>评论列表</h3>
     <div class="mt-10" v-if="comments?.length && isLogin">
       <div class="mb-9" v-for="(item, index) in comments" :key="index">
-        <div class="flex items-center content-center justify-start">
+        <div class="f-c-s">
           <el-image class="mr-4 rd-50 w-14 h-14" :src="item.avatar" fit="fill" />
           <div>
             <div class="fsz-0.95 hover cursor-pointer" @click="nav(item.space)">
               {{ item.author }}
             </div>
-            <div
-              class="fsz-0.8 color-#8D9095 mt-1.5 flex items-center content-center justify-center">
+            <div class="fsz-0.8 color-#8D9095 mt-1.5 f-c-c">
               <div
                 v-if="commentAnchor === item.commentId"
                 ref="commentAnchorQuote"
@@ -283,7 +282,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
           </div>
           <div class="c-content" v-show="!item.updateEditable" v-html="item.content" v-parse-code />
           <div class="editarea" v-show="item.updateEditable">
-            <div class="tools mb-2 flex justify-end content-center items-center">
+            <div class="tools mb-2 f-c-e">
               <el-tooltip effect="dark" content="插入图片" placement="top-start">
                 <el-icon class="cursor-pointer" @click="uploadImage('upload-img-' + index, item)">
                   <i-ep-picture-rounded />
@@ -298,7 +297,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
             </div>
           </div>
           <div class="replayarea" v-show="item.replayEditable">
-            <div class="tools mb-2 flex justify-end content-center items-center">
+            <div class="tools mb-2 f-c-e">
               <el-tooltip effect="dark" content="插入图片" placement="top-start">
                 <el-icon class="cursor-pointer" @click="uploadImage('upload-img-' + index, item)">
                   <i-ep-picture-rounded />
@@ -312,11 +311,10 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
                 placeholder="请回复一条友善的评论，支持 Markdown 语法" />
             </div>
           </div>
-          <div
-            class="actions fsz-0.8 cursor-pointer color-#a8abb2 flex justify-end items-center content-center">
+          <div class="actions fsz-0.8 cursor-pointer color-#a8abb2 f-c-e">
             <div
               v-show="!item.replayEditable && !item.isEditingUpdate"
-              class="hover mr-3 flex justify-end items-center content-center"
+              class="hover mr-3 f-c-e"
               @click="beforeReplayComment(item)">
               <el-icon class="mr-0.5">
                 <i-ep-chat-round />
@@ -325,7 +323,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
             </div>
             <div
               v-show="item.replayEditable && !item.isEditingUpdate"
-              class="hover mr-3 flex justify-end items-center content-center"
+              class="hover mr-3 f-c-e"
               @click="finishReplayComment(item)">
               <el-icon class="mr-0.5">
                 <i-ep-check />
@@ -334,7 +332,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
             </div>
             <div
               v-show="item.replayEditable && !item.isEditingUpdate"
-              class="hover mr-3 flex justify-end items-center content-center"
+              class="hover mr-3 f-c-e"
               @click="cancelReplayComment(item)">
               <el-icon class="mr-0.5">
                 <i-ep-close />
@@ -343,7 +341,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
             </div>
             <div
               v-show="!item.isEditingUpdate && !item.isEditingReplay"
-              class="hover mr-3 flex justify-end items-center content-center actions"
+              class="hover mr-3 f-c-e actions"
               @click="voteComm(item, 'Digg')">
               <el-icon class="mr-0.5">
                 <i-ep-caret-top />
@@ -352,7 +350,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
             </div>
             <div
               v-show="!item.isEditingUpdate && !item.isEditingReplay"
-              class="hover mr-3 flex justify-end items-center content-center actions"
+              class="hover mr-3 f-c-e actions"
               @click="voteComm(item, 'Bury')">
               <el-icon class="mr-0.5">
                 <i-ep-caret-bottom />
@@ -366,7 +364,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
                 title="确定删除该评论？"
                 @confirm="confirmDeleteComment(item, index)">
                 <template #reference>
-                  <div class="hover flex justify-end items-center content-center">
+                  <div class="hover f-c-e">
                     <el-icon class="mr-0.5">
                       <i-ep-delete />
                     </el-icon>
@@ -377,7 +375,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
             </div>
             <div
               v-show="!item.updateEditable && !item.isEditingReplay"
-              class="hover flex justify-end items-center content-center"
+              class="hover f-c-e"
               @click="beforeUpdateComment(item)">
               <el-icon class="mr-0.5">
                 <i-ep-edit-pen />
@@ -386,7 +384,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
             </div>
             <div
               v-show="item.updateEditable && !item.isEditingReplay"
-              class="hover mr-3 flex justify-end items-center content-center"
+              class="hover mr-3 f-c-e"
               @click="finishUpdateComment(item)">
               <el-icon class="mr-0.5">
                 <i-ep-circle-check />
@@ -400,7 +398,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
                 title="确定取消编辑该评论？"
                 @confirm="cancelUpdateComment(item)">
                 <template #reference>
-                  <div class="hover flex justify-end items-center content-center">
+                  <div class="hover f-c-e">
                     <el-icon class="mr-0.5">
                       <i-ep-circle-close />
                     </el-icon>
@@ -412,7 +410,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
           </div>
         </div>
       </div>
-      <div class="mt-10 flex items-center content-center justify-end" v-if="!comments?.length">
+      <div class="mt-10 f-c-e" v-if="!comments?.length">
         <el-pagination
           @current-change="paginationChange"
           layout="prev, pager, next"

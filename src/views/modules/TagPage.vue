@@ -25,26 +25,30 @@ watch(asyncComp, () => {
 
 <template>
   <div ref="asyncComp" id="lite-tagpage">
-    <div class="fsz-1.25 mx-1.3 mt-1 mb-3">{{ tagname }}</div>
+    <div class="fsz-1.25 mb-8">{{ tagname }}</div>
     <div id="t-content">
-      <Card style="flex: 1 1 40%" class="mb-2.5" v-for="(item, index) in taglist" :key="index">
-        <div class="fsz-1.1 break-all">
-          <router-link class="hover color-#a7a7a7" :to="'/e/' + item.id">{{
-            item.title
-          }}</router-link>
+      <Card
+        class="mr-6 mb-6 pb-4"
+        style="flex: 1 1 40%"
+        v-for="(item, index) in taglist"
+        :key="index">
+        <div class="fsz-1">
+          <router-link class="hover pri-color" :to="'/e/' + item.id">
+            {{ item.title }}
+          </router-link>
         </div>
-        <div class="flex content-center items-center justify-start fsz-0.9 mt-6">
+        <div class="f-c-s fsz-0.9 mt-6">
           <el-icon>
             <i-ep-caret-right />
           </el-icon>
           <router-link
-            class="hover color-#a7a7a7 b-b-#cccccc b-b-dotted b-b-1 p-b-0.3"
+            class="hover pri-color ml-0.5 b-b-1 b-b-dotted p-b-0.3"
             :to="'/e/' + item.id">
             阅读全文
           </router-link>
         </div>
         <EssaySynopsis
-          class="mt-4"
+          class="mt-6"
           :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
       </Card>
     </div>

@@ -14,34 +14,36 @@ const router = useRouter();
 </script>
 
 <template>
-  <Card v-for="(item, index) in data" :index="index" :length="data.length" :key="index">
-    <div class="header flex content-center items-center justify-between">
+  <Card
+    class="pb-4"
+    :class="{ 'mb-6': index !== data.length - 1 }"
+    v-for="(item, index) in data"
+    :index="index"
+    :length="data.length"
+    :key="index">
+    <div class="f-c">
       <el-image
         v-if="index % 2 !== 0 && item.surface"
-        class="surface h-9 rd-3 wd-25"
+        class="h-9 rd-2 wd-25"
         :src="item.surface"
         fit="cover" />
       <div :class="{ 'wd-100': !item.surface, 'wd-73': item.surface }">
-        <div
-          class="headline hover mb-5 fsz-1.3 leh-1.4 lts-0.1 cursor-pointer break-all"
-          @click="nav('/e/' + item.id, router)">
+        <div class="hover mb-5 fsz-1.3 cursor-pointer" @click="nav('/e/' + item.id, router)">
           {{ item.text }}
         </div>
-        <div class="description c-#878787 mb-5 leh-1.4 lts-0.1 break-all">{{ item.desc }}</div>
+        <div class="sec-color mb-6">{{ item.desc }}</div>
       </div>
       <el-image
         v-if="index % 2 === 0 && item.surface"
-        class="surface hr-9 rd-3 wd-25"
+        class="h-9 rd-2 wd-25"
         :src="item.surface"
         fit="cover" />
     </div>
-    <div class="read flex content-center items-center justify-start mb-5 fsz-0.9">
+    <div class="f-c-s mb-6 fsz-0.9">
       <el-icon>
         <i-ep-caret-right />
       </el-icon>
-      <router-link
-        class="hover color-#a7a7a7 ml-0.5 b-b-1 b-b-dotted b-b-#cccccc"
-        :to="'/e/' + item.id">
+      <router-link class="hover pri-color ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/e/' + item.id">
         阅读全文
       </router-link>
     </div>

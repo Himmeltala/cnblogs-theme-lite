@@ -21,13 +21,13 @@ onMounted(() => {
   <div
     id="n-mask"
     :class="{ 'top-15': !nhidden }"
-    class="fixed z-999 h-10 w-80 top-0"
+    class="z-999 fixed top-0 h-10 w-80"
     style="left: calc(50vw - 10rem)"></div>
   <Navigation :class="{ 'show-nav': !nhidden, 'hidden-nav': nhidden }" />
   <div
     id="l-mask"
     :class="{ 'left-60': !lhidden }"
-    class="z-999 hvh-50 fixed w-15 left-0 tpv-25"></div>
+    class="z-999 fixed left-0 tpv-25 hvh-50 w-15"></div>
   <LShowcase :class="{ 'show-lcase': !lhidden, 'hidden-lcase': lhidden }" />
   <div id="lite-content" class="w-200 pt-5">
     <RouterView v-slot="{ Component }">
@@ -39,10 +39,10 @@ onMounted(() => {
         </KeepAlive>
       </template>
     </RouterView>
-    <div class="flex pb-2 justify-center fsz-0.8 color-#878787">
+    <div class="flex justify-center pb-2 fsz-0.8 sec-color">
       Copyright @2023
       <a
-        class="hover mx-1 color-#878787"
+        class="hover mx-1 sec-color"
         href="https://github.com/Himmelbleu/cnblogs-theme-lite"
         target="__blank">
         Himmelbleu
@@ -53,7 +53,7 @@ onMounted(() => {
   <div
     id="r-mask"
     :class="{ 'right-60': !rhidden }"
-    class="z-999 hvh-50 fixed w-15 right-0 tpv-25"></div>
+    class="z-999 fixed right-0 tpv-25 hvh-50 w-15"></div>
   <RShowcase :class="{ 'show-rcase': !rhidden, 'hidden-rcase': rhidden }" />
   <ToolKits />
 </template>

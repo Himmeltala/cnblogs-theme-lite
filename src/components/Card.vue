@@ -10,13 +10,13 @@ defineProps({
 </script>
 
 <template>
-  <div class="mb-4 pb-4 box-border" :class="{ 'bt-style': index !== length - 1 }">
+  <div class="box-border" :class="{ 'bt-border': index !== length - 1 }">
     <slot />
   </div>
 </template>
 
 <style scoped lang="scss">
-.bt-style {
+.bt-border {
   border: {
     bottom: {
       width: 1px;

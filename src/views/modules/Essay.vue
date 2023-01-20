@@ -52,23 +52,23 @@ watch(asyncComp, () => {
             <i-ep-arrow-left />
           </template>
           <template #content>
-            <div class="leh-1.4 fsz-1.4 break-all">{{ essay.text }}</div>
+            <div class="fsz-1.4">{{ essay.text }}</div>
           </template>
         </el-page-header>
-        <div class="color-#878787 flex justify-start items-center content-center mt-4 fsz-0.9">
-          <div class="flex justify-center items-center content-center mr-3">
+        <div class="sec-color f-c-s mt-4 fsz-0.9">
+          <div class="f-c-c mr-3">
             <el-icon class="mr-0.9">
               <i-ep-clock />
             </el-icon>
             <span>{{ essay.date }}</span>
           </div>
-          <div class="flex justify-center items-center content-center mr-3">
+          <div class="f-c-c mr-3">
             <el-icon class="mr-0.9">
               <i-ep-view />
             </el-icon>
             <span>{{ essay.view }}次阅读</span>
           </div>
-          <div class="flex justify-center items-center content-center mr-3">
+          <div class="f-c-c mr-3">
             <el-icon class="mr-0.9">
               <i-ep-chat-line-square />
             </el-icon>
@@ -76,7 +76,7 @@ watch(asyncComp, () => {
           </div>
           <div
             v-if="isOwner"
-            class="flex justify-center items-center content-center hover"
+            class="f-c-c hover"
             @click="nav('https://i.cnblogs.com/EditPosts.aspx?postid=' + postId)">
             <el-icon class="mr-0.9">
               <i-ep-edit-pen />
@@ -84,11 +84,9 @@ watch(asyncComp, () => {
             <span>编辑</span>
           </div>
         </div>
-        <div class="color-#878787 mt-4 fsz-0.9">
-          <div
-            class="mb-2 flex justify-start items-center content-center"
-            v-if="catesTags.cates.length > 0">
-            <div class="flex justify-center items-center content-center">
+        <div class="sec-color mt-4 fsz-0.9">
+          <div class="mb-2 f-c-s" v-if="catesTags.cates.length > 0">
+            <div class="f-c-c">
               <el-icon class="mr-0.9">
                 <i-ep-folder-opened />
               </el-icon>
@@ -103,10 +101,8 @@ watch(asyncComp, () => {
               </Tag>
             </div>
           </div>
-          <div
-            class="flex justify-start items-center content-center"
-            v-if="catesTags.tags.length > 0">
-            <div class="flex justify-center items-center content-center">
+          <div class="f-c-s" v-if="catesTags.tags.length > 0">
+            <div class="f-c-c">
               <el-icon class="mr-0.9">
                 <i-ep-price-tag />
               </el-icon>
@@ -124,20 +120,20 @@ watch(asyncComp, () => {
         </div>
         <div id="e-content" class="mt-8" v-html="essay?.content" v-parse-code v-anchor />
         <div class="divider"></div>
-        <div class="color-#878787 flex justify-end items-center content-center fsz-0.9">
-          <div class="flex justify-center items-center content-center mr-2">
+        <div class="sec-color f-c-e fsz-0.9">
+          <div class="f-c-c mr-2">
             <el-icon class="mr-0.9">
               <i-ep-clock />
             </el-icon>
             <span>{{ essay.date }}</span>
           </div>
-          <div class="flex justify-center items-center content-center mr-2">
+          <div class="f-c-c mr-2">
             <el-icon class="mr-0.9">
               <i-ep-view />
             </el-icon>
             <span>{{ essay.view }}次阅读</span>
           </div>
-          <div class="flex justify-center items-center content-center">
+          <div class="f-c-c">
             <el-icon class="mr-0.9">
               <i-ep-chat-line-square />
             </el-icon>
@@ -145,28 +141,24 @@ watch(asyncComp, () => {
           </div>
         </div>
         <div class="prev-next fsz-0.9 mt-10">
-          <div
-            class="prev hover mb-2 flex justify-start items-center content-center"
-            v-if="prevNext.prev.href">
+          <div class="prev hover mb-2 f-c-s" v-if="prevNext.prev.href">
             <el-icon>
               <i-ep-d-arrow-left />
             </el-icon>
-            <a class="hover color-#a7a7a7" :href="prevNext.prev.href"
+            <a class="hover pri-color" :href="prevNext.prev.href"
               >上一篇：{{ prevNext.prev.text }}</a
             >
           </div>
-          <div
-            class="next hover flex justify-start items-center content-center"
-            v-if="prevNext.next.href">
+          <div class="next hover f-c-s" v-if="prevNext.next.href">
             <el-icon>
               <i-ep-d-arrow-right />
             </el-icon>
-            <a class="hover color-#a7a7a7" :href="prevNext.next.href"
+            <a class="hover pri-color" :href="prevNext.next.href"
               >下一篇：{{ prevNext.next.text }}</a
             >
           </div>
         </div>
-        <div class="my-10 flex justify-end items-center content-center">
+        <div class="my-10 f-c-e">
           <div class="digg mr-5">
             <el-button plain @click="vote('Digg')">
               <span class="fsz-0.9"> 点赞 {{ essayVote.diggCount }} </span>
@@ -253,7 +245,7 @@ pre {
 }
 
 code {
-  --at-apply: fsz-0.9 box-border break-all rd-2;
+  --at-apply: fsz-0.9 box-border rd-2;
   font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace !important;
   font-weight: 300;
   background: #2e2e2e;

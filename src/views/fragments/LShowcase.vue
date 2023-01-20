@@ -29,19 +29,16 @@ function search() {
 <template>
   <div
     id="l-showcase"
-    class="noscroll fixed top-0 left-0 hd-100 ofw-auto w-60 px-2 bg-#1c1c1c z-999 box-border">
+    class="noscroll fixed top-0 left-0 hd-100 ofw-auto w-60 px-2 z-999 bg-#191919 box-border">
     <ShowcaseItem text="博客信息">
       <template #icon>
         <el-icon class="mr-1">
           <i-ep-house />
         </el-icon>
       </template>
-      <div v-if="side?.avatar" class="flex items-center content-center justify-center my-5">
+      <div v-if="side?.avatar" class="f-c-c my-5">
         <el-tooltip effect="dark" placement="right">
-          <img
-            class="h-20 w-20 rd-50 object-cover cursor-pointer"
-            alt="FAILED"
-            :src="side?.avatar" />
+          <img class="h-25 w-25 cursor-pointer rd-50" alt="FAILED" :src="side?.avatar" />
           <template #content>
             <div v-if="side?.signature" v-html="side.signature" />
             <div v-else>这个人很懒，什么也没有留下</div>

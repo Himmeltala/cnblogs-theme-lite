@@ -21,7 +21,7 @@ export function useLite(dev?: Function, pro?: Function) {
   $("body").append(`<div id="app"></div>`);
   $("html").attr("class", "dark");
 
-  log("Lite Theme Ver 1.0.0", "Powered By Himmelbleu");
+  log("Lite Theme Ver 1.0.1", "Powered By Himmelbleu");
   log("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
 
   // @ts-ignore

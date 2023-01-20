@@ -9,14 +9,14 @@ const navor = __LITE_CONFIG__.navor;
 <template>
   <div
     id="navigation"
-    class="fixed z-999 w-200 h-15 flex content-center items-center bg-#191919"
+    class="fixed z-999 w-200 h-15 f-c-c top-0 bg-#191919"
     :style="{ 'justify-content': navor?.header ? 'space-between' : 'flex-end' }">
     <div
-      class="hover fsz-1.5 font-normal flex items-center content-center justify-center color-#878787"
+      class="hover fsz-1.5 font-normal f-c-c color-#878787"
       @click="nav('/', router)"
       v-if="navor?.header"
       v-html="navor.header"></div>
-    <div class="flex items-center content-center justify-center fsz-1">
+    <div class="f-c-c fsz-1">
       <div class="hover mr-4" @click="nav('https://www.cnblogs.com')">博客园</div>
       <div class="hover mr-4" @click="nav('/', router)">首页</div>
       <div class="hover" :class="{ 'mr-4': navor?.navs }" @click="nav('/', router)">标签</div>
@@ -25,9 +25,9 @@ const navor = __LITE_CONFIG__.navor;
         v-for="(item, index) in navor.navs"
         :key="index"
         :class="{ 'mr-4': index !== navor.navs.length - 1 }"
-        class="hover flex items-center content-center justify-center">
+        class="hover f-c-c">
         <div v-if="item.text" @click="nav(item.href)">{{ item.text }}</div>
-        <div class="flex items-center content-center justify-center" v-else>
+        <div class="f-c-c" v-else>
           <svg
             v-if="(item.svg || item.img) && item.svg"
             class="w-6 h-6"
