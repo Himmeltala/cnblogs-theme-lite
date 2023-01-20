@@ -31,7 +31,7 @@ const router = useRouter();
         <div class="hover mb-5 fsz-1.3 cursor-pointer" @click="nav('/e/' + item.id, router)">
           {{ item.text }}
         </div>
-        <div class="sec-color mb-6">{{ item.desc }}</div>
+        <div class="thr-color mb-6">{{ item.desc }}</div>
       </div>
       <el-image
         v-if="index % 2 === 0 && item.surface"

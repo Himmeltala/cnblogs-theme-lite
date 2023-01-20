@@ -29,7 +29,7 @@ function search() {
 <template>
   <div
     id="l-showcase"
-    class="noscroll fixed top-0 left-0 hd-100 ofw-auto w-60 px-2 z-999 bg-#191919 box-border">
+    class="noscroll fixed top-0 left-0 hd-100 ofw-auto w-60 px-2 z-999 bg-color box-border">
     <ShowcaseItem text="博客信息">
       <template #icon>
         <el-icon class="mr-1">

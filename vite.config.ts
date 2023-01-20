@@ -14,7 +14,7 @@ import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 // unocss
 import Unocss from "unocss/vite";
 import { presetAttributify, presetUno } from "unocss";
-import { rules, theme, shortcuts } from "./unocss.config";
+import { rules, shortcuts } from "./unocss.config";
 import transformerDirective from "@unocss/transformer-directives";
 
 export default defineConfig(({ command, mode }) => {
@@ -23,7 +23,6 @@ export default defineConfig(({ command, mode }) => {
     plugins: [
       vue(),
       Unocss({
-        theme,
         rules,
         shortcuts,
         transformers: [

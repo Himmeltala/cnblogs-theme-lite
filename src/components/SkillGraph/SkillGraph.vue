@@ -20,16 +20,16 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .graph__packer {
-  position: relative;
   width: inherit;
   height: 210px;
-  box-sizing: border-box;
   display: flex;
+  position: relative;
+  box-sizing: border-box;
   justify-content: center;
 
   #graph {
-    position: absolute;
     cursor: pointer;
+    position: absolute;
   }
 
   #floating {

@@ -185,7 +185,10 @@ watch(asyncComp, () => {
 <style lang="scss">
 h1,
 h2,
-h3 {
+h3,
+h4,
+h5,
+h6 {
   font-weight: 400 !important;
 }
 
@@ -246,7 +249,6 @@ pre {
 
 code {
   --at-apply: fsz-0.9 box-border rd-2;
-  font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace !important;
   font-weight: 300;
   background: #2e2e2e;
   color: var(--el-color-danger-light-3);
@@ -260,14 +262,12 @@ code {
   padding: 4px;
   color: #6d6d6d;
   font-weight: 400;
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-    "微软雅黑", Arial, sans-serif !important;
   right: 4px;
   top: 0;
 }
 
 blockquote {
-  --at-apply: box-border rd-1 color-#8D9095;
+  --at-apply: box-border rd-1 sec-color;
   margin: 0;
   background-color: #2e2e2e;
   padding: {
@@ -286,9 +286,8 @@ blockquote {
 
 #e-content {
   a {
-    color: #a7a7a7;
     padding-bottom: 1px;
-    border-bottom: 1px dotted #a7a7a7;
+    border-bottom: 1px dotted var(--pri-text-color);
     @include hover($border-color: bottom);
   }
 

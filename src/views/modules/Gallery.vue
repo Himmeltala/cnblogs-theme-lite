@@ -16,19 +16,14 @@ watch(asyncComp, () => {
 </script>
 
 <template>
-  <div
-    ref="asyncComp"
-    id="lite-gallery"
-    style="height: 100%; width: 100%"
-    class="flex items-center content-center justify-center">
+  <div ref="asyncComp" id="lite-gallery" style="height: 100%; width: 100%" class="f-c-c">
     <Card
       style="width: inherit; height: inherit"
       :class="{
-        'flex items-center content-center justify-center': !imgUrl || !srcList.length,
+        'f-c-c': !imgUrl || !srcList.length,
         'flex justify-center': imgUrl
       }">
       <el-image
-        class="image"
         style="max-width: 100%; height: inherit"
         fit="cover"
         :src="imgUrl"

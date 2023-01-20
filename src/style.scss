@@ -28,14 +28,18 @@ body {
 
 html[class="dark"] {
   --pri-text-color: #a7a7a7;
-  --sec-text-color: #878787;
-  --bg-color: #1c1c1c;
+  --sec-text-color: #8d9095;
+  --thr-text-color: #878787;
+  --bg-color: #191919;
+  --textarea-bg-color: #202020;
 }
 
 html[class="light"] {
-  --pri-text-color: #fff;
-  --sec-text-color: #878787;
-  --bg-color: #1c1c1c;
+  --pri-text-color: #a7a7a7;
+  --sec-text-color: #8d9095;
+  --thr-text-color: #878787;
+  --bg-color: #191919;
+  --textarea-bg-color: #202020;
 }
 
 #app {
@@ -46,6 +50,10 @@ img {
   max-width: 100%;
   --at-apply: rd-2;
   object-fit: cover;
+}
+
+a {
+  color: var(--pri-text-color);
 }
 
 a:link {

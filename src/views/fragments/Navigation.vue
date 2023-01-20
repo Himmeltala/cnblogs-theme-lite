@@ -9,10 +9,10 @@ const navor = __LITE_CONFIG__.navor;
 <template>
   <div
     id="navigation"
-    class="fixed z-999 w-200 h-15 f-c-c top-0 bg-#191919"
+    class="fixed z-999 w-200 h-15 f-c-c top-0 bg-color"
     :style="{ 'justify-content': navor?.header ? 'space-between' : 'flex-end' }">
     <div
-      class="hover fsz-1.5 font-normal f-c-c color-#878787"
+      class="hover fsz-1.5 font-normal f-c-c sec-color"
       @click="nav('/', router)"
       v-if="navor?.header"
       v-html="navor.header"></div>
@@ -31,16 +31,11 @@ const navor = __LITE_CONFIG__.navor;
           <svg
             v-if="(item.svg || item.img) && item.svg"
             class="w-6 h-6"
-            fill="#a7a7a7"
+            fill="var(--pri-text-color)"
             @click="nav(item.href)"
             viewBox="0 0 1024 1024"
             v-html="item.svg" />
-          <img
-            v-else
-            class="object-cover rd-50 w-6 h-6"
-            alt="FAILED"
-            @click="nav(item.href)"
-            :src="item.img" />
+          <img v-else class="rd-50 w-6 h-6" alt="FAILED" @click="nav(item.href)" :src="item.img" />
         </div>
       </div>
     </div>

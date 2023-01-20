@@ -65,7 +65,7 @@ function fixedSorterChange() {
 
 <template>
   <div class="pagination relative">
-    <div class="mb-2 flex justify-end" v-if="currentIndex > 1 && _pageCount >= 1">
+    <div class="mb-2 f-c-e" v-if="currentIndex > 1 && _pageCount >= 1">
       <el-pagination
         @current-change="fixedSorterChange"
         v-model:current-page="currentIndex"
@@ -89,7 +89,7 @@ function fixedSorterChange() {
         </el-icon>
       </el-tooltip>
     </div>
-    <div class="mt-2 flex justify-end" v-if="currentIndex > 1 && _pageCount >= 1">
+    <div class="mt-2 f-c-e" v-if="currentIndex > 1 && _pageCount >= 1">
       <el-pagination
         @current-change="fixedSorterChange"
         v-show="_pageCount"
@@ -103,7 +103,7 @@ function fixedSorterChange() {
 
 <style scoped lang="scss">
 .sorter {
-  --at-apply: fixed fsz-0.7 w-4 h-8 z-9 bg-#3c3c3c flex content-center items-center justify-center;
+  --at-apply: fixed fsz-0.7 w-4 h-8 z-9 bg-#3c3c3c f-c-c;
   opacity: 0.7;
 }
 

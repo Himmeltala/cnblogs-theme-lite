@@ -42,22 +42,10 @@ const rules = <Rule<any>[]>[
     ([, d]) => ({ overflow: `${d}` })
   ],
   // 文本颜色
-  [/^(pri|sec)-color$/, ([, d]) => ({ color: `var(--${d}-text-color)` })],
+  [/^(pri|sec|thr)-color$/, ([, d]) => ({ color: `var(--${d}-text-color)` })],
   // 背景颜色
-  [/^bg-color$/, ([, d]) => ({ backgroundColor: `var(--bg-color)` })]
+  [/^bg-color$/, ([, d]) => ({ "background-color": `var(--bg-color)` })]
 ];
-
-// 通过 css 变量设置主题
-const theme = {
-  colors: {
-    // 突出的文本
-    priTextColor: "--pri-text-color",
-    // 不突出的文本
-    secTextColor: "--sec-text-color",
-    // 背景颜色
-    bgColor: "--bg-color"
-  }
-};
 
 // 简化 unocss
 const shortcuts = <UserShortcuts>[
@@ -98,4 +86,4 @@ const shortcuts = <UserShortcuts>[
   ]
 ];
 
-export { rules, theme, shortcuts };
+export { rules, shortcuts };

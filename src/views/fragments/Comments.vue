@@ -261,7 +261,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
             <div class="fsz-0.95 hover cursor-pointer" @click="nav(item.space)">
               {{ item.author }}
             </div>
-            <div class="fsz-0.8 color-#8D9095 mt-1.5 f-c-c">
+            <div class="fsz-0.8 sec-color mt-1.5 f-c-c">
               <div
                 v-if="commentAnchor === item.commentId"
                 ref="commentAnchorQuote"
@@ -341,7 +341,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
             </div>
             <div
               v-show="!item.isEditingUpdate && !item.isEditingReplay"
-              class="hover mr-3 f-c-e actions"
+              class="hover mr-3 f-c-e"
               @click="voteComm(item, 'Digg')">
               <el-icon class="mr-0.5">
                 <i-ep-caret-top />
@@ -350,7 +350,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
             </div>
             <div
               v-show="!item.isEditingUpdate && !item.isEditingReplay"
-              class="hover mr-3 f-c-e actions"
+              class="hover mr-3 f-c-e"
               @click="voteComm(item, 'Bury')">
               <el-icon class="mr-0.5">
                 <i-ep-caret-bottom />
@@ -431,9 +431,8 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
   @include font-space();
 
   a {
-    color: #a7a7a7;
     padding-bottom: 1px;
-    border-bottom: 1px dotted #a7a7a7;
+    border-bottom: 1px dotted var(--pri-text-color);
     @include hover($border-color: bottom);
   }
 }
@@ -442,16 +441,13 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
 <style scoped lang="scss">
 @mixin textarea($height: 15rem) {
   --at-apply: rd-2 box-border p-2.5 fsz-0.9;
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-    "微软雅黑", Arial, sans-serif;
-  background-color: #202020;
+  background-color: var(--textarea-bg-color);
   width: 100%;
   border: none;
   outline: none;
   font-weight: 300;
-  color: #a7a7a7;
+  color: var(--pri-text-color);
   height: $height;
-  line-height: 1.3;
   resize: none;
 }
 
