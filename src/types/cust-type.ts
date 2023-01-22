@@ -1,4 +1,4 @@
-export interface Essay {
+export interface Jotting {
   // 随笔 ID
   id?: number;
   // 随笔标题
@@ -56,7 +56,7 @@ export interface Comment {
   pageIndex?: number;
 }
 
-export interface TagPage {
+export interface TagColl {
   text: string;
   array: Array<{
     id: string;
@@ -120,15 +120,15 @@ export interface Tag {
 /**
  * 随笔列表，返回列表的页数、列表数组。
  */
-export interface EssayList {
+export interface JottingList {
   pages: number[];
-  array: Array<Essay>;
+  array: Array<Jotting>;
 }
 
 /**
  * 随笔的分类和标签数组
  */
-export interface EssayCateAndTagList {
+export interface JottingCateAndTagList {
   tags: { text: string }[];
   cates: { href: string; text: string }[];
 }
@@ -139,7 +139,7 @@ export interface EssayCateAndTagList {
 export interface CateList {
   pages: number[];
   label: string;
-  array: Array<Essay>;
+  array: Array<Jotting>;
 }
 
 /**

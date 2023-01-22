@@ -1,8 +1,345 @@
 # 主题说明
 
-Hello，Everyone！博客园主题皮肤：Lite。
+打开博客园的随笔详细页、标签页等，都是整页重新加载，比较影响体验。SPA 应用可以减少整页加载，实现局部刷新，本皮肤通过 Vue3 + TS + Vite 开发的。
 
-背景：打开博客园的随笔详细页、标签页等，都是整页重新加载的，非常影响体验， Vue3 + TS + Vite 的博客园皮肤。
+本人已部署在自己的博客，浏览：[Lite 博客](https://www.cnblogs.com/Enziandom/#/)。
+
+# 部署说明
+
+部署非常简单，你只需要在：博客园管理-设置下的 “首页 HTML 代码”和“页脚 HTML 代码”配置即可：
+
+首页 HTML 代码：
+
+```html
+<!-- clear unused elems -->
+<script>
+  $("head > link").remove();
+  $("#top_nav").remove();
+  $("#footer").remove();
+  $(".clear").remove();
+</script>
+<!-- lite style -->
+<link rel="stylesheet" href="https://blog-static.cnblogs.com/files/blogs/666252/index.css" />
+<!-- lite loading style -->
+<style>
+  #home {
+    display: none !important;
+  }
+  #sakana-widget {
+    position: fixed;
+    left: 5rem;
+    bottom: 0;
+    transform: rotateY(180deg);
+  }
+  #sakana-widget2 {
+    position: fixed;
+    right: 5rem;
+    bottom: 0;
+  }
+  @-webkit-keyframes loading {
+    0% {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes loading {
+    0% {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .dark-loading {
+    background: #222;
+  }
+  .light-loading {
+    background: #fff;
+  }
+  .dark-loading,
+  .light-loading {
+    font-size: 14px !important;
+    font-family: sans-serif !important;
+    font-weight: 400;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    z-index: 999999;
+  }
+  .box h2 {
+    font-size: 14px !important;
+    font-family: sans-serif !important;
+    font-weight: 400;
+    color: #777;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+  .box span {
+    font-size: 14px !important;
+    font-family: sans-serif !important;
+    font-weight: 400;
+    display: inline-block;
+    vertical-align: middle;
+    width: 0.6em;
+    height: 0.6em;
+    margin: 0.19em;
+    background: #007db6;
+    border-radius: 0.6em;
+    -webkit-animation: loading 1s infinite alternate;
+    animation: loading 1s infinite alternate;
+  }
+  .box span:nth-of-type(2) {
+    background: #008fb2;
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s;
+  }
+  .box span:nth-of-type(3) {
+    background: #009b9e;
+    -webkit-animation-delay: 0.4s;
+    animation-delay: 0.4s;
+  }
+  .box span:nth-of-type(4) {
+    background: #00a77d;
+    -webkit-animation-delay: 0.6s;
+    animation-delay: 0.6s;
+  }
+  .box span:nth-of-type(5) {
+    background: #00b247;
+    -webkit-animation-delay: 0.8s;
+    animation-delay: 0.8s;
+  }
+  .box span:nth-of-type(6) {
+    background: #5ab027;
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+  }
+  .box span:nth-of-type(7) {
+    background: #a0b61e;
+    -webkit-animation-delay: 1.2s;
+    animation-delay: 1.2s;
+  }
+</style>
+<!-- lite loading -->
+<div class="dark-loading">
+  <div class="box">
+    <h2>Loading</h2>
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+</div>
+```
+
+页脚 HTML 代码：
+
+```html
+<!-- lite config -->
+<script>
+  window.__LITE_CONFIG__ = {
+    github: "https://github.com/Himmelbleu",
+    theme: {
+      mode: "dark"
+    },
+    side: {
+      avatar:
+        "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/1934022/o_230108162621_1673194813463.jpg",
+      signature: "Time tick away, dream faded away!"
+    },
+    navor: {
+      header: "CNBLOGS",
+      navs: [
+        {
+          href: "https://i.cnblogs.com/posts/edit",
+          text: "新随笔"
+        }
+      ]
+    },
+    graph: {
+      alpha: 0.85,
+      sides: 5,
+      layer: 5,
+      lineWidth: 1,
+      textSize: 12,
+      fillColor: "#409eff",
+      strokeColor: "#A7A7A7",
+      lineColor: "#A7A7A7",
+      textColor: "#A7A7A7",
+      data: [
+        { title: "CSS", star: 4 },
+        { title: "Vue", star: 4 },
+        { title: "Java", star: 3 },
+        { title: "JS", star: 4 },
+        { title: "TS", star: 3 }
+      ]
+    },
+    links: [
+      {
+        tip: "TS 基础文档 - 1",
+        href: "http://ts.xcatliu.com/index.html",
+        text: "TypeScript 入门教程"
+      }
+    ],
+    books: [
+      {
+        href: "https://baike.baidu.com/item/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3JavaScript/19848692",
+        text: "深入理解 JavaScript",
+        img: "http://img3m1.ddimg.cn/85/1/11120396251-1_w_1.jpg",
+        author: "[美]罗彻麦尔",
+        rate: 4.5
+      }
+    ]
+  };
+</script>
+<script type="module" src="https://blog-static.cnblogs.com/files/blogs/666252/index.js"></script>
+<!-- on window loaded -->
+<script>
+  window.onload = () => {
+    window.__LITE_CONFIG__.onLoaded();
+  };
+</script>
+```
+
+# 配置说明
+
+## 主题
+
+```js
+window.__LITE_CONFIG__ = {
+  theme: {
+    mode: "dark"
+  }
+};
+```
+
+不设置使用默认黑夜模式，更多关于主题的配置项正在开发中...
+
+## GitHub
+
+```js
+window.__LITE_CONFIG__ = {
+  github: "https://github.com/Himmelbleu"
+};
+```
+
+## 陈列柜
+
+```js
+window.__LITE_CONFIG__ = {
+  side: {
+    avatar:
+      "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/1934022/o_221121082134_QQ图片20221121162116.jpg",
+    signature: "Time tick away, dream faded away!"
+  }
+};
+```
+
+|   字段    |   描述   |
+| :-------: | :------: |
+|  avatar   |   头像   |
+| signature | 个性签名 |
+
+## 导航栏
+
+```js
+window.__LITE_CONFIG__ = {
+  navor: {
+    // 支持 html 插入
+    header: "<span style='color: red'>CNBLOGS</span>",
+    navs: [
+      // 支持 img、svg、纯文本
+      {
+        href: "https://i.cnblogs.com/posts/edit",
+        text: "新随笔"
+      },
+      {
+        href: "https://i.cnblogs.com/posts",
+        text: "管理"
+      },
+      {
+        href: "https://gitee.com/Enziandom",
+        svg: `<path d="M512 1024C230.4 1024 0 793.6 0 512S230.4 0 512 0s512 230.4 512 512-230.4 512-512 512z m259.2-569.6H480c-12.8 0-25.6 12.8-25.6 25.6v64c0 12.8 12.8 25.6 25.6 25.6h176c12.8 0 25.6 12.8 25.6 25.6v12.8c0 41.6-35.2 76.8-76.8 76.8h-240c-12.8 0-25.6-12.8-25.6-25.6V416c0-41.6 35.2-76.8 76.8-76.8h355.2c12.8 0 25.6-12.8 25.6-25.6v-64c0-12.8-12.8-25.6-25.6-25.6H416c-105.6 0-188.8 86.4-188.8 188.8V768c0 12.8 12.8 25.6 25.6 25.6h374.4c92.8 0 169.6-76.8 169.6-169.6v-144c0-12.8-12.8-25.6-25.6-25.6z""></path>`
+      }
+    ]
+  }
+};
+```
+
+|   字段    |                         描述                         |
+| :-------: | :--------------------------------------------------: |
+|  header   |              导航栏左边，支持 html 插入              |
+|  search   |                    是否开启搜索框                    |
+|   navs    |                   导航栏右边，数组                   |
+| navs 元素 | href：链接；text：文本；svg：svg 图片；img：img 图片 |
+
+## 技能栈
+
+```js
+window.__LITE_CONFIG__ = {
+  graph: {
+    alpha: 0.85,
+    sides: 5, // 多少个边
+    layer: 5, // 多少层
+    lineWidth: 1,
+    textSize: 12,
+    fillColor: "#409eff",
+    strokeColor: "#A7A7A7",
+    lineColor: "#A7A7A7",
+    textColor: "#A7A7A7",
+    data: [
+      // 数据，长度必须和 sides 保持一致
+      { title: "Css", star: 4 },
+      { title: "Vue", star: 4 },
+      { title: "Java", star: 3 },
+      { title: "JS/TS", star: 4 },
+      { title: "Android", star: 3 }
+    ]
+  }
+};
+```
+
+## 推荐链接
+
+```js
+window.__LITE_CONFIG__ = {
+  links: [
+    {
+      tip: "TS 基础文档 - 1",
+      href: "http://ts.xcatliu.com/index.html",
+      text: "TypeScript 入门教程"
+    },
+    { tip: "JS 基础文档", href: "https://zh.javascript.info/", text: "现代 JavaScript 教程" }
+  ]
+};
+```
+
+## 推荐书籍
+
+```js
+window.__LITE_CONFIG__ = {
+  books: [
+    {
+      href: "https://baike.baidu.com/item/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3JavaScript/19848692",
+      text: "深入理解 JavaScript",
+      img: "http://img3m1.ddimg.cn/85/1/11120396251-1_w_1.jpg",
+      author: "[美]罗彻麦尔",
+      rate: 4.5
+    }
+  ]
+};
+```
 
 # 二次开发
 
@@ -16,9 +353,7 @@ npm run dev
 npm build
 ```
 
-build 之后，dist 目录有 index.css、index.js，请上传之博客园后台文件中。获取两个文件的链接。
-
-index.js 插入到博客园首页 HTML 中，以 script 标签引入。
+二次开发需要把 build 之后的 index.css、index.js 上传到博客园后台“文件”。并获取这两个文件的链接，以替换部署说明中标签的引入链接。
 
 ## 目录说明
 
@@ -26,13 +361,13 @@ components 文件夹下全是组件，组件的目的是做到所有 views 都�
 
 views 文件夹下全都是视图，视图是用户可以直接看到的 UI。对 UI 再进行概念细分就有：
 
-1. adapters：通常，views 要包含很多的列表循环，而列表循环内的东西太多，就导致 views 代码混乱，而 adapters 就是拆分 views
+1. adapters：views 要包含很多的列表循环，而列表循环内的东西太多，就导致 views 代码混乱，而 adapters 就是拆分 views
    的列表循环的小整体。
    adapters 可能与 components 并没有太大区别，但是 components 的目的是做到通用、灵活，这不是 adapters 该考虑的事情，而是尽可能地与该
    views 绑定。adapters 不是一个专门解决视图耦合的对象。
-2. fragments：通常，views 包含的逻辑和界面太多，而需要把 views 中一些可以是整体的拆分出去，有自己的逻辑（请求、函数等）和视图
+2. fragments：views 包含的逻辑和界面太多，而需要把 views 中一些可以是整体的拆分出去，有自己的逻辑（请求、函数等）和视图
    那么就可以是 fragments。同样地，fragments 与该 views 有很大关系，所以，和 components 也有很大区别。
-3. modules：modules 并没有特别的作用，用户界面根据作用和视图承载意义不同，也有很多不同类别可做区分。
+3. modules：用户界面根据作用和视图承载意义不同，也有很多不同类别可做区分。
 
 # 其他问题
 

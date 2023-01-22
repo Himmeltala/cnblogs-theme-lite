@@ -12,24 +12,24 @@ import { blogApp } from "@/lite.config";
 import { useCommentsAnchorStore } from "@/store";
 
 export enum RouteName {
-  ESSAY = "Essay",
+  JOTTING = "Jotting",
   HOME = "Home",
   CATEGORY = "Category",
-  TAG_PAGE = "TagPage",
-  TAGS = "MyTags",
+  TAGCOLL = "TagColl",
+  TAGS = "Tags",
   GALLERY = "Gallery"
 }
 
 const Regs = {
-  ESSAY: /\/p\/\d+.html/g,
+  JOTTING: /\/p\/\d+.html/g,
   CATEGORY: /\/category\/\d+/g,
-  TAG_PAGE: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
-  MyTags: /\d/g,
+  TAGCOLL: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
+  Tags: /\d/g,
   GALLERY: /\/gallery\/image/g
 };
 
 export function parseUrlData(url: string): any {
-  if (Regs.ESSAY.test(url)) {
+  if (Regs.JOTTING.test(url)) {
     try {
       const commentAnchor = url.match(/#\/\d+/g)[0].split("#/")[1];
       if (commentAnchor) {
@@ -38,8 +38,8 @@ export function parseUrlData(url: string): any {
       }
     } catch (e) {}
     return {
-      type: RouteName.ESSAY,
-      id: url.match(Regs.ESSAY)[0].split("/")[2].split(".")[0]
+      type: RouteName.JOTTING,
+      id: url.match(Regs.JOTTING)[0].split("/")[2].split(".")[0]
     };
   } else if (Regs.CATEGORY.test(url)) {
     let page = String(url.match(/page=\d/g)).split("=")[1];
@@ -48,10 +48,10 @@ export function parseUrlData(url: string): any {
       page: page ? page : "1",
       id: String(url.match(Regs.CATEGORY)).split("/")[2].split(",")[0]
     };
-  } else if (Regs.TAG_PAGE.test(url)) {
+  } else if (Regs.TAGCOLL.test(url)) {
     return {
-      type: RouteName.TAG_PAGE,
-      tag: decodeURI(url).match(Regs.TAG_PAGE)![0].split("/")[2]
+      type: RouteName.TAGCOLL,
+      tag: decodeURI(url).match(Regs.TAGCOLL)![0].split("/")[2]
     };
   } else if (Regs.GALLERY.test(url)) {
     return { type: RouteName.GALLERY };

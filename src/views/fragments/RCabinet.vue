@@ -21,9 +21,9 @@ watch(route, value => {
 
 <template>
   <div
-    id="r-showcase"
+    id="r-cabinet"
     class="noscroll fixed top-0 right-0 hd-100 ofw-auto bg-color w-60 px-2 z-999 box-border">
-    <ShowcaseItem text="随笔目录" v-if="anchors && anchors.length > 0">
+    <CabinetItem text="随笔目录" v-if="anchors && anchors.length > 0">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-location />
@@ -35,16 +35,16 @@ watch(route, value => {
         :key="index"
         v-html="item.content"
         v-anchor-events="item" />
-    </ShowcaseItem>
-    <ShowcaseItem text="我的技术栈" v-if="__LITE_CONFIG__.graph">
+    </CabinetItem>
+    <CabinetItem text="我的技术栈" v-if="__LITE_CONFIG__.graph">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-aim />
         </el-icon>
       </template>
       <SkillGraph />
-    </ShowcaseItem>
-    <ShowcaseItem text="常用链接" v-if="links && links.length > 0">
+    </CabinetItem>
+    <CabinetItem text="常用链接" v-if="links && links.length > 0">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-link />
@@ -58,8 +58,8 @@ watch(route, value => {
         target="_blank">
         {{ item.text }}
       </a>
-    </ShowcaseItem>
-    <ShowcaseItem text="推荐书籍" v-if="books && books.length > 0">
+    </CabinetItem>
+    <CabinetItem text="推荐书籍" v-if="books && books.length > 0">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-notebook />
@@ -76,6 +76,6 @@ watch(route, value => {
           <el-rate style="width: 100%" v-model="item.rate" disabled size="small" />
         </div>
       </div>
-    </ShowcaseItem>
+    </CabinetItem>
   </div>
 </template>

@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    CabinetItem: typeof import('./src/views/adapters/CabinetItem.vue')['default']
     Card: typeof import('./src/components/Card.vue')['default']
     Category: typeof import('./src/views/modules/Category.vue')['default']
     Comments: typeof import('./src/views/fragments/Comments.vue')['default']
@@ -22,9 +23,6 @@ declare module '@vue/runtime-core' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
-    Essay: typeof import('./src/views/modules/Essay.vue')['default']
-    EssayItem: typeof import('./src/views/adapters/EssayItem.vue')['default']
-    EssaySynopsis: typeof import('./src/views/adapters/EssaySynopsis.vue')['default']
     Gallery: typeof import('./src/views/modules/Gallery.vue')['default']
     GitHub: typeof import('./src/views/fragments/GitHub.vue')['default']
     Home: typeof import('./src/views/modules/Home.vue')['default']
@@ -60,17 +58,19 @@ declare module '@vue/runtime-core' {
     IEpStarFilled: typeof import('~icons/ep/star-filled')['default']
     IEpUserFilled: typeof import('~icons/ep/user-filled')['default']
     IEpView: typeof import('~icons/ep/view')['default']
-    LShowcase: typeof import('./src/views/fragments/LShowcase.vue')['default']
-    MyTags: typeof import('./src/views/modules/MyTags.vue')['default']
+    Jotting: typeof import('./src/views/modules/Jotting.vue')['default']
+    JottingItem: typeof import('./src/views/adapters/JottingItem.vue')['default']
+    JottingSynopsis: typeof import('./src/views/adapters/JottingSynopsis.vue')['default']
+    Label: typeof import('./src/components/Label.vue')['default']
+    LCabinet: typeof import('./src/views/fragments/LCabinet.vue')['default']
     Navigation: typeof import('./src/views/fragments/Navigation.vue')['default']
     Pagination: typeof import('./src/components/Pagination.vue')['default']
+    RCabinet: typeof import('./src/views/fragments/RCabinet.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    RShowcase: typeof import('./src/views/fragments/RShowcase.vue')['default']
-    ShowcaseItem: typeof import('./src/views/adapters/ShowcaseItem.vue')['default']
     SkillGraph: typeof import('./src/components/SkillGraph/SkillGraph.vue')['default']
-    Tag: typeof import('./src/components/Tag.vue')['default']
-    TagPage: typeof import('./src/views/modules/TagPage.vue')['default']
+    TagColl: typeof import('./src/views/modules/TagColl.vue')['default']
+    Tags: typeof import('./src/views/modules/Tags.vue')['default']
     ToolKits: typeof import('./src/views/fragments/ToolKits.vue')['default']
   }
 }

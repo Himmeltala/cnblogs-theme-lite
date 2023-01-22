@@ -28,9 +28,9 @@ function search() {
 
 <template>
   <div
-    id="l-showcase"
+    id="l-cabinet"
     class="noscroll fixed top-0 left-0 hd-100 ofw-auto w-60 px-2 z-999 bg-color box-border">
-    <ShowcaseItem text="博客信息">
+    <CabinetItem text="博客信息">
       <template #icon>
         <el-icon class="mr-1">
           <i-ep-house />
@@ -99,8 +99,8 @@ function search() {
           </el-icon>
         </template>
       </el-input>
-    </ShowcaseItem>
-    <ShowcaseItem text="随笔和标签">
+    </CabinetItem>
+    <CabinetItem text="随笔和标签">
       <template #icon>
         <el-icon class="mr-1">
           <i-ep-collection />
@@ -110,7 +110,7 @@ function search() {
         <el-tab-pane label="随笔" name="随笔">
           <template #label> 随笔 </template>
           <div class="item" v-for="(item, index) in cl.cates" :key="index">
-            <div class="text hover" @click="nav('/c/' + item.id, router)">
+            <div class="text hover" @click="nav('/cate/' + item.id, router)">
               {{ item.text }}
             </div>
           </div>
@@ -118,7 +118,7 @@ function search() {
         <el-tab-pane label="标签" name="标签">
           <template #label> 标签 </template>
           <div class="item" v-for="(item, index) in cl.tags" :key="index">
-            <div class="text hover" @click="nav('/t/' + item.id, router)">
+            <div class="text hover" @click="nav('/tag/' + item.id, router)">
               {{ item.text }}
             </div>
           </div>
@@ -127,19 +127,19 @@ function search() {
           </div>
         </el-tab-pane>
       </el-tabs>
-    </ShowcaseItem>
-    <ShowcaseItem text="阅读排行榜">
+    </CabinetItem>
+    <CabinetItem text="阅读排行榜">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-d-caret />
         </el-icon>
       </template>
       <div class="item" v-for="(item, index) in toplist" :key="index">
-        <div class="text hover" @click="nav('/e/' + item.id, router)">
+        <div class="text hover" @click="nav('/jotting/' + item.id, router)">
           {{ item.text }}
         </div>
       </div>
-    </ShowcaseItem>
+    </CabinetItem>
   </div>
 </template>
 

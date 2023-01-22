@@ -8,22 +8,22 @@ closeLoader();
 </script>
 
 <template>
-  <div id="lite-mytags" class="min-height">
-    <Tag
+  <div id="l-tags" class="min-height">
+    <Label
       class="mb-3 px-3 py-3"
       :class="{ 'mr-3': (index + 1) % 4 !== 0 }"
       style="flex: 1 1 20%"
       v-for="(item, index) in data"
       :key="index">
-      <router-link class="hover pri-color" :to="'/t/' + item.text">
+      <router-link class="hover pri-color" :to="'/tag/' + item.text">
         {{ item.text }} ({{ item.count }})
       </router-link>
-    </Tag>
+    </Label>
   </div>
 </template>
 
 <style scoped lang="scss">
-#lite-mytags {
+#l-tags {
   @include flex($justify: space-between, $items: stretch, $content: stretch);
 }
 </style>

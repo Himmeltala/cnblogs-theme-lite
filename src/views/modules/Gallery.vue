@@ -10,7 +10,7 @@ closeLoader();
 </script>
 
 <template>
-  <div id="lite-gallery" class="f-c-c min-height">
+  <div id="l-gallery" class="f-c-c min-height">
     <el-image fit="cover" :src="imgUrl" :preview-src-list="srcList" />
     <el-result
       v-if="!imgUrl || !srcList.length"

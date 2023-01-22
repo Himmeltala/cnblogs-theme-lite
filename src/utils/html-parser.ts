@@ -45,7 +45,7 @@ function calcPages(sorter: any, calc: boolean): number[] {
  * @param calc 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
  * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
  */
-export function parseEssayList(realDOM: any, calc: boolean): CustType.EssayList {
+export function parseEssayList(realDOM: any, calc: boolean): CustType.JottingList {
   const id = $(realDOM).find(".postTitle2");
   const title = $(realDOM).find(".postTitle");
   const describe = $(realDOM).find(".c_b_p_desc");
@@ -56,7 +56,7 @@ export function parseEssayList(realDOM: any, calc: boolean): CustType.EssayList 
   const view = record.match(/阅读\([0-9]+\)/g);
   const comm = record.match(/评论\([0-9]+\)/g);
   const digg = record.match(/推荐\([0-9]+\)/g);
-  const array: Array<CustType.Essay> = [];
+  const array: Array<CustType.Jotting> = [];
 
   $(describe).each((i, e) => {
     const surface = $(e).find(".desc_img").attr("src");
@@ -88,7 +88,7 @@ export function parseEssayList(realDOM: any, calc: boolean): CustType.EssayList 
  * @param id 随笔 ID
  * @param realDOM 请求响应消息
  */
-export function parseEssay(id: number, realDOM: any): CustType.Essay {
+export function parseEssay(id: number, realDOM: any): CustType.Jotting {
   return {
     id: id,
     text: $(realDOM).find(".postTitle > a > span").text(),
@@ -151,8 +151,8 @@ export function parseCommentPages(json: any): number {
  *
  * @param strDOM 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parseEssayCatesAndTags(strDOM: any): CustType.EssayCateAndTagList {
-  const array = <CustType.EssayCateAndTagList>{ tags: [], cates: [] };
+export function parseEssayCatesAndTags(strDOM: any): CustType.JottingCateAndTagList {
+  const array = <CustType.JottingCateAndTagList>{ tags: [], cates: [] };
   const dom = parseStrToDom(strDOM);
 
   $(dom)
@@ -227,7 +227,7 @@ export function parseCateList(realDOM: any, calc: boolean): CustType.CateList {
   let comm = record.match(/评论\([0-9]+\)/g);
   let digg = record.match(/推荐\([0-9]+\)/g);
 
-  let array: Array<CustType.Essay> = [];
+  let array: Array<CustType.Jotting> = [];
   $(dom).each((i, e) => {
     let surface = $(e).find(".c_b_p_desc > .desc_img").attr("src");
     array.push({
@@ -258,7 +258,7 @@ export function parseCateList(realDOM: any, calc: boolean): CustType.CateList {
  *
  * @param realDOM 真实 DOM
  */
-export function parseTagPageList(realDOM: any): CustType.TagPage {
+export function parseTagPageList(realDOM: any): CustType.TagColl {
   const title = $(realDOM).find(".PostList > .postTitl2 > a");
   const describe = $(realDOM).find(".PostList > .postDesc2");
   const tagTitle = $(realDOM).find(".PostListTitle").text().trim();

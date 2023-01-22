@@ -8,24 +8,24 @@ const routes = [
     component: () => import("./views/modules/Home.vue")
   },
   {
-    name: RouteName.ESSAY,
-    path: "/e/:id",
-    component: () => import("./views/modules/Essay.vue")
+    name: RouteName.JOTTING,
+    path: "/jotting/:id",
+    component: () => import("./views/modules/Jotting.vue")
   },
   {
     name: RouteName.CATEGORY,
-    path: "/c/:id",
+    path: "/cate/:id",
     component: () => import("./views/modules/Category.vue")
   },
   {
-    name: RouteName.TAG_PAGE,
-    path: "/t/:tag",
-    component: () => import("./views/modules/TagPage.vue")
+    name: RouteName.TAGCOLL,
+    path: "/tag/:tag",
+    component: () => import("./views/modules/TagColl.vue")
   },
   {
     name: RouteName.TAGS,
     path: "/tags",
-    component: () => import("./views/modules/MyTags.vue")
+    component: () => import("./views/modules/Tags.vue")
   },
   {
     name: RouteName.GALLERY,
@@ -49,15 +49,15 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const data = parseUrlData(window.location.href);
   if (to.name === RouteName.HOME) {
-    if (compareUrl(data, RouteName.ESSAY)) {
-      reviseUrl(`e/${data.text}`);
-      next({ name: RouteName.ESSAY, params: { id: data.id } });
+    if (compareUrl(data, RouteName.JOTTING)) {
+      reviseUrl(`jotting/${data.text}`);
+      next({ name: RouteName.JOTTING, params: { id: data.id } });
     } else if (compareUrl(data, RouteName.CATEGORY)) {
-      reviseUrl(`c/${data.id}/${data.page}`);
+      reviseUrl(`cate/${data.id}/${data.page}`);
       next({ name: RouteName.CATEGORY, params: { id: data.id, page: data.page } });
-    } else if (compareUrl(data, RouteName.TAG_PAGE)) {
-      reviseUrl(`t/${data.tag}`);
-      next({ name: RouteName.TAG_PAGE, params: { tag: data.tag } });
+    } else if (compareUrl(data, RouteName.TAGCOLL)) {
+      reviseUrl(`tag/${data.tag}`);
+      next({ name: RouteName.TAGCOLL, params: { tag: data.tag } });
     } else if (compareUrl(data, RouteName.GALLERY)) {
       reviseUrl(`gallery`);
       next({ name: RouteName.GALLERY });
@@ -65,9 +65,9 @@ router.beforeEach((to, from, next) => {
       next();
     }
   } else {
-    if (compareUrl(data, RouteName.ESSAY)) {
-      reviseUrl(`e/${data.text}`);
-      next({ name: RouteName.ESSAY, params: { id: data.id } });
+    if (compareUrl(data, RouteName.JOTTING)) {
+      reviseUrl(`jotting/${data.text}`);
+      next({ name: RouteName.JOTTING, params: { id: data.id } });
     } else {
       next();
     }

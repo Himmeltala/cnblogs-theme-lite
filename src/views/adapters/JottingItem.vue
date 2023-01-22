@@ -5,7 +5,7 @@ import { nav } from "@/helpers/route-helper";
 
 defineProps({
   data: {
-    type: Array as PropType<CustType.Essay[]>,
+    type: Array as PropType<CustType.Jotting[]>,
     required: true
   }
 });
@@ -28,7 +28,7 @@ const router = useRouter();
         :src="item.surface"
         fit="cover" />
       <div :class="{ 'wd-100': !item.surface, 'wd-73': item.surface }">
-        <div class="hover mb-5 fsz-1.3 cursor-pointer" @click="nav('/e/' + item.id, router)">
+        <div class="hover mb-5 fsz-1.3 cursor-pointer" @click="nav('/jotting/' + item.id, router)">
           {{ item.text }}
         </div>
         <div class="thr-color" :class="{ 'mb-5': !item.surface }">{{ item.desc }}</div>
@@ -43,11 +43,13 @@ const router = useRouter();
       <el-icon>
         <i-ep-caret-right />
       </el-icon>
-      <router-link class="hover pri-color ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/e/' + item.id">
+      <router-link
+        class="hover pri-color ml-0.5 b-b-1 b-b-dotted p-b-0.3"
+        :to="'/jotting/' + item.id">
         阅读全文
       </router-link>
     </div>
-    <EssaySynopsis
+    <JottingSynopsis
       :align="'flex-end'"
       :data="{ date: item.date, comm: item.comm, digg: item.digg, view: item.view }" />
   </Card>

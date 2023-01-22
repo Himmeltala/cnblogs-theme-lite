@@ -18,16 +18,16 @@ watch(route, async () => {
 </script>
 
 <template>
-  <div id="lite-tagpage">
+  <div id="l-tagcoll">
     <div class="fsz-1.25 mb-8">{{ tagname }}</div>
-    <div id="t-content">
+    <div class="content">
       <Card
         class="mr-6 mb-6 pb-4"
         style="flex: 1 1 40%"
         v-for="(item, index) in taglist"
         :key="index">
         <div class="fsz-1">
-          <router-link class="hover pri-color" :to="'/e/' + item.id">
+          <router-link class="hover pri-color" :to="'/jotting/' + item.id">
             {{ item.title }}
           </router-link>
         </div>
@@ -37,11 +37,11 @@ watch(route, async () => {
           </el-icon>
           <router-link
             class="hover pri-color ml-0.5 b-b-1 b-b-dotted p-b-0.3"
-            :to="'/e/' + item.id">
+            :to="'/jotting/' + item.id">
             阅读全文
           </router-link>
         </div>
-        <EssaySynopsis
+        <JottingSynopsis
           class="mt-6"
           :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
       </Card>
@@ -50,7 +50,7 @@ watch(route, async () => {
 </template>
 
 <style scoped lang="scss">
-#t-content {
+.content {
   @include flex($justify: space-between, $items: stretch, $content: stretch);
 }
 </style>

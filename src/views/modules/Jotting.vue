@@ -38,7 +38,7 @@ async function vote(voteType: BlogType.VoteType) {
 </script>
 
 <template>
-  <div id="lite-essay">
+  <div id="l-jotting">
     <div class="fsz-1.4">{{ essay.text }}</div>
     <div class="sec-color f-c-s mt-4 fsz-0.9">
       <div class="f-c-c mr-3">
@@ -81,9 +81,9 @@ async function vote(voteType: BlogType.VoteType) {
           :class="{ 'mr-2': index !== catesTags.cates.length - 1 }"
           v-for="(item, index) in catesTags.cates"
           :key="index">
-          <Tag @click="nav('/c/' + item.href, router)">
+          <Label @click="nav('/cate/' + item.href, router)">
             {{ item.text }}
-          </Tag>
+          </Label>
         </div>
       </div>
       <div class="f-c-s" v-if="catesTags.tags.length > 0">
@@ -97,9 +97,9 @@ async function vote(voteType: BlogType.VoteType) {
           :class="{ 'mr-2': index !== catesTags.tags.length - 1 }"
           v-for="(item, index) in catesTags.tags"
           :key="index">
-          <Tag @click="nav('/t/' + item.text, router)">
+          <Label @click="nav('/tag/' + item.text, router)">
             {{ item.text }}
-          </Tag>
+          </Label>
         </div>
       </div>
     </div>
@@ -201,7 +201,7 @@ pre {
   box-sizing: border-box;
 
   code {
-    --at-apply: fsz-1 box-border rd-2;
+    --at-apply: fsz-0.9 box-border rd-2;
     font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace !important;
     font-weight: 300;
     margin: 0 !important;

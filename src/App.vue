@@ -5,13 +5,13 @@ const rhidden = ref(true);
 
 onMounted(() => {
   document
-    .querySelector("#n-mask")
+    .querySelector("#nmask")
     .addEventListener("mouseover", () => (nhidden.value = !nhidden.value));
   document
-    .querySelector("#l-mask")
+    .querySelector("#lmask")
     .addEventListener("mouseover", () => (lhidden.value = !lhidden.value));
   document
-    .querySelector("#r-mask")
+    .querySelector("#rmask")
     .addEventListener("mouseover", () => (rhidden.value = !rhidden.value));
 });
 </script>
@@ -19,17 +19,17 @@ onMounted(() => {
 <template>
   <GitHub />
   <div
-    id="n-mask"
+    id="nmask"
     :class="{ 'top-15': !nhidden }"
-    class="z-999 fixed top-0 h-10 w-80"
+    class="z-999 fixed top-0 h-2 w-80"
     style="left: calc(50vw - 10rem)"></div>
   <Navigation :class="{ 'show-nav': !nhidden, 'hidden-nav': nhidden }" />
   <div
-    id="l-mask"
+    id="lmask"
     :class="{ 'left-60': !lhidden }"
     class="z-999 fixed left-0 tpv-25 hvh-50 w-15"></div>
-  <LShowcase :class="{ 'show-lcase': !lhidden, 'hidden-lcase': lhidden }" />
-  <div id="lite-content" class="w-200 pt-5">
+  <LCabinet :class="{ 'show-lcabinet': !lhidden, 'hidden-lcabinet': lhidden }" />
+  <div id="l-content" class="w-200 pt-5">
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
         <KeepAlive :include="['Home']">
@@ -51,10 +51,10 @@ onMounted(() => {
     </div>
   </div>
   <div
-    id="r-mask"
+    id="rmask"
     :class="{ 'right-60': !rhidden }"
     class="z-999 fixed right-0 tpv-25 hvh-50 w-15"></div>
-  <RShowcase :class="{ 'show-rcase': !rhidden, 'hidden-rcase': rhidden }" />
+  <RCabinet :class="{ 'show-rcabinet': !rhidden, 'hidden-rcabinet': rhidden }" />
   <!-- <ToolKits /> -->
 </template>
 
@@ -87,7 +87,7 @@ $quota: 10;
   }
 }
 
-.show-lcase {
+.show-lcabinet {
   animation: showlcase 0.2s ease-in;
   transform: translateX(0rem);
 }
@@ -100,7 +100,7 @@ $quota: 10;
   }
 }
 
-.hidden-lcase {
+.hidden-lcabinet {
   animation: hiddenlcase 0.2s ease-out;
   transform: translateX(-15rem);
 }
@@ -113,7 +113,7 @@ $quota: 10;
   }
 }
 
-.show-rcase {
+.show-rcabinet {
   animation: showrcase 0.2s ease-in;
   transform: translateX(0rem);
 }
@@ -126,7 +126,7 @@ $quota: 10;
   }
 }
 
-.hidden-rcase {
+.hidden-rcabinet {
   animation: hiddenrcase 0.2s ease-out;
   transform: translateX(15rem);
 }
