@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import $ from "jquery";
 import { isLogin } from "@/lite.config";
 import { nav } from "@/helpers/route-helper";
 import {
@@ -19,7 +18,8 @@ import { CustType, BlogType } from "@/types/data-type";
 const props = defineProps({
   postId: { type: Number, required: true }
 });
-const commentAnchorQuote = ref<any>(null);
+
+const level = ref(null);
 const { commentAnchor } = storeToRefs(useCommentsAnchorStore());
 const form = ref<CustType.Comment>({
   postId: props.postId,
@@ -63,11 +63,12 @@ fetchComment(true, {
   }
 });
 
-watch(commentAnchorQuote, () => {
-  if (commentAnchorQuote.value.length > 0) {
-    const top = commentAnchorQuote.value[0].offsetTop;
-    $(document).animate({ scrollTop: top }, 200, "linear");
-  }
+watch(level, () => {
+  document.querySelector(`#level-${commentAnchor.value}`).scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+    inline: "nearest"
+  });
   commentAnchor.value = 0;
 });
 
@@ -262,15 +263,9 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
               {{ item.author }}
             </div>
             <div class="fsz-0.8 sec-color mt-1.5 f-c-c">
-              <div
-                v-if="commentAnchor === item.commentId"
-                ref="commentAnchorQuote"
-                :id="'#' + item.commentId"
-                class="mr-2">
-                {{ item.layer }}
-              </div>
-              <div v-else :id="'#' + item.commentId" class="mr-2">
-                {{ item.layer }}
+              <div :id="'level-' + item.commentId" class="mr-2">
+                <span v-if="commentAnchor === item.commentId" ref="level">{{ item.layer }}</span>
+                <span v-else>{{ item.layer }}</span>
               </div>
               <div>{{ item.date }}</div>
             </div>
