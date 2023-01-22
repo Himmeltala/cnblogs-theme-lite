@@ -336,10 +336,6 @@ window.__LITE_CONFIG__ = {
 
 # 二次开发
 
-1. fork 该项目到你自己的仓库中；
-2. clone 到本地仓库；
-3. 运行项目：
-
 ```bash
 npm install
 npm run dev
@@ -347,6 +343,8 @@ npm build
 ```
 
 二次开发需要把 build 之后的 index.css、index.js 上传到博客园后台“文件”。并获取这两个文件的链接，以替换部署说明中标签的引入链接。
+
+建议多使用 UnoCSS，开发时请把 `.env.development` 中两个字段修改成你自己的，否则获取的数据是我本人博客上的，博客 ID 和博客 App 都可以 F12 查看你博客找到，搜索`currentBlogId` 和`currentBlogApp`。
 
 ## 目录说明
 

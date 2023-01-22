@@ -20,8 +20,8 @@ onMounted(() => {
   <GitHub />
   <div
     id="nmask"
-    :class="{ 'top-15': !nhidden }"
-    class="z-999 fixed top-0 h-2 w-80"
+    :class="{ 'top-15 h-10': !nhidden, 'h-2': nhidden }"
+    class="z-999 fixed top-0 w-80"
     style="left: calc(50vw - 10rem)"></div>
   <Navigation :class="{ 'show-nav': !nhidden, 'hidden-nav': nhidden }" />
   <div
