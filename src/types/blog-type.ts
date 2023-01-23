@@ -4,7 +4,9 @@ export type VoteType = "Bury" | "Digg";
  * 博客园评论和随笔的基础字段，一般是调用接口之后返回过来的字段
  */
 interface Blog {
+  // 随笔 ID
   postId?: number;
+  // 投票类型，反对或赞成
   voteType?: VoteType;
   isAbandoned?: boolean;
 }

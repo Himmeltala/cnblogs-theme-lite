@@ -43,7 +43,6 @@ declare module '@vue/runtime-core' {
     IEpCollection: typeof import('~icons/ep/collection')['default']
     IEpDArrowLeft: typeof import('~icons/ep/d-arrow-left')['default']
     IEpDArrowRight: typeof import('~icons/ep/d-arrow-right')['default']
-    IEpDCaret: typeof import('~icons/ep/d-caret')['default']
     IEpDelete: typeof import('~icons/ep/delete')['default']
     IEpEditPen: typeof import('~icons/ep/edit-pen')['default']
     IEpFolderOpened: typeof import('~icons/ep/folder-opened')['default']

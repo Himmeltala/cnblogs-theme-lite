@@ -46,7 +46,7 @@ export function getSideTopList() {
 }
 
 /**
- * 忽哟去侧边栏博客排行信息。
+ * 获取侧边栏博客排行信息。
  */
 export function getSideBlogRank() {
   return parseSideRank($("#home").find("#sidebar_scorerank").html());

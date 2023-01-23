@@ -1,26 +1,26 @@
 import $ from "jquery";
+import { preLog } from "@/utils/common";
 import { CustType } from "@/types/data-type";
 
 export let __LITE_CONFIG__: CustType.Lite;
 export let blogId = 0;
 export let baseAPI = "";
-export let belongs = "";
 export let blogApp = "";
 export let isLogin = true;
 export let isOwner = true;
+export let userGuid = "";
+export let isFollow = false;
 
-function log(title: string, msg: string) {
-  console.log(
-    `%c${title}%c${msg}`,
-    "background: #409eff; color: #fff; border-radius: 3px 0 0 3px; padding: 10px",
-    "background: #707070; color: #fff; border-radius: 0 3px 3px 0; padding: 10px"
-  );
+export function setLite() {
+  userGuid =
+    $("#p_b_follow > a")?.attr("onclick")?.split("(")[1]?.split(")")[0]?.replaceAll("'", "") ?? "";
+  isFollow = $("#p_b_follow > a")?.text() === "-取消关注" ?? false;
 }
 
 export function useLite(dev?: Function, pro?: Function) {
   $("body").append(`<div id="app"></div>`);
-  log("Lite Theme Ver 1.0.0", "Powered By Himmelbleu");
-  log("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
+  preLog("Lite Theme Ver 1.0.0", "Powered By Himmelbleu");
+  preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
 
   // @ts-ignore
   __LITE_CONFIG__ = window["__LITE_CONFIG__"];

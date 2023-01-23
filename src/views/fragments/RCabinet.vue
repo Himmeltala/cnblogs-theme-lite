@@ -30,7 +30,7 @@ watch(route, value => {
         </el-icon>
       </template>
       <div
-        class="catalog mb-2 fsz-0.9"
+        class="catalog mb-3 fsz-0.9"
         v-for="(item, index) in anchors"
         :key="index"
         v-html="item.content"
@@ -51,7 +51,7 @@ watch(route, value => {
         </el-icon>
       </template>
       <a
-        class="hover block mb-2 fsz-0.9 pri-color"
+        class="hover block mb-3 fsz-0.9 pri-color"
         v-for="(item, index) in links"
         :key="index"
         :href="item.href"
@@ -65,7 +65,7 @@ watch(route, value => {
           <i-ep-notebook />
         </el-icon>
       </template>
-      <div class="mb-2.5 f-c-c" v-for="(item, index) in books" :key="index">
+      <div class="mb-3 f-c-c" v-for="(item, index) in books" :key="index">
         <img class="hvh-10 wvw-3.8" :src="item.img" alt="FAILED" />
         <div class="ml-2" style="width: calc(100% - 3.8vw - 0.5rem)">
           <span v-if="!item.href">{{ item.text }}</span>

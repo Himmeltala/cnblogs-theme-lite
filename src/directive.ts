@@ -1,6 +1,6 @@
 import $ from "jquery";
 import hljs from "highlight.js";
-import { makeAnchor, makeAnchorEvent } from "@/utils/anchor";
+import { makeAnchor, makeAnchorEvent } from "@/utils/common";
 
 export function useDirective(Vue: any) {
   Vue.directive("parse-code", {

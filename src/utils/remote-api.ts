@@ -11,7 +11,7 @@ import $ from "jquery";
 import axios from "axios";
 import * as Parser from "./html-parser";
 import { BlogType } from "@/types/data-type";
-import { baseAPI, blogId } from "@/lite.config";
+import { baseAPI, blogId, userGuid } from "@/lite.config";
 
 /**
  * 以 async/await 风格写异步请求，代码更加简洁，逻辑更加清晰
@@ -258,4 +258,24 @@ export async function getSideTopList() {
 export async function getTag() {
   const { data } = await sendAwaitGet(`${baseAPI}/tag`);
   return Parser.parseTags(data);
+}
+
+/**
+ * 关注博主
+ */
+export async function follow() {
+  const { data } = await sendAwaitPost(`${baseAPI}/ajax/Follow/FollowBlogger.aspx`, {
+    blogUserGuid: userGuid
+  });
+  return data === "关注成功" ?? false;
+}
+
+/**
+ * 取消关注
+ */
+export async function unfollow() {
+  const { data } = await sendAwaitPost(`${baseAPI}/ajax/Follow/RemoveFollow.aspx`, {
+    blogUserGuid: userGuid
+  });
+  return data === "取消成功" ?? false;
 }

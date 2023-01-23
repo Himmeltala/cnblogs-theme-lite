@@ -3,26 +3,35 @@ import {
   getSideBloggerInfo,
   getSideBlogInfo,
   getSideCateList,
-  getSideTopList,
-  getSideBlogRank
+  getSideBlogRank,
+  getSideTopList
 } from "@/utils/local-api";
 import { nav } from "@/helpers/route-helper";
-import { __LITE_CONFIG__, blogApp } from "@/lite.config";
+import { follow, unfollow } from "@/utils/remote-api";
+import { __LITE_CONFIG__, blogApp, isFollow, isOwner } from "@/lite.config";
 
 const cabinet = __LITE_CONFIG__.cabinet;
 const router = useRouter();
-
-const cl = getSideCateList();
+const cates = getSideCateList();
 const blogger = getSideBloggerInfo();
 const blogInfo = getSideBlogInfo();
 const toplist = getSideTopList();
-const rank = getSideBlogRank();
-
+const blogRank = getSideBlogRank();
 const tabName = ref("随笔");
+const searchVal = ref();
 
-const input = ref();
 function search() {
-  window.open(`https://zzk.cnblogs.com/s?w=blog:${blogApp}%${input.value}`, "__blank");
+  window.open(`https://zzk.cnblogs.com/s?w=blog:${blogApp}%${searchVal.value}`, "__blank");
+}
+
+async function focus() {
+  const data = await follow();
+  if (data) ElMessage({ message: "已经关注博主！", type: "success", grouping: true });
+}
+
+async function unfocus() {
+  const data = await unfollow();
+  if (data) ElMessage({ message: "取消关注博主！", type: "success", grouping: true });
 }
 </script>
 
@@ -44,6 +53,18 @@ function search() {
             <div v-else>这个人很懒，什么也没有留下</div>
           </template>
         </el-tooltip>
+      </div>
+      <div class="f-c-c" v-if="!isOwner">
+        <el-popconfirm
+          @confirm="unfocus"
+          confirm-button-text="确定"
+          cancel-button-text="取消"
+          title="确定取消关注？">
+          <template #reference>
+            <el-button v-if="isFollow" type="danger" text bg> -取消关注 </el-button>
+          </template>
+        </el-popconfirm>
+        <el-button @click="focus" v-if="!isFollow" type="primary" text bg> +关注博主 </el-button>
       </div>
       <div class="item" v-for="(item, index) in blogger" :key="index">
         <div class="text hover" @click="nav(item.href)">
@@ -76,8 +97,8 @@ function search() {
       <el-tooltip effect="dark" placement="bottom">
         <template #content>
           <span
-            :class="{ 'mr-3': index !== rank.length - 1 }"
-            v-for="(item, index) in rank"
+            :class="{ 'mr-3': index !== blogRank.length - 1 }"
+            v-for="(item, index) in blogRank"
             :key="index">
             {{ item.text }} - {{ item.digg }}
           </span>
@@ -91,7 +112,7 @@ function search() {
           </span>
         </div>
       </el-tooltip>
-      <el-input clearable @keyup.enter="search" v-model="input">
+      <el-input clearable @keyup.enter="search" v-model="searchVal">
         <template #prepend>搜索</template>
         <template #prefix>
           <el-icon @click="search">
@@ -100,7 +121,7 @@ function search() {
         </template>
       </el-input>
     </CabinetItem>
-    <CabinetItem text="随笔和标签">
+    <CabinetItem text="博客数据">
       <template #icon>
         <el-icon class="mr-1">
           <i-ep-collection />
@@ -108,16 +129,14 @@ function search() {
       </template>
       <el-tabs stretch type="card" v-model="tabName">
         <el-tab-pane label="随笔" name="随笔">
-          <template #label> 随笔 </template>
-          <div class="item" v-for="(item, index) in cl.cates" :key="index">
+          <div class="item" v-for="(item, index) in cates.cates" :key="index">
             <div class="text hover" @click="nav('/cate/' + item.id, router)">
               {{ item.text }}
             </div>
           </div>
         </el-tab-pane>
         <el-tab-pane label="标签" name="标签">
-          <template #label> 标签 </template>
-          <div class="item" v-for="(item, index) in cl.tags" :key="index">
+          <div class="item" v-for="(item, index) in cates.tags" :key="index">
             <div class="text hover" @click="nav('/tag/' + item.id, router)">
               {{ item.text }}
             </div>
@@ -126,26 +145,35 @@ function search() {
             <div class="text hover" @click="nav('/tags', router)">更多...</div>
           </div>
         </el-tab-pane>
+        <el-tab-pane label="阅读排行榜" name="阅读排行榜">
+          <div class="item" v-for="(item, index) in toplist" :key="index">
+            <div class="text hover" @click="nav('/jotting/' + item.id, router)">
+              {{ item.text }}
+            </div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="推荐排行榜" name="推荐排行榜">
+          <div class="item" v-for="(item, index) in toplist" :key="index">
+            <div class="text hover" @click="nav('/jotting/' + item.id, router)">
+              {{ item.text }}
+            </div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="评论排行榜" name="评论排行榜">
+          <div class="item" v-for="(item, index) in toplist" :key="index">
+            <div class="text hover" @click="nav('/jotting/' + item.id, router)">
+              {{ item.text }}
+            </div>
+          </div>
+        </el-tab-pane>
       </el-tabs>
-    </CabinetItem>
-    <CabinetItem text="阅读排行榜">
-      <template #icon>
-        <el-icon style="margin-right: 5px">
-          <i-ep-d-caret />
-        </el-icon>
-      </template>
-      <div class="item" v-for="(item, index) in toplist" :key="index">
-        <div class="text hover" @click="nav('/jotting/' + item.id, router)">
-          {{ item.text }}
-        </div>
-      </div>
     </CabinetItem>
   </div>
 </template>
 
 <style scoped lang="scss">
 .item {
-  --at-apply: my-2.5 fsz-0.9;
+  --at-apply: my-3 fsz-0.9;
 
   .text {
     --at-apply: cursor-pointer;
