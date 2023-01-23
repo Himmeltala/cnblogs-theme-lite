@@ -59,9 +59,9 @@ function nexprChange(elIndex: number) {
 </script>
 
 <template>
-  <div class="pagination relative">
+  <div class="relative">
     <slot name="loading" />
-    <div class="hover sorter rd-l-4 ltv-23 tpv-50" @click="prevChange">
+    <div class="hover sorter ltv-20" @click="prevChange">
       <el-tooltip effect="dark" content="上一页" placement="left">
         <el-icon>
           <i-ep-arrow-left-bold />
@@ -69,8 +69,8 @@ function nexprChange(elIndex: number) {
       </el-tooltip>
     </div>
     <slot name="content" />
-    <div class="hover sorter rd-r-4 rtv-23 tpv-50" @click="nextChange">
-      <el-tooltip effect="dark" content="下一页" placement="left">
+    <div class="hover sorter rtv-20" @click="nextChange">
+      <el-tooltip effect="dark" content="下一页" placement="right">
         <el-icon>
           <i-ep-arrow-right-bold />
         </el-icon>
@@ -88,7 +88,7 @@ function nexprChange(elIndex: number) {
 
 <style scoped lang="scss">
 .sorter {
-  --at-apply: fixed fsz-0.7 w-4 h-8 z-9 bg-#3c3c3c f-c-c;
+  --at-apply: fixed fsz-1 w-10 h-10 z-9 f-c-c bg-color tpv-50 rd-l-4;
   opacity: 0.7;
 }
 </style>

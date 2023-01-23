@@ -35,6 +35,7 @@ html[class="dark"] {
   --precode-bg-color: #1f1f1f;
   --code-bg-color: #2b2b2b;
   --divider-color: #464646;
+  --selection-color: white;
 }
 
 html[class="light"] {
@@ -46,6 +47,7 @@ html[class="light"] {
   --precode-bg-color: #f3f3f3;
   --code-bg-color: #efefef;
   --divider-color: #d3d3d3;
+  --selection-color: black;
 }
 
 #app {
@@ -66,20 +68,16 @@ a:link {
   text-decoration: none;
 }
 
-.anchor-active {
-  color: #409eff !important;
-}
-
 ::selection {
-  color: var(--el-text-color-primary);
+  color: var(--selection-color);
   background: var(--el-color-primary);
 }
 
 ::-webkit-scrollbar {
-  width: 0.2rem;
-  height: 0.2rem;
+  width: 0.15rem !important;
+  height: 0.15rem !important;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #a7a7a7;
+  background-color: var(--pri-text-color);
 }
