@@ -9,7 +9,7 @@ import {
 import { nav } from "@/helpers/route-helper";
 import { __LITE_CONFIG__, blogApp } from "@/lite.config";
 
-const side = __LITE_CONFIG__.side;
+const cabinet = __LITE_CONFIG__.cabinet;
 const router = useRouter();
 
 const cl = getSideCateList();
@@ -36,11 +36,11 @@ function search() {
           <i-ep-house />
         </el-icon>
       </template>
-      <div v-if="side?.avatar" class="f-c-c my-5">
+      <div v-if="cabinet?.avatar" class="f-c-c my-5">
         <el-tooltip effect="dark" placement="right">
-          <img class="h-25 w-25 cursor-pointer rd-50" alt="FAILED" :src="side?.avatar" />
+          <img class="h-25 w-25 cursor-pointer rd-50" alt="FAILED" :src="cabinet?.avatar" />
           <template #content>
-            <div v-if="side?.signature" v-html="side.signature" />
+            <div v-if="cabinet?.signature" v-html="cabinet.signature" />
             <div v-else>这个人很懒，什么也没有留下</div>
           </template>
         </el-tooltip>

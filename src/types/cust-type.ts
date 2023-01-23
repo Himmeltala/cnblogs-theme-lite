@@ -79,7 +79,7 @@ export interface Lite {
     mode?: "dark" | "light";
   };
   // 侧边栏配置项
-  side?: {
+  cabinet?: {
     avatar?: string;
     signature?: string;
   };

@@ -51,7 +51,7 @@ const rules = <Rule<any>[]>[
 const shortcuts = <UserShortcuts>[
   [
     /^f-((c|s|e)(-(c|s|e|b))*)$/,
-    ([, group1, group2, group3, group4]) => {
+    ([, g1, g2, g3, g4]) => {
       const matches = [
         { prefix: "c", value: "center" },
         { prefix: "s", value: "start" },
@@ -59,29 +59,16 @@ const shortcuts = <UserShortcuts>[
         { prefix: "b", value: "between" }
       ];
 
-      if (group4) {
-        let style = ``;
+      let style = ``;
 
-        for (let i = 0; i < matches.length; i++) {
-          if (matches[i].prefix === group2) {
-            style += `flex items-${matches[i].value} content-${matches[i].value}`;
-          }
-        }
+      let corr = matches.find(ele => ele.prefix === g2);
+      style += `flex items-${corr.value} content-${corr.value}`;
 
-        for (let i = 0; i < matches.length; i++) {
-          if (matches[i].prefix === group4) {
-            style += ` justify-${matches[i].value}`;
-          }
-        }
-
-        return style;
-      } else {
-        for (let i = 0; i < matches.length; i++) {
-          if (matches[i].prefix === group2) {
-            return `flex items-${matches[i].value} content-${matches[i].value}`;
-          }
-        }
+      if (g4) {
+        corr = matches.find(ele => ele.prefix === g4);
+        style += ` justify-${corr.value}`;
       }
+      return style;
     }
   ]
 ];

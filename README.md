@@ -25,17 +25,6 @@
   #home {
     display: none !important;
   }
-  #sakana-widget {
-    position: fixed;
-    left: 5rem;
-    bottom: 0;
-    transform: rotateY(180deg);
-  }
-  #sakana-widget2 {
-    position: fixed;
-    right: 5rem;
-    bottom: 0;
-  }
   @-webkit-keyframes loading {
     0% {
       opacity: 0;
@@ -61,7 +50,8 @@
   .dark-loading,
   .light-loading {
     font-size: 14px !important;
-    font-family: sans-serif !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+      "微软雅黑", Arial, sans-serif !important;
     font-weight: 400;
     position: fixed;
     top: 0;
@@ -81,7 +71,8 @@
   }
   .box h2 {
     font-size: 14px !important;
-    font-family: sans-serif !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+      "微软雅黑", Arial, sans-serif !important;
     font-weight: 400;
     color: #777;
     margin: 0;
@@ -91,7 +82,8 @@
   }
   .box span {
     font-size: 14px !important;
-    font-family: sans-serif !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+      "微软雅黑", Arial, sans-serif !important;
     font-weight: 400;
     display: inline-block;
     vertical-align: middle;
@@ -148,62 +140,10 @@
 ```html
 <!-- lite config -->
 <script>
-  window.__LITE_CONFIG__ = {
-    github: "https://github.com/Himmelbleu",
-    theme: {
-      mode: "dark"
-    },
-    side: {
-      avatar:
-        "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/1934022/o_230108162621_1673194813463.jpg",
-      signature: "Time tick away, dream faded away!"
-    },
-    navor: {
-      header: "CNBLOGS",
-      navs: [
-        {
-          href: "https://i.cnblogs.com/posts/edit",
-          text: "新随笔"
-        }
-      ]
-    },
-    graph: {
-      alpha: 0.85,
-      sides: 5,
-      layer: 5,
-      lineWidth: 1,
-      textSize: 12,
-      fillColor: "#409eff",
-      strokeColor: "#A7A7A7",
-      lineColor: "#A7A7A7",
-      textColor: "#A7A7A7",
-      data: [
-        { title: "CSS", star: 4 },
-        { title: "Vue", star: 4 },
-        { title: "Java", star: 3 },
-        { title: "JS", star: 4 },
-        { title: "TS", star: 3 }
-      ]
-    },
-    links: [
-      {
-        href: "http://ts.xcatliu.com/index.html",
-        text: "TypeScript 入门教程"
-      }
-    ],
-    books: [
-      {
-        href: "https://baike.baidu.com/item/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3JavaScript/19848692",
-        text: "深入理解 JavaScript",
-        img: "http://img3m1.ddimg.cn/85/1/11120396251-1_w_1.jpg",
-        author: "[美]罗彻麦尔",
-        rate: 4.5
-      }
-    ]
-  };
+  window.__LITE_CONFIG__ = {};
 </script>
 <script type="module" src="https://blog-static.cnblogs.com/files/blogs/666252/index.js"></script>
-<!-- on window loaded -->
+<!-- run lite -->
 <script>
   window.onload = () => {
     window.__LITE_CONFIG__.onLoaded();
@@ -229,7 +169,7 @@ window.__LITE_CONFIG__ = {
 
 ```js
 window.__LITE_CONFIG__ = {
-  github: "https://github.com/Himmelbleu"
+  github: "your github address"
 };
 ```
 
@@ -237,10 +177,9 @@ window.__LITE_CONFIG__ = {
 
 ```js
 window.__LITE_CONFIG__ = {
-  side: {
-    avatar:
-      "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/1934022/o_221121082134_QQ图片20221121162116.jpg",
-    signature: "Time tick away, dream faded away!"
+  cabinet: {
+    avatar: "url",
+    signature: "your text"
   }
 };
 ```
@@ -258,7 +197,7 @@ window.__LITE_CONFIG__ = {
     // 支持 html 插入
     header: "<span style='color: red'>CNBLOGS</span>",
     navs: [
-      // 支持 img、svg、纯文本
+      // 可以插入图片、文本、svg
       {
         href: "https://i.cnblogs.com/posts/edit",
         text: "新随笔"
@@ -271,13 +210,6 @@ window.__LITE_CONFIG__ = {
   }
 };
 ```
-
-|   字段    |                         描述                         |
-| :-------: | :--------------------------------------------------: |
-|  header   |              导航栏左边，支持 html 插入              |
-|  search   |                    是否开启搜索框                    |
-|   navs    |                   导航栏右边，数组                   |
-| navs 元素 | href：链接；text：文本；svg：svg 图片；img：img 图片 |
 
 ## 技能栈
 
@@ -295,7 +227,7 @@ window.__LITE_CONFIG__ = {
     textColor: "#A7A7A7",
     data: [
       // 数据，长度必须和 sides 保持一致
-      { title: "Css", star: 4 },
+      { title: "CSS", star: 4 },
       { title: "Vue", star: 4 },
       { title: "Java", star: 3 },
       { title: "JS/TS", star: 4 },

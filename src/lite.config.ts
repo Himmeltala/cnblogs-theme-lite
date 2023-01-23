@@ -19,7 +19,6 @@ function log(title: string, msg: string) {
 
 export function useLite(dev?: Function, pro?: Function) {
   $("body").append(`<div id="app"></div>`);
-
   log("Lite Theme Ver 1.0.0", "Powered By Himmelbleu");
   log("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
 
@@ -63,13 +62,7 @@ export function useLite(dev?: Function, pro?: Function) {
           }
         ]
       },
-      links: [
-        { href: "http://ts.xcatliu.com/index.html", text: "TypeScript 入门教程" },
-        { href: "https://zh.javascript.info/", text: "现代 JavaScript 教程" },
-        { href: "https://ts.yayujs.com/", text: "TypeScript 中文文档" },
-        { href: "http://zhongguose.com/", text: "Chinese Colors" },
-        { href: "https://www.webfx.com/tools/emoji-cheat-sheet/", text: "Emoji Cheat Sheet" }
-      ],
+      links: [{ href: "http://ts.xcatliu.com/index.html", text: "TypeScript 入门教程" }],
       books: [
         {
           href: "https://baike.baidu.com/item/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3JavaScript/19848692",
@@ -77,13 +70,6 @@ export function useLite(dev?: Function, pro?: Function) {
           img: "http://img3m1.ddimg.cn/85/1/11120396251-1_w_1.jpg",
           author: "[美]罗彻麦尔",
           rate: 4.5
-        },
-        {
-          href: "https://baike.baidu.com/item/JavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%EF%BC%88%E5%8E%9F%E4%B9%A6%E7%AC%AC7%E7%89%88%EF%BC%89/57640300",
-          text: "JavaScript 权威指南",
-          img: "http://img3m0.ddimg.cn/13/17/22722790-1_w_33.jpg",
-          author: "[美]弗兰纳根",
-          rate: 4
         }
       ]
     };
