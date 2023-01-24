@@ -9,14 +9,17 @@
 
 $quota: 100;
 
-@for $i from 1 through 50 {
-  $px: $i * 100px;
+:root {
+  --font-size: 14px;
+}
 
-  @media screen and (min-width: $px) {
-    html,
-    body,
-    #app {
-      font-size: calc($px / $quota);
+// 375 ~ 1400 都是 14px，超过 1500px 就开始依次往上递增
+@for $i from 1 through 30 {
+  $min: $i * 100 + 1500px;
+
+  @media screen and (min-width: $min) {
+    :root {
+      --font-size: #{calc($min / $quota)};
     }
   }
 }

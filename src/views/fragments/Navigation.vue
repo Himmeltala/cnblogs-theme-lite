@@ -9,7 +9,7 @@ const navor = __LITE_CONFIG__.navor;
 <template>
   <div
     id="navigation"
-    class="fixed z-999 w-200 h-15 f-c-c top-0 bg-color"
+    class="fixed top-0 h-vh-6 f-c-c bg-color z-999"
     :style="{ 'justify-content': navor?.header ? 'space-between' : 'flex-end' }">
     <div
       class="hover fsz-1.5 font-normal f-c-c sec-color"
@@ -41,3 +41,25 @@ const navor = __LITE_CONFIG__.navor;
     </div>
   </div>
 </template>
+
+<style lang="scss">
+#navigation {
+  --at-apply: w-vw-50;
+}
+
+#nmask {
+  --at-apply: w-vw-40;
+  --at-apply: l-vw-30;
+}
+
+@media screen and (max-width: 1000px) {
+  #nmask,
+  #navigation {
+    --at-apply: w-vw-100;
+  }
+
+  #nmask {
+    --at-apply: l-vw-0;
+  }
+}
+</style>

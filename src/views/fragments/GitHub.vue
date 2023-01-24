@@ -23,6 +23,12 @@ import { __LITE_CONFIG__ } from "@/lite.config";
 </template>
 
 <style scoped lang="scss">
+@media screen and (max-width: 1000px) {
+  #github {
+    display: none;
+  }
+}
+
 #github {
   &:hover .octo-arm {
     animation: octocat-wave 560ms ease-in-out;

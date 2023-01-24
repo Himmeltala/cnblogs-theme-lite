@@ -3,16 +3,14 @@ const nhidden = ref(true);
 const lhidden = ref(true);
 const rhidden = ref(true);
 
+function listener(el: string, fn: any) {
+  document.querySelector(el).addEventListener("mouseover", fn);
+}
+
 onMounted(() => {
-  document
-    .querySelector("#nmask")
-    .addEventListener("mouseover", () => (nhidden.value = !nhidden.value));
-  document
-    .querySelector("#lmask")
-    .addEventListener("mouseover", () => (lhidden.value = !lhidden.value));
-  document
-    .querySelector("#rmask")
-    .addEventListener("mouseover", () => (rhidden.value = !rhidden.value));
+  listener("#nmask", () => (nhidden.value = !nhidden.value));
+  listener("#lmask", () => (lhidden.value = !lhidden.value));
+  listener("#rmask", () => (rhidden.value = !rhidden.value));
 });
 </script>
 
@@ -20,16 +18,15 @@ onMounted(() => {
   <GitHub />
   <div
     id="nmask"
-    :class="{ 'top-15 h-10': !nhidden, 'h-2': nhidden }"
-    class="z-999 fixed top-0 w-80"
-    style="left: calc(50vw - 10rem)"></div>
+    :class="{ 't-vh-6 h-vh-6': !nhidden, 'h-vh-2 t-vh-0': nhidden }"
+    class="z-999 fixed" />
   <Navigation :class="{ 'show-nav': !nhidden, 'hidden-nav': nhidden }" />
   <div
     id="lmask"
-    :class="{ 'left-60': !lhidden }"
-    class="z-999 fixed left-0 tpv-25 hvh-50 w-15"></div>
+    :class="{ 'l-px-250 w-vw-20': !lhidden, 'l-px-0 w-vw-10': lhidden }"
+    class="z-999 fixed t-vh-25 h-vh-50" />
   <LCabinet :class="{ 'show-lcabinet': !lhidden, 'hidden-lcabinet': lhidden }" />
-  <div id="l-content" class="w-200 pt-5">
+  <div id="l-content" class="w-%-100">
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
         <KeepAlive :include="['Home']">
@@ -52,8 +49,8 @@ onMounted(() => {
   </div>
   <div
     id="rmask"
-    :class="{ 'right-60': !rhidden }"
-    class="z-999 fixed right-0 tpv-25 hvh-50 w-15"></div>
+    :class="{ 'r-px-250 w-vw-20': !rhidden, 'r-px-0 w-vw-10': rhidden }"
+    class="z-999 fixed t-vh-25 h-vh-50" />
   <RCabinet :class="{ 'show-rcabinet': !rhidden, 'hidden-rcabinet': rhidden }" />
   <!-- <ToolKits /> -->
 </template>
@@ -61,80 +58,86 @@ onMounted(() => {
 <style scoped lang="scss">
 $quota: 10;
 
+@media screen and (max-width: 1000px) {
+  #l-content {
+    --at-apply: p-5;
+  }
+}
+
 .show-nav {
   animation: shownav 0.2s ease-in;
-  transform: translateY(0rem);
+  transform: translateY(0);
 }
 
 @keyframes shownav {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateY(-3.75rem + ($i * 0.375rem));
+      transform: translateY(-6vh + ($i * 0.6vh));
     }
   }
 }
 
 .hidden-nav {
   animation: hiddennav 0.2s ease-out;
-  transform: translateY(-3.75rem);
+  transform: translateY(-6vh);
 }
 
 @keyframes hiddennav {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateY($i * -0.375rem);
+      transform: translateY($i * -0.6vh);
     }
   }
 }
 
 .show-lcabinet {
   animation: showlcase 0.2s ease-in;
-  transform: translateX(0rem);
+  transform: translateX(0);
 }
 
 @keyframes showlcase {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateX(-15rem + ($i * 1.5rem));
+      transform: translateX(-250px + ($i * 25px));
     }
   }
 }
 
 .hidden-lcabinet {
   animation: hiddenlcase 0.2s ease-out;
-  transform: translateX(-15rem);
+  transform: translateX(-250px);
 }
 
 @keyframes hiddenlcase {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateX($i * -1.5rem);
+      transform: translateX($i * -25px);
     }
   }
 }
 
 .show-rcabinet {
   animation: showrcase 0.2s ease-in;
-  transform: translateX(0rem);
+  transform: translateX(0);
 }
 
 @keyframes showrcase {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateX(15rem + ($i * -1.5rem));
+      transform: translateX(250px + ($i * -25px));
     }
   }
 }
 
 .hidden-rcabinet {
   animation: hiddenrcase 0.2s ease-out;
-  transform: translateX(15rem);
+  transform: translateX(250px);
 }
 
 @keyframes hiddenrcase {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateX($i * 1.5rem);
+      transform: translateX($i * 25px);
     }
   }
 }
