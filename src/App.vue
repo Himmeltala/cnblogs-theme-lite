@@ -26,7 +26,7 @@ onMounted(() => {
     :class="{ 'l-px-250 w-vw-20': !lhidden, 'l-px-0 w-vw-10': lhidden }"
     class="z-999 fixed t-vh-25 h-vh-50" />
   <LCabinet :class="{ 'show-lcabinet': !lhidden, 'hidden-lcabinet': lhidden }" />
-  <div id="l-content">
+  <div id="l-content" class="w-200 pt-5">
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
         <KeepAlive :include="['Home']">
@@ -57,18 +57,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 $quota: 10;
-
-@media screen and (max-width: 1000px) {
-  #l-content {
-    --at-apply: p-5 w-%-100;
-  }
-}
-
-@media screen and (min-width: 1000px) {
-  #l-content {
-    --at-apply: w-vw-50 py-5;
-  }
-}
 
 .show-nav {
   animation: shownav 0.2s ease-in;
