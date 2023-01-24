@@ -38,7 +38,7 @@ async function unfocus() {
 <template>
   <div
     id="l-cabinet"
-    class="noscroll fixed top-0 left-0 hd-100 ofw-auto w-60 px-2 z-999 bg-color box-border">
+    class="noscroll fixed top-0 left-0 w-px-250 h-vh-100 px-2 z-999 bg-color box-border ofw-auto">
     <CabinetItem text="博客信息">
       <template #icon>
         <el-icon class="mr-1">

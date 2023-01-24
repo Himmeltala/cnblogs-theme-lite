@@ -18,12 +18,14 @@ body {
 }
 
 * {
+  font-size: var(--font-size) !important;
   font-weight: 300 !important;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
     "微软雅黑", Arial, sans-serif !important;
   letter-spacing: 0.05rem !important;
   word-break: break-all !important;
   line-break: anywhere !important;
+  box-sizing: border-box;
 }
 
 html[class="dark"] {

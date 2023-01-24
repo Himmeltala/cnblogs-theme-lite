@@ -60,7 +60,6 @@ function nexprChange(elIndex: number) {
 
 <template>
   <div class="relative">
-    <slot name="loading" />
     <div class="hover sorter ltv-20" @click="prevChange">
       <el-tooltip effect="dark" content="上一页" placement="left">
         <el-icon>
@@ -78,10 +77,10 @@ function nexprChange(elIndex: number) {
     </div>
     <div class="f-c-e my-4">
       <el-pagination
-        layout="prev, pager, next"
+        layout="pager, next"
+        :page-count="pageCount"
         v-model:current-page="index"
-        @current-change="nexprChange"
-        :page-count="pageCount" />
+        @current-change="nexprChange" />
     </div>
   </div>
 </template>
@@ -90,5 +89,11 @@ function nexprChange(elIndex: number) {
 .sorter {
   --at-apply: fixed fsz-1 w-10 h-10 z-9 f-c-c bg-color tpv-50 rd-l-4;
   opacity: 0.7;
+}
+
+@media screen and (max-width: 1000px) {
+  .sorter {
+    display: none;
+  }
 }
 </style>
