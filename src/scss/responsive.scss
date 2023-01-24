@@ -7,11 +7,11 @@
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */
 
-$quota: 100;
-
 :root {
   --font-size: 14px;
 }
+
+$quota: 100;
 
 // 375 ~ 1400 都是 14px，超过 1500px 就开始依次往上递增
 @for $i from 1 through 30 {

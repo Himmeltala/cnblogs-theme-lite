@@ -26,7 +26,7 @@ onMounted(() => {
     :class="{ 'l-px-250 w-vw-20': !lhidden, 'l-px-0 w-vw-10': lhidden }"
     class="z-999 fixed t-vh-25 h-vh-50" />
   <LCabinet :class="{ 'show-lcabinet': !lhidden, 'hidden-lcabinet': lhidden }" />
-  <div id="l-content" class="w-%-100">
+  <div id="l-content">
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
         <KeepAlive :include="['Home']">
@@ -60,7 +60,13 @@ $quota: 10;
 
 @media screen and (max-width: 1000px) {
   #l-content {
-    --at-apply: p-5;
+    --at-apply: p-5 w-%-100;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  #l-content {
+    --at-apply: py-5 w-vw-50;
   }
 }
 

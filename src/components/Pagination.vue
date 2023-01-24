@@ -60,7 +60,7 @@ function nexprChange(elIndex: number) {
 
 <template>
   <div class="relative">
-    <div class="hover sorter ltv-20" @click="prevChange">
+    <div class="hover sorter l-vw-20" @click="prevChange">
       <el-tooltip effect="dark" content="上一页" placement="left">
         <el-icon>
           <i-ep-arrow-left-bold />
@@ -68,7 +68,7 @@ function nexprChange(elIndex: number) {
       </el-tooltip>
     </div>
     <slot name="content" />
-    <div class="hover sorter rtv-20" @click="nextChange">
+    <div class="hover sorter r-vw-20" @click="nextChange">
       <el-tooltip effect="dark" content="下一页" placement="right">
         <el-icon>
           <i-ep-arrow-right-bold />
@@ -87,7 +87,7 @@ function nexprChange(elIndex: number) {
 
 <style scoped lang="scss">
 .sorter {
-  --at-apply: fixed fsz-1 w-10 h-10 z-9 f-c-c bg-color tpv-50 rd-l-4;
+  --at-apply: fixed fsz-1 w-10 h-10 z-9 f-c-c bg-color t-vh-50 rd-l-4;
   opacity: 0.7;
 }
 

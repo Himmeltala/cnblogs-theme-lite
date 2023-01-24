@@ -24,10 +24,10 @@ const router = useRouter();
     <div class="f-c-b" :class="{ 'mb-5': item.surface }">
       <el-image
         v-if="index % 2 !== 0 && item.surface"
-        class="h-35 rd-2 wd-25"
+        class="h-35 rd-2 w-%-38"
         :src="item.surface"
         fit="cover" />
-      <div :class="{ 'wd-100': !item.surface, 'wd-73': item.surface }">
+      <div :class="{ 'w-%-100': !item.surface, 'w-%-60': item.surface }">
         <div class="hover mb-5 fsz-1.3 cursor-pointer" @click="nav('/jotting/' + item.id, router)">
           {{ item.text }}
         </div>
@@ -35,7 +35,7 @@ const router = useRouter();
       </div>
       <el-image
         v-if="index % 2 === 0 && item.surface"
-        class="h-35 rd-2 wd-25"
+        class="h-35 rd-2 w-%-38"
         :src="item.surface"
         fit="cover" />
     </div>
@@ -54,3 +54,5 @@ const router = useRouter();
       :data="{ date: item.date, comm: item.comm, digg: item.digg, view: item.view }" />
   </Card>
 </template>
+
+<style scoped lang="scss"></style>

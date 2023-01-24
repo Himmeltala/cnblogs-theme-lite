@@ -14,24 +14,6 @@ const rules = <Rule<any>[]>[
   [/^lts-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "letter-spacing": `${d}rem !important` })],
   // 行高
   [/^leh-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "line-height": `${d} !important` })],
-  // % width
-  [/^wd-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ width: `${d}% !important` })],
-  // vh width
-  [/^wvh-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ width: `${d}vh !important` })],
-  // vw width
-  [/^wvw-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ width: `${d}vw !important` })],
-  // % height
-  [/^hd-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ height: `${d}% !important` })],
-  // vh height
-  [/^hvh-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ height: `${d}vh !important` })],
-  // vw height
-  [/^hvw-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ height: `${d}vw !important` })],
-  // vh top
-  [/^tpv-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ top: `${d}vh !important` })],
-  // vw left
-  [/^ltv-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ left: `${d}vw !important` })],
-  // vw right
-  [/^rtv-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ right: `${d}vw !important` })],
   // overflow
   [
     /^ofw-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/,

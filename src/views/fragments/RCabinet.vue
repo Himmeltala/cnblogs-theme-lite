@@ -67,7 +67,7 @@ watch(route, value => {
         </el-icon>
       </template>
       <div class="mb-3 f-c-c" v-for="(item, index) in books" :key="index">
-        <img class="hvh-10 wvw-3.8" :src="item.img" alt="FAILED" />
+        <img class="h-vh-10 w-vw-3.8" :src="item.img" alt="FAILED" />
         <div class="ml-2" style="width: calc(100% - 3.8vw - 0.5rem)">
           <span v-if="!item.href">{{ item.text }}</span>
           <a class="hover fsz-0.9 pri-color" v-else :href="item.href" target="_blank">
