@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="box-border" :class="{ 'bt-border': index !== length - 1 }">
+  <div :class="{ 'bt-border': index !== length - 1 }">
     <slot />
   </div>
 </template>

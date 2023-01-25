@@ -134,7 +134,12 @@ function drawFloatingPanel(axis: any) {
       if (timeout != null) clearTimeout(timeout);
       timeout = setTimeout(() => {
         axis.forEach((v: any) => {
-          if (v.x >= e.offsetX - 5 && v.x < e.offsetX + 5 && v.y >= e.offsetY - 5 && v.y < e.offsetY + 5) {
+          if (
+            v.x >= e.offsetX - 5 &&
+            v.x < e.offsetX + 5 &&
+            v.y >= e.offsetY - 5 &&
+            v.y < e.offsetY + 5
+          ) {
             $(cnp).css({
               display: "block",
               left: `${e.offsetX}px`,

@@ -1,19 +1,17 @@
 <script setup lang="ts">
-import { createRadar, calcSize } from "./index";
+import { createRadar } from "./index";
 import { __LITE_CONFIG__ } from "@/lite.config";
-
-const vw = calcSize(13.5);
 
 onMounted(() => {
   if (__LITE_CONFIG__.graph) {
-    createRadar(vw / 2);
+    createRadar(110);
   }
 });
 </script>
 
 <template>
   <div class="graph__packer" v-if="__LITE_CONFIG__.graph">
-    <canvas id="graph" :width="vw" :height="vw"></canvas>
+    <canvas id="graph" width="220" height="220"></canvas>
     <div id="floating"></div>
   </div>
 </template>

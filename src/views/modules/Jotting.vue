@@ -39,22 +39,22 @@ async function vote(voteType: BlogType.VoteType) {
 
 <template>
   <div id="l-jotting">
-    <div class="fsz-1.4">{{ essay.text }}</div>
-    <div class="sec-color f-c-s mt-4 fsz-0.9">
-      <div class="f-c-c mr-3">
-        <el-icon class="mr-0.9">
+    <div class="fsz-1.5">{{ essay.text }}</div>
+    <div class="sec-color f-c-s mt-4 fsz-0.8">
+      <div class="f-c-c mr-4">
+        <el-icon class="mr-1">
           <i-ep-clock />
         </el-icon>
         <span>{{ essay.date }}</span>
       </div>
-      <div class="f-c-c mr-3">
-        <el-icon class="mr-0.9">
+      <div class="f-c-c mr-4">
+        <el-icon class="mr-1">
           <i-ep-view />
         </el-icon>
         <span>{{ essay.view }}次阅读</span>
       </div>
-      <div class="f-c-c mr-3">
-        <el-icon class="mr-0.9">
+      <div class="f-c-c mr-4">
+        <el-icon class="mr-1">
           <i-ep-chat-line-square />
         </el-icon>
         <span>{{ essay.comm }}条评论</span>
@@ -63,84 +63,86 @@ async function vote(voteType: BlogType.VoteType) {
         v-if="isOwner"
         class="f-c-c hover"
         @click="nav('https://i.cnblogs.com/EditPosts.aspx?postid=' + postId)">
-        <el-icon class="mr-0.9">
+        <el-icon class="mr-1">
           <i-ep-edit-pen />
         </el-icon>
         <span>编辑</span>
       </div>
     </div>
-    <div class="sec-color mt-4 fsz-0.9">
+    <div class="sec-color mt-4">
       <div class="mb-2 f-c-s" v-if="catesTags.cates.length > 0">
-        <div class="f-c-c">
-          <el-icon class="mr-0.9">
+        <div class="f-c-c fsz-1">
+          <el-icon class="mr-1">
             <i-ep-folder-opened />
           </el-icon>
           <span>分类：</span>
         </div>
         <div
-          :class="{ 'mr-2': index !== catesTags.cates.length - 1 }"
           v-for="(item, index) in catesTags.cates"
+          class="fsz-0.8"
+          :class="{ 'mr-2': index !== catesTags.cates.length - 1 }"
           :key="index">
-          <Label @click="nav('/cate/' + item.href, router)">
+          <Label class="px-2 py-1.5" @click="nav('/cate/' + item.href, router)">
             {{ item.text }}
           </Label>
         </div>
       </div>
       <div class="f-c-s" v-if="catesTags.tags.length > 0">
-        <div class="f-c-c">
-          <el-icon class="mr-0.9">
+        <div class="f-c-c fsz-1">
+          <el-icon class="mr-1">
             <i-ep-price-tag />
           </el-icon>
           <span>标签：</span>
         </div>
         <div
-          :class="{ 'mr-2': index !== catesTags.tags.length - 1 }"
           v-for="(item, index) in catesTags.tags"
+          class="fsz-0.8"
+          :class="{ 'mr-2': index !== catesTags.tags.length - 1 }"
           :key="index">
-          <Label @click="nav('/tag/' + item.text, router)">
+          <Label class="px-2 py-1.5" @click="nav('/tag/' + item.text, router)">
             {{ item.text }}
           </Label>
         </div>
       </div>
     </div>
     <div id="e-content" class="mt-8" v-html="essay?.content" v-parse-code v-anchor />
-    <div class="divider"></div>
-    <div class="sec-color f-c-e fsz-0.9">
-      <div class="f-c-c mr-2">
-        <el-icon class="mr-0.9">
+    <div class="divider" />
+    <div class="sec-color f-c-e fsz-0.8">
+      <div class="f-c-c mr-4">
+        <el-icon class="mr-1">
           <i-ep-clock />
         </el-icon>
         <span>{{ essay.date }}</span>
       </div>
-      <div class="f-c-c mr-2">
-        <el-icon class="mr-0.9">
+      <div class="f-c-c mr-4">
+        <el-icon class="mr-1">
           <i-ep-view />
         </el-icon>
         <span>{{ essay.view }}次阅读</span>
       </div>
       <div class="f-c-c">
-        <el-icon class="mr-0.9">
+        <el-icon class="mr-1">
           <i-ep-chat-line-square />
         </el-icon>
         <span>{{ essay.comm }}条评论</span>
       </div>
     </div>
-    <div class="prev-next fsz-0.9 mt-10">
-      <div class="prev hover mb-2 f-c-s" v-if="prevNext.prev.href">
+    <div class="prev-next mt-10 fsz-0.9">
+      <div class="prev hover f-c-s mb-2" v-if="prevNext.prev.href">
         <el-icon>
           <i-ep-d-arrow-left />
         </el-icon>
-        <a class="hover pri-color" :href="prevNext.prev.href">上一篇：{{ prevNext.prev.text }}</a>
+        <a class="hover pri-color" :href="prevNext.prev.href"> 上一篇：{{ prevNext.prev.text }} </a>
       </div>
       <div class="next hover f-c-s" v-if="prevNext.next.href">
         <el-icon>
           <i-ep-d-arrow-right />
         </el-icon>
-        <a class="hover pri-color" :href="prevNext.next.href">下一篇：{{ prevNext.next.text }}</a>
+        <a class="hover pri-color" :href="prevNext.next.href"> 下一篇：{{ prevNext.next.text }} </a>
       </div>
     </div>
     <div class="my-10 f-c-e">
-      <div class="digg mr-5">
+      <div class="mr-5">
         <el-button plain @click="vote('Digg')">
           <span class="fsz-0.9"> 点赞 {{ essayVote.diggCount }} </span>
           <template #icon>
@@ -148,7 +150,7 @@ async function vote(voteType: BlogType.VoteType) {
           </template>
         </el-button>
       </div>
-      <div class="bury">
+      <div>
         <el-button plain @click="vote('Bury')">
           <span class="fsz-0.9"> 反对 {{ essayVote.buryCount }} </span>
           <template #icon>
@@ -172,23 +174,23 @@ h6 {
 }
 
 h1 {
-  font-size: 1.4rem !important;
+  font-size: 1.5rem !important;
 }
 
 h2 {
-  font-size: 1.3rem !important;
+  font-size: 1.4rem !important;
 }
 
 h3 {
-  font-size: 1.2rem !important;
+  font-size: 1.3rem !important;
 }
 
 h4 {
-  font-size: 1.1rem !important;
+  font-size: 1.2rem !important;
 }
 
 h5 {
-  font-size: 1rem !important;
+  font-size: 1.1rem !important;
 }
 
 h6 {
@@ -198,13 +200,11 @@ h6 {
 pre {
   border-radius: 6px;
   position: relative;
-  box-sizing: border-box;
 
   code {
-    --at-apply: fsz-0.9 box-border rd-2;
+    @include font-space($spacing: 0.12rem !important, $line: 1.6 !important);
+    --at-apply: fsz-1 rd-2;
     font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace !important;
-    font-weight: 300;
-    margin: 0 !important;
     background-color: var(--precode-bg-color) !important;
 
     &::-webkit-scrollbar {
@@ -227,8 +227,7 @@ pre {
 }
 
 code {
-  --at-apply: fsz-0.9 box-border rd-2;
-  font-weight: 300;
+  --at-apply: rd-2;
   background: var(--code-bg-color);
   color: var(--el-color-danger-light-3);
   padding: 0.15rem 0.4rem;
@@ -237,16 +236,14 @@ code {
 
 .cblock {
   --at-apply: fsz-0.8 absolute;
-  box-sizing: border-box;
   padding: 4px;
   color: #767676;
-  font-weight: 400;
   right: 4px;
   top: 0;
 }
 
 blockquote {
-  --at-apply: box-border rd-1 sec-color;
+  --at-apply: rd-1 sec-color;
   margin: 0;
   background-color: var(--precode-bg-color);
   padding: {
@@ -264,6 +261,8 @@ blockquote {
 }
 
 #e-content {
+  --at-apply: fsz-1.15;
+
   a {
     padding-bottom: 1px;
     border-bottom: 1px dotted var(--pri-text-color);
@@ -271,14 +270,14 @@ blockquote {
   }
 
   p {
-    margin: 1.2rem 0 !important;
-    @include font-space();
+    @include font-space($spacing: 0.12rem !important, $line: 1.7 !important);
+    margin: 0.7rem 0 !important;
   }
 
   ol,
   ul {
     li {
-      @include font-space();
+      @include font-space($spacing: 0.12rem !important, $line: 1.7 !important);
     }
 
     li:last-child {

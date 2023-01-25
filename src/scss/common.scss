@@ -53,6 +53,12 @@
   -ms-user-select: none;
 }
 
+.noscroll {
+  &::-webkit-scrollbar {
+    display: none !important;
+  }
+}
+
 .min-height {
   min-height: calc(100vh - 3.25rem);
 }

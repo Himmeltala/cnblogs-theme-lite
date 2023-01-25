@@ -246,7 +246,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
           v-model="form.content"
           placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
       </div>
-      <div class="z--1 absolute opacity-0 top-0 left-0">
+      <div class="z--1 opacity-0 absolute top-0 left-0">
         <textarea id="main-upload-img" />
       </div>
       <el-button plain :disabled="!isLogin" :loading="loading" @click="insertComment">
@@ -255,14 +255,14 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
     </div>
     <h3>评论列表</h3>
     <div class="mt-10" v-if="comments?.length && isLogin">
-      <div class="mb-9" v-for="(item, index) in comments" :key="index">
+      <div class="mb-12" v-for="(item, index) in comments" :key="index">
         <div class="f-c-s">
           <el-image class="mr-4 rd-50 w-14 h-14" :src="item.avatar" fit="fill" />
           <div>
-            <div class="fsz-0.95 hover cursor-pointer" @click="nav(item.space)">
+            <div class="hover cursor-pointer" @click="nav(item.space)">
               {{ item.author }}
             </div>
-            <div class="fsz-0.8 sec-color mt-1.5 f-c-c">
+            <div class="fsz-0.8 sec-color mt-2 f-c-c">
               <div :id="'level-' + item.commentId" class="mr-2">
                 <span v-if="commentAnchor === item.commentId" ref="level">{{ item.layer }}</span>
                 <span v-else>{{ item.layer }}</span>
@@ -271,8 +271,8 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
             </div>
           </div>
         </div>
-        <div class="mt-3 relative" style="margin-left: 4.5rem">
-          <div class="z--1 absolute opacity-0 top-0 left-0">
+        <div class="mt-4 relative" style="margin-left: 4.5rem">
+          <div class="z--1 opacity-0 absolute top-0 left-0">
             <textarea :id="'upload-img-' + index" />
           </div>
           <div class="c-content" v-show="!item.updateEditable" v-html="item.content" v-parse-code />
@@ -306,48 +306,48 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
                 placeholder="请回复一条友善的评论，支持 Markdown 语法" />
             </div>
           </div>
-          <div class="actions fsz-0.8 cursor-pointer color-#a8abb2 f-c-e">
+          <div class="actions f-c-e cursor-pointer fsz-0.8 sec-color">
             <div
               v-show="!item.replayEditable && !item.isEditingUpdate"
-              class="hover mr-3 f-c-e"
+              class="hover mr-4 f-c-e"
               @click="beforeReplayComment(item)">
-              <el-icon class="mr-0.5">
+              <el-icon class="mr-1">
                 <i-ep-chat-round />
               </el-icon>
               <span>回复</span>
             </div>
             <div
               v-show="item.replayEditable && !item.isEditingUpdate"
-              class="hover mr-3 f-c-e"
+              class="hover mr-4 f-c-e"
               @click="finishReplayComment(item)">
-              <el-icon class="mr-0.5">
+              <el-icon class="mr-1">
                 <i-ep-check />
               </el-icon>
               <span>完成回复</span>
             </div>
             <div
               v-show="item.replayEditable && !item.isEditingUpdate"
-              class="hover mr-3 f-c-e"
+              class="hover mr-4 f-c-e"
               @click="cancelReplayComment(item)">
-              <el-icon class="mr-0.5">
+              <el-icon class="mr-1">
                 <i-ep-close />
               </el-icon>
               <span>取消回复</span>
             </div>
             <div
               v-show="!item.isEditingUpdate && !item.isEditingReplay"
-              class="hover mr-3 f-c-e"
+              class="hover mr-4 f-c-e"
               @click="voteComm(item, 'Digg')">
-              <el-icon class="mr-0.5">
+              <el-icon class="mr-1">
                 <i-ep-caret-top />
               </el-icon>
               <span>{{ item.digg }}</span>
             </div>
             <div
               v-show="!item.isEditingUpdate && !item.isEditingReplay"
-              class="hover mr-3 f-c-e"
+              class="hover mr-4 f-c-e"
               @click="voteComm(item, 'Bury')">
-              <el-icon class="mr-0.5">
+              <el-icon class="mr-1">
                 <i-ep-caret-bottom />
               </el-icon>
               <span>{{ item.bury }}</span>
@@ -360,7 +360,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
                 @confirm="confirmDeleteComment(item, index)">
                 <template #reference>
                   <div class="hover f-c-e">
-                    <el-icon class="mr-0.5">
+                    <el-icon class="mr-1">
                       <i-ep-delete />
                     </el-icon>
                     <span>删除</span>
@@ -372,16 +372,16 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
               v-show="!item.updateEditable && !item.isEditingReplay"
               class="hover f-c-e"
               @click="beforeUpdateComment(item)">
-              <el-icon class="mr-0.5">
+              <el-icon class="mr-1">
                 <i-ep-edit-pen />
               </el-icon>
               <span>编辑</span>
             </div>
             <div
               v-show="item.updateEditable && !item.isEditingReplay"
-              class="hover mr-3 f-c-e"
+              class="hover mr-4 f-c-e"
               @click="finishUpdateComment(item)">
-              <el-icon class="mr-0.5">
+              <el-icon class="mr-1">
                 <i-ep-circle-check />
               </el-icon>
               <span>完成编辑</span>
@@ -394,7 +394,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
                 @confirm="cancelUpdateComment(item)">
                 <template #reference>
                   <div class="hover f-c-e">
-                    <el-icon class="mr-0.5">
+                    <el-icon class="mr-1">
                       <i-ep-circle-close />
                     </el-icon>
                     <span>取消编辑</span>
@@ -435,7 +435,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
 
 <style scoped lang="scss">
 @mixin textarea($height: 15rem) {
-  --at-apply: rd-2 box-border p-2.5 fsz-0.9;
+  --at-apply: rd-2 p-2.5 fsz-0.9;
   background-color: var(--textarea-bg-color);
   width: 100%;
   border: none;
@@ -446,7 +446,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
 }
 
 @mixin container() {
-  --at-apply: mb-5 rd-2 box-border;
+  --at-apply: mb-5 rd-2;
   border: 1px solid var(--el-border-color-lighter);
   background-color: var(--textarea-bg-color);
   @include hover($border-color: all);

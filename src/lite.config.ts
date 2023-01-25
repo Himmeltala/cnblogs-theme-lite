@@ -62,6 +62,24 @@ export function useLite(dev?: Function, pro?: Function) {
           }
         ]
       },
+      graph: {
+        alpha: 0.85,
+        sides: 5,
+        layer: 5,
+        lineWidth: 1,
+        textSize: 12,
+        fillColor: "#409eff",
+        strokeColor: "#A7A7A7",
+        lineColor: "#A7A7A7",
+        textColor: "#A7A7A7",
+        data: [
+          { title: "CSS", star: 4 },
+          { title: "Vue", star: 4 },
+          { title: "Java", star: 3 },
+          { title: "JS", star: 4 },
+          { title: "TS", star: 3 }
+        ]
+      },
       links: [{ href: "http://ts.xcatliu.com/index.html", text: "TypeScript 入门教程" }],
       books: [
         {

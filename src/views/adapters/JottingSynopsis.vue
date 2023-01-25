@@ -20,25 +20,25 @@ defineProps({
 
 <template>
   <div class="f-c fsz-0.9 sec-color" :style="{ 'justify-content': align }">
-    <div class="mr-2.5 f-c-b">
+    <div class="mr-3 f-c-c">
       <el-icon class="mr-1">
         <i-ep-clock />
       </el-icon>
       <span>{{ data.date }}</span>
     </div>
-    <div class="mr-2.5 f-c-b">
+    <div class="mr-3 f-c-c">
       <el-icon class="mr-1">
         <i-ep-view />
       </el-icon>
       <span>{{ data.view }}</span>
     </div>
-    <div class="mr-2.5 f-c-b">
+    <div class="mr-3 f-c-c">
       <el-icon class="mr-1">
         <i-ep-chat-line-square />
       </el-icon>
       <span>{{ data.comm }}</span>
     </div>
-    <div class="f-c-b">
+    <div class="f-c-c">
       <el-icon class="mr-1">
         <i-ep-star />
       </el-icon>

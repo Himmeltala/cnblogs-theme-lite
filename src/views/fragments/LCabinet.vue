@@ -38,7 +38,7 @@ async function unfocus() {
 <template>
   <div
     id="l-cabinet"
-    class="noscroll fixed top-0 left-0 w-px-250 h-vh-100 px-2 z-999 bg-color box-border ofw-auto">
+    class="noscroll fixed top-0 left-0 w-px-250 h-vh-100 px-2 z-999 bg-color ofw-auto">
     <CabinetItem text="博客信息">
       <template #icon>
         <el-icon class="mr-1">
@@ -168,10 +168,20 @@ async function unfocus() {
         </el-tab-pane>
       </el-tabs>
     </CabinetItem>
+    <div
+      class="bnav z-1000 w-%-100 pt-4 pb-2 fixed bottom-0 left-0 flex items-center content-center ofw-scroll noscroll">
+      <NavItem :nav="nav" :router="router" :navor="__LITE_CONFIG__.navor" />
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+@media screen and (min-width: 1000px) {
+  .bnav {
+    display: none;
+  }
+}
+
 .item {
   --at-apply: my-3 fsz-0.9;
 

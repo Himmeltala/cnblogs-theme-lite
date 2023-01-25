@@ -19,6 +19,11 @@ const rules = <Rule<any>[]>[
     /^ofw-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/,
     ([, d]) => ({ overflow: `${d}` })
   ],
+  // white-space
+  [
+    /^wce-(normal|pre|nowrap|pre-wrap|pre-line)$/,
+    ([, d]) => ({ "white-space": `${d} !important` })
+  ],
   // 文本颜色
   [/^(pri|sec|thr)-color$/, ([, d]) => ({ color: `var(--${d}-text-color) !important` })],
   // 背景颜色

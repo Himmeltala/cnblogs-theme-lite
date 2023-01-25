@@ -9,8 +9,14 @@ function listener(el: string, fn: any) {
 
 onMounted(() => {
   listener("#nmask", () => (nhidden.value = !nhidden.value));
-  listener("#lmask", () => (lhidden.value = !lhidden.value));
-  listener("#rmask", () => (rhidden.value = !rhidden.value));
+  listener("#lmask", () => {
+    lhidden.value = !lhidden.value;
+    if (!rhidden.value) rhidden.value = !rhidden.value;
+  });
+  listener("#rmask", () => {
+    rhidden.value = !rhidden.value;
+    if (!lhidden.value) lhidden.value = !lhidden.value;
+  });
 });
 </script>
 
@@ -18,8 +24,8 @@ onMounted(() => {
   <GitHub />
   <div
     id="nmask"
-    :class="{ 't-vh-6 h-vh-6': !nhidden, 'h-vh-2 t-vh-0': nhidden }"
-    class="z-999 fixed" />
+    :class="{ 't-vh-6 h-vh-6': !nhidden, 'h-vh-4 t-vh-0': nhidden }"
+    class="z-999 fixed w-vw-20" />
   <Navigation :class="{ 'show-nav': !nhidden, 'hidden-nav': nhidden }" />
   <div
     id="lmask"

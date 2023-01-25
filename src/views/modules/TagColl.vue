@@ -19,15 +19,11 @@ watch(route, async () => {
 
 <template>
   <div id="l-tagcoll">
-    <div class="fsz-1.25 mb-8">{{ tagname }}</div>
+    <div class="fsz-1.25 mb-10">{{ tagname }}</div>
     <div class="content">
-      <Card
-        class="mr-6 mb-6 pb-4"
-        style="flex: 1 1 40%"
-        v-for="(item, index) in taglist"
-        :key="index">
-        <div class="fsz-1">
-          <router-link class="hover pri-color" :to="'/jotting/' + item.id">
+      <Card class="item mr-6 mb-6 pb-4" v-for="(item, index) in taglist" :key="index">
+        <div class="fsz-1.2">
+          <router-link class="hover" :to="'/jotting/' + item.id">
             {{ item.title }}
           </router-link>
         </div>
@@ -35,9 +31,7 @@ watch(route, async () => {
           <el-icon>
             <i-ep-caret-right />
           </el-icon>
-          <router-link
-            class="hover pri-color ml-0.5 b-b-1 b-b-dotted p-b-0.3"
-            :to="'/jotting/' + item.id">
+          <router-link class="hover ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/jotting/' + item.id">
             阅读全文
           </router-link>
         </div>
@@ -52,5 +46,15 @@ watch(route, async () => {
 <style scoped lang="scss">
 .content {
   @include flex($justify: space-between, $items: stretch, $content: stretch);
+
+  .item {
+    flex: 1 1 40%;
+  }
+
+  @media screen and (max-width: 1000px) {
+    .item {
+      flex: 1 1 100%;
+    }
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="label box-border px-2 py-1.3 rd-2 b-1 b-#5d5d5d b-dotted fsz-0.8">
+  <div class="label rd-2 b-1 b-#5d5d5d b-dotted">
     <slot />
   </div>
 </template>

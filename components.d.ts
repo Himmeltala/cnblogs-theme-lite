@@ -63,6 +63,7 @@ declare module '@vue/runtime-core' {
     Label: typeof import('./src/components/Label.vue')['default']
     LCabinet: typeof import('./src/views/fragments/LCabinet.vue')['default']
     Navigation: typeof import('./src/views/fragments/Navigation.vue')['default']
+    NavItem: typeof import('./src/views/adapters/NavItem.vue')['default']
     Pagination: typeof import('./src/components/Pagination.vue')['default']
     RCabinet: typeof import('./src/views/fragments/RCabinet.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

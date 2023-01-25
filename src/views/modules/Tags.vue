@@ -9,13 +9,8 @@ closeLoader();
 
 <template>
   <div id="l-tags" class="min-height">
-    <Label
-      class="mb-3 px-3 py-3"
-      :class="{ 'mr-3': (index + 1) % 4 !== 0 }"
-      style="flex: 1 1 20%"
-      v-for="(item, index) in data"
-      :key="index">
-      <router-link class="hover pri-color" :to="'/tag/' + item.text">
+    <Label class="item mb-4 p-3 fsz-0.8 f-c-s" v-for="(item, index) in data" :key="index">
+      <router-link class="hover" :to="'/tag/' + item.text">
         {{ item.text }} ({{ item.count }})
       </router-link>
     </Label>
@@ -25,5 +20,23 @@ closeLoader();
 <style scoped lang="scss">
 #l-tags {
   @include flex($justify: space-between, $items: stretch, $content: stretch);
+
+  .item {
+    flex: 1 1 20%;
+
+    &:not(:nth-child(4n)) {
+      --at-apply: mr-3;
+    }
+  }
+
+  @media screen and (max-width: 1000px) {
+    .item {
+      flex: 1 1 40%;
+
+      &:nth-child(odd) {
+        --at-apply: mr-3;
+      }
+    }
+  }
 }
 </style>

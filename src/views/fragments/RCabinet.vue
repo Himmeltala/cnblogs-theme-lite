@@ -23,7 +23,7 @@ watch(route, value => {
   <div
     id="r-cabinet"
     style="width: 250px"
-    class="noscroll fixed top-0 right-0 w-px-250 h-vh-100 px-2 z-999 bg-color box-border ofw-auto">
+    class="noscroll fixed top-0 right-0 w-px-250 h-vh-100 px-2 z-999 bg-color ofw-auto">
     <CabinetItem text="随笔目录" v-if="anchors && anchors.length > 0">
       <template #icon>
         <el-icon style="margin-right: 5px">
