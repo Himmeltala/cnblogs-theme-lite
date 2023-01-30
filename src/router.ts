@@ -9,12 +9,12 @@ const routes = [
   },
   {
     name: RouteName.JOTTING,
-    path: "/jotting/:id",
+    path: "/p/:id",
     component: () => import("./views/modules/Jotting.vue")
   },
   {
     name: RouteName.CATEGORY,
-    path: "/cate/:id",
+    path: "/category/:id",
     component: () => import("./views/modules/Category.vue")
   },
   {
@@ -50,10 +50,10 @@ router.beforeEach((to, from, next) => {
   const data = parseUrlData(window.location.href);
   if (to.name === RouteName.HOME) {
     if (compareUrl(data, RouteName.JOTTING)) {
-      reviseUrl(`jotting/${data.text}`);
+      reviseUrl(`p/${data.text}`);
       next({ name: RouteName.JOTTING, params: { id: data.id } });
     } else if (compareUrl(data, RouteName.CATEGORY)) {
-      reviseUrl(`cate/${data.id}/${data.page}`);
+      reviseUrl(`category/${data.id}/${data.page}`);
       next({ name: RouteName.CATEGORY, params: { id: data.id, page: data.page } });
     } else if (compareUrl(data, RouteName.TAGCOLL)) {
       reviseUrl(`tag/${data.tag}`);

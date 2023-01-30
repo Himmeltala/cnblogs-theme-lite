@@ -28,7 +28,7 @@ const router = useRouter();
         :src="item.surface"
         fit="cover" />
       <div :class="{ 'w-%-100': !item.surface, 'w-%-60': item.surface }">
-        <div class="hover mb-5 fsz-1.3 cursor-pointer" @click="nav('/jotting/' + item.id, router)">
+        <div class="hover mb-5 fsz-1.3 cursor-pointer" @click="nav('/p/' + item.id, router)">
           {{ item.text }}
         </div>
         <div class="thr-color" :class="{ 'mb-5': !item.surface }">{{ item.desc }}</div>
@@ -43,9 +43,7 @@ const router = useRouter();
       <el-icon>
         <i-ep-caret-right />
       </el-icon>
-      <router-link
-        class="hover pri-color ml-0.5 b-b-1 b-b-dotted p-b-0.3"
-        :to="'/jotting/' + item.id">
+      <router-link class="hover pri-color ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id">
         阅读全文
       </router-link>
     </div>
