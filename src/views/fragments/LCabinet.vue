@@ -67,26 +67,26 @@ async function unfocus() {
         </div>
         <div class="item" v-for="(item, index) in blogger" :key="index">
           <div class="text hover" @click="nav(item.href)">
-            <div v-if="index === 0">
-              <el-icon>
+            <div class="f-c-s" v-if="index === 0">
+              <el-icon class="mr-2">
                 <i-ep-user-filled />
               </el-icon>
               昵称：{{ item.text }}
             </div>
-            <div v-if="index === 1">
-              <el-icon>
+            <div class="f-c-s" v-else-if="index === 1">
+              <el-icon class="mr-2">
                 <i-ep-clock />
               </el-icon>
               园龄：{{ item.text }}
             </div>
-            <div v-if="index === 2">
-              <el-icon>
+            <div class="f-c-s" v-else-if="index === 2">
+              <el-icon class="mr-2">
                 <i-ep-star-filled />
               </el-icon>
               粉丝：{{ item.text }}
             </div>
-            <div v-if="index === 3">
-              <el-icon>
+            <div class="f-c-s" v-else>
+              <el-icon class="mr-2">
                 <i-ep-bell-filled />
               </el-icon>
               关注：{{ item.text }}

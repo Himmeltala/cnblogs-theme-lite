@@ -25,7 +25,8 @@ body {
   font-weight: inherit;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
     "微软雅黑", Arial, sans-serif;
-  letter-spacing: 0.05rem;
+  letter-spacing: 1px;
+  scroll-behavior: smooth;
   word-break: break-all !important;
   line-break: anywhere !important;
   box-sizing: border-box !important;

@@ -217,7 +217,7 @@ pre {
     &,
     span {
       --at-apply: fsz-0.9;
-      @include font-space($spacing: 1px !important);
+      @include font-space($spacing: 1.6px !important);
     }
   }
 }
@@ -257,7 +257,7 @@ blockquote {
 }
 
 #e-content {
-  --at-apply: fsz-1.15;
+  --at-apply: fsz-1.1;
 
   a {
     padding-bottom: 1px;
@@ -266,14 +266,14 @@ blockquote {
   }
 
   p {
-    @include font-space($spacing: 0.1rem !important, $line: 1.7 !important);
+    @include font-space($spacing: 1px !important, $line: 1.7 !important);
     margin: 0.7rem 0 !important;
   }
 
   ol,
   ul {
     li {
-      @include font-space($spacing: 0.1rem !important, $line: 1.7 !important);
+      @include font-space($spacing: 1px !important, $line: 1.7 !important);
     }
 
     li:last-child {
