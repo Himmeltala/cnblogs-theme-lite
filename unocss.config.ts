@@ -44,7 +44,7 @@ const shortcuts = <UserShortcuts>[
       let style = ``;
 
       let corr = matches.find(ele => ele.prefix === g2);
-      style += `flex items-${corr.value} content-${corr.value} flex-wrap`;
+      style += `flex items-${corr.value} content-${corr.value}`;
 
       if (g4) {
         corr = matches.find(ele => ele.prefix === g4);

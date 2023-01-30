@@ -36,140 +36,139 @@ async function unfocus() {
 </script>
 
 <template>
-  <div
-    id="l-cabinet"
-    class="noscroll fixed top-0 left-0 w-px-250 h-vh-100 px-2 z-999 bg-color ofw-auto">
-    <CabinetItem text="博客信息">
-      <template #icon>
-        <el-icon class="mr-1">
-          <i-ep-house />
-        </el-icon>
-      </template>
-      <div v-if="cabinet?.avatar" class="f-c-c my-5">
-        <el-tooltip effect="dark" placement="right">
-          <img class="h-25 w-25 cursor-pointer rd-50" alt="FAILED" :src="cabinet?.avatar" />
-          <template #content>
-            <div v-if="cabinet?.signature" v-html="cabinet.signature" />
-            <div v-else>这个人很懒，什么也没有留下</div>
-          </template>
-        </el-tooltip>
-      </div>
-      <div class="f-c-c" v-if="!isOwner">
-        <el-popconfirm
-          @confirm="unfocus"
-          confirm-button-text="确定"
-          cancel-button-text="取消"
-          title="确定取消关注？">
-          <template #reference>
-            <el-button v-if="isFollow" type="danger" text bg> -取消关注 </el-button>
-          </template>
-        </el-popconfirm>
-        <el-button @click="focus" v-if="!isFollow" type="primary" text bg> +关注博主 </el-button>
-      </div>
-      <div class="item" v-for="(item, index) in blogger" :key="index">
-        <div class="text hover" @click="nav(item.href)">
-          <div v-if="index === 0">
-            <el-icon>
-              <i-ep-user-filled />
-            </el-icon>
-            昵称：{{ item.text }}
-          </div>
-          <div v-if="index === 1">
-            <el-icon>
-              <i-ep-clock />
-            </el-icon>
-            园龄：{{ item.text }}
-          </div>
-          <div v-if="index === 2">
-            <el-icon>
-              <i-ep-star-filled />
-            </el-icon>
-            粉丝：{{ item.text }}
-          </div>
-          <div v-if="index === 3">
-            <el-icon>
-              <i-ep-bell-filled />
-            </el-icon>
-            关注：{{ item.text }}
-          </div>
-        </div>
-      </div>
-      <el-tooltip effect="dark" placement="bottom">
-        <template #content>
-          <span
-            :class="{ 'mr-3': index !== blogRank.length - 1 }"
-            v-for="(item, index) in blogRank"
-            :key="index">
-            {{ item.text }} - {{ item.digg }}
-          </span>
-        </template>
-        <div class="hover mb-3 fsz-0.9 cursor-pointer">
-          <span
-            :class="{ 'mr-2.5': index !== blogInfo.length - 1 }"
-            v-for="(item, index) in blogInfo"
-            :key="index">
-            {{ item.text }} - {{ item.digg }}
-          </span>
-        </div>
-      </el-tooltip>
-      <el-input clearable @keyup.enter="search" v-model="searchVal">
-        <template #prepend>搜索</template>
-        <template #prefix>
-          <el-icon @click="search">
-            <i-ep-search />
+  <div id="l-cabinet" class="fixed top-0 left-0 w-px-250 h-vh-100 px-2 z-999 bg-color">
+    <div class="content noscroll ofw-auto">
+      <CabinetItem text="博客信息">
+        <template #icon>
+          <el-icon class="mr-1">
+            <i-ep-house />
           </el-icon>
         </template>
-      </el-input>
-    </CabinetItem>
-    <CabinetItem text="博客数据">
-      <template #icon>
-        <el-icon class="mr-1">
-          <i-ep-collection />
-        </el-icon>
-      </template>
-      <el-tabs stretch type="card" v-model="tabName">
-        <el-tab-pane label="随笔" name="随笔">
-          <div class="item" v-for="(item, index) in cates.cates" :key="index">
-            <div class="text hover" @click="nav('/cate/' + item.id, router)">
-              {{ item.text }}
+        <div v-if="cabinet?.avatar" class="f-c-c my-5">
+          <el-tooltip effect="dark" placement="right">
+            <img class="h-25 w-25 cursor-pointer rd-50" alt="FAILED" :src="cabinet?.avatar" />
+            <template #content>
+              <div v-if="cabinet?.signature" v-html="cabinet.signature" />
+              <div v-else>这个人很懒，什么也没有留下</div>
+            </template>
+          </el-tooltip>
+        </div>
+        <div class="f-c-c" v-if="!isOwner">
+          <el-popconfirm
+            @confirm="unfocus"
+            confirm-button-text="确定"
+            cancel-button-text="取消"
+            title="确定取消关注？">
+            <template #reference>
+              <el-button v-if="isFollow" type="danger" text bg> -取消关注 </el-button>
+            </template>
+          </el-popconfirm>
+          <el-button @click="focus" v-if="!isFollow" type="primary" text bg> +关注博主 </el-button>
+        </div>
+        <div class="item" v-for="(item, index) in blogger" :key="index">
+          <div class="text hover" @click="nav(item.href)">
+            <div v-if="index === 0">
+              <el-icon>
+                <i-ep-user-filled />
+              </el-icon>
+              昵称：{{ item.text }}
+            </div>
+            <div v-if="index === 1">
+              <el-icon>
+                <i-ep-clock />
+              </el-icon>
+              园龄：{{ item.text }}
+            </div>
+            <div v-if="index === 2">
+              <el-icon>
+                <i-ep-star-filled />
+              </el-icon>
+              粉丝：{{ item.text }}
+            </div>
+            <div v-if="index === 3">
+              <el-icon>
+                <i-ep-bell-filled />
+              </el-icon>
+              关注：{{ item.text }}
             </div>
           </div>
-        </el-tab-pane>
-        <el-tab-pane label="标签" name="标签">
-          <div class="item" v-for="(item, index) in cates.tags" :key="index">
-            <div class="text hover" @click="nav('/tag/' + item.id, router)">
-              {{ item.text }}
+        </div>
+        <el-tooltip effect="dark" placement="bottom">
+          <template #content>
+            <span
+              :class="{ 'mr-3': index !== blogRank.length - 1 }"
+              v-for="(item, index) in blogRank"
+              :key="index">
+              {{ item.text }} - {{ item.digg }}
+            </span>
+          </template>
+          <div class="hover mb-3 fsz-0.9 cursor-pointer">
+            <span
+              :class="{ 'mr-2.5': index !== blogInfo.length - 1 }"
+              v-for="(item, index) in blogInfo"
+              :key="index">
+              {{ item.text }} - {{ item.digg }}
+            </span>
+          </div>
+        </el-tooltip>
+        <el-input clearable @keyup.enter="search" v-model="searchVal">
+          <template #prepend>搜索</template>
+          <template #prefix>
+            <el-icon @click="search">
+              <i-ep-search />
+            </el-icon>
+          </template>
+        </el-input>
+      </CabinetItem>
+      <CabinetItem text="博客数据">
+        <template #icon>
+          <el-icon class="mr-1">
+            <i-ep-collection />
+          </el-icon>
+        </template>
+        <el-tabs stretch type="card" v-model="tabName">
+          <el-tab-pane label="随笔" name="随笔">
+            <div class="item" v-for="(item, index) in cates.cates" :key="index">
+              <div class="text hover" @click="nav('/category/' + item.id, router)">
+                {{ item.text }}
+              </div>
             </div>
-          </div>
-          <div class="item">
-            <div class="text hover" @click="nav('/tags', router)">更多...</div>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="阅读排行榜" name="阅读排行榜">
-          <div class="item" v-for="(item, index) in toplist" :key="index">
-            <div class="text hover" @click="nav('/jotting/' + item.id, router)">
-              {{ item.text }}
+          </el-tab-pane>
+          <el-tab-pane label="标签" name="标签">
+            <div class="item" v-for="(item, index) in cates.tags" :key="index">
+              <div class="text hover" @click="nav('/tag/' + item.id, router)">
+                {{ item.text }}
+              </div>
             </div>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="推荐排行榜" name="推荐排行榜">
-          <div class="item" v-for="(item, index) in toplist" :key="index">
-            <div class="text hover" @click="nav('/jotting/' + item.id, router)">
-              {{ item.text }}
+            <div class="item">
+              <div class="text hover" @click="nav('/tags', router)">更多...</div>
             </div>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="评论排行榜" name="评论排行榜">
-          <div class="item" v-for="(item, index) in toplist" :key="index">
-            <div class="text hover" @click="nav('/jotting/' + item.id, router)">
-              {{ item.text }}
+          </el-tab-pane>
+          <el-tab-pane label="阅读排行榜" name="阅读排行榜">
+            <div class="item" v-for="(item, index) in toplist" :key="index">
+              <div class="text hover" @click="nav('/p/' + item.id, router)">
+                {{ item.text }}
+              </div>
             </div>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
-    </CabinetItem>
-    <div
-      class="bnav z-1000 w-%-100 pt-4 pb-2 fixed bottom-0 left-0 flex items-center content-center ofw-scroll noscroll">
+          </el-tab-pane>
+          <el-tab-pane label="推荐排行榜" name="推荐排行榜">
+            <div class="item" v-for="(item, index) in toplist" :key="index">
+              <div class="text hover" @click="nav('/p/' + item.id, router)">
+                {{ item.text }}
+              </div>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="评论排行榜" name="评论排行榜">
+            <div class="item" v-for="(item, index) in toplist" :key="index">
+              <div class="text hover" @click="nav('/p/' + item.id, router)">
+                {{ item.text }}
+              </div>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </CabinetItem>
+    </div>
+    <div class="navigation noscroll ofw-auto f-c">
       <NavItem :nav="nav" :router="router" :navor="__LITE_CONFIG__.navor" />
     </div>
   </div>
@@ -177,8 +176,22 @@ async function unfocus() {
 
 <style scoped lang="scss">
 @media screen and (min-width: 1000px) {
-  .bnav {
+  .navigation {
     display: none;
+  }
+
+  .content {
+    --at-apply: h-%-100;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .navigation {
+    --at-apply: h-%-5;
+  }
+
+  .content {
+    --at-apply: h-%-95;
   }
 }
 

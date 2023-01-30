@@ -1,21 +1,21 @@
 <script setup lang="ts">
-const nhidden = ref(true);
-const lhidden = ref(true);
-const rhidden = ref(true);
+const hiddenNavModal = ref(true);
+const hiddenLCabinet = ref(true);
+const hiddenRCabinet = ref(true);
 
 function listener(el: string, fn: any) {
   document.querySelector(el).addEventListener("mouseover", fn);
 }
 
 onMounted(() => {
-  listener("#nmask", () => (nhidden.value = !nhidden.value));
-  listener("#lmask", () => {
-    lhidden.value = !lhidden.value;
-    if (!rhidden.value) rhidden.value = !rhidden.value;
+  listener("#nav-modal", () => (hiddenNavModal.value = !hiddenNavModal.value));
+  listener("#lcabinet-modal", () => {
+    hiddenLCabinet.value = !hiddenLCabinet.value;
+    if (!hiddenRCabinet.value) hiddenRCabinet.value = !hiddenRCabinet.value;
   });
-  listener("#rmask", () => {
-    rhidden.value = !rhidden.value;
-    if (!lhidden.value) lhidden.value = !lhidden.value;
+  listener("#rcabinet-modal", () => {
+    hiddenRCabinet.value = !hiddenRCabinet.value;
+    if (!hiddenLCabinet.value) hiddenLCabinet.value = !hiddenLCabinet.value;
   });
 });
 </script>
@@ -23,15 +23,15 @@ onMounted(() => {
 <template>
   <GitHub />
   <div
-    id="nmask"
-    :class="{ 't-vh-6 h-vh-6': !nhidden, 'h-vh-4 t-vh-0': nhidden }"
-    class="z-999 fixed w-vw-20" />
-  <Navigation :class="{ 'show-nav': !nhidden, 'hidden-nav': nhidden }" />
+    id="nav-modal"
+    :class="{ 't-vh-6 h-6': !hiddenNavModal, 'h-5 t-vh-0': hiddenNavModal }"
+    class="z-999 fixed w-vw-50" />
+  <Navigation :class="{ 'show-nav': !hiddenNavModal, 'hidden-nav': hiddenNavModal }" />
   <div
-    id="lmask"
-    :class="{ 'l-px-250 w-vw-20': !lhidden, 'l-px-0 w-vw-10': lhidden }"
-    class="z-999 fixed t-vh-25 h-vh-50" />
-  <LCabinet :class="{ 'show-lcabinet': !lhidden, 'hidden-lcabinet': lhidden }" />
+    id="lcabinet-modal"
+    :class="{ 'l-px-250': !hiddenLCabinet, 'l-px-0': hiddenLCabinet }"
+    class="z-999 fixed t-vh-25 h-vh-50 w-20" />
+  <LCabinet :class="{ 'show-lcabinet': !hiddenLCabinet, 'hidden-lcabinet': hiddenLCabinet }" />
   <div id="l-content">
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
@@ -43,21 +43,24 @@ onMounted(() => {
       </template>
     </RouterView>
     <div class="f-c-c py-2 fsz-0.8 sec-color h-4">
-      Copyright @2023
+      Created By
       <a
         class="hover mx-1 sec-color"
         href="https://github.com/Himmelbleu/cnblogs-theme-lite"
         target="__blank">
-        Himmelbleu
+        Himmelbleu,
       </a>
-      Powered by Vue3 on Vite.
+      powered by
+      <a class="hover mx-1 sec-color" href="https://v3.cn.vuejs.org/" target="__blank">Vue3</a>
+      on
+      <a class="hover mx-1 sec-color" href="https://vitejs.cn/vite3-cn/" target="__blank">Vite.</a>
     </div>
   </div>
   <div
-    id="rmask"
-    :class="{ 'r-px-250 w-vw-20': !rhidden, 'r-px-0 w-vw-10': rhidden }"
-    class="z-999 fixed t-vh-25 h-vh-50" />
-  <RCabinet :class="{ 'show-rcabinet': !rhidden, 'hidden-rcabinet': rhidden }" />
+    id="rcabinet-modal"
+    :class="{ 'r-px-250': !hiddenRCabinet, 'r-px-0': hiddenRCabinet }"
+    class="z-999 fixed t-vh-25 h-vh-50 w-20" />
+  <RCabinet :class="{ 'show-rcabinet': !hiddenRCabinet, 'hidden-rcabinet': hiddenRCabinet }" />
   <!-- <ToolKits /> -->
 </template>
 

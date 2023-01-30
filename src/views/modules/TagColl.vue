@@ -23,7 +23,7 @@ watch(route, async () => {
     <div class="content">
       <Card class="item mr-6 mb-6 pb-4" v-for="(item, index) in taglist" :key="index">
         <div class="fsz-1.2">
-          <router-link class="hover" :to="'/jotting/' + item.id">
+          <router-link class="hover" :to="'/p/' + item.id">
             {{ item.title }}
           </router-link>
         </div>
@@ -31,7 +31,7 @@ watch(route, async () => {
           <el-icon>
             <i-ep-caret-right />
           </el-icon>
-          <router-link class="hover ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/jotting/' + item.id">
+          <router-link class="hover ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id">
             阅读全文
           </router-link>
         </div>

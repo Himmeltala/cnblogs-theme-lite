@@ -24,14 +24,14 @@ watch(route, value => {
     id="r-cabinet"
     style="width: 250px"
     class="noscroll fixed top-0 right-0 w-px-250 h-vh-100 px-2 z-999 bg-color ofw-auto">
-    <CabinetItem text="随笔目录" v-if="anchors && anchors.length > 0">
+    <CabinetItem text="随笔目录" v-if="anchors && anchors.length">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-location />
         </el-icon>
       </template>
       <div
-        class="catalog mb-3 fsz-0.9"
+        class="catalog mb-2 fsz-0.9"
         v-for="(item, index) in anchors"
         :key="index"
         v-html="item.content"
@@ -45,7 +45,7 @@ watch(route, value => {
       </template>
       <SkillGraph />
     </CabinetItem>
-    <CabinetItem text="常用链接" v-if="links && links.length > 0">
+    <CabinetItem text="常用链接" v-if="links && links.length">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-link />
@@ -60,20 +60,24 @@ watch(route, value => {
         {{ item.text }}
       </a>
     </CabinetItem>
-    <CabinetItem text="推荐书籍" v-if="books && books.length > 0">
+    <CabinetItem text="推荐书籍" v-if="books && books.length">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-notebook />
         </el-icon>
       </template>
-      <div class="mb-3 f-c-c" v-for="(item, index) in books" :key="index">
-        <img class="h-vh-10 w-vw-3.8" :src="item.img" alt="FAILED" />
-        <div class="ml-2" style="width: calc(100% - 3.8vw - 0.5rem)">
-          <span v-if="!item.href">{{ item.text }}</span>
-          <a class="hover fsz-0.9 pri-color" v-else :href="item.href" target="_blank">
-            {{ item.text }}
-          </a>
-          <div class="fsz-0.8 sec-color">{{ item.author }}</div>
+      <div class="mb-4 f-c-b" v-for="(item, index) in books" :key="index">
+        <img class="h-25 w-20" :src="item.img" alt="FAILED" />
+        <div style="width: calc(100% - 6rem)">
+          <div class="mb-1 fsz-0.9 pri-color" v-if="!item.href">
+            <span>{{ item.text }}</span>
+          </div>
+          <div class="mb-2 fsz-0.9 pri-color" v-else :href="item.href">
+            <a class="hover" target="_blank">
+              {{ item.text }}
+            </a>
+          </div>
+          <div class="mb-1 fsz-0.8 sec-color">{{ item.author }}</div>
           <el-rate style="width: 100%" v-model="item.rate" disabled size="small" />
         </div>
       </div>

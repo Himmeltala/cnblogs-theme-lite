@@ -82,7 +82,7 @@ async function vote(voteType: BlogType.VoteType) {
           class="fsz-0.8"
           :class="{ 'mr-2': index !== catesTags.cates.length - 1 }"
           :key="index">
-          <Label class="px-2 py-1.5" @click="nav('/cate/' + item.href, router)">
+          <Label class="px-2 py-1.5" @click="nav('/category/' + item.href, router)">
             {{ item.text }}
           </Label>
         </div>
@@ -202,9 +202,6 @@ pre {
   position: relative;
 
   code {
-    @include font-space($spacing: 0.12rem !important, $line: 1.6 !important);
-    --at-apply: fsz-1 rd-2;
-    font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace !important;
     background-color: var(--precode-bg-color) !important;
 
     &::-webkit-scrollbar {
@@ -215,13 +212,12 @@ pre {
 
     &:hover::-webkit-scrollbar {
       display: block;
-      width: 3px;
-      height: 3px;
     }
 
     &,
     span {
-      line-height: 1.4;
+      --at-apply: fsz-0.9;
+      @include font-space($spacing: 1px !important);
     }
   }
 }
@@ -270,14 +266,14 @@ blockquote {
   }
 
   p {
-    @include font-space($spacing: 0.12rem !important, $line: 1.7 !important);
+    @include font-space($spacing: 0.1rem !important, $line: 1.7 !important);
     margin: 0.7rem 0 !important;
   }
 
   ol,
   ul {
     li {
-      @include font-space($spacing: 0.12rem !important, $line: 1.7 !important);
+      @include font-space($spacing: 0.1rem !important, $line: 1.7 !important);
     }
 
     li:last-child {
@@ -286,6 +282,7 @@ blockquote {
   }
 
   table {
+    --at-apply: fsz-1;
     padding: 10px;
     box-sizing: border-box;
 

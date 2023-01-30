@@ -19,7 +19,7 @@ export function setLite() {
 
 export function useLite(dev?: Function, pro?: Function) {
   $("body").append(`<div id="app"></div>`);
-  preLog("Lite Theme Ver 1.0.0", "Powered By Himmelbleu");
+  preLog("Lite Theme v1.0.1", "Powered By Himmelbleu");
   preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
 
   // @ts-ignore

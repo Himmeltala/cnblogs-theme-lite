@@ -422,7 +422,6 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
 
 <style lang="scss">
 .c-content {
-  --at-apply: fsz-0.9;
   @include font-space();
 
   a {

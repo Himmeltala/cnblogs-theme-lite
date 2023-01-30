@@ -11,9 +11,9 @@
 
 html,
 body {
-  padding: 0 !important;
-  margin: 0 !important;
-  background-color: var(--bg-color) !important;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
   color: var(--pri-text-color);
   font-size: var(--font-size);
   font-weight: 300;
@@ -24,8 +24,8 @@ body {
   font-size: inherit;
   font-weight: inherit;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-    "微软雅黑", Arial, sans-serif !important;
-  letter-spacing: 0.05rem !important;
+    "微软雅黑", Arial, sans-serif;
+  letter-spacing: 0.05rem;
   word-break: break-all !important;
   line-break: anywhere !important;
   box-sizing: border-box !important;
@@ -79,8 +79,8 @@ a:link {
 }
 
 ::-webkit-scrollbar {
-  width: 0.15rem !important;
-  height: 0.15rem !important;
+  width: 0.15rem;
+  height: 0.15rem;
 }
 
 ::-webkit-scrollbar-thumb {

@@ -19,7 +19,6 @@ defineProps({
     标签
   </div>
   <div
-    style="white-space: nowrap !important"
     v-if="navor?.navs"
     v-for="(item, index) in navor.navs"
     :key="index"
