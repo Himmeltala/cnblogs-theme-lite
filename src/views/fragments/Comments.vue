@@ -259,7 +259,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
         <div class="f-c-s">
           <el-image class="mr-4 rd-50 w-14 h-14" :src="item.avatar" fit="fill" />
           <div>
-            <div class="hover cursor-pointer" @click="nav(item.space)">
+            <div class="hover cursor-pointer" @click="nav({ path: item.space })">
               {{ item.author }}
             </div>
             <div class="fsz-0.8 sec-color mt-2 f-c-c">

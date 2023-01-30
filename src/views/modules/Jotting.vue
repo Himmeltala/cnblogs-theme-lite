@@ -62,7 +62,7 @@ async function vote(voteType: BlogType.VoteType) {
       <div
         v-if="isOwner"
         class="f-c-c hover"
-        @click="nav('https://i.cnblogs.com/EditPosts.aspx?postid=' + postId)">
+        @click="nav({ path: 'https://i.cnblogs.com/EditPosts.aspx?postid=' + postId })">
         <el-icon class="mr-1">
           <i-ep-edit-pen />
         </el-icon>
@@ -82,7 +82,7 @@ async function vote(voteType: BlogType.VoteType) {
           class="fsz-0.8"
           :class="{ 'mr-2': index !== catesTags.cates.length - 1 }"
           :key="index">
-          <Label class="px-2 py-1.5" @click="nav('/category/' + item.href, router)">
+          <Label class="px-2 py-1.5" @click="nav({ path: '/sort/' + item.href, router })">
             {{ item.text }}
           </Label>
         </div>
@@ -99,13 +99,13 @@ async function vote(voteType: BlogType.VoteType) {
           class="fsz-0.8"
           :class="{ 'mr-2': index !== catesTags.tags.length - 1 }"
           :key="index">
-          <Label class="px-2 py-1.5" @click="nav('/tag/' + item.text, router)">
+          <Label class="px-2 py-1.5" @click="nav({ path: '/label/' + item.text, router })">
             {{ item.text }}
           </Label>
         </div>
       </div>
     </div>
-    <div id="e-content" class="mt-8" v-html="essay?.content" v-parse-code v-anchor />
+    <div id="p-content" class="mt-8 fsz-1.1" v-html="essay?.content" v-parse-code v-anchor />
     <div class="divider" />
     <div class="sec-color f-c-e fsz-0.8">
       <div class="f-c-c mr-4">
@@ -202,7 +202,7 @@ pre {
   position: relative;
 
   code {
-    background-color: var(--precode-bg-color) !important;
+    background: var(--precode-bg-color) !important;
 
     &::-webkit-scrollbar {
       display: none;
@@ -241,7 +241,7 @@ code {
 blockquote {
   --at-apply: rd-1 sec-color;
   margin: 0;
-  background-color: var(--precode-bg-color);
+  background: var(--precode-bg-color);
   padding: {
     left: 0.5rem;
     top: 0.1rem;
@@ -256,8 +256,12 @@ blockquote {
   }
 }
 
-#e-content {
-  --at-apply: fsz-1.1;
+#p-content {
+  u {
+    text-decoration: none;
+    padding-bottom: 1px;
+    border-bottom: 1px solid var(--pri-text-color);
+  }
 
   a {
     padding-bottom: 1px;

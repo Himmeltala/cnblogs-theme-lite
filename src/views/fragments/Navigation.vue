@@ -13,7 +13,7 @@ const navor = __LITE_CONFIG__.navor;
     :style="{ 'justify-content': navor?.header ? 'space-between' : 'flex-end' }">
     <div
       class="hover fsz-1.5 font-normal f-c-c sec-color"
-      @click="nav('/', router)"
+      @click="nav({ path: '/', router })"
       v-if="navor?.header"
       v-html="navor.header"></div>
     <div class="f-c-c fsz-1">

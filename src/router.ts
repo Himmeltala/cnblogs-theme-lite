@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { compareUrl, parseUrlData, reviseUrl, RouteName } from "@/helpers/route-helper";
+import { ifRewriteURL, RouteName } from "@/helpers/route-helper";
 
 const routes = [
   {
@@ -14,17 +14,17 @@ const routes = [
   },
   {
     name: RouteName.CATEGORY,
-    path: "/category/:id",
+    path: "/sort/:id",
     component: () => import("./views/modules/Category.vue")
   },
   {
     name: RouteName.TAGCOLL,
-    path: "/tag/:tag",
+    path: "/label/:tag",
     component: () => import("./views/modules/TagColl.vue")
   },
   {
     name: RouteName.TAGS,
-    path: "/tags",
+    path: "/labels",
     component: () => import("./views/modules/Tags.vue")
   },
   {
@@ -47,30 +47,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const data = parseUrlData(window.location.href);
+  const rewrite = ifRewriteURL(next);
+
   if (to.name === RouteName.HOME) {
-    if (compareUrl(data, RouteName.JOTTING)) {
-      reviseUrl(`p/${data.text}`);
-      next({ name: RouteName.JOTTING, params: { id: data.id } });
-    } else if (compareUrl(data, RouteName.CATEGORY)) {
-      reviseUrl(`category/${data.id}/${data.page}`);
-      next({ name: RouteName.CATEGORY, params: { id: data.id, page: data.page } });
-    } else if (compareUrl(data, RouteName.TAGCOLL)) {
-      reviseUrl(`tag/${data.tag}`);
-      next({ name: RouteName.TAGCOLL, params: { tag: data.tag } });
-    } else if (compareUrl(data, RouteName.GALLERY)) {
-      reviseUrl(`gallery`);
-      next({ name: RouteName.GALLERY });
-    } else {
-      next();
-    }
+    rewrite();
   } else {
-    if (compareUrl(data, RouteName.JOTTING)) {
-      reviseUrl(`jotting/${data.text}`);
-      next({ name: RouteName.JOTTING, params: { id: data.id } });
-    } else {
-      next();
-    }
+    rewrite();
   }
 });
 

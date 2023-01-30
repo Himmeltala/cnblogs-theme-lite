@@ -28,7 +28,9 @@ const router = useRouter();
         :src="item.surface"
         fit="cover" />
       <div :class="{ 'w-%-100': !item.surface, 'w-%-60': item.surface }">
-        <div class="hover mb-5 fsz-1.3 cursor-pointer" @click="nav('/p/' + item.id, router)">
+        <div
+          class="hover mb-5 fsz-1.3 cursor-pointer"
+          @click="nav({ path: '/p/' + item.id, router })">
           {{ item.text }}
         </div>
         <div class="thr-color" :class="{ 'mb-5': !item.surface }">{{ item.desc }}</div>

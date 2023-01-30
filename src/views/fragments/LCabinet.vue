@@ -66,7 +66,7 @@ async function unfocus() {
           <el-button @click="focus" v-if="!isFollow" type="primary" text bg> +关注博主 </el-button>
         </div>
         <div class="item" v-for="(item, index) in blogger" :key="index">
-          <div class="text hover" @click="nav(item.href)">
+          <div class="text hover" @click="nav({ path: item.href })">
             <div class="f-c-s" v-if="index === 0">
               <el-icon class="mr-2">
                 <i-ep-user-filled />
@@ -129,38 +129,38 @@ async function unfocus() {
         <el-tabs stretch type="card" v-model="tabName">
           <el-tab-pane label="随笔" name="随笔">
             <div class="item" v-for="(item, index) in cates.cates" :key="index">
-              <div class="text hover" @click="nav('/category/' + item.id, router)">
+              <div class="text hover" @click="nav({ path: '/sort/' + item.id, router })">
                 {{ item.text }}
               </div>
             </div>
           </el-tab-pane>
           <el-tab-pane label="标签" name="标签">
             <div class="item" v-for="(item, index) in cates.tags" :key="index">
-              <div class="text hover" @click="nav('/tag/' + item.id, router)">
+              <div class="text hover" @click="nav({ path: '/label/' + item.id, router })">
                 {{ item.text }}
               </div>
             </div>
             <div class="item">
-              <div class="text hover" @click="nav('/tags', router)">更多...</div>
+              <div class="text hover" @click="nav({ path: '/labels', router })">更多...</div>
             </div>
           </el-tab-pane>
           <el-tab-pane label="阅读排行榜" name="阅读排行榜">
             <div class="item" v-for="(item, index) in toplist" :key="index">
-              <div class="text hover" @click="nav('/p/' + item.id, router)">
+              <div class="text hover" @click="nav({ path: '/p/' + item.id, router })">
                 {{ item.text }}
               </div>
             </div>
           </el-tab-pane>
           <el-tab-pane label="推荐排行榜" name="推荐排行榜">
             <div class="item" v-for="(item, index) in toplist" :key="index">
-              <div class="text hover" @click="nav('/p/' + item.id, router)">
+              <div class="text hover" @click="nav({ path: '/p/' + item.id, router })">
                 {{ item.text }}
               </div>
             </div>
           </el-tab-pane>
           <el-tab-pane label="评论排行榜" name="评论排行榜">
             <div class="item" v-for="(item, index) in toplist" :key="index">
-              <div class="text hover" @click="nav('/p/' + item.id, router)">
+              <div class="text hover" @click="nav({path: '/p/' + item.id, router})">
                 {{ item.text }}
               </div>
             </div>
