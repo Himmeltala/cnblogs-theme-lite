@@ -72,8 +72,8 @@ watch(route, value => {
           <div class="mb-1 fsz-0.9 pri-color" v-if="!item.href">
             <span>{{ item.text }}</span>
           </div>
-          <div class="mb-2 fsz-0.9 pri-color" v-else :href="item.href">
-            <a class="hover" target="_blank">
+          <div class="mb-2 fsz-0.9 pri-color" v-else>
+            <a class="hover" target="_blank" :href="item.href">
               {{ item.text }}
             </a>
           </div>

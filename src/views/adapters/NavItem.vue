@@ -33,7 +33,7 @@ defineProps({
         class="w-6 h-6"
         v-if="(item.svg || item.img) && item.svg"
         fill="var(--pri-text-color)"
-        @click="nav(item.href)"
+        @click="nav({ path: item.href })"
         viewBox="0 0 1024 1024"
         v-html="item.svg" />
       <img

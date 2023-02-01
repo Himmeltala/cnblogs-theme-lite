@@ -106,7 +106,7 @@ function rewriteURL(slice: string): void {
   window.history.pushState("", "", redirectUrl);
 }
 
-export function nav(params: { path?: string; router?: Router }) {
+export function nav(params: { path: string; router?: Router }) {
   if (params.path === "back") {
     params.router.go(-1);
   } else {
