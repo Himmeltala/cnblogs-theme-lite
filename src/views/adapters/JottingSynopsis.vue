@@ -19,7 +19,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="f-c fsz-0.9 sec-color" :style="{ 'justify-content': align }">
+  <div class="f-c fsz-0.9 l-sec-color" :style="{ 'justify-content': align }">
     <div class="mr-3 f-c-c">
       <el-icon class="mr-1">
         <i-ep-clock />

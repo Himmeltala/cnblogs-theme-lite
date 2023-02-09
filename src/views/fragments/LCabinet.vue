@@ -36,7 +36,7 @@ async function unfocus() {
 </script>
 
 <template>
-  <div id="l-cabinet" class="fixed top-0 left-0 w-px-250 h-vh-100 px-2 z-999 bg-color">
+  <div id="l-cabinet" class="fixed top-0 left-0 w-250px h-100vh px-2 z-999 l-box-bg">
     <div class="content noscroll ofw-auto">
       <CabinetItem text="博客信息">
         <template #icon>
@@ -160,7 +160,7 @@ async function unfocus() {
           </el-tab-pane>
           <el-tab-pane label="评论排行榜" name="评论排行榜">
             <div class="item" v-for="(item, index) in toplist" :key="index">
-              <div class="text hover" @click="nav({path: '/p/' + item.id, router})">
+              <div class="text hover" @click="nav({ path: '/p/' + item.id, router })">
                 {{ item.text }}
               </div>
             </div>
@@ -181,17 +181,17 @@ async function unfocus() {
   }
 
   .content {
-    --at-apply: h-%-100;
+    --at-apply: h-100%;
   }
 }
 
 @media screen and (max-width: 1000px) {
   .navigation {
-    --at-apply: h-%-5;
+    --at-apply: h-5%;
   }
 
   .content {
-    --at-apply: h-%-95;
+    --at-apply: h-95%;
   }
 }
 

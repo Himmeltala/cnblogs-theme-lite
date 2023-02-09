@@ -9,7 +9,7 @@ const navor = __LITE_CONFIG__.navor;
 <template>
   <div
     id="navigation"
-    class="fixed top-0 h-vh-6 f-c-c bg-color z-999 w-vw-50"
+    class="fixed top-0 h-6vh f-c-c l-box-bg z-999 w-50vw"
     :style="{ 'justify-content': navor?.header ? 'space-between' : 'flex-end' }">
     <div
       class="hover fsz-1.5 font-normal f-c-c sec-color"

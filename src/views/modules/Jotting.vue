@@ -40,7 +40,7 @@ async function vote(voteType: BlogType.VoteType) {
 <template>
   <div id="l-jotting">
     <div class="fsz-1.5">{{ essay.text }}</div>
-    <div class="sec-color f-c-s mt-4 fsz-0.8">
+    <div class="l-sec-color f-c-s mt-4 fsz-0.8">
       <div class="f-c-c mr-4">
         <el-icon class="mr-1">
           <i-ep-clock />
@@ -69,7 +69,7 @@ async function vote(voteType: BlogType.VoteType) {
         <span>编辑</span>
       </div>
     </div>
-    <div class="sec-color mt-4">
+    <div class="l-sec-color mt-4">
       <div class="mb-2 f-c-s" v-if="catesTags.cates.length > 0">
         <div class="f-c-c fsz-1">
           <el-icon class="mr-1">
@@ -107,7 +107,7 @@ async function vote(voteType: BlogType.VoteType) {
     </div>
     <div id="p-content" class="mt-8 fsz-1.1" v-html="essay?.content" v-parse-code v-anchor />
     <div class="divider" />
-    <div class="sec-color f-c-e fsz-0.8">
+    <div class="l-sec-color f-c-e fsz-0.8">
       <div class="f-c-c mr-4">
         <el-icon class="mr-1">
           <i-ep-clock />
@@ -132,13 +132,17 @@ async function vote(voteType: BlogType.VoteType) {
         <el-icon>
           <i-ep-d-arrow-left />
         </el-icon>
-        <a class="hover pri-color" :href="prevNext.prev.href"> 上一篇：{{ prevNext.prev.text }} </a>
+        <a class="hover l-pri-color" :href="prevNext.prev.href">
+          上一篇：{{ prevNext.prev.text }}
+        </a>
       </div>
       <div class="next hover f-c-s" v-if="prevNext.next.href">
         <el-icon>
           <i-ep-d-arrow-right />
         </el-icon>
-        <a class="hover pri-color" :href="prevNext.next.href"> 下一篇：{{ prevNext.next.text }} </a>
+        <a class="hover l-pri-color" :href="prevNext.next.href">
+          下一篇：{{ prevNext.next.text }}
+        </a>
       </div>
     </div>
     <div class="my-10 f-c-e">
@@ -202,12 +206,11 @@ pre {
   position: relative;
 
   code {
-    background: var(--precode-bg-color) !important;
+    background: var(--l-precode-bg) !important;
 
     &::-webkit-scrollbar {
       display: none;
-      width: 3px;
-      height: 3px;
+      height: 0.4rem;
     }
 
     &:hover::-webkit-scrollbar {
@@ -216,15 +219,16 @@ pre {
 
     &,
     span {
-      --at-apply: fsz-0.9;
-      @include font-space($spacing: 1.6px !important);
+      --at-apply: fsz-1;
+      font-family: Hack, monospace;
+      @include font-space($spacing: 0.5px);
     }
   }
 }
 
 code {
   --at-apply: rd-2;
-  background: var(--code-bg-color);
+  background: var(--l-code-bg);
   color: var(--el-color-danger-light-3);
   padding: 0.15rem 0.4rem;
   margin: 0;
@@ -239,9 +243,9 @@ code {
 }
 
 blockquote {
-  --at-apply: rd-1 sec-color;
+  --at-apply: rd-1 l-sec-color;
   margin: 0;
-  background: var(--precode-bg-color);
+  background: var(--l-precode-bg);
   padding: {
     left: 0.5rem;
     top: 0.1rem;
@@ -260,12 +264,12 @@ blockquote {
   u {
     text-decoration: none;
     padding-bottom: 1px;
-    border-bottom: 1px solid var(--pri-text-color);
+    border-bottom: 1px solid var(--l-pri-color);
   }
 
   a {
     padding-bottom: 1px;
-    border-bottom: 1px dotted var(--pri-text-color);
+    border-bottom: 1px dotted var(--l-pri-color);
     @include hover($border-color: bottom);
   }
 
@@ -297,16 +301,16 @@ blockquote {
     th,
     td {
       padding: 8px 13px;
-      border-bottom: 1px solid var(--divider-color);
+      border-bottom: 1px solid var(--l-divider-bg);
     }
 
     th,
     tr:nth-child(odd) {
-      background-color: var(--precode-bg-color);
+      background-color: var(--l-precode-bg);
     }
 
     tr:nth-child(even) {
-      background-color: var(--code-bg-color);
+      background-color: var(--l-code-bg);
     }
   }
 }

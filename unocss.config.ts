@@ -1,13 +1,6 @@
 import { Rule, UserShortcuts } from "unocss";
 
 const rules = <Rule<any>[]>[
-  // 宽度、rem、em、px、%、vh、vw
-  [/^w-(px|rem|em|vh|vw|%)-(\d+)$/, ([, uint, val]) => ({ width: `${val}${uint} !important` })],
-  [/^h-(px|rem|em|vh|vw|%)-(\d+)$/, ([, uint, val]) => ({ height: `${val}${uint} !important` })],
-  [/^l-(px|rem|em|vh|vw|%)-(\d+)$/, ([, uint, val]) => ({ left: `${val}${uint} !important` })],
-  [/^t-(px|rem|em|vh|vw|%)-(\d+)$/, ([, uint, val]) => ({ top: `${val}${uint} !important` })],
-  [/^b-(px|rem|em|vh|vw|%)-(\d+)$/, ([, uint, val]) => ({ botom: `${val}${uint} !important` })],
-  [/^r-(px|rem|em|vh|vw|%)-(\d+)$/, ([, uint, val]) => ({ right: `${val}${uint} !important` })],
   // 字体
   [/^fsz-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "font-size": `${d}rem !important` })],
   // 间距
@@ -24,10 +17,10 @@ const rules = <Rule<any>[]>[
     /^wce-(normal|pre|nowrap|pre-wrap|pre-line)$/,
     ([, d]) => ({ "white-space": `${d} !important` })
   ],
-  // 文本颜色
-  [/^(pri|sec|thr)-color$/, ([, d]) => ({ color: `var(--${d}-text-color) !important` })],
-  // 背景颜色
-  [/^bg-color$/, ([, d]) => ({ "background-color": `var(--bg-color) !important` })]
+  // font color
+  [/^l-([a-z]*)-color$/, ([, d]) => ({ color: `var(--l-${d}-color) !important` })],
+  // background color
+  [/^l-([a-z]*)-bg$/, ([, d]) => ({ "background-color": `var(--l-${d}-bg) !important` })]
 ];
 
 const shortcuts = <UserShortcuts>[

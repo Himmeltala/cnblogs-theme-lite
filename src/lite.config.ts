@@ -19,6 +19,9 @@ export function setLite() {
 
 export function useLite(dev?: Function, pro?: Function) {
   $("body").append(`<div id="app"></div>`);
+  $("head").append(
+    `<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack-subset.css" />`
+  );
   preLog("Lite Theme v1.0.2", "Powered By Himmelbleu");
   preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
 

@@ -23,7 +23,7 @@ watch(route, value => {
   <div
     id="r-cabinet"
     style="width: 250px"
-    class="noscroll fixed top-0 right-0 w-px-250 h-vh-100 px-2 z-999 bg-color ofw-auto">
+    class="noscroll fixed top-0 right-0 w-250px h-100vh px-2 z-999 l-box-bg ofw-auto">
     <CabinetItem text="随笔目录" v-if="anchors && anchors.length">
       <template #icon>
         <el-icon style="margin-right: 5px">
@@ -52,7 +52,7 @@ watch(route, value => {
         </el-icon>
       </template>
       <a
-        class="hover block mb-3 fsz-0.9 pri-color"
+        class="hover block mb-3 fsz-0.9 l-pri-color"
         v-for="(item, index) in links"
         :key="index"
         :href="item.href"
@@ -69,15 +69,15 @@ watch(route, value => {
       <div class="mb-4 f-c-b" v-for="(item, index) in books" :key="index">
         <img class="h-25 w-20" :src="item.img" alt="FAILED" />
         <div style="width: calc(100% - 6rem)">
-          <div class="mb-1 fsz-0.9 pri-color" v-if="!item.href">
+          <div class="mb-1 fsz-0.9 l-pri-color" v-if="!item.href">
             <span>{{ item.text }}</span>
           </div>
-          <div class="mb-2 fsz-0.9 pri-color" v-else>
+          <div class="mb-2 fsz-0.9 l-pri-color" v-else>
             <a class="hover" target="_blank" :href="item.href">
               {{ item.text }}
             </a>
           </div>
-          <div class="mb-1 fsz-0.8 sec-color">{{ item.author }}</div>
+          <div class="mb-1 fsz-0.8 l-sec-color">{{ item.author }}</div>
           <el-rate style="width: 100%" v-model="item.rate" disabled size="small" />
         </div>
       </div>

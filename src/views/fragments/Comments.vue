@@ -262,7 +262,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
             <div class="hover cursor-pointer" @click="nav({ path: item.space })">
               {{ item.author }}
             </div>
-            <div class="fsz-0.8 sec-color mt-2 f-c-c">
+            <div class="fsz-0.8 l-sec-color mt-2 f-c-c">
               <div :id="'level-' + item.commentId" class="mr-2">
                 <span v-if="commentAnchor === item.commentId" ref="level">{{ item.layer }}</span>
                 <span v-else>{{ item.layer }}</span>
@@ -306,7 +306,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
                 placeholder="请回复一条友善的评论，支持 Markdown 语法" />
             </div>
           </div>
-          <div class="actions f-c-e cursor-pointer fsz-0.8 sec-color">
+          <div class="actions f-c-e cursor-pointer fsz-0.8 l-sec-color">
             <div
               v-show="!item.replayEditable && !item.isEditingUpdate"
               class="hover mr-4 f-c-e"
