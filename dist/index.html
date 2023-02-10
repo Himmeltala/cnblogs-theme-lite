@@ -4,6 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lite</title>
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [
+            ["$", "$"],
+            ["\\(", "\\)"]
+          ],
+          displayMath: [
+            ["$$", "$$"],
+            ["\\[", "\\]"]
+          ],
+          processEnvironments: true,
+          processRefs: true
+        },
+        options: {
+          skipHtmlTags: ["noscript", "style", "textarea", "pre", "code"],
+          ignoreHtmlClass: "tex2jax_ignore"
+        },
+        svg: {
+          fontCache: "global"
+        }
+      };
+    </script>
+    <script async src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.0/es5/tex-chtml.js"></script>
     <style>
       #home {
         display: none !important;

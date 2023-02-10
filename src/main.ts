@@ -23,11 +23,10 @@ app.use(createPinia());
 useDirective(app);
 useLite(
   () => app.mount("#app"),
-  () => {
+  () =>
     // @ts-ignore
-    window["__LITE_CONFIG__"].onLoaded = () => {
+    (window["__LITE_CONFIG__"].onLoaded = () => {
       setLite();
       app.mount("#app");
-    };
-  }
+    })
 );

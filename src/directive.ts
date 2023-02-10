@@ -19,6 +19,12 @@ export function useDirective(Vue: any) {
           $(elem).parent().prepend(`<span class="cblock">${lang}</span>`);
           hljs.highlightElement(elem);
         });
+
+      // @ts-ignore
+      window.MathJax.startup.promise = MathJax.startup.promise
+        // @ts-ignore
+        .then(() => window.MathJax.typesetPromise(document.querySelectorAll(".math")))
+        .catch((err: any) => console.error(err));
     }
   });
 
