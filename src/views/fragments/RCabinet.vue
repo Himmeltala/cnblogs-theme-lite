@@ -35,7 +35,7 @@ watch(route, value => {
         v-for="(item, index) in anchors"
         :key="index"
         v-html="item.content"
-        v-anchor-events="item" />
+        v-anchor-event="item" />
     </CabinetItem>
     <CabinetItem text="我的技术栈" v-if="__LITE_CONFIG__.graph">
       <template #icon>

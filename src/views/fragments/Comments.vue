@@ -275,7 +275,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
           <div class="z--1 opacity-0 absolute top-0 left-0">
             <textarea :id="'upload-img-' + index" />
           </div>
-          <div class="c-content" v-show="!item.updateEditable" v-html="item.content" v-parse-code />
+          <div class="c-content" v-show="!item.updateEditable" v-html="item.content" v-hljs />
           <div class="editarea" v-show="item.updateEditable">
             <div class="tools mb-2 f-c-e">
               <el-tooltip effect="dark" content="插入图片" placement="top-start">
@@ -448,7 +448,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
   --at-apply: mb-5 rd-2;
   border: 1px solid var(--el-border-color-lighter);
   background-color: var(--textarea-bg-color);
-  @include hover($border-color: all);
+  @include hover($border-color: all, $font-color: false);
 }
 
 .pusharea {

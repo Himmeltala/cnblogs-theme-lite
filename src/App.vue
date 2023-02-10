@@ -4,38 +4,23 @@ const hiddenLCabinet = ref(true);
 const hiddenRCabinet = ref(true);
 
 function listener(el: string, fn: any, ev?: string) {
-  document.querySelector(el).addEventListener(ev || "mouseover", fn);
+  document.querySelector(el).addEventListener(ev || "click", fn);
 }
 
 onMounted(() => {
-  listener("#nav-strip", () => (hiddenNavModal.value = !hiddenNavModal.value));
-  listener(
-    "#lcabinet-strip",
-    () => {
-      hiddenLCabinet.value = !hiddenLCabinet.value;
-      if (!hiddenRCabinet.value) hiddenRCabinet.value = !hiddenRCabinet.value;
-    },
-    "click"
-  );
-  listener(
-    "#rcabinet-strip",
-    () => {
-      hiddenRCabinet.value = !hiddenRCabinet.value;
-      if (!hiddenLCabinet.value) hiddenLCabinet.value = !hiddenLCabinet.value;
-    },
-    "click"
-  );
-  listener(
-    "#full-modal",
-    () => {
-      if (!hiddenLCabinet.value) {
-        hiddenLCabinet.value = true;
-      } else if (!hiddenRCabinet.value) {
-        hiddenRCabinet.value = true;
-      }
-    },
-    "click"
-  );
+  listener("#nav-strip", () => (hiddenNavModal.value = !hiddenNavModal.value), "mouseover");
+  listener("#lcabinet-strip", () => {
+    hiddenLCabinet.value = !hiddenLCabinet.value;
+    if (!hiddenRCabinet.value) hiddenRCabinet.value = !hiddenRCabinet.value;
+  });
+  listener("#rcabinet-strip", () => {
+    hiddenRCabinet.value = !hiddenRCabinet.value;
+    if (!hiddenLCabinet.value) hiddenLCabinet.value = !hiddenLCabinet.value;
+  });
+  listener("#full-modal", () => {
+    if (!hiddenLCabinet.value) hiddenLCabinet.value = true;
+    else if (!hiddenRCabinet.value) hiddenRCabinet.value = true;
+  });
 });
 </script>
 
@@ -92,15 +77,15 @@ onMounted(() => {
 <style scoped lang="scss">
 $quota: 10;
 
-@media screen and (max-width: 1000px) {
+@include pc() {
   #l-content {
-    --at-apply: p-5 w-100%;
+    --at-apply: py-5 w-50vw;
   }
 }
 
-@media screen and (min-width: 1000px) {
+@include mb() {
   #l-content {
-    --at-apply: py-5 w-50vw;
+    --at-apply: p-5 w-100%;
   }
 }
 

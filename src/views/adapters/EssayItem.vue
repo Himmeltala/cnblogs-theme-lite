@@ -24,10 +24,10 @@ const router = useRouter();
     <div class="f-c-b" :class="{ 'mb-5': item.surface }">
       <el-image
         v-if="index % 2 !== 0 && item.surface"
-        class="h-35 rd-2 w-38%"
+        class="cover h-35 rd-2"
         :src="item.surface"
         fit="cover" />
-      <div :class="{ 'w-100%': !item.surface, 'w-60%': item.surface }">
+      <div :class="{ 'w-100%': !item.surface, 'has-cover w-60%': item.surface }">
         <div
           class="hover mb-5 fsz-1.3 cursor-pointer"
           @click="nav({ path: '/p/' + item.id, router })">
@@ -37,7 +37,7 @@ const router = useRouter();
       </div>
       <el-image
         v-if="index % 2 === 0 && item.surface"
-        class="h-35 rd-2 w-38%"
+        class="cover h-35 rd-2"
         :src="item.surface"
         fit="cover" />
     </div>
@@ -49,8 +49,30 @@ const router = useRouter();
         阅读全文
       </router-link>
     </div>
-    <JottingSynopsis
+    <EssaySynopsis
       :align="'flex-end'"
       :data="{ date: item.date, comm: item.comm, digg: item.digg, view: item.view }" />
   </Card>
 </template>
+
+<style scoped lang="scss">
+@include pc() {
+  .cover {
+    --at-apply: w-26%;
+  }
+
+  .has-cover {
+    --at-apply: w-72%;
+  }
+}
+
+@include mb() {
+  .cover {
+    --at-apply: w-38%;
+  }
+
+  .has-cover {
+    --at-apply: w-60%;
+  }
+}
+</style>

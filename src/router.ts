@@ -8,9 +8,9 @@ const routes = [
     component: () => import("./views/modules/Home.vue")
   },
   {
-    name: RouteName.JOTTING,
+    name: RouteName.ESSAY,
     path: "/p/:id",
-    component: () => import("./views/modules/Jotting.vue")
+    component: () => import("./views/modules/Essay.vue")
   },
   {
     name: RouteName.CATEGORY,

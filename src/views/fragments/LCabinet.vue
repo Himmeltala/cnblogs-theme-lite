@@ -175,7 +175,7 @@ async function unfocus() {
 </template>
 
 <style scoped lang="scss">
-@media screen and (min-width: 1000px) {
+@include pc() {
   .navigation {
     display: none;
   }
@@ -185,7 +185,7 @@ async function unfocus() {
   }
 }
 
-@media screen and (max-width: 1000px) {
+@include mb() {
   .navigation {
     --at-apply: h-5%;
   }

@@ -23,8 +23,7 @@ const navor = __LITE_CONFIG__.navor;
 </template>
 
 <style lang="scss">
-@media screen and (max-width: 1000px) {
-  #nmask,
+@include mb() {
   #navigation {
     display: none;
   }

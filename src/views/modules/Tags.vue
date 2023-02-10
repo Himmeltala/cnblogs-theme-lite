@@ -21,7 +21,7 @@ closeLoader();
 #l-tags {
   @include flex($justify: space-between, $items: stretch, $content: stretch);
 
-  @media screen and (min-width: 1000px) {
+  @include pc() {
     .item {
       flex: 1 1 20%;
 
@@ -31,7 +31,7 @@ closeLoader();
     }
   }
 
-  @media screen and (max-width: 1000px) {
+  @include mb() {
     .item {
       flex: 1 1 40%;
 

@@ -105,7 +105,7 @@ async function vote(voteType: BlogType.VoteType) {
         </div>
       </div>
     </div>
-    <div id="p-content" class="mt-8 fsz-1.1" v-html="essay?.content" v-parse-code v-anchor />
+    <div id="p-content" class="mt-8 fsz-1.1" v-html="essay?.content" v-hljs v-anchor v-mathjax />
     <div class="divider" />
     <div class="l-sec-color f-c-e fsz-0.8">
       <div class="f-c-c mr-4">

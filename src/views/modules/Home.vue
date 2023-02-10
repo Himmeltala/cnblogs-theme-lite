@@ -26,7 +26,7 @@ async function nexpr(e: any) {
   <div id="l-home">
     <Pagination ref="pagination" @prev="prev" @next="next" @nexpr="nexpr" :page-count="pageCount">
       <template #content>
-        <JottingItem v-if="data" :data="data" />
+        <EssayItem v-if="data" :data="data" />
       </template>
     </Pagination>
   </div>

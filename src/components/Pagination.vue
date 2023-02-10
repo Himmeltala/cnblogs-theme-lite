@@ -91,7 +91,7 @@ function nexprChange(elIndex: number) {
   opacity: 0.5;
 }
 
-@media screen and (max-width: 1000px) {
+@include mb() {
   .sorter {
     display: none;
   }

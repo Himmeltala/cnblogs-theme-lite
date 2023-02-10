@@ -23,7 +23,7 @@ import { __LITE_CONFIG__ } from "@/lite.config";
 </template>
 
 <style scoped lang="scss">
-@media screen and (max-width: 1000px) {
+@include mb() {
   #github {
     display: none;
   }

@@ -16,13 +16,15 @@
   flex-direction: $row;
 }
 
-@mixin hover($border-color: bottom) {
+@mixin hover($border-color: bottom, $font-color: true) {
   transition: 0.3s !important;
   cursor: pointer !important;
 
   &:hover {
     transition: 0.3s !important;
-    color: var(--el-color-primary) !important;
+    @if ($font-color == true) {
+      color: var(--el-color-primary) !important;
+    }
     @if $border-color == bottom {
       border-bottom-color: var(--el-color-primary) !important;
     } @else if $border-color == all {
@@ -34,4 +36,16 @@
 @mixin font-space($spacing: 1px, $line: 1.6) {
   letter-spacing: $spacing;
   line-height: $line;
+}
+
+@mixin pc() {
+  @media screen and (min-width: 1000px) {
+    @content;
+  }
+}
+
+@mixin mb() {
+  @media screen and (max-width: 1000px) {
+    @content;
+  }
 }

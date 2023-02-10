@@ -12,7 +12,7 @@ import { blogApp } from "@/lite.config";
 import { useCommentsAnchorStore } from "@/store";
 
 export enum RouteName {
-  JOTTING = "jotting",
+  ESSAY = "essay",
   HOME = "home",
   CATEGORY = "sort",
   TAGCOLL = "label",
@@ -21,7 +21,7 @@ export enum RouteName {
 }
 
 const routeReg = {
-  JOTTING: /\/p\/\d+.html/g,
+  ESSAY: /\/p\/\d+.html/g,
   CATEGORY: /\/category\/\d+/g,
   TAGCOLL: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
   Tags: /\d/g,
@@ -52,11 +52,11 @@ export function ifRewriteURL(next: any): () => void {
   let routeData: any;
   const URL = window.location.href;
 
-  if (routeReg.JOTTING.test(URL)) {
-    const id = URL.match(routeReg.JOTTING)[0].split("/")[2].split(".")[0];
+  if (routeReg.ESSAY.test(URL)) {
+    const id = URL.match(routeReg.ESSAY)[0].split("/")[2].split(".")[0];
     storeCommentAnchor(URL);
     routeData = {
-      name: RouteName.JOTTING,
+      name: RouteName.ESSAY,
       params: { id },
       rewrite() {
         rewriteURL(id);

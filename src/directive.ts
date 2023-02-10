@@ -3,7 +3,7 @@ import hljs from "highlight.js";
 import { makeAnchor, makeAnchorEvent } from "@/utils/common";
 
 export function useDirective(Vue: any) {
-  Vue.directive("parse-code", {
+  Vue.directive("hljs", {
     mounted(el: any) {
       $(el)
         .find("pre code")
@@ -19,12 +19,20 @@ export function useDirective(Vue: any) {
           $(elem).parent().prepend(`<span class="cblock">${lang}</span>`);
           hljs.highlightElement(elem);
         });
+    }
+  });
 
+  Vue.directive("mathjax", {
+    mounted(el: any) {
       // @ts-ignore
-      window.MathJax.startup.promise = MathJax.startup.promise
-        // @ts-ignore
-        .then(() => window.MathJax.typesetPromise(document.querySelectorAll(".math")))
-        .catch((err: any) => console.error(err));
+      const MathJax = window.MathJax;
+      const mathDom = document.querySelectorAll(".math");
+
+      if (MathJax && mathDom.length > 0) {
+        MathJax.startup.promise = MathJax.startup.promise
+          .then(() => MathJax.typesetPromise(mathDom))
+          .catch((err: any) => console.error(err));
+      }
     }
   });
 
@@ -34,7 +42,7 @@ export function useDirective(Vue: any) {
     }
   });
 
-  Vue.directive("anchor-events", {
+  Vue.directive("anchor-event", {
     mounted(el: any, binding: any) {
       makeAnchorEvent(binding.value);
     }

@@ -51,7 +51,7 @@ watch(route, async () => {
     flex: 1 1 40%;
   }
 
-  @media screen and (max-width: 1000px) {
+  @include mb() {
     .item {
       flex: 1 1 100%;
     }

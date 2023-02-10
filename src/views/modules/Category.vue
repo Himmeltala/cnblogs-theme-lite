@@ -34,7 +34,7 @@ watch(route, async () => {
     <Pagination @nexpr="nexpr" @next="next" @prev="prev" :page-count="pageCount">
       <template #content>
         <div class="fsz-1.25 mb-10">{{ label }}</div>
-        <JottingItem v-if="data" :data="data" />
+        <EssayItem v-if="data" :data="data" />
       </template>
     </Pagination>
   </div>
