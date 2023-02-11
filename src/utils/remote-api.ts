@@ -279,3 +279,31 @@ export async function unfollow() {
   });
   return data === "取消成功" ?? false;
 }
+
+/**
+ * 检测是否解锁博文
+ *
+ * @param password 博文阅读密码
+ * @param id 博文 ID
+ * @returns 输入密码正确时返回 true
+ */
+export async function getIsUnlock(password: string, id: string) {
+  const formData = new FormData();
+  formData.append("Password", password);
+  const { data } = await sendAwaitPost(`${baseAPI}/protected/p/${id}.html`, formData);
+  return Parser.parseIsUnLock(data);
+}
+
+/**
+ * 获取上锁的博文内容，普通的 API 无法获取
+ *
+ * @param password 博文阅读密码
+ * @param id 博文 ID
+ * @returns 输入密码正确时返回这个博文内容
+ */
+export async function getLockedEssay(password: string, id: number) {
+  const formData = new FormData();
+  formData.append("Password", password);
+  const { data } = await sendAwaitPost(`${baseAPI}/protected/p/${id}.html`, formData);
+  return Parser.parseEssay(id, data);
+}

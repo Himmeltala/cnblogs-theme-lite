@@ -17,6 +17,7 @@ export interface Jotting {
   digg?: string;
   // 随笔封面
   surface?: string;
+  isLocked?: boolean;
 }
 
 export interface Comment {

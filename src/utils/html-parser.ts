@@ -60,19 +60,23 @@ export function parseEssayList(realDOM: any, calc: boolean): CustType.JottingLis
 
   $(describe).each((i, e) => {
     const surface = $(e).find(".desc_img").attr("src");
+    const isLocked = $(id[i]).find(`img[title="密码保护"]`).attr("title") ? true : false;
+    const identifier = parseInt(
+      $(id[i])
+        .attr("href")!
+        .match(/[0-9]+/g)![0]
+    );
+
     array.push({
-      id: parseInt(
-        $(id[i])
-          .attr("href")!
-          .match(/[0-9]+/g)![0]
-      ),
+      id: identifier,
       text: $(title[i]).text().trim(),
       desc: regTrim($(describe[i]).text(), [/阅读全文/g]),
       date: date![i],
       view: view![i],
       comm: comm![i],
       digg: digg![i],
-      surface: surface || ""
+      surface: surface || "",
+      isLocked
     });
   });
 
@@ -95,7 +99,8 @@ export function parseEssay(id: number, realDOM: any): CustType.Jotting {
     content: $(realDOM).find("#cnblogs_post_body").html(),
     date: $(realDOM).find("#post-date").text(),
     view: $(realDOM).find("#post_view_count").text(),
-    comm: $(realDOM).find("#post_comment_count").text()
+    comm: $(realDOM).find("#post_comment_count").text(),
+    isLocked: $(realDOM).find(`img[title="密码保护"]`).attr("title") ? true : false
   };
 }
 
@@ -395,9 +400,9 @@ export function parseSideBlogTopList(strDOM: string): CustType.SideTopList[] {
   return array;
 }
 
-export function parseTags(dom: any): Array<CustType.Tag> {
+export function parseTags(realDOM: any): Array<CustType.Tag> {
   const array: Array<CustType.Tag> = [];
-  $(dom)
+  $(realDOM)
     .find("#MyTag1_dtTagList")
     .find("td")
     .each(function (i, el) {
@@ -407,4 +412,19 @@ export function parseTags(dom: any): Array<CustType.Tag> {
       array.push({ count, href, text });
     });
   return array;
+}
+
+/**
+ * 解析输入密码之后返回的 DOM，查找是否有错误密码提示
+ *
+ * @param realDOM 真实 DOM
+ * @returns 输入密码正确返回 true
+ */
+export function parseIsUnLock(realDOM: any): boolean {
+  const isError = $(realDOM).find(".field-validation-error")?.text();
+  if (isError && isError === "密码错误") {
+    return false;
+  } else if (!isError) {
+    return true;
+  }
 }
