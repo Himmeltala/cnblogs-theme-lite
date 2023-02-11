@@ -1,13 +1,10 @@
 import { resolve } from "path";
-
 import vue from "@vitejs/plugin-vue";
 import { defineConfig, loadEnv } from "vite";
-// plugins
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import Icons from "unplugin-icons/vite";
 import IconsResolver from "unplugin-icons/resolver";
-// element-plus
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 // unocss
 import Unocss from "unocss/vite";
@@ -63,7 +60,7 @@ export default defineConfig(({ command, mode }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@use "@/scss/pre/mixins.scss" as *;`
+          additionalData: `@use "@/scss/mixins.scss" as *;`
         }
       }
     },

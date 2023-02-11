@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { ifRewriteURL, RouteName } from "@/helpers/route-helper";
+import { rewriteURL, RouteName } from "@/helpers/route-helper";
 
 const routes = [
   {
@@ -47,12 +47,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const rewrite = ifRewriteURL(next);
+  const redirect = rewriteURL(next);
 
   if (to.name === RouteName.HOME) {
-    rewrite();
+    redirect();
   } else {
-    rewrite();
+    redirect();
   }
 });
 

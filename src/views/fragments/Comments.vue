@@ -415,8 +415,8 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
     </div>
     <el-empty
       v-else-if="isLogin && !comments?.length"
-      description="没有评论，来一条友善的评论吧🤨" />
-    <el-empty v-else-if="!isLogin" description="你没有登录或没有申请博客权限，所以看不到评论哦~" />
+      description="来一条友善的评论吧~" />
+    <el-empty v-else-if="!isLogin" description="你没有登录或没有申请博客权限~" />
   </div>
 </template>
 

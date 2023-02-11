@@ -48,60 +48,60 @@ function storeCommentAnchor(URL: string) {
  * @param next NavigationGuardNext
  * @returns 返回一个函数，在合适的时候执行，而非调用该函数就执行后续操作
  */
-export function ifRewriteURL(next: any): () => void {
-  let routeData: any;
+export function rewriteURL(next: any): () => void {
+  let hub: any;
   const URL = window.location.href;
 
   if (routeReg.ESSAY.test(URL)) {
     const id = URL.match(routeReg.ESSAY)[0].split("/")[2].split(".")[0];
     storeCommentAnchor(URL);
-    routeData = {
+    hub = {
       name: RouteName.ESSAY,
       params: { id },
-      rewrite() {
-        rewriteURL(id);
+      exerciser() {
+        refactorURL(id);
       }
     };
   } else if (routeReg.CATEGORY.test(URL)) {
     const id = URL.match(routeReg.CATEGORY)[0].split("/")[2].split(",")[0];
-    routeData = {
+    hub = {
       name: RouteName.CATEGORY,
       params: { id },
-      rewrite() {
-        rewriteURL(id);
+      exerciser() {
+        refactorURL(id);
       }
     };
   } else if (routeReg.TAGCOLL.test(URL)) {
     const tag = decodeURI(URL).match(routeReg.TAGCOLL)![0].split("/")[2];
-    routeData = {
+    hub = {
       name: RouteName.TAGCOLL,
       params: { tag },
-      rewrite() {
-        rewriteURL(tag);
+      exerciser() {
+        refactorURL(tag);
       }
     };
   } else if (routeReg.GALLERY.test(URL)) {
     const tag = decodeURI(URL).match(routeReg.TAGCOLL)![0].split("/")[2];
-    routeData = {
+    hub = {
       name: RouteName.GALLERY,
       params: { tag },
-      rewrite() {
-        rewriteURL(tag);
+      exerciser() {
+        refactorURL(tag);
       }
     };
   }
 
   return () => {
-    if (routeData) {
-      routeData.rewrite();
-      next(routeData);
+    if (hub) {
+      hub.exerciser();
+      next(hub);
     } else {
       next();
     }
   };
 }
 
-function rewriteURL(slice: string): void {
+function refactorURL(slice: string): void {
   const redirectUrl = `${window.location.protocol}//${window.location.host}/${blogApp}/#/${slice}`;
   window.history.pushState("", "", redirectUrl);
 }
