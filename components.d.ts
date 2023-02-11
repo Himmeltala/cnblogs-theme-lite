@@ -12,7 +12,6 @@ declare module '@vue/runtime-core' {
     Category: typeof import('./src/views/modules/Category.vue')['default']
     Comments: typeof import('./src/views/fragments/Comments.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElDialog: typeof import('element-plus/es')['ElDialog']
     ElEmpty: typeof import('element-plus/es')['ElEmpty']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
