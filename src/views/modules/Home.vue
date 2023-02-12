@@ -4,8 +4,7 @@ import { closeLoader } from "@/utils/common";
 
 const data = ref((await getEssayList(1, false)).array);
 const pages = (await getEssayList(1, true)).pages;
-const pageCount = ref(pages[pages.length - 1]);
-const pagination = ref();
+const count = ref(pages[pages.length - 1]);
 
 closeLoader();
 
@@ -24,7 +23,7 @@ async function nexpr(e: any) {
 
 <template>
   <div id="l-home">
-    <Pagination ref="pagination" @prev="prev" @next="next" @nexpr="nexpr" :page-count="pageCount">
+    <Pagination @prev="prev" @next="next" @nexpr="nexpr" :page-count="count">
       <template #content>
         <EssayItem v-if="data" :data="data" />
       </template>

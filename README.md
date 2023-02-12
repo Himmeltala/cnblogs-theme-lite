@@ -227,7 +227,7 @@ window.__LITE_CONFIG__ = {
     strokeColor: "#A7A7A7",
     lineColor: "#A7A7A7",
     textColor: "#A7A7A7",
-    data: [
+    comment: [
       // 数据，长度必须和 sides 保持一致
       { title: "CSS", star: 4 },
       { title: "Vue", star: 4 },

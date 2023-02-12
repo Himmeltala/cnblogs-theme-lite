@@ -3,10 +3,10 @@ import { closeLoader } from "@/utils/common";
 import { getCateList } from "@/utils/remote-api";
 
 const route = useRoute();
-const initData = await getCateList(route.params.id, true, 1);
-const pageCount = ref(initData.pages[initData.pages.length - 1]);
-const data = ref(initData.array);
-const label = ref(initData.label);
+const cates = await getCateList(route.params.id, true, 1);
+const count = ref(cates.pages[cates.pages.length - 1]);
+const data = ref(cates.array);
+const label = ref(cates.label);
 
 closeLoader();
 
@@ -31,7 +31,7 @@ watch(route, async () => {
 
 <template>
   <div id="l-cate">
-    <Pagination @nexpr="nexpr" @next="next" @prev="prev" :page-count="pageCount">
+    <Pagination @nexpr="nexpr" @next="next" @prev="prev" :page-count="count">
       <template #content>
         <div class="fsz-1.25 mb-10">{{ label }}</div>
         <EssayItem v-if="data" :data="data" />

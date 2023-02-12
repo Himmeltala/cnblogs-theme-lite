@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { getTag } from "@/utils/remote-api";
+import { getTags } from "@/utils/remote-api";
 import { closeLoader } from "@/utils/common";
 
-const data = await getTag();
+const tags = await getTags();
 
 closeLoader();
 </script>
 
 <template>
   <div id="l-tags" class="min-height">
-    <Label class="item mb-4 p-3 fsz-0.8 f-c-s" v-for="(item, index) in data" :key="index">
+    <Label class="item mb-4 p-3 fsz-0.8 f-c-s" v-for="(item, index) in tags" :key="index">
       <router-link class="hover" :to="'/label/' + item.text">
         {{ item.text }} ({{ item.count }})
       </router-link>

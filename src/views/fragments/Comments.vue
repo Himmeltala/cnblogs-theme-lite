@@ -2,18 +2,16 @@
 import { isLogin } from "@/lite.config";
 import { nav } from "@/helpers/route-helper";
 import {
+  deleteComment,
   getComment,
   getCommentCount,
   getCommentList,
-  setComment,
-  deleteComment,
   updateComment,
-  replayComment,
   voteComment
 } from "@/utils/remote-api";
 import { useCommentsAnchorStore } from "@/store";
 import { openImageUploadWindow } from "@/utils/common";
-import { CustType, BlogType } from "@/types/data-type";
+import { BlogType, CustType } from "@/types/data-type";
 
 const props = defineProps({
   postId: { type: Number, required: true }
@@ -26,13 +24,11 @@ const form = ref<CustType.Comment>({
   parentCommentId: 0,
   content: ""
 });
-const loading = ref(false);
-const comments = ref<Array<CustType.Comment>>();
+const comments = ref<CustType.Comment[]>();
 const commentCount = ref(1);
 const currentIndex = ref(0);
 const commentContent = ref("");
 
-let tempReplayComment: CustType.Comment;
 let tempUpdateComment: CustType.Comment;
 
 async function fetchComment(
@@ -60,6 +56,35 @@ async function fetchComment(
 fetchComment(true, {
   success: res => {
     comments.value = res;
+
+    // comments.value = [
+    //   {
+    //     postId: 1,
+    //     updateEditable: false,
+    //     replayEditable: false,
+    //     isEditingReplay: false,
+    //     isEditingUpdate: false,
+    //     content: "Hello",
+    //     date: "2023-2-12 23:06",
+    //     digg: "支持(1)",
+    //     bury: "反对(1)",
+    //     layer: "1楼",
+    //     author: "HimmelbleuA"
+    //   },
+    //   {
+    //     postId: 2,
+    //     updateEditable: false,
+    //     replayEditable: false,
+    //     isEditingReplay: false,
+    //     isEditingUpdate: false,
+    //     content: "Hello",
+    //     date: "2023-2-12 23:06",
+    //     digg: "支持(1)",
+    //     bury: "反对(1)",
+    //     layer: "2楼",
+    //     author: "HimmelbleuB"
+    //   }
+    // ];
   }
 });
 
@@ -80,34 +105,7 @@ function uploadImage(el: string, comment?: CustType.Comment) {
 }
 
 async function paginationChange() {
-  const comms = await getCommentList(props.postId, currentIndex.value);
-  comments.value = comms;
-}
-
-async function insertComment() {
-  if (form.value.content) {
-    loading.value = true;
-    const data = await setComment({
-      postId: form.value.postId,
-      body: form.value.content,
-      parentCommentId: form.value.parentCommentId
-    });
-    fetchComment(
-      data.isSuccess,
-      {
-        message: "发送评论成功！",
-        success(res: any) {
-          comments.value = res;
-          loading.value = false;
-          form.value.content = "";
-        }
-      },
-      {
-        message: "发送评论失败！",
-        error: () => (loading.value = false)
-      }
-    );
-  } else ElMessage({ message: "评论不能为空，或字数不够⚠️", grouping: true, type: "error" });
+  comments.value = await getCommentList(props.postId, currentIndex.value);
 }
 
 async function confirmDeleteComment(comment: CustType.Comment, index: number) {
@@ -140,8 +138,7 @@ async function beforeUpdateComment(comment: CustType.Comment) {
     tempUpdateComment.content = tempUpdateComment.htmlContent;
   }
 
-  const data = await getComment({ commentId: comment.commentId });
-  commentContent.value = data;
+  commentContent.value = await getComment({ commentId: comment.commentId });
   comment.updateEditable = !comment.updateEditable;
   comment.isEditingUpdate = !comment.isEditingUpdate;
   tempUpdateComment = comment;
@@ -166,51 +163,6 @@ async function finishUpdateComment(comment: CustType.Comment) {
   }
 }
 
-function cancelReplayComment(comment: CustType.Comment) {
-  comment.replayEditable = !comment.replayEditable;
-  comment.isEditingReplay = !comment.isEditingReplay;
-  comment.content = comment.htmlContent;
-}
-
-function beforeReplayComment(comment: CustType.Comment) {
-  comment.htmlContent = comment.content;
-  comment.replayEditable = !comment.replayEditable;
-  comment.isEditingReplay = !comment.isEditingReplay;
-
-  if (tempReplayComment && tempReplayComment.commentId !== comment.commentId) {
-    if (tempReplayComment.replayEditable) tempReplayComment.replayEditable = false;
-    if (tempReplayComment.isEditingReplay) tempReplayComment.isEditingReplay = false;
-    tempReplayComment.content = tempReplayComment.htmlContent;
-  }
-
-  commentContent.value = "";
-  commentContent.value += `回复 ${comment.layer} [@${comment.author}](${comment.space})\n\n`;
-  tempReplayComment = comment;
-}
-
-async function finishReplayComment(comment: CustType.Comment) {
-  const data = await replayComment({
-    body: commentContent.value,
-    postId: props.postId,
-    parentCommentId: comment.commentId
-  });
-  fetchComment(
-    data.isSuccess,
-    {
-      message: `成功回复 ${comment.author} 的评论！`,
-      success: res => {
-        comments.value = res;
-        comment.replayEditable = !comment.replayEditable;
-        comment.isEditingReplay = !comment.isEditingReplay;
-      }
-    },
-    {
-      message: data.message
-    }
-  );
-  commentContent.value = "";
-}
-
 async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) {
   const data = await voteComment({
     isAbandoned: false,
@@ -228,33 +180,23 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
     type: data.isSuccess ? "success" : "error"
   });
 }
+
+function onPost(response: any) {
+  comments.value = response.comments;
+  commentCount.value = response.count;
+}
+
+function onReplayFinish(response: any) {
+  comments.value = response.comments;
+  commentCount.value = response.count;
+}
 </script>
 
 <template>
   <div class="comments">
-    <h3>发表评论</h3>
-    <div class="mb-12 relative">
-      <div class="tools mb-2 f-c-e">
-        <el-tooltip effect="dark" content="插入图片" placement="top-start">
-          <el-icon class="cursor-pointer" @click="uploadImage('main-upload-img')">
-            <i-ep-picture-rounded />
-          </el-icon>
-        </el-tooltip>
-      </div>
-      <div class="pusharea">
-        <textarea
-          v-model="form.content"
-          placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
-      </div>
-      <div class="z--1 opacity-0 absolute top-0 left-0">
-        <textarea id="main-upload-img" />
-      </div>
-      <el-button plain :disabled="!isLogin" :loading="loading" @click="insertComment">
-        发送评论
-      </el-button>
-    </div>
+    <PostComment :post-id="postId" @on-post="onPost" />
     <h3>评论列表</h3>
-    <div class="mt-10" v-if="comments?.length && isLogin">
+    <div class="mt-10" v-if="isLogin && comments?.length">
       <div class="mb-12" v-for="(item, index) in comments" :key="index">
         <div class="f-c-s">
           <el-image class="mr-4 rd-50 w-14 h-14" :src="item.avatar" fit="fill" />
@@ -272,9 +214,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
           </div>
         </div>
         <div class="mt-4 relative" style="margin-left: 4.5rem">
-          <div class="z--1 opacity-0 absolute top-0 left-0">
-            <textarea :id="'upload-img-' + index" />
-          </div>
+          <textarea class="z--1 opacity-0 absolute top-0 left-0" :id="'upload-img-' + index" />
           <div class="c-content" v-show="!item.updateEditable" v-html="item.content" v-hljs />
           <div class="editarea" v-show="item.updateEditable">
             <div class="tools mb-2 f-c-e">
@@ -286,28 +226,16 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
             </div>
             <div>
               <textarea
-                ref="editarea"
                 v-model="commentContent"
                 placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
             </div>
           </div>
-          <div class="replayarea" v-show="item.replayEditable">
-            <div class="tools mb-2 f-c-e">
-              <el-tooltip effect="dark" content="插入图片" placement="top-start">
-                <el-icon class="cursor-pointer" @click="uploadImage('upload-img-' + index, item)">
-                  <i-ep-picture-rounded />
-                </el-icon>
-              </el-tooltip>
-            </div>
-            <div>
-              <textarea
-                ref="replayarea"
-                v-model="commentContent"
-                placeholder="请回复一条友善的评论，支持 Markdown 语法" />
-            </div>
-          </div>
-          <div class="actions f-c-e cursor-pointer fsz-0.8 l-sec-color">
-            <div
+          <ReplayComment
+            @on-finish="onReplayFinish"
+            :post-id="postId"
+            :index="index"
+            :comment="item" />
+          <!-- <div
               v-show="!item.replayEditable && !item.isEditingUpdate"
               class="hover mr-4 f-c-e"
               @click="beforeReplayComment(item)">
@@ -333,8 +261,8 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
                 <i-ep-close />
               </el-icon>
               <span>取消回复</span>
-            </div>
-            <div
+            </div> -->
+          <!-- <div
               v-show="!item.isEditingUpdate && !item.isEditingReplay"
               class="hover mr-4 f-c-e"
               @click="voteComm(item, 'Digg')">
@@ -401,8 +329,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
                   </div>
                 </template>
               </el-popconfirm>
-            </div>
-          </div>
+            </div> -->
         </div>
       </div>
       <div class="mt-10 f-c-e" v-if="!comments?.length">
@@ -413,9 +340,7 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
           v-model:page-count="commentCount" />
       </div>
     </div>
-    <el-empty
-      v-else-if="isLogin && !comments?.length"
-      description="来一条友善的评论吧~" />
+    <el-empty v-else-if="isLogin && !comments?.length" description="来一条友善的评论吧~" />
     <el-empty v-else-if="!isLogin" description="你没有登录或没有申请博客权限~" />
   </div>
 </template>
@@ -428,45 +353,6 @@ async function voteComm(comment: CustType.Comment, voteType: BlogType.VoteType) 
     padding-bottom: 1px;
     border-bottom: 1px dotted var(--pri-text-color);
     @include hover($border-color: bottom);
-  }
-}
-</style>
-
-<style scoped lang="scss">
-@mixin textarea($height: 15rem) {
-  --at-apply: rd-2 p-2.5 fsz-0.9;
-  background-color: var(--textarea-bg-color);
-  width: 100%;
-  border: none;
-  outline: none;
-  color: var(--pri-text-color);
-  height: $height;
-  resize: none;
-}
-
-@mixin container() {
-  --at-apply: mb-5 rd-2;
-  border: 1px solid var(--el-border-color-lighter);
-  background-color: var(--textarea-bg-color);
-  @include hover($border-color: all, $font-color: false);
-}
-
-.pusharea {
-  @include container();
-
-  textarea {
-    @include textarea();
-  }
-}
-
-.editarea,
-.replayarea {
-  & > div + div {
-    @include container();
-  }
-
-  textarea {
-    @include textarea($height: 10rem);
   }
 }
 </style>

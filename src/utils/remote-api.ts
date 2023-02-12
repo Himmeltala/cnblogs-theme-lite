@@ -255,7 +255,7 @@ export async function getSideTopList() {
 /**
  * 获取所有标签列表
  */
-export async function getTag() {
+export async function getTags() {
   const { data } = await sendAwaitGet(`${baseAPI}/tag`);
   return Parser.parseTags(data);
 }
