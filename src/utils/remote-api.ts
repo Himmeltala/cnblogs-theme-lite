@@ -2,7 +2,6 @@
  * 提供对接博客园各种可用的基础 API
  *
  * @author Himmelbleu
- * @since 1.0
  * @date 2022 年 12 月 1 日
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */
@@ -161,9 +160,7 @@ export async function getCommentList(id: number | string, page: number, anchorId
  * @param id 进入随笔页面之后，从 vue-router 参数中获取
  */
 export async function getEssayCatesAndTags(id: number | string) {
-  const { data } = await sendAwaitGet(
-    `${baseAPI}/ajax/CategoriesTags.aspx?blogId=${blogId}&postId=${id}`
-  );
+  const { data } = await sendAwaitGet(`${baseAPI}/ajax/CategoriesTags.aspx?blogId=${blogId}&postId=${id}`);
   return Parser.parseEssayCatesAndTags(data);
 }
 

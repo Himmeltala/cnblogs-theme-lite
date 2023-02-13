@@ -2,7 +2,6 @@
  * 字符、文本工具
  *
  * @author Himmelbleu
- * @since 1.0
  * @date 2022 年 12 月 1 日
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */

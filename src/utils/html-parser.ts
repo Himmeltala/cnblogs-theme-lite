@@ -2,7 +2,6 @@
  * 提供解析博客园 HTML 或字符 HTML 的各种基础 API
  *
  * @author Himmelbleu
- * @since 1.0
  * @date 2022 年 12 月 1 日
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */
@@ -50,9 +49,7 @@ export function parseEssayList(realDOM: any, calc: boolean): CustType.JottingLis
   const title = $(realDOM).find(".postTitle");
   const describe = $(realDOM).find(".c_b_p_desc");
   const record = $(realDOM).find(".postDesc").text();
-  const date = record.match(
-    /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g
-  );
+  const date = record.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
   const view = record.match(/阅读\([0-9]+\)/g);
   const comm = record.match(/评论\([0-9]+\)/g);
   const digg = record.match(/推荐\([0-9]+\)/g);
@@ -119,11 +116,8 @@ export function parseCommentList(strDOM: any): Array<CustType.Comment> {
     .map((i, elem) => {
       let anchor = $(elem).find(".layer").attr("href")!.split("#")[1];
       comments[i] = {
-        updateEditable: false,
-        replayEditable: false,
         isEditingUpdate: false,
         isEditingReplay: false,
-        htmlContent: "",
         commentId: parseInt(anchor),
         space: $(elem).find(`#a_comment_author_${anchor}`).attr("href"),
         author: $(elem).find(`#a_comment_author_${anchor}`).text(),
@@ -225,9 +219,7 @@ export function parseCateList(realDOM: any, calc: boolean): CustType.CateList {
   let title = $(dom).find(".entrylistItemTitle > span");
   let describe = $(dom).find(".c_b_p_desc");
   let record = $(dom).find(".entrylistItemPostDesc").text();
-  let date = record.match(
-    /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g
-  );
+  let date = record.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
   let view = record.match(/阅读\([0-9]+\)/g);
   let comm = record.match(/评论\([0-9]+\)/g);
   let digg = record.match(/推荐\([0-9]+\)/g);
@@ -280,9 +272,7 @@ export function parseTagPageList(realDOM: any): CustType.TagColl {
       href: $(e).attr("href"),
       date: $(describe[i])
         .text()
-        .match(
-          /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g
-        )![0],
+        .match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g)![0],
       view: $(describe[i]).find(".post-view-count").text().split(":")[1],
       comm: $(describe[i]).find(".post-comment-count").text().split(":")[1],
       digg: $(describe[i]).find(".post-digg-count").text().split(":")[1]

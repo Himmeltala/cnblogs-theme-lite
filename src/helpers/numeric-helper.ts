@@ -2,7 +2,6 @@
  * 对数字进行解析
  *
  * @author Himmelbleu
- * @since 1.0
  * @date 2023 年 1 月 10 日
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */

@@ -2,7 +2,6 @@
  * 混合样式，适用于无法使用在 class 元素上，比 common.scss 更加智能化些
  *
  * @author Himmelbleu
- * @since 1.0
  * @date 2023 年 1 月 15 日
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */
@@ -47,5 +46,31 @@
 @mixin mb() {
   @media screen and (max-width: 1000px) {
     @content;
+  }
+}
+
+@mixin textarea($height: 15rem) {
+  --at-apply: rd-2 p-2 0.5 fsz-0.9;
+  background-color: var(--l-textarea-bg);
+  width: 100%;
+  border: none;
+  outline: none;
+  color: var(--l-pri-color);
+  height: $height;
+  resize: none;
+}
+
+@mixin container() {
+  --at-apply: mb-5 rd-2;
+  border: 1px solid var(--el-border-color-lighter);
+  background-color: var(--l-textarea-bg);
+  @include hover($border-color: all, $font-color: false);
+}
+
+.textarea {
+  @include container();
+
+  textarea {
+    @include textarea();
   }
 }

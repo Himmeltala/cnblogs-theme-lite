@@ -52,44 +52,12 @@ async function insertComment() {
         </el-icon>
       </el-tooltip>
     </div>
-    <div class="pusharea">
-      <textarea
-        v-model="comment.body"
-        placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
+    <div class="textarea">
+      <textarea v-model="comment.body" placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
     </div>
     <div class="z--1 opacity-0 absolute top-0 left-0">
       <textarea id="main-upload-img" />
     </div>
-    <el-button plain :disabled="!isLogin" :loading="loading" @click="insertComment">
-      发送评论
-    </el-button>
+    <el-button plain :disabled="!isLogin" :loading="loading" @click="insertComment"> 发送评论 </el-button>
   </div>
 </template>
-
-<style scoped lang="scss">
-@mixin textarea($height: 15rem) {
-  --at-apply: rd-2 p-2 0.5 fsz-0.9;
-  background-color: var(--l-textarea-bg);
-  width: 100%;
-  border: none;
-  outline: none;
-  color: var(--l-pri-color);
-  height: $height;
-  resize: none;
-}
-
-@mixin container() {
-  --at-apply: mb-5 rd-2;
-  border: 1px solid var(--el-border-color-lighter);
-  background-color: var(--l-textarea-bg);
-  @include hover($border-color: all, $font-color: false);
-}
-
-.pusharea {
-  @include container();
-
-  textarea {
-    @include textarea();
-  }
-}
-</style>

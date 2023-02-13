@@ -1,5 +1,110 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { PropType } from "vue";
+import { openImageUploadWindow } from "@/utils/common";
+import { updateComment, getComment, getCommentCount, getCommentList } from "@/utils/remote-api";
 
-<template></template>
+const props = defineProps({
+  comment: {
+    type: Object as PropType<any>,
+    required: true
+  },
+  index: {
+    type: Number,
+    required: true
+  },
+  postId: {
+    type: Number,
+    required: true
+  }
+});
+const emits = defineEmits(["onBefore", "onFinish", "onCancel"]);
 
-<style scoped lang="scss"></style>
+let htmlContent = "";
+const content = ref("");
+
+function uploadImage(el: string) {
+  openImageUploadWindow(el, (imgUrl: any) => {
+    content.value += `\n\n${imgUrl}\n\n`;
+  });
+}
+
+async function before() {
+  htmlContent = props.comment.content;
+  content.value = await getComment({ commentId: props.comment.commentId });
+  props.comment.isEditingUpdate = !props.comment.isEditingUpdate;
+}
+
+async function finish() {
+  const response = await updateComment({
+    body: content.value,
+    commentId: props.comment.commentId
+  });
+
+  if (response.isSuccess) {
+    content.value = "";
+    props.comment.isEditingReplay = !props.comment.isEditingReplay;
+    emits("onFinish", {
+      count: await getCommentCount(props.postId),
+      comments: await getCommentList(props.postId, 0)
+    });
+    ElMessage({ message: "修改评论成功！", grouping: true, type: "success" });
+  } else {
+    ElMessage({ message: "这不是你的评论，没有权限编辑！", grouping: true, type: "error" });
+  }
+}
+
+function cancel() {
+  props.comment.content = htmlContent;
+  props.comment.isEditingUpdate = !props.comment.isEditingUpdate;
+}
+</script>
+
+<template>
+  <div class="edit-comment">
+    <div class="float-right w-100%" v-show="comment.isEditingUpdate">
+      <div class="mb-2 f-c-e">
+        <el-tooltip effect="dark" content="插入图片" placement="top-start">
+          <el-icon class="cursor-pointer" @click="uploadImage('upload-img-' + index)">
+            <i-ep-picture-rounded />
+          </el-icon>
+        </el-tooltip>
+      </div>
+      <div class="textarea">
+        <textarea v-model="content" placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
+      </div>
+    </div>
+    <div
+      v-show="!comment.isEditingReplay"
+      class="float-right f-c-e fsz-0.8 l-sec-color"
+      :class="{ 'w-10%': !comment.isEditingUpdate, 'w-100%': comment.isEditingUpdate }">
+      <div v-show="!comment.isEditingUpdate" class="hover f-c-e" @click="before">
+        <el-icon class="mr-1">
+          <i-ep-edit-pen />
+        </el-icon>
+        <span>编辑</span>
+      </div>
+      <div v-show="comment.isEditingUpdate" class="hover f-c-e mr-4" @click="finish">
+        <el-icon class="mr-1">
+          <i-ep-circle-check />
+        </el-icon>
+        <span>完成编辑</span>
+      </div>
+      <div class="hover" v-if="comment.isEditingUpdate">
+        <el-popconfirm
+          confirm-button-text="确定"
+          cancel-button-text="取消"
+          title="确定取消编辑该评论？"
+          @confirm="cancel">
+          <template #reference>
+            <div class="hover f-c-e">
+              <el-icon class="mr-1">
+                <i-ep-circle-close />
+              </el-icon>
+              <span>取消编辑</span>
+            </div>
+          </template>
+        </el-popconfirm>
+      </div>
+    </div>
+  </div>
+</template>

@@ -2,7 +2,6 @@
  * 提供对接博客园各种可用的基础 API，获取的数据来自于 #mainContent
  *
  * @author Himmelbleu
- * @since 1.0
  * @date 2022 年 1 月 14 日
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */

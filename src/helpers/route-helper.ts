@@ -2,7 +2,6 @@
  * Vue Router 工具，解析 url，跳转对应的 router
  *
  * @author Himmelbleu
- * @since 1.0
  * @date 2022 年 12 月 1 日
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */
@@ -49,13 +48,13 @@ function storeCommentAnchor(URL: string) {
  * @returns 返回一个函数，在合适的时候执行，而非调用该函数就执行后续操作
  */
 export function rewriteURL(next: any): () => void {
-  let hub: any;
+  let courier: any;
   const URL = window.location.href;
 
   if (routeReg.ESSAY.test(URL)) {
     const id = URL.match(routeReg.ESSAY)[0].split("/")[2].split(".")[0];
     storeCommentAnchor(URL);
-    hub = {
+    courier = {
       name: RouteName.ESSAY,
       params: { id },
       exerciser() {
@@ -64,7 +63,7 @@ export function rewriteURL(next: any): () => void {
     };
   } else if (routeReg.CATEGORY.test(URL)) {
     const id = URL.match(routeReg.CATEGORY)[0].split("/")[2].split(",")[0];
-    hub = {
+    courier = {
       name: RouteName.CATEGORY,
       params: { id },
       exerciser() {
@@ -73,7 +72,7 @@ export function rewriteURL(next: any): () => void {
     };
   } else if (routeReg.TAGCOLL.test(URL)) {
     const tag = decodeURI(URL).match(routeReg.TAGCOLL)![0].split("/")[2];
-    hub = {
+    courier = {
       name: RouteName.TAGCOLL,
       params: { tag },
       exerciser() {
@@ -82,7 +81,7 @@ export function rewriteURL(next: any): () => void {
     };
   } else if (routeReg.GALLERY.test(URL)) {
     const tag = decodeURI(URL).match(routeReg.TAGCOLL)![0].split("/")[2];
-    hub = {
+    courier = {
       name: RouteName.GALLERY,
       params: { tag },
       exerciser() {
@@ -92,9 +91,9 @@ export function rewriteURL(next: any): () => void {
   }
 
   return () => {
-    if (hub) {
-      hub.exerciser();
-      next(hub);
+    if (courier) {
+      courier.exerciser();
+      next(courier);
     } else {
       next();
     }

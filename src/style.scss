@@ -1,11 +1,15 @@
-// element-plus dark style
 @import "element-plus/theme-chalk/dark/css-vars.css";
-// hljs style
 @import "highlight.js/styles/atom-one-dark.css";
-// responsive style
 @import "@/scss/responsive";
-// common style
 @import "@/scss/common";
+
+/**
+ * 设置主题样式
+ *
+ * @author Himmelbleu
+ * @date 2023 年 2 月 14 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
 
 html,
 body {
@@ -24,8 +28,8 @@ body {
   color: inherit;
   font-size: inherit;
   font-weight: inherit;
-  font-family: "Microsoft YaHei", "微软雅黑", "Hiragino Sans GB", "PingFang SC", "Helvetica Neue",
-    Helvetica, Arial, sans-serif;
+  font-family: "Microsoft YaHei", "微软雅黑", "Hiragino Sans GB", "PingFang SC", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
   letter-spacing: 1px;
   scroll-behavior: smooth;
   word-break: break-all !important;
@@ -97,7 +101,6 @@ a:link {
  * 覆盖 element-plus 样式
  *
  * @author Himmelbleu
- * @since 1.0
  * @date 2023 年 1 月 15 日
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */
@@ -110,8 +113,8 @@ a:link {
 
 .el-input__inner,
 .el-button {
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-    "微软雅黑", Arial, sans-serif !important;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+    sans-serif !important;
 }
 
 .el-input__inner {

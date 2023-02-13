@@ -2,7 +2,6 @@
  * 提供常用工具
  *
  * @author Himmelbleu
- * @since 1.0
  * @date 2022 年 12 月 1 日
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */
@@ -24,11 +23,7 @@ export function closeLoader() {
 function openWindow(w: string, t: number, i: number, r: number) {
   const left = (screen.width - t) / 2 - r;
   const top = (screen.height - i) / 2 - r;
-  const hatch = window.open(
-    w,
-    "_blank",
-    `width=${t},height=${i},toolbars=0,resizable=1,left=${left},top=${top}`
-  );
+  const hatch = window.open(w, "_blank", `width=${t},height=${i},toolbars=0,resizable=1,left=${left},top=${top}`);
   hatch!.focus();
 }
 
