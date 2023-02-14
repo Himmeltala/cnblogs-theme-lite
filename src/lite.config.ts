@@ -12,17 +12,14 @@ export let userGuid = "";
 export let isFollow = false;
 
 export function setLite() {
-  userGuid =
-    $("#p_b_follow > a")?.attr("onclick")?.split("(")[1]?.split(")")[0]?.replaceAll("'", "") ?? "";
+  userGuid = $("#p_b_follow > a")?.attr("onclick")?.split("(")[1]?.split(")")[0]?.replaceAll("'", "") ?? "";
   isFollow = $("#p_b_follow > a")?.text() === "-取消关注" ?? false;
 }
 
 export function useLite(dev?: Function, pro?: Function) {
   $("body").append(`<div id="app"></div>`);
-  $("head").append(
-    `<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack-subset.css" />`
-  );
-  preLog("Lite Theme v1.0.2", "Powered By Himmelbleu");
+  $("head").append(`<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack-subset.css" />`);
+  preLog("Lite Theme v1.0.5", "Powered By Himmelbleu");
   preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
 
   // @ts-ignore
@@ -99,4 +96,17 @@ export function useLite(dev?: Function, pro?: Function) {
 
   $("head").append(`<link rel="shortcut icon" href="${__LITE_CONFIG__.icon}">`);
   $("html").attr("class", __LITE_CONFIG__.theme?.mode ?? "dark");
+
+  let color = __LITE_CONFIG__.theme?.color ?? "#409eff";
+  let storage = localStorage.getItem("l-theme-color");
+
+  if (storage) {
+    color = storage;
+  } else {
+    localStorage.setItem("l-theme-color", color);
+  }
+
+  $("html").css({
+    "--l-theme-color": color
+  });
 }

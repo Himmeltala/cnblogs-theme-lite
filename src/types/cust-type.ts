@@ -72,6 +72,7 @@ export interface Lite {
   // 主题配置项
   theme?: {
     mode?: "dark" | "light";
+    color?: string;
   };
   // 侧边栏配置项
   cabinet?: {

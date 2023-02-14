@@ -1,6 +1,6 @@
 # 主题说明
 
-打开博客园的随笔详细页、标签页等，都是整页重新加载，比较影响体验。SPA 应用可以减少整页加载，实现局部刷新，本皮肤通过 Vue3 + TS + Vite 开发的。
+打开博客园的随笔详细页、标签页等，都是整页重新加载，比较影响体验。Lite 基于 Vue3 + Vite 开发，SPA 应用可以减少整页加载，实现局部刷新。
 
 本人已部署在自己的博客，浏览：[Lite 博客](https://www.cnblogs.com/Enziandom/#/)。
 
@@ -50,8 +50,8 @@
   .dark-loading,
   .light-loading {
     font-size: 14px !important;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-      "微软雅黑", Arial, sans-serif !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+      sans-serif !important;
     font-weight: 400;
     position: fixed;
     top: 0;
@@ -71,8 +71,8 @@
   }
   .box h2 {
     font-size: 14px !important;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-      "微软雅黑", Arial, sans-serif !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+      sans-serif !important;
     font-weight: 400;
     color: #777;
     margin: 0;
@@ -82,8 +82,8 @@
   }
   .box span {
     font-size: 14px !important;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-      "微软雅黑", Arial, sans-serif !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+      sans-serif !important;
     font-weight: 400;
     display: inline-block;
     vertical-align: middle;
@@ -160,12 +160,16 @@
 ```js
 window.__LITE_CONFIG__ = {
   theme: {
-    mode: "dark"
+    mode: "dark",
+    color: ""
   }
 };
 ```
 
-不设置使用默认黑夜模式，更多关于主题的配置项正在开发中...
+| 字段  |          描述           |     可选值     |
+| :---: | :---------------------: | :------------: |
+| mode  |        昼夜模式         |  dark、light   |
+| color | 主题颜色，默认：#409eff | rgba、rgb、hex |
 
 ## GitHub
 
@@ -174,6 +178,10 @@ window.__LITE_CONFIG__ = {
   github: "your github address"
 };
 ```
+
+|  字段  |                  描述                  | 可选值 |
+| :----: | :------------------------------------: | :----: |
+| github | github 角标，在浏览器左上角，PC 端可见 |        |
 
 ## 陈列柜
 
@@ -185,6 +193,8 @@ window.__LITE_CONFIG__ = {
   }
 };
 ```
+
+cabinet 是陈列柜，点击浏览器左右中间的透明条可以呼出。
 
 |   字段    |   描述   |
 | :-------: | :------: |
@@ -282,17 +292,11 @@ npm build
 
 ## 目录说明
 
-components 文件夹下全是组件，组件的目的是做到所有 views 都可以灵活运用，可以裁剪、可以增加。目的是解决代码耦合，减少代码里，提升代码质量以及可阅读性等。
+components 下面的是组件，目前数量很少，组件在本项目的定义是：通用、可配置。[重新思考 Vue 组件的定义](https://www.cnblogs.com/Enziandom/#/p/17115133)：
 
-views 文件夹下全都是视图，视图是用户可以直接看到的 UI。对 UI 再进行概念细分就有：
-
-1. adapters：views 要包含很多的列表循环，而列表循环内的东西太多，就导致 views 代码混乱，而 adapters 就是拆分 views
-   的列表循环的小整体。
-   adapters 可能与 components 并没有太大区别，但是 components 的目的是做到通用、灵活，这不是 adapters 该考虑的事情，而是尽可能地与该
-   views 绑定。adapters 不是一个专门解决视图耦合的对象。
-2. fragments：views 包含的逻辑和界面太多，而需要把 views 中一些可以是整体的拆分出去，有自己的逻辑（请求、函数等）和视图
-   那么就可以是 fragments。同样地，fragments 与该 views 有很大关系，所以，和 components 也有很大区别。
-3. modules：用户界面根据作用和视图承载意义不同，也有很多不同类别可做区分。
+1. adapters：views 下渲染列表，其内容在其他视图中也重复使用。adapters 与 components 的区别是 adapters 不需要考虑“通用、可配置”。
+2. fragments：views 下有许多业务要处理，但业务与业务之间并不是相关的，所以需要把 views 中一块业务拆分成一个组件，fragments 有自己的逻辑（请求、函数等）和视图。fragments 与该 views 有很大关系。
+3. modules：路由组件，即注册到 vue-router 项里面的组件。
 
 # 其他问题
 

@@ -32,22 +32,37 @@ body {
     sans-serif;
   letter-spacing: 1px;
   scroll-behavior: smooth;
-  word-break: break-all !important;
-  line-break: anywhere !important;
-  box-sizing: border-box !important;
+  word-break: break-all;
+  line-break: anywhere;
+  box-sizing: border-box;
 }
 
+/**
+ * 设置昼夜模式下使用的颜色
+ *
+ * @author Himmelbleu
+ * @date 2023 年 2 月 14 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
 html[class="dark"] {
   --l-pri-color: #a7a7a7;
   --l-sec-color: #8d9095;
   --l-thr-color: #878787;
+  // 卡片、盒子背景颜色
   --l-box-bg: #191919;
+  // 文本域背景颜色
   --l-textarea-bg: #202020;
+  // 代码块背景颜色
   --l-precode-bg: #1f1f1f;
+  // 行内代码块背景颜色
   --l-code-bg: #2b2b2b;
+  // 分界线背景颜色
   --l-divider-bg: #464646;
+  // 选中的文字颜色
   --l-selection-bg: white;
+  // 模态框背景颜色
   --l-modal-bg: #0d0d0d;
+  // strip 条背景颜色
   --l-strip-bg: #7f7f7f;
 }
 
@@ -55,15 +70,31 @@ html[class="light"] {
   --l-pri-color: #3c3c3c;
   --l-sec-color: #575757;
   --l-thr-color: #868686;
+  // 卡片、盒子背景颜色
   --l-box-bg: #f6f6f6;
+  // 文本域背景颜色
   --l-textarea-bg: #f0f0f0;
+  // 代码块背景颜色
   --l-precode-bg: #f3f3f3;
+  // 行内代码块背景颜色
   --l-code-bg: #efefef;
+  // 分界线背景颜色
   --l-divider-bg: #d3d3d3;
+  // 选中的文字颜色
   --l-selection-bg: black;
+  // 模态框背景颜色
   --l-modal-bg: #353535;
+  // strip 条背景颜色
   --l-strip-bg: #e3e3e3;
 }
+
+/**
+ * 设置所有元素共有的样式
+ *
+ * @author Himmelbleu
+ * @date 2023 年 2 月 14 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
 
 #app {
   --at-apply: f-c-c;
@@ -108,7 +139,8 @@ a:link {
 :root {
   --el-text-color-regular: var(--l-pri-color) !important;
   --el-text-color-primary: var(--l-pri-color) !important;
-  --el-border-radius-base: 0.5rem;
+  --el-color-primary: var(--l-theme-color) !important;
+  --el-border-radius-base: 0.5rem !important;
 }
 
 .el-input__inner,
