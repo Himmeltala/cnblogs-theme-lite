@@ -32,10 +32,7 @@ async function buryComment() {
 </script>
 
 <template>
-  <div
-    v-show="!comment.isEditingUpdate && !comment.isEditingReplay"
-    class="hover fsz-0.8 l-sec-color"
-    @click="buryComment">
+  <div v-show="!comment.isEditingUpdate && !comment.isEditingReplay" class="hover fsz-0.8 l-sec-color" @click="buryComment">
     <el-icon class="mr-1">
       <i-ep-caret-bottom />
     </el-icon>

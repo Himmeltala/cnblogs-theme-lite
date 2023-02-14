@@ -31,13 +31,9 @@ watch(route, async () => {
           <el-icon>
             <i-ep-caret-right />
           </el-icon>
-          <router-link class="hover ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id">
-            阅读全文
-          </router-link>
+          <router-link class="hover ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id"> 阅读全文 </router-link>
         </div>
-        <EssaySynopsis
-          class="mt-6"
-          :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
+        <EssaySynopsis class="mt-6" :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
       </Card>
     </div>
   </div>

@@ -3,15 +3,7 @@ import { BlogType } from "@/types/data-type";
 import { closeLoader } from "@/utils/common";
 import { nav } from "@/helpers/route-helper";
 import { isOwner } from "@/lite.config";
-import {
-  getLockedEssay,
-  getIsUnlock,
-  getEssay,
-  getEssayCatesAndTags,
-  getPrevNext,
-  getEssayVote,
-  voteEssay
-} from "@/utils/remote-api";
+import { getLockedEssay, getIsUnlock, getEssay, getEssayCatesAndTags, getPrevNext, getEssayVote, voteEssay } from "@/utils/remote-api";
 
 const route = useRoute();
 const router = useRouter();
@@ -84,10 +76,7 @@ async function vote(voteType: BlogType.VoteType) {
           </el-icon>
           <span>{{ essay.comm }}条评论</span>
         </div>
-        <div
-          v-if="isOwner"
-          class="f-c-c hover"
-          @click="nav({ path: 'https://i.cnblogs.com/EditPosts.aspx?postid=' + postId })">
+        <div v-if="isOwner" class="f-c-c hover" @click="nav({ path: 'https://i.cnblogs.com/EditPosts.aspx?postid=' + postId })">
           <el-icon class="mr-1">
             <i-ep-edit-pen />
           </el-icon>
@@ -286,7 +275,7 @@ blockquote {
   border: {
     left: {
       width: 0.3rem;
-      color: #409eff;
+      color: var(--l-theme-color);
       style: solid;
     }
   }

@@ -90,11 +90,7 @@ function cancel() {
         <span>完成编辑</span>
       </div>
       <div class="hover" v-if="comment.isEditingUpdate">
-        <el-popconfirm
-          confirm-button-text="确定"
-          cancel-button-text="取消"
-          title="确定取消编辑该评论？"
-          @confirm="cancel">
+        <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" title="确定取消编辑该评论？" @confirm="cancel">
           <template #reference>
             <div class="hover f-c-e">
               <el-icon class="mr-1">

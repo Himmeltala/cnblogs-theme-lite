@@ -9,37 +9,37 @@ const props = defineProps({
 });
 
 const level = ref(null);
-const { commentAnchor } = storeToRefs(useCommentsAnchorStore());
-const commentCount = ref(await getCommentCount(props.postId));
-const currentIndex = ref(commentCount.value);
-const comments = ref(await getCommentList(props.postId, currentIndex.value, commentAnchor.value));
+const { commentAnchor: anchor } = storeToRefs(useCommentsAnchorStore());
+const count = ref(await getCommentCount(props.postId));
+const index = ref(count.value);
+const comments = ref(await getCommentList(props.postId, index.value, anchor.value));
 
 watch(level, () => {
-  document.querySelector(`#level-${commentAnchor.value}`).scrollIntoView({
+  document.querySelector(`#level-${anchor.value}`).scrollIntoView({
     behavior: "smooth",
     block: "center",
     inline: "nearest"
   });
-  commentAnchor.value = 0;
+  anchor.value = 0;
 });
 
 async function paginationChange() {
-  comments.value = await getCommentList(props.postId, currentIndex.value);
+  comments.value = await getCommentList(props.postId, index.value);
 }
 
 function onPost(response: any) {
   comments.value = response.comments;
-  commentCount.value = response.count;
+  count.value = response.count;
 }
 
 function onReFinish(response: any) {
   comments.value = response.comments;
-  commentCount.value = response.count;
+  count.value = response.count;
 }
 
 function onEdFinish(response: any) {
   comments.value = response.comments;
-  commentCount.value = response.count;
+  count.value = response.count;
 }
 </script>
 
@@ -57,7 +57,7 @@ function onEdFinish(response: any) {
             </div>
             <div class="fsz-0.8 l-sec-color mt-2 f-c-c">
               <div :id="'level-' + item.commentId" class="mr-2">
-                <span v-if="commentAnchor === item.commentId" ref="level">{{ item.layer }}</span>
+                <span v-if="anchor === item.commentId" ref="level">{{ item.layer }}</span>
                 <span v-else>{{ item.layer }}</span>
               </div>
               <div>{{ item.date }}</div>
@@ -93,8 +93,8 @@ function onEdFinish(response: any) {
         <el-pagination
           @current-change="paginationChange"
           layout="prev, pager, next"
-          v-model:current-page="currentIndex"
-          v-model:page-count="commentCount" />
+          v-model:current-page="index"
+          v-model:page-count="count" />
       </div>
     </div>
     <el-empty v-else-if="isLogin && !comments?.length" description="来一条友善的评论吧~" />

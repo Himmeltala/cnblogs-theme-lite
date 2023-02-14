@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { __LITE_CONFIG__ } from "../../lite.config";
+import { __LITE_CONFIG__, blogApp } from "../../lite.config";
 
 let fillColor = "",
   strokeColor = "";
@@ -82,7 +82,7 @@ function drawDataArea(radius: any, coords: any, x: any, y: any, config: any, ctx
 
   ctx.beginPath();
   ctx.moveTo(0, 0);
-  ctx.font = `${config.textSize}px serial`;
+  ctx.font = `${config.textSize}rem Helvetica Neue`;
 
   for (let i = 0; i < config.sides; i++) {
     ctx.fillStyle = config.textColor;
@@ -134,12 +134,7 @@ function drawFloatingPanel(axis: any) {
       if (timeout != null) clearTimeout(timeout);
       timeout = setTimeout(() => {
         axis.forEach((v: any) => {
-          if (
-            v.x >= e.offsetX - 5 &&
-            v.x < e.offsetX + 5 &&
-            v.y >= e.offsetY - 5 &&
-            v.y < e.offsetY + 5
-          ) {
+          if (v.x >= e.offsetX - 5 && v.x < e.offsetX + 5 && v.y >= e.offsetY - 5 && v.y < e.offsetY + 5) {
             $(cnp).css({
               display: "block",
               left: `${e.offsetX}px`,
@@ -185,8 +180,8 @@ export function calcSize(sideWidthVw: number) {
 export function createRadar(vw: number) {
   const config = __LITE_CONFIG__.graph;
   if (config) {
-    fillColor = config.fillColor ? config.fillColor : "#409eff";
-    strokeColor = config.strokeColor ? config.strokeColor : "#a7a7a7";
+    fillColor = config.fillColor ?? localStorage.getItem(`l-${blogApp}-theme-color`);
+    strokeColor = config.strokeColor ?? "#a7a7a7";
     // @ts-ignore
     const ctx = document.getElementById("graph").getContext("2d");
     drawRadarMap(config, vw, vw, ctx);

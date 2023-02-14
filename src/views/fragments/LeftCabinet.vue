@@ -1,13 +1,7 @@
 <script setup lang="ts">
-import {
-  getSideBloggerInfo,
-  getSideBlogInfo,
-  getSideCateList,
-  getSideBlogRank,
-  getSideTopList
-} from "@/utils/local-api";
 import { nav } from "@/helpers/route-helper";
 import { follow, unfollow } from "@/utils/remote-api";
+import { getSideBloggerInfo, getSideBlogInfo, getSideCateList, getSideBlogRank, getSideTopList } from "@/utils/local-api";
 import { __LITE_CONFIG__, blogApp, isFollow, isOwner } from "@/lite.config";
 
 const cabinet = __LITE_CONFIG__.cabinet;
@@ -37,7 +31,7 @@ async function unfocus() {
 
 <template>
   <div id="l-cabinet" class="fixed top-0 left-0 w-250px h-100vh px-2 z-999 l-box-bg">
-    <div class="content noscroll ofw-auto">
+    <div class="content noscroll ofw-auto h-95%">
       <CabinetItem text="博客信息">
         <template #icon>
           <el-icon class="mr-1">
@@ -54,11 +48,7 @@ async function unfocus() {
           </el-tooltip>
         </div>
         <div class="f-c-c" v-if="!isOwner">
-          <el-popconfirm
-            @confirm="unfocus"
-            confirm-button-text="确定"
-            cancel-button-text="取消"
-            title="确定取消关注？">
+          <el-popconfirm @confirm="unfocus" confirm-button-text="确定" cancel-button-text="取消" title="确定取消关注？">
             <template #reference>
               <el-button v-if="isFollow" type="danger" text bg> -取消关注 </el-button>
             </template>
@@ -95,18 +85,12 @@ async function unfocus() {
         </div>
         <el-tooltip effect="dark" placement="bottom">
           <template #content>
-            <span
-              :class="{ 'mr-3': index !== blogRank.length - 1 }"
-              v-for="(item, index) in blogRank"
-              :key="index">
+            <span :class="{ 'mr-3': index !== blogRank.length - 1 }" v-for="(item, index) in blogRank" :key="index">
               {{ item.text }} - {{ item.digg }}
             </span>
           </template>
           <div class="hover mb-3 fsz-0.9 cursor-pointer">
-            <span
-              :class="{ 'mr-2.5': index !== blogInfo.length - 1 }"
-              v-for="(item, index) in blogInfo"
-              :key="index">
+            <span :class="{ 'mr-2.5': index !== blogInfo.length - 1 }" v-for="(item, index) in blogInfo" :key="index">
               {{ item.text }} - {{ item.digg }}
             </span>
           </div>
@@ -168,33 +152,33 @@ async function unfocus() {
         </el-tabs>
       </CabinetItem>
     </div>
-    <div class="navigation noscroll ofw-auto f-c">
-      <NavItem :nav="nav" :router="router" :navor="__LITE_CONFIG__.navor" />
+    <div class="noscroll ofw-auto f-c">
+      <div class="hover mr-4 wce-nowrap" @click="nav({ path: 'https://www.cnblogs.com' })">博客园</div>
+      <div class="hover mr-4 wce-nowrap" @click="nav({ path: '/', router })">首页</div>
+      <div class="hover wce-nowrap" :class="{ 'mr-4': __LITE_CONFIG__.navor?.navs }" @click="nav({ path: '/', router })">标签</div>
+      <div
+        v-if="__LITE_CONFIG__.navor?.navs"
+        v-for="(item, index) in __LITE_CONFIG__.navor.navs"
+        :key="index"
+        :class="{ 'mr-4': index !== __LITE_CONFIG__.navor.navs.length - 1 }"
+        class="hover f-c-c wce-nowrap">
+        <div v-if="item.text" @click="nav({ path: item.href })">{{ item.text }}</div>
+        <div class="f-c-c w-6 h-6" v-else>
+          <svg
+            class="w-6 h-6"
+            v-if="(item.svg || item.img) && item.svg"
+            fill="var(--l-pri-color)"
+            @click="nav({ path: item.href })"
+            viewBox="0 0 1024 1024"
+            v-html="item.svg"></svg>
+          <img v-else class="rd-50 w-6 h-6" alt="FAILED" @click="nav({ path: item.href })" :src="item.img" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-@include pc() {
-  .navigation {
-    display: none;
-  }
-
-  .content {
-    --at-apply: h-100%;
-  }
-}
-
-@include mb() {
-  .navigation {
-    --at-apply: h-5%;
-  }
-
-  .content {
-    --at-apply: h-95%;
-  }
-}
-
 .item {
   --at-apply: my-3 fsz-0.9;
 

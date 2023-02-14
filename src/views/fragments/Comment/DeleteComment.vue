@@ -37,11 +37,7 @@ async function confirmDeleteComment() {
 
 <template>
   <div class="delete-comment l-sec-color fsz-0.8" v-show="!comment.isEditingUpdate && !comment.isEditingReplay">
-    <el-popconfirm
-      confirm-button-text="确定"
-      cancel-button-text="取消"
-      title="确定删除该评论？"
-      @confirm="confirmDeleteComment">
+    <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" title="确定删除该评论？" @confirm="confirmDeleteComment">
       <template #reference>
         <div class="hover f-c-e">
           <el-icon class="mr-1">

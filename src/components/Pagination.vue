@@ -76,11 +76,7 @@ function nexprChange(elIndex: number) {
       </el-tooltip>
     </div>
     <div class="f-c-e my-4">
-      <el-pagination
-        layout="pager, next"
-        :page-count="pageCount"
-        v-model:current-page="index"
-        @current-change="nexprChange" />
+      <el-pagination layout="pager, next" :page-count="pageCount" v-model:current-page="index" @current-change="nexprChange" />
     </div>
   </div>
 </template>

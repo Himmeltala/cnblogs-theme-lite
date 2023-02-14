@@ -8,7 +8,6 @@ function listener(el: string, fn: any, ev?: string) {
 }
 
 onMounted(() => {
-  listener("#nav-strip", () => (hiddenNavModal.value = !hiddenNavModal.value), "mouseover");
   listener("#left-strip", () => {
     hiddenLeft.value = !hiddenLeft.value;
     if (!hiddenRight.value) hiddenRight.value = !hiddenRight.value;
@@ -26,11 +25,6 @@ onMounted(() => {
 
 <template>
   <GitHub />
-  <div
-    id="nav-strip"
-    :class="{ 'top-6vh h-6': !hiddenNavModal, 'h-5 top-0': hiddenNavModal }"
-    class="z-999 fixed w-50vw"></div>
-  <Navigation :class="{ 'show-nav': !hiddenNavModal, 'hidden-nav': hiddenNavModal }" />
   <el-tooltip content="点击展示陈列柜" placement="right">
     <div
       id="left-strip"
@@ -51,9 +45,7 @@ onMounted(() => {
     </RouterView>
     <div class="f-c-c py-2 fsz-0.8 l-sec-color h-4">
       Created By
-      <a class="hover mx-1 l-sec-color" href="https://github.com/Himmelbleu/cnblogs-theme-lite" target="__blank">
-        Himmelbleu,
-      </a>
+      <a class="hover mx-1 l-sec-color" href="https://github.com/Himmelbleu/cnblogs-theme-lite" target="__blank"> Himmelbleu, </a>
       powered by
       <a class="hover mx-1 l-sec-color" href="https://v3.cn.vuejs.org/" target="__blank">Vue3</a>
       on

@@ -35,10 +35,8 @@ onMounted(() => {
     display: none;
     white-space: nowrap;
     z-index: 999;
-    transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s,
-      top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
-    background-color: rgba(50, 50, 50, 0.85);
-    font: 14px / 21px "Microsoft YaHei";
+    transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s, top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
+    background-color: var(--l-box-bg);
     padding: 10px;
     pointer-events: none;
 

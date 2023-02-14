@@ -32,10 +32,7 @@ async function diggComment() {
 </script>
 
 <template>
-  <div
-    v-show="!comment.isEditingUpdate && !comment.isEditingReplay"
-    class="hover fsz-0.8 l-sec-color"
-    @click="diggComment">
+  <div v-show="!comment.isEditingUpdate && !comment.isEditingReplay" class="hover fsz-0.8 l-sec-color" @click="diggComment">
     <el-icon class="mr-1">
       <i-ep-caret-top />
     </el-icon>

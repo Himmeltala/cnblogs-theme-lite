@@ -44,10 +44,7 @@ export function openImageUploadWindow(el: string, onUploaded: (img: string) => v
     const w = `${location.protocol}//upload.cnblogs${location.hostname.substring(
       location.hostname.lastIndexOf(".")
     )}/imageuploader/upload?host=www.cnblogs.com&editor=0#${el}`;
-    document.domain = `cnblogs.${location.hostname.substring(
-      location.hostname.lastIndexOf(".") + 1,
-      location.hostname.length
-    )}`;
+    document.domain = `cnblogs.${location.hostname.substring(location.hostname.lastIndexOf(".") + 1, location.hostname.length)}`;
     openWindow(w, 450, 120, 200);
   } catch (e) {
     console.error(e);

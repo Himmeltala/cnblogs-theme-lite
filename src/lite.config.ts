@@ -61,35 +61,7 @@ export function useLite(dev?: Function, pro?: Function) {
             img: "https://img2.baidu.com/it/u=1815834375,722540131&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=707"
           }
         ]
-      },
-      graph: {
-        alpha: 0.85,
-        sides: 5,
-        layer: 5,
-        lineWidth: 1,
-        textSize: 12,
-        fillColor: "#409eff",
-        strokeColor: "#A7A7A7",
-        lineColor: "#A7A7A7",
-        textColor: "#A7A7A7",
-        data: [
-          { title: "CSS", star: 4 },
-          { title: "Vue", star: 4 },
-          { title: "Java", star: 3 },
-          { title: "JS", star: 4 },
-          { title: "TS", star: 3 }
-        ]
-      },
-      links: [{ href: "http://ts.xcatliu.com/index.html", text: "TypeScript 入门教程" }],
-      books: [
-        {
-          href: "https://baike.baidu.com/item/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3JavaScript/19848692",
-          text: "深入理解 JavaScript",
-          img: "http://img3m1.ddimg.cn/85/1/11120396251-1_w_1.jpg",
-          author: "[美]罗彻麦尔",
-          rate: 4.5
-        }
-      ]
+      }
     };
     dev && dev();
   }
@@ -97,16 +69,11 @@ export function useLite(dev?: Function, pro?: Function) {
   $("head").append(`<link rel="shortcut icon" href="${__LITE_CONFIG__.icon}">`);
   $("html").attr("class", __LITE_CONFIG__.theme?.mode ?? "dark");
 
-  let color = __LITE_CONFIG__.theme?.color ?? "#409eff";
-  let storage = localStorage.getItem("l-theme-color");
+  const storageItem = `l-${blogApp}-theme-color`;
+  let themeColor = __LITE_CONFIG__.theme?.color ?? "#409eff";
+  let storeThemeColor = localStorage.getItem(storageItem);
+  if (storeThemeColor) themeColor = storeThemeColor;
+  else localStorage.setItem(storageItem, themeColor);
 
-  if (storage) {
-    color = storage;
-  } else {
-    localStorage.setItem("l-theme-color", color);
-  }
-
-  $("html").css({
-    "--l-theme-color": color
-  });
+  $("html").css({ "--l-theme-color": themeColor });
 }
