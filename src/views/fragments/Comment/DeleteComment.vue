@@ -1,5 +1,55 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { PropType } from "vue";
+import { deleteComment } from "@/utils/remote-api";
 
-<template></template>
+const props = defineProps({
+  comment: {
+    type: Object as PropType<any>,
+    required: true
+  },
+  comments: {
+    type: Object as PropType<any>,
+    required: true
+  },
+  index: {
+    type: Number,
+    required: true
+  },
+  postId: {
+    type: Number,
+    required: true
+  }
+});
 
-<style scoped lang="scss"></style>
+async function confirmDeleteComment() {
+  const data = await deleteComment({
+    commentId: props.comment.commentId,
+    parentId: props.postId
+  });
+  if (data) {
+    props.comments?.splice(props.index, 1);
+    ElMessage({ message: "删除评论成功！", grouping: true, type: "success" });
+  } else {
+    ElMessage({ message: "这不是你的评论，没有权限删除！", grouping: true, type: "error" });
+  }
+}
+</script>
+
+<template>
+  <div class="delete-comment l-sec-color fsz-0.8" v-show="!comment.isEditingUpdate && !comment.isEditingReplay">
+    <el-popconfirm
+      confirm-button-text="确定"
+      cancel-button-text="取消"
+      title="确定删除该评论？"
+      @confirm="confirmDeleteComment">
+      <template #reference>
+        <div class="hover f-c-e">
+          <el-icon class="mr-1">
+            <i-ep-delete />
+          </el-icon>
+          <span>删除评论</span>
+        </div>
+      </template>
+    </el-popconfirm>
+  </div>
+</template>

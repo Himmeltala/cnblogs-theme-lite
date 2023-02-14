@@ -157,17 +157,13 @@ async function vote(voteType: BlogType.VoteType) {
           <el-icon>
             <i-ep-d-arrow-left />
           </el-icon>
-          <a class="hover l-pri-color" :href="prevNext.prev.href">
-            上一篇：{{ prevNext.prev.text }}
-          </a>
+          <a class="hover l-pri-color" :href="prevNext.prev.href"> 上一篇：{{ prevNext.prev.text }} </a>
         </div>
         <div class="next hover f-c-s" v-if="prevNext.next.href">
           <el-icon>
             <i-ep-d-arrow-right />
           </el-icon>
-          <a class="hover l-pri-color" :href="prevNext.next.href">
-            下一篇：{{ prevNext.next.text }}
-          </a>
+          <a class="hover l-pri-color" :href="prevNext.next.href"> 下一篇：{{ prevNext.next.text }} </a>
         </div>
       </div>
       <div class="my-10 f-c-e">
@@ -188,16 +184,12 @@ async function vote(voteType: BlogType.VoteType) {
           </el-button>
         </div>
       </div>
-      <Comments :post-id="postId" />
+      <Comment :post-id="postId" />
     </div>
     <div v-else class="modal fixed w-100vw h-100vh top-0 left-0 l-box-bg f-c-c">
       <el-form>
         <el-form-item label="密码：">
-          <el-input
-            show-password
-            type="password"
-            v-model="password"
-            placeholder="输入博文阅读密码" />
+          <el-input show-password type="password" v-model="password" placeholder="输入博文阅读密码" />
         </el-form-item>
         <el-form-item>
           <el-button size="small" type="primary" @click="submit">确定</el-button>

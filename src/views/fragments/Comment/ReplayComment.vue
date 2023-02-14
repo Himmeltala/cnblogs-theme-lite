@@ -79,8 +79,8 @@ function cancel() {
     </div>
     <div
       v-show="!comment.isEditingUpdate"
-      class="float-left f-c-e fsz-0.8 l-sec-color"
-      :class="{ 'w-90%': !comment.isEditingReplay, ' w-100%': comment.isEditingReplay }">
+      class="float-right f-c-e fsz-0.8 l-sec-color"
+      :class="{ 'ed-item': !comment.isEditingReplay, ' w-100%': comment.isEditingReplay }">
       <div v-show="!comment.isEditingReplay" class="hover f-c-e" @click="before">
         <el-icon class="mr-1">
           <i-ep-chat-round />
@@ -102,3 +102,17 @@ function cancel() {
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+@include pc() {
+  .ed-item {
+    --at-apply: w-8%;
+  }
+}
+
+@include mb() {
+  .ed-item {
+    --at-apply: w-18%;
+  }
+}
+</style>
