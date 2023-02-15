@@ -27,6 +27,10 @@ const routeReg = {
   GALLERY: /\/gallery\/image/g
 };
 
+/**
+ * 从评论链接点击进入时，获取其携带的评论锚点位置
+ * @param URL 从评论点击过来的链接
+ */
 function storeCommentAnchor(URL: string) {
   try {
     const commentAnchor = URL.match(/#\/\d+/g)[0].split("#/")[1];
@@ -38,73 +42,65 @@ function storeCommentAnchor(URL: string) {
 }
 
 /**
- * 是否需要重写 URL，比如，文章页，原本博客圆的链接是 https://www.cnblogs.com/Himmelbleu/p/11111.html
- * 由于 Vue 的 Router，要正确导入路由组件，就必须对 URL 进行处理，匹配该链接是不是随笔路由组件，如果是就导入路由组件，
- * 并重写 URL 路径为正确的 Router 路径。
+ * 对原博客链接进行重写并提取重要信息。
  *
- * 如果进入的是 Router 的 URL，就不需要进行上诉操作。
+ * 比如文章页，地址是 https://www.cnblogs.com/Himmelbleu/p/11111.html。Vue Router 要的不是这样的 URL，而是 hash URL，
+ * 提取该 URL 中重要信息，如随笔的 ID：11111，得到之后创建 guardNext，让 next 函数导入对应的路由组件。
+ *
+ * 如果进入的就是路由组件的 URL，则不需要进行上诉操作。
  *
  * @param next NavigationGuardNext
  * @returns 返回一个函数，在合适的时候执行，而非调用该函数就执行后续操作
  */
-export function rewriteURL(next: any): () => void {
-  let courier: any;
+export function redirect(next: any): () => void {
+  let nextParam: any;
   const URL = window.location.href;
 
   if (routeReg.ESSAY.test(URL)) {
     const id = URL.match(routeReg.ESSAY)[0].split("/")[2].split(".")[0];
     storeCommentAnchor(URL);
-    courier = {
+    nextParam = {
       name: RouteName.ESSAY,
-      params: { id },
-      exerciser() {
-        refactorURL(id);
-      }
+      params: { id }
     };
   } else if (routeReg.CATEGORY.test(URL)) {
     const id = URL.match(routeReg.CATEGORY)[0].split("/")[2].split(",")[0];
-    courier = {
+    nextParam = {
       name: RouteName.CATEGORY,
-      params: { id },
-      exerciser() {
-        refactorURL(id);
-      }
+      params: { id }
     };
   } else if (routeReg.TAGCOLL.test(URL)) {
     const tag = decodeURI(URL).match(routeReg.TAGCOLL)![0].split("/")[2];
-    courier = {
+    nextParam = {
       name: RouteName.TAGCOLL,
-      params: { tag },
-      exerciser() {
-        refactorURL(tag);
-      }
+      params: { tag }
     };
   } else if (routeReg.GALLERY.test(URL)) {
     const tag = decodeURI(URL).match(routeReg.TAGCOLL)![0].split("/")[2];
-    courier = {
+    nextParam = {
       name: RouteName.GALLERY,
-      params: { tag },
-      exerciser() {
-        refactorURL(tag);
-      }
+      params: { tag }
     };
   }
 
   return () => {
-    if (courier) {
-      courier.exerciser();
-      next(courier);
+    if (nextParam) {
+      push();
+      next(nextParam);
     } else {
       next();
     }
   };
 }
 
-function refactorURL(slice: string): void {
-  const redirectUrl = `${window.location.protocol}//${window.location.host}/${blogApp}/#/${slice}`;
-  window.history.pushState("", "", redirectUrl);
+function push() {
+  window.history.pushState("", "", `${window.location.protocol}//${window.location.host}/${blogApp}/#/`);
 }
 
+/**
+ * 导航，传入 path 导航 Vue Router 路由组件；传入普通链接进行跳转；传入 back 对上级进行回跳。
+ * @param params path：路径、router：导航路由组件时传递
+ */
 export function nav(params: { path: string; router?: Router }) {
   if (params.path === "back") {
     params.router.go(-1);

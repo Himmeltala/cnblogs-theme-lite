@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const hiddenNavModal = ref(true);
 const hiddenLeft = ref(true);
 const hiddenRight = ref(true);
 

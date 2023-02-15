@@ -31,7 +31,7 @@ async function unfocus() {
 
 <template>
   <div id="l-cabinet" class="fixed top-0 left-0 w-250px h-100vh px-2 z-999 l-box-bg">
-    <div class="content noscroll ofw-auto h-95%">
+    <div class="noscroll ofw-auto h-96%">
       <CabinetItem text="博客信息">
         <template #icon>
           <el-icon class="mr-1">
@@ -152,7 +152,7 @@ async function unfocus() {
         </el-tabs>
       </CabinetItem>
     </div>
-    <div class="noscroll ofw-auto f-c">
+    <div class="noscroll ofw-auto f-c h-4%">
       <div class="hover mr-4 wce-nowrap" @click="nav({ path: 'https://www.cnblogs.com' })">博客园</div>
       <div class="hover mr-4 wce-nowrap" @click="nav({ path: '/', router })">首页</div>
       <div class="hover wce-nowrap" :class="{ 'mr-4': __LITE_CONFIG__.navor?.navs }" @click="nav({ path: '/', router })">标签</div>

@@ -12,7 +12,7 @@ import "./style.scss";
 
 /* Import Lite */
 import { useDirective } from "./directive";
-import { useLite, setLite } from "./lite.config";
+import { useLite, initLiteVars } from "./lite.config";
 
 /* Start */
 const app = createApp(App);
@@ -26,7 +26,7 @@ useLite(
   () =>
     // @ts-ignore
     (window["__LITE_CONFIG__"].onLoaded = () => {
-      setLite();
+      initLiteVars();
       app.mount("#app");
     })
 );

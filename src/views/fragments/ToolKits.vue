@@ -11,7 +11,7 @@ function moveToTopNail() {
   });
 }
 
-const themeMode = ref<"light" | "dark">("dark");
+const themeMode = useStorage(`l-${blogApp}-theme-mode`, "");
 
 function changeDayTime() {
   const html = document.querySelector("html");
@@ -54,26 +54,32 @@ const router = useRouter();
 const disBack = ref(false);
 const iconType = ref<"backArrow" | "home">("backArrow");
 
-watch(route, val => {
-  if (val.name === "essay") {
+function changeBack(name: any) {
+  if (name === "essay") {
     disBack.value = true;
     iconType.value = "home";
-  } else if (val.name === "sort" || val.name === "label") {
+  } else if (name === "sort" || name === "label") {
     disBack.value = true;
     iconType.value = "backArrow";
   } else {
     disBack.value = false;
   }
+}
+
+changeBack(route.name);
+
+watch(route, val => {
+  changeBack(val.name);
 });
 </script>
 
 <template>
-  <div id="toolkits" class="noselect fixed right-15 top-75vh fsz-1.1">
+  <div id="toolkits" class="noselect fixed right-15 top-65vh fsz-1.1">
     <div class="relative">
       <div
         v-show="disBack"
         :class="{ 'show-back-home l-box-bg': disToolKits, 'close-back-home': !disToolKits }"
-        class="back-home absolute left-0 w-8 h-8 f-c-c">
+        class="back-home absolute left-0 w-8 h-8 f-c-c rd-2">
         <div class="hover f-c-c">
           <div v-if="iconType === 'home'" @click="nav({ path: '/', router })">
             <i-ep-house />
@@ -85,20 +91,20 @@ watch(route, val => {
       </div>
       <div
         :class="{ 'show-back-top l-box-bg': disToolKits, 'close-back-top': !disToolKits }"
-        class="back-top absolute hover left-0 w-8 h-8 f-c-c"
+        class="back-top absolute hover left-0 w-8 h-8 f-c-c rd-2"
         @click="moveToTopNail">
         <i-ep-position />
       </div>
       <div
         @click="colorDialog = !colorDialog"
         :class="{ 'show-magic-stick l-box-bg': disToolKits, 'close-magic-stick': !disToolKits }"
-        class="magic-stick absolute hover left-0 w-8 h-8 f-c-c">
+        class="magic-stick absolute hover left-0 w-8 h-8 f-c-c rd-2">
         <i-ep-magic-stick />
       </div>
       <div
         :class="{ 'show-daytime l-box-bg': disToolKits, 'close-daytime': !disToolKits }"
         @click="changeDayTime"
-        class="daytime absolute hover left-0 w-8 h-8 f-c-c">
+        class="daytime absolute hover left-0 w-8 h-8 f-c-c rd-2">
         <template v-if="themeMode === 'light'">
           <i-ep-sunny />
         </template>
