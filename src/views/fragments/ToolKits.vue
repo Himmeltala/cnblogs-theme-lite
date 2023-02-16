@@ -24,8 +24,7 @@ function changeDayTime() {
   }
 }
 
-const disToolKits = useStorage(`dis-${blogApp}-tool-kits`, false);
-const colorDialog = ref(false);
+const disToolKits = useStorage(`l-${blogApp}-dis-tool-kits`, true);
 const themeColor = useStorage(`l-${blogApp}-theme-color`, "");
 const preColors = ref([
   "#ff4500",
@@ -44,65 +43,36 @@ const preColors = ref([
   "#c7158577"
 ]);
 
-function changeThemeColor() {
-  document.querySelector("html").style.setProperty("--l-theme-color", themeColor.value);
-  colorDialog.value = !colorDialog.value;
-}
-
-const route = useRoute();
-const router = useRouter();
-const disBack = ref(false);
-const iconType = ref<"backArrow" | "home">("backArrow");
-
-function changeBack(name: any) {
-  if (name === "essay") {
-    disBack.value = true;
-    iconType.value = "home";
-  } else if (name === "sort" || name === "label") {
-    disBack.value = true;
-    iconType.value = "backArrow";
-  } else {
-    disBack.value = false;
-  }
-}
-
-changeBack(route.name);
-
-watch(route, val => {
-  changeBack(val.name);
+watch(themeColor, val => {
+  document.querySelector("html").style.setProperty("--l-theme-color", val);
 });
+
+const router = useRouter();
+const settingDialog = ref(false);
+const isOpenPager = useStorage(`l-${blogApp}-open-pager`, true);
+const isFixedLeftCabinet = useStorage(`l-${blogApp}-fixed-left-cabinet`, true);
+const isFixedRightCabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, true);
+const isFixedCabinetNav = useStorage(`l-${blogApp}-fixed-cabinet-nav`, true);
 </script>
 
 <template>
-  <div id="toolkits" class="noselect fixed right-15 top-65vh fsz-1.1">
+  <div id="toolkits" class="noselect fixed right-15 top-65vh fsz-1.2 z-99">
     <div class="relative">
-      <div
-        v-show="disBack"
-        :class="{ 'show-back-home l-box-bg': disToolKits, 'close-back-home': !disToolKits }"
-        class="back-home absolute left-0 w-8 h-8 f-c-c rd-2">
+      <div :class="{ 'show-0 l-box-bg': disToolKits, 'close-0': !disToolKits }" class="back-home absolute left-0 w-8 h-8 f-c-c rd-2">
         <div class="hover f-c-c">
-          <div v-if="iconType === 'home'" @click="nav({ path: '/', router })">
-            <i-ep-house />
-          </div>
-          <div v-else-if="iconType === 'backArrow'" @click="nav({ path: 'back', router })">
+          <div @click="nav({ path: 'back', router })">
             <i-ep-back />
           </div>
         </div>
       </div>
       <div
-        :class="{ 'show-back-top l-box-bg': disToolKits, 'close-back-top': !disToolKits }"
+        :class="{ 'show-1 l-box-bg': disToolKits, 'close-1': !disToolKits }"
         class="back-top absolute hover left-0 w-8 h-8 f-c-c rd-2"
         @click="moveToTopNail">
         <i-ep-position />
       </div>
       <div
-        @click="colorDialog = !colorDialog"
-        :class="{ 'show-magic-stick l-box-bg': disToolKits, 'close-magic-stick': !disToolKits }"
-        class="magic-stick absolute hover left-0 w-8 h-8 f-c-c rd-2">
-        <i-ep-magic-stick />
-      </div>
-      <div
-        :class="{ 'show-daytime l-box-bg': disToolKits, 'close-daytime': !disToolKits }"
+        :class="{ 'show-2 l-box-bg': disToolKits, 'close-2': !disToolKits }"
         @click="changeDayTime"
         class="daytime absolute hover left-0 w-8 h-8 f-c-c rd-2">
         <template v-if="themeMode === 'light'">
@@ -113,136 +83,89 @@ watch(route, val => {
         </template>
       </div>
       <div
+        :class="{ 'show-3 l-box-bg': disToolKits, 'close-3': !disToolKits }"
+        @click="settingDialog = !settingDialog"
+        class="setting absolute hover left-0 w-8 h-8 f-c-c rd-2">
+        <i-ep-setting class="rotate" />
+      </div>
+      <div
         @click="disToolKits = !disToolKits"
         :class="{ 'show-toolkits': disToolKits, 'close-toolkits': !disToolKits }"
-        class="kits-box absolute hover top-40 left-0 w-8 h-8 f-c-c l-box-bg">
+        class="kits-box absolute hover top-40 left-0 w-8 h-8 f-c-c l-box-bg rd-2">
         <i-ep-arrow-right />
       </div>
     </div>
-    <el-dialog v-model="colorDialog" title="修改主题颜色" align-center width="25rem">
-      <div>
-        <span class="demonstration">当前选择的颜色：</span>
-        <el-color-picker :predefine="preColors" show-alpha v-model="themeColor" />
+    <el-dialog v-model="settingDialog" title="设置博客" align-center width="25rem">
+      <div class="">
+        <span><span v-show="!isFixedCabinetNav">隐藏</span><span v-show="isFixedCabinetNav">显示</span>陈列柜导航</span>
+        <el-switch v-model="isFixedCabinetNav" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
       </div>
-      <el-button @click="changeThemeColor" type="primary" class="mt-4" size="small">确定</el-button>
+      <div class="mt-4">
+        <span><span v-show="!isFixedLeftCabinet">隐藏</span><span v-show="isFixedLeftCabinet">固定</span>左陈列柜</span>
+        <el-switch v-model="isFixedLeftCabinet" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
+      </div>
+      <div class="mt-4">
+        <span><span v-show="!isFixedRightCabinet">隐藏</span><span v-show="isFixedRightCabinet">固定</span>右陈列柜</span>
+        <el-switch v-model="isFixedRightCabinet" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
+      </div>
+      <div class="mt-4">
+        <span><span v-show="!isOpenPager">隐藏</span><span v-show="isOpenPager">开启</span>翻页按钮</span>
+        <el-switch v-model="isOpenPager" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
+      </div>
+      <div class="mt-4">
+        <span class="mr-2">设置主题颜色</span>
+        <el-color-picker size="small" :predefine="preColors" show-alpha v-model="themeColor" />
+      </div>
     </el-dialog>
   </div>
 </template>
 
 <style scoped lang="scss">
-// 从随笔返回到主页
-.show-back-home {
-  animation: show-back-home-animation 0.5s ease-in;
-  top: 0;
-}
+$count: 4;
+$show-top: 0;
+$close-end: 10rem;
 
-.close-back-home {
-  animation: close-back-home-animation 0.5s ease-in;
-  top: 10rem;
-  z-index: -1;
-}
+@for $index from 0 to $count {
+  @if $index != 0 {
+    $show-top: $show-top + 2.5rem;
+  }
 
-@keyframes show-back-home-animation {
-  @for $i from 0 to 10 {
-    #{$i * 10%} {
-      top: 10rem - $i * 1rem;
+  .show-#{$index} {
+    animation: show-#{$index}-animation math.div($index, 10) + 0.2s ease-in;
+    top: $show-top;
+  }
+
+  .close-#{$index} {
+    animation: close-#{$index}-animation math.div($index, 10) + 0.2s ease-in;
+    top: $close-end;
+    z-index: -1;
+  }
+
+  @keyframes show-#{$index}-animation {
+    $show-anime-top: 0;
+
+    @for $i from 0 to 11 {
+      @if $index == 0 {
+        $show-anime-top: $close-end - $i * 1rem;
+      } @else {
+        $show-anime-top: $i * math.div($show-top, 10);
+      }
+
+      #{$i * 10%} {
+        top: $show-anime-top;
+      }
+    }
+  }
+
+  @keyframes close-#{$index}-animation {
+    @for $i from 0 to 11 {
+      #{ $i * 10%} {
+        top: $show-top + $i * math.div(($close-end - $show-top), 10);
+      }
     }
   }
 }
 
-@keyframes close-back-home-animation {
-  @for $i from 0 to 10 {
-    #{$i * 10%} {
-      top: $i * 1rem;
-    }
-  }
-}
-
-// 返回到顶部
-.show-back-top {
-  animation: show-back-top-animation 0.4s ease-in;
-  top: 2.5rem;
-}
-
-.close-back-top {
-  animation: close-back-top-animation 0.4s ease-in;
-  top: 10rem;
-  z-index: -1;
-}
-
-@keyframes show-back-top-animation {
-  @for $i from 0 to 10 {
-    #{$i * 10%} {
-      top: $i * 0.25rem;
-    }
-  }
-}
-
-@keyframes close-back-top-animation {
-  @for $i from 0 to 10 {
-    #{$i * 10%} {
-      top: 2.5rem + $i * 0.75rem;
-    }
-  }
-}
-
-// 修改主题颜色
-.show-magic-stick {
-  animation: show-magic-stick-animation 0.3s ease-in;
-  top: 5rem;
-}
-
-.close-magic-stick {
-  animation: close-magic-stick-animation 0.3s ease-in;
-  top: 10rem;
-  z-index: -1;
-}
-
-@keyframes show-magic-stick-animation {
-  @for $i from 0 to 10 {
-    #{$i * 10%} {
-      top: $i * 0.5rem;
-    }
-  }
-}
-
-@keyframes close-magic-stick-animation {
-  @for $i from 0 to 10 {
-    #{$i * 10%} {
-      top: 5rem + $i * 0.5rem;
-    }
-  }
-}
-
-// 修改昼夜模式
-.show-daytime {
-  animation: show-daytime-animation 0.2s ease-in;
-  top: 7.5rem;
-}
-
-.close-daytime {
-  animation: close-daytime-animation 0.2s ease-in;
-  top: 10rem;
-  z-index: -1;
-}
-
-@keyframes show-daytime-animation {
-  @for $i from 0 to 10 {
-    #{$i * 10%} {
-      top: $i * 0.75rem;
-    }
-  }
-}
-
-@keyframes close-daytime-animation {
-  @for $i from 0 to 10 {
-    #{$i * 10%} {
-      top: 7.5rem + $i * 0.25rem;
-    }
-  }
-}
-
-// 展开或收起工具箱
 .show-toolkits {
   animation: show-toolkits-animation 0.2s ease-in;
   transform: rotate(0);
@@ -254,17 +177,29 @@ watch(route, val => {
 }
 
 @keyframes show-toolkits-animation {
-  @for $i from 0 to 10 {
-    #{$i * 10%} {
-      transform: rotate(180deg - $i * 18deg);
+  @for $index from 0 to 10 {
+    #{$index * 10%} {
+      transform: rotate(180deg - $index * 18deg);
     }
   }
 }
 
 @keyframes close-toolkits-animation {
-  @for $i from 0 to 10 {
-    #{$i * 10%} {
-      transform: rotate($i * 18deg);
+  @for $index from 0 to 10 {
+    #{$index * 10%} {
+      transform: rotate($index * 18deg);
+    }
+  }
+}
+
+.rotate:hover {
+  animation: 1.5s infinite rotate-animation;
+}
+
+@keyframes rotate-animation {
+  @for $index from 0 to 10 {
+    #{$index * 10%} {
+      transform: rotate($index * 36deg);
     }
   }
 }

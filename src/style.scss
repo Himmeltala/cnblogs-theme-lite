@@ -3,39 +3,6 @@
 @import "@/scss/common";
 
 /**
- * 设置主题样式
- *
- * @author Himmelbleu
- * @date 2023 年 2 月 14 日
- * @url https://www.cnblogs.com/Himmelbleu/#/
- */
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--l-box-bg);
-  color: var(--l-pri-color);
-  font-size: var(--font-size);
-  font-weight: 400;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-* {
-  color: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  font-family: "Microsoft YaHei", "微软雅黑", "Hiragino Sans GB", "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  letter-spacing: 1px;
-  scroll-behavior: smooth;
-  word-break: break-all;
-  line-break: anywhere;
-  box-sizing: border-box;
-}
-
-/**
  * 设置昼夜模式下使用的颜色
  *
  * @author Himmelbleu
@@ -106,46 +73,6 @@ html[class="light"] {
   --hljs-attr: #986801;
   --hljs-bullet: #986801;
   --hljs-built: #986801;
-}
-
-/**
- * 设置所有元素共有的样式
- *
- * @author Himmelbleu
- * @date 2023 年 2 月 14 日
- * @url https://www.cnblogs.com/Himmelbleu/#/
- */
-
-#app {
-  --at-apply: f-c-c;
-}
-
-img {
-  max-width: 100%;
-  --at-apply: rd-2;
-  object-fit: cover;
-}
-
-a {
-  color: var(--l-pri-color);
-}
-
-a:link {
-  text-decoration: none;
-}
-
-::selection {
-  color: var(--l-selection-bg);
-  background: var(--el-color-primary);
-}
-
-::-webkit-scrollbar {
-  width: 0.15rem;
-  height: 0.15rem;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--l-divider-bg);
 }
 
 /**
@@ -267,4 +194,69 @@ code.hljs {
 
 .hljs-link {
   text-decoration: underline;
+}
+
+/**
+ * 设置所有元素共有的样式
+ *
+ * @author Himmelbleu
+ * @date 2023 年 2 月 14 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--l-box-bg);
+  color: var(--l-pri-color);
+  font-size: var(--font-size);
+  font-weight: 400;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+* {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: "Microsoft YaHei", "微软雅黑", "Hiragino Sans GB", "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: 1px;
+  scroll-behavior: smooth;
+  word-break: break-all;
+  line-break: anywhere;
+  box-sizing: border-box;
+}
+
+#app {
+  --at-apply: f-c-c;
+}
+
+img {
+  max-width: 100%;
+  --at-apply: rd-2;
+  object-fit: cover;
+}
+
+a {
+  color: var(--l-pri-color);
+}
+
+a:link {
+  text-decoration: none;
+}
+
+::selection {
+  color: var(--l-selection-bg);
+  background: var(--el-color-primary);
+}
+
+::-webkit-scrollbar {
+  width: 0.15rem;
+  height: 0.15rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--l-divider-bg);
 }

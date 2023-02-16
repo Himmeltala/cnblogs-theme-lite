@@ -1,6 +1,12 @@
 <script setup lang="ts">
+import { blogApp } from "@/lite.config";
+import { useStorage } from "@vueuse/core";
+
 const hiddenLeft = ref(true);
 const hiddenRight = ref(true);
+
+const isFixedLeftCabinet = useStorage(`l-${blogApp}-fixed-left-cabinet`, true);
+const isFixedRightCabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, true);
 
 function listener(el: string, fn: any, ev?: string) {
   document.querySelector(el).addEventListener(ev || "click", fn);
@@ -26,11 +32,18 @@ onMounted(() => {
   <GitHub />
   <el-tooltip content="点击展示陈列柜" placement="right">
     <div
+      v-show="!isFixedLeftCabinet"
       id="left-strip"
       :class="{ 'left-250px': !hiddenLeft, 'left-0 w-6px l-strip-bg rd-2': hiddenLeft }"
       class="z-999 fixed top-40vh h-20vh cursor-pointer opacity-70"></div>
   </el-tooltip>
-  <LeftCabinet :class="{ 'show-lcabinet': !hiddenLeft, 'hidden-lcabinet': hiddenLeft }" />
+  <LeftCabinet
+    class="lcabinet"
+    :class="{
+      'show-lcabinet fixed top-0 left-0 z-9999': !hiddenLeft && !isFixedLeftCabinet,
+      'hidden-lcabinet fixed top-0 left-0 z-99': hiddenLeft && !isFixedLeftCabinet,
+      'fixed-left-cabinet fixed top-0': isFixedLeftCabinet
+    }" />
   <div id="l-content">
     <span id="top-nail"></span>
     <RouterView v-slot="{ Component }">
@@ -53,15 +66,22 @@ onMounted(() => {
   </div>
   <div
     id="full-modal"
-    class="full-modal z-99 opacity-50 l-modal-bg"
+    class="full-modal z-999 opacity-50 l-modal-bg"
     :class="{ 'fixed top-0 left-0 w-100% h-100vh': !hiddenRight || !hiddenLeft }"></div>
   <el-tooltip content="点击展示陈列柜" placement="left">
     <div
+      v-show="!isFixedRightCabinet"
       id="right-strip"
       :class="{ 'right-250px': !hiddenRight, 'right-0 w-6px l-strip-bg rd-2': hiddenRight }"
       class="z-999 fixed top-40vh h-20vh cursor-pointer opacity-70"></div>
   </el-tooltip>
-  <RightCabinet :class="{ 'show-rcabinet': !hiddenRight, 'hidden-rcabinet': hiddenRight }" />
+  <RightCabinet
+    class="rcabinet"
+    :class="{
+      'show-rcabinet fixed top-0 right-0 z-9999': !hiddenRight && !isFixedRightCabinet,
+      'hidden-rcabinet fixed top-0 right-0 z-99': hiddenRight && !isFixedRightCabinet,
+      'fixed-right-cabinet fixed top-0': isFixedRightCabinet
+    }" />
   <ToolKits />
 </template>
 
@@ -78,6 +98,19 @@ $quota: 10;
   #l-content {
     --at-apply: p-5 w-100%;
   }
+
+  .rcabinet,
+  .lcabinet {
+    display: none !important;
+  }
+}
+
+.fixed-left-cabinet {
+  left: calc(25vw - 19rem);
+}
+
+.fixed-right-cabinet {
+  right: calc(25vw - 19rem);
 }
 
 .show-nav {

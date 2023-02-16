@@ -70,27 +70,23 @@ export interface Lite {
   // 网站 icon
   icon?: string;
   // 主题配置项
-  theme?: {
-    mode?: "dark" | "light";
-    color?: string;
-  };
+  theme?: {};
   // 侧边栏配置项
   cabinet?: {
     avatar?: string;
     signature?: string;
+    navs?: { href: string; text?: string; svg?: string; img?: string }[];
   };
+  // 博客设置
+  setting?: {};
   // 目录配置项
   catalog?: {
     level?: boolean;
   };
   // 导航栏配置项
-  navor?: {
-    header?: string;
-    navs?: { href: string; text?: string; svg?: string; img?: string }[];
-  };
+  navor?: {};
   // 技能栈配置项
   graph?: {
-    fillColor?: string;
     strokeColor?: string;
     alpha?: number;
     sides?: number;

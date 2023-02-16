@@ -1,7 +1,12 @@
 <script setup lang="ts">
 const props = defineProps({
   pageCount: {
-    type: Number
+    type: Number,
+    required: true
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -60,7 +65,7 @@ function nexprChange(elIndex: number) {
 
 <template>
   <div class="relative">
-    <div class="hover sorter left-20vw" @click="prevChange">
+    <div class="hover sorter left-23vw" @click="prevChange" v-show="disabled">
       <el-tooltip effect="dark" content="上一页" placement="left">
         <el-icon>
           <i-ep-arrow-left-bold />
@@ -68,7 +73,7 @@ function nexprChange(elIndex: number) {
       </el-tooltip>
     </div>
     <slot name="content" />
-    <div class="hover sorter right-20vw" @click="nextChange">
+    <div class="hover sorter right-23vw" @click="nextChange" v-show="disabled">
       <el-tooltip effect="dark" content="下一页" placement="right">
         <el-icon>
           <i-ep-arrow-right-bold />
@@ -84,7 +89,7 @@ function nexprChange(elIndex: number) {
 <style scoped lang="scss">
 .sorter {
   --at-apply: fixed fsz-1 w-10 h-10 z-9 f-c-c l-thr-color top-50vh rd-l-4;
-  opacity: 0.5;
+  opacity: 0.8;
 }
 
 @include mb() {

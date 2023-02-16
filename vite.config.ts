@@ -60,7 +60,7 @@ export default defineConfig(({ command, mode }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@use "@/scss/mixins.scss" as *;`
+          additionalData: `@use "@/scss/mixins.scss" as *; @use "sass:math";`
         }
       }
     },

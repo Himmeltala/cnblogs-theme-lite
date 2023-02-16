@@ -4,6 +4,8 @@
 
 本人已部署在自己的博客，浏览：[Lite 博客](https://www.cnblogs.com/Enziandom/#/)。
 
+[GitHub](https://github.com/Himmelbleu/cnblogs-theme-lite) 或 [Gitee](https://gitee.com/Himmelbleu/cnblogs-theme-lite)，请点个 :star:star 哟~。
+
 # 部署说明
 
 部署非常简单，你只需要在：博客园管理-设置下的 “首页 HTML 代码”和“页脚 HTML 代码”配置即可：
@@ -50,8 +52,7 @@
   .dark-loading,
   .light-loading {
     font-size: 14px !important;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
-      sans-serif !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
     font-weight: 400;
     position: fixed;
     top: 0;
@@ -71,8 +72,7 @@
   }
   .box h2 {
     font-size: 14px !important;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
-      sans-serif !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
     font-weight: 400;
     color: #777;
     margin: 0;
@@ -82,8 +82,7 @@
   }
   .box span {
     font-size: 14px !important;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
-      sans-serif !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
     font-weight: 400;
     display: inline-block;
     vertical-align: middle;
@@ -155,22 +154,6 @@
 
 # 配置说明
 
-## 主题
-
-```js
-window.__LITE_CONFIG__ = {
-  theme: {
-    mode: "dark",
-    color: ""
-  }
-};
-```
-
-| 字段  |          描述           |     可选值     |
-| :---: | :---------------------: | :------------: |
-| mode  |        昼夜模式         |  dark、light   |
-| color | 主题颜色，默认：#409eff | rgba、rgb、hex |
-
 ## GitHub
 
 ```js
@@ -189,25 +172,7 @@ window.__LITE_CONFIG__ = {
 window.__LITE_CONFIG__ = {
   cabinet: {
     avatar: "url",
-    signature: "your text"
-  }
-};
-```
-
-cabinet 是陈列柜，点击浏览器左右中间的透明条可以呼出。
-
-|   字段    |   描述   |
-| :-------: | :------: |
-|  avatar   |   头像   |
-| signature | 个性签名 |
-
-## 导航栏
-
-```js
-window.__LITE_CONFIG__ = {
-  navor: {
-    // 支持 html 插入
-    header: "<span style='color: red'>CNBLOGS</span>",
+    signature: "your text",
     navs: [
       // 可以插入图片、文本、svg
       {
@@ -223,6 +188,14 @@ window.__LITE_CONFIG__ = {
 };
 ```
 
+cabinet 是陈列柜，点击浏览器左右中间的透明条可以呼出。
+
+|   字段    |      描述      |
+| :-------: | :------------: |
+|  avatar   |      头像      |
+| signature |    个性签名    |
+|   navs    | 左陈列柜导航项 |
+
 ## 技能栈
 
 ```js
@@ -233,6 +206,7 @@ window.__LITE_CONFIG__ = {
     layer: 5, // 多少层
     lineWidth: 1,
     textSize: 12,
+    // 以下四个字段可以不填
     fillColor: "#409eff",
     strokeColor: "#A7A7A7",
     lineColor: "#A7A7A7",

@@ -180,8 +180,10 @@ export function calcSize(sideWidthVw: number) {
 export function createRadar(vw: number) {
   const config = __LITE_CONFIG__.graph;
   if (config) {
-    fillColor = config.fillColor ?? localStorage.getItem(`l-${blogApp}-theme-color`);
-    strokeColor = config.strokeColor ?? "#a7a7a7";
+    fillColor = localStorage.getItem(`l-${blogApp}-theme-color`);
+    strokeColor = config.strokeColor || "#a7a7a7";
+    config.textColor = config.textColor || "#a7a7a7";
+    config.lineColor = config.textColor || "#a7a7a7";
     // @ts-ignore
     const ctx = document.getElementById("graph").getContext("2d");
     drawRadarMap(config, vw, vw, ctx);

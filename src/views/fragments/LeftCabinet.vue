@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useStorage } from "@vueuse/core";
 import { nav } from "@/helpers/route-helper";
 import { follow, unfollow } from "@/utils/remote-api";
 import { getSideBloggerInfo, getSideBlogInfo, getSideCateList, getSideBlogRank, getSideTopList } from "@/utils/local-api";
@@ -27,10 +28,12 @@ async function unfocus() {
   const data = await unfollow();
   if (data) ElMessage({ message: "取消关注博主！", type: "success", grouping: true });
 }
+
+const isFixedCabinetNav = useStorage(`l-${blogApp}-fixed-cabinet-nav`, false);
 </script>
 
 <template>
-  <div id="l-cabinet" class="fixed top-0 left-0 w-250px h-100vh px-2 z-999 l-box-bg">
+  <div id="l-cabinet" class="w-70 h-100vh px-2 l-box-bg">
     <div class="noscroll ofw-auto h-96%">
       <CabinetItem text="博客信息">
         <template #icon>
@@ -152,15 +155,15 @@ async function unfocus() {
         </el-tabs>
       </CabinetItem>
     </div>
-    <div class="noscroll ofw-auto f-c h-4%">
+    <div class="noscroll f-c ofw-auto h-4%" v-show="isFixedCabinetNav">
       <div class="hover mr-4 wce-nowrap" @click="nav({ path: 'https://www.cnblogs.com' })">博客园</div>
       <div class="hover mr-4 wce-nowrap" @click="nav({ path: '/', router })">首页</div>
-      <div class="hover wce-nowrap" :class="{ 'mr-4': __LITE_CONFIG__.navor?.navs }" @click="nav({ path: '/', router })">标签</div>
+      <div class="hover wce-nowrap" :class="{ 'mr-4': __LITE_CONFIG__.cabinet?.navs }" @click="nav({ path: '/', router })">标签</div>
       <div
-        v-if="__LITE_CONFIG__.navor?.navs"
-        v-for="(item, index) in __LITE_CONFIG__.navor.navs"
+        v-if="__LITE_CONFIG__.cabinet?.navs"
+        v-for="(item, index) in __LITE_CONFIG__.cabinet.navs"
         :key="index"
-        :class="{ 'mr-4': index !== __LITE_CONFIG__.navor.navs.length - 1 }"
+        :class="{ 'mr-4': index !== __LITE_CONFIG__.cabinet.navs.length - 1 }"
         class="hover f-c-c wce-nowrap">
         <div v-if="item.text" @click="nav({ path: item.href })">{{ item.text }}</div>
         <div class="f-c-c w-6 h-6" v-else>
