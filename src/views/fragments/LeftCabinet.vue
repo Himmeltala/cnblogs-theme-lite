@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nav } from "@/helpers/route-helper";
+import { nav } from "@/utils/router-helper";
 import { follow, unfollow } from "@/utils/remote-api";
 import { __LITE_CONFIG__, blogApp, isFollow, isOwner } from "@/lite.config";
 import { getSideBloggerInfo, getSideBlogInfo, getSideCateList, getSideBlogRank, getSideTopList } from "@/utils/local-api";

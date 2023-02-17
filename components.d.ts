@@ -88,7 +88,7 @@ declare module '@vue/runtime-core' {
     RightCabinet: typeof import('./src/views/fragments/RightCabinet.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SkillGraph: typeof import('./src/components/SkillGraph/SkillGraph.vue')['default']
+    SkillGraph: typeof import('./src/views/fragments/skillgraph/SkillGraph.vue')['default']
     TagColl: typeof import('./src/views/modules/TagColl.vue')['default']
     Tags: typeof import('./src/views/modules/Tags.vue')['default']
     ToolKits: typeof import('./src/views/fragments/ToolKits.vue')['default']

@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { redirect, RouteName } from "@/helpers/route-helper";
+import { redirect, RouteName } from "@/utils/router-helper";
 
 const routes = [
   {

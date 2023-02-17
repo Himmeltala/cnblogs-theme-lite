@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { blogApp, pcDevice } from "@/lite.config";
 import { useStorage } from "@vueuse/core";
-import { nav } from "@/helpers/route-helper";
+import { nav } from "@/utils/router-helper";
 
 function moveToTopNail() {
   document.querySelector("#top-nail").scrollIntoView({
@@ -51,8 +51,8 @@ const router = useRouter();
 const settingDialog = ref(false);
 
 const isOpenPager = useStorage(`l-${blogApp}-open-pager`, false);
-const isFixedLeftCabinet = useStorage(`l-${blogApp}-fixed-left-cabinet`, false);
-const isFixedRightCabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, false);
+const fixedlcabinet = useStorage(`l-${blogApp}-fixed-left-cabinet`, false);
+const fixedrcabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, false);
 </script>
 
 <template>
@@ -97,12 +97,12 @@ const isFixedRightCabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, false
     </div>
     <el-dialog v-model="settingDialog" title="设置博客" align-center width="25rem">
       <div class="mt-4" v-if="pcDevice">
-        <span><span v-show="!isFixedLeftCabinet">隐藏</span><span v-show="isFixedLeftCabinet">固定</span>左陈列柜</span>
-        <el-switch v-model="isFixedLeftCabinet" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
+        <span><span v-show="!fixedlcabinet">隐藏</span><span v-show="fixedlcabinet">固定</span>左陈列柜</span>
+        <el-switch v-model="fixedlcabinet" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
       </div>
       <div class="mt-4" v-if="pcDevice">
-        <span><span v-show="!isFixedRightCabinet">隐藏</span><span v-show="isFixedRightCabinet">固定</span>右陈列柜</span>
-        <el-switch v-model="isFixedRightCabinet" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
+        <span><span v-show="!fixedrcabinet">隐藏</span><span v-show="fixedrcabinet">固定</span>右陈列柜</span>
+        <el-switch v-model="fixedrcabinet" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
       </div>
       <div class="mt-4" v-if="pcDevice">
         <span><span v-show="!isOpenPager">隐藏</span><span v-show="isOpenPager">开启</span>翻页按钮</span>

@@ -2,28 +2,23 @@
 import { blogApp } from "@/lite.config";
 import { useStorage } from "@vueuse/core";
 
-const hiddenLeft = ref(true);
-const hiddenRight = ref(true);
-
-const isFixedLeftCabinet = useStorage(`l-${blogApp}-fixed-left-cabinet`, false);
-const isFixedRightCabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, false);
-
-function listener(el: string, fn: any, ev?: string) {
-  document.querySelector(el).addEventListener(ev || "click", fn);
-}
+const lstrip = ref(true);
+const rstrip = ref(true);
+const fixedlcabinet = useStorage(`l-${blogApp}-fixed-left-cabinet`, false);
+const fixedrcabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, false);
 
 onMounted(() => {
-  listener("#left-strip", () => {
-    hiddenLeft.value = !hiddenLeft.value;
-    if (!hiddenRight.value) hiddenRight.value = !hiddenRight.value;
+  document.querySelector("#left-strip").addEventListener("click", () => {
+    lstrip.value = !lstrip.value;
   });
-  listener("#right-strip", () => {
-    hiddenRight.value = !hiddenRight.value;
-    if (!hiddenLeft.value) hiddenLeft.value = !hiddenLeft.value;
+
+  document.querySelector("#right-strip").addEventListener("click", () => {
+    rstrip.value = !rstrip.value;
   });
-  listener("#full-modal", () => {
-    if (!hiddenLeft.value) hiddenLeft.value = true;
-    else if (!hiddenRight.value) hiddenRight.value = true;
+
+  document.querySelector("#full-modal").addEventListener("click", () => {
+    if (!lstrip.value) lstrip.value = true;
+    else if (!rstrip.value) rstrip.value = true;
   });
 });
 </script>
@@ -32,18 +27,17 @@ onMounted(() => {
   <GitHub />
   <div
     id="left-strip"
-    v-show="!isFixedLeftCabinet"
-    :class="{ 'left-250px': !hiddenLeft, 'left-0 w-5px l-strip-bg rd-2': hiddenLeft }"
-    class="z-999 fixed top-47.5vh h-5vh cursor-pointer opacity-70"></div>
+    v-show="!fixedlcabinet"
+    :class="{ 'left-70': !lstrip, 'left-0 w-5px l-strip-bg rd-2': lstrip }"
+    class="fixed top-47.5vh h-5vh cursor-pointer opacity-70"></div>
   <LeftCabinet
     class="lcabinet"
     :class="{
-      'show-lcabinet fixed top-0 left-0 z-9999': !hiddenLeft && !isFixedLeftCabinet,
-      'hidden-lcabinet fixed top-0 left-0 z-99': hiddenLeft && !isFixedLeftCabinet,
-      'fixed-left-cabinet fixed top-0': isFixedLeftCabinet
+      'show-lcabinet fixed top-0 left-0 z-9999': !lstrip && !fixedlcabinet,
+      'hidden-lcabinet fixed top-0 left-0': lstrip && !fixedlcabinet,
+      'fixed-left-cabinet fixed top-0': fixedlcabinet
     }" />
   <div id="l-content">
-    {{}}
     <span id="top-nail"></span>
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
@@ -63,21 +57,18 @@ onMounted(() => {
       <a class="hover mx-1 l-sec-color" href="https://vitejs.cn/vite3-cn/" target="__blank">Vite.</a>
     </div>
   </div>
-  <div
-    id="full-modal"
-    class="z-999 opacity-50 l-modal-bg"
-    :class="{ 'fixed top-0 left-0 w-100% h-100vh': !hiddenRight || !hiddenLeft }"></div>
+  <div id="full-modal" class="z-999 opacity-50 l-modal-bg" :class="{ 'fixed top-0 left-0 w-100% h-100vh': !rstrip || !lstrip }"></div>
   <div
     id="right-strip"
-    v-show="!isFixedRightCabinet"
-    :class="{ 'right-250px': !hiddenRight, 'right-0 w-5px rd-2 l-strip-bg': hiddenRight }"
-    class="z-999 fixed top-47.5vh h-5vh cursor-pointer opacity-70"></div>
+    v-show="!fixedrcabinet"
+    :class="{ 'right-70': !rstrip, 'right-0 w-5px l-strip-bg rd-2': rstrip }"
+    class="fixed top-47.5vh h-5vh cursor-pointer opacity-70"></div>
   <RightCabinet
     class="rcabinet"
     :class="{
-      'show-rcabinet fixed top-0 right-0 z-9999': !hiddenRight && !isFixedRightCabinet,
-      'hidden-rcabinet fixed top-0 right-0 z-99': hiddenRight && !isFixedRightCabinet,
-      'fixed-right-cabinet fixed top-0': isFixedRightCabinet
+      'show-rcabinet fixed top-0 right-0 z-9999': !rstrip && !fixedrcabinet,
+      'hidden-rcabinet fixed top-0 right-0': rstrip && !fixedrcabinet,
+      'fixed-right-cabinet fixed top-0': fixedrcabinet
     }" />
   <ToolKits />
 </template>

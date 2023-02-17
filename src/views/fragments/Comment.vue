@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { isLogin } from "@/lite.config";
-import { nav } from "@/helpers/route-helper";
+import { nav } from "@/utils/router-helper";
 import { getCommentCount, getCommentList } from "@/utils/remote-api";
 import { useAnchorStore } from "@/store";
 

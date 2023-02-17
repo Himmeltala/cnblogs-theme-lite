@@ -8,8 +8,7 @@
 
 import $ from "jquery";
 import { CustType } from "@/types/data-type";
-import { regTrim } from "../helpers/text-helper";
-import { parseUnit } from "../helpers/numeric-helper";
+import { regTrim, parseUnit } from "@/utils/common";
 
 /**
  * 由于一些问题，有时候请求过来的 DOM 不是真实的 DOM，所以不能被 JQ 解析，必须先调用该函数进行转换

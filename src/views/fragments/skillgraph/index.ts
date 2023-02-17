@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { __LITE_CONFIG__, blogApp } from "../../lite.config";
+import { __LITE_CONFIG__, blogApp } from "@/lite.config";
 
 let fillColor = "",
   strokeColor = "";

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { BlogType } from "@/types/data-type";
 import { closeLoader } from "@/utils/common";
-import { nav } from "@/helpers/route-helper";
+import { nav } from "@/utils/router-helper";
 import { isOwner } from "@/lite.config";
 import { getLockedEssay, getIsUnlock, getEssay, getEssayCatesAndTags, getPrevNext, getEssayVote, voteEssay } from "@/utils/remote-api";
 

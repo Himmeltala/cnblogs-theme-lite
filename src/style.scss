@@ -10,8 +10,11 @@
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */
 html[class="dark"] {
+  // 一级文字
   --l-pri-color: #a7a7a7;
+  // 二级文字
   --l-sec-color: #8d9095;
+  // 三级文字
   --l-thr-color: #878787;
   // 卡片、盒子背景颜色
   --l-box-bg: #191919;
@@ -43,8 +46,11 @@ html[class="dark"] {
 }
 
 html[class="light"] {
+  // 一级文字
   --l-pri-color: #393939;
+  // 二级文字
   --l-sec-color: #4e4e4e;
+  // 三级文字
   --l-thr-color: #707070;
   // 卡片、盒子背景颜色
   --l-box-bg: #ffffff;
