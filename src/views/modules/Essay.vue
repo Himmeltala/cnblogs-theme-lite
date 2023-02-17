@@ -175,7 +175,7 @@ async function vote(voteType: BlogType.VoteType) {
       </div>
       <Comment :post-id="postId" />
     </div>
-    <div v-else class="modal fixed w-100vw h-100vh top-0 left-0 l-box-bg f-c-c">
+    <div v-else class="modal fixed w-100vw h-100vh top-0 left-0 l-box-bg f-c-c z-9999">
       <el-form>
         <el-form-item label="密码：">
           <el-input show-password type="password" v-model="cipher" placeholder="输入博文阅读密码" />

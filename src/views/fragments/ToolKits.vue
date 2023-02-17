@@ -163,12 +163,12 @@ $close-end: 10rem;
 }
 
 .show-toolkits {
-  animation: show-toolkits-animation 0.2s ease-in;
+  animation: show-toolkits-animation 0.3s ease-in;
   transform: rotate(0);
 }
 
 .close-toolkits {
-  animation: close-toolkits-animation 0.2s ease-in;
+  animation: close-toolkits-animation 0.3s ease-in;
   transform: rotate(180deg);
 }
 

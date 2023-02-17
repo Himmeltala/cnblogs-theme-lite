@@ -42,6 +42,7 @@ declare module '@vue/runtime-core' {
     GitHub: typeof import('./src/views/fragments/GitHub.vue')['default']
     Home: typeof import('./src/views/modules/Home.vue')['default']
     IEpAim: typeof import('~icons/ep/aim')['default']
+    IEpArrowDown: typeof import('~icons/ep/arrow-down')['default']
     IEpArrowLeftBold: typeof import('~icons/ep/arrow-left-bold')['default']
     IEpArrowRight: typeof import('~icons/ep/arrow-right')['default']
     IEpArrowRightBold: typeof import('~icons/ep/arrow-right-bold')['default']

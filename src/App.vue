@@ -33,7 +33,7 @@ onMounted(() => {
   <LeftCabinet
     class="lcabinet"
     :class="{
-      'show-lcabinet fixed top-0 left-0 z-9999': !lstrip && !fixedlcabinet,
+      'show-lcabinet fixed top-0 left-0 z-999': !lstrip && !fixedlcabinet,
       'hidden-lcabinet fixed top-0 left-0': lstrip && !fixedlcabinet,
       'fixed-left-cabinet fixed top-0': fixedlcabinet
     }" />
@@ -57,7 +57,7 @@ onMounted(() => {
       <a class="hover mx-1 l-sec-color" href="https://vitejs.cn/vite3-cn/" target="__blank">Vite.</a>
     </div>
   </div>
-  <div id="full-modal" class="z-999 opacity-50 l-modal-bg" :class="{ 'fixed top-0 left-0 w-100% h-100vh': !rstrip || !lstrip }"></div>
+  <div id="full-modal" class="z-99 opacity-50 l-modal-bg" :class="{ 'fixed top-0 left-0 w-100% h-100vh': !rstrip || !lstrip }"></div>
   <div
     id="right-strip"
     v-show="!fixedrcabinet"
@@ -66,7 +66,7 @@ onMounted(() => {
   <RightCabinet
     class="rcabinet"
     :class="{
-      'show-rcabinet fixed top-0 right-0 z-9999': !rstrip && !fixedrcabinet,
+      'show-rcabinet fixed top-0 right-0 z-999': !rstrip && !fixedrcabinet,
       'hidden-rcabinet fixed top-0 right-0': rstrip && !fixedrcabinet,
       'fixed-right-cabinet fixed top-0': fixedrcabinet
     }" />
