@@ -6,7 +6,7 @@ const route = useRoute();
 const cates = await getCateList(route.params.id, true, 1);
 const count = ref(cates.pages[cates.pages.length - 1]);
 const data = ref(cates.array);
-const label = ref(cates.label);
+const hint = ref(cates.label);
 
 closeLoader();
 
@@ -23,9 +23,9 @@ async function prev(e: any) {
 }
 
 watch(route, async () => {
-  const { array, label: l } = await getCateList(route.params.id, true, 1);
+  const { array, label } = await getCateList(route.params.id, true, 1);
   data.value = array;
-  label.value = l;
+  hint.value = label;
 });
 </script>
 
@@ -33,7 +33,7 @@ watch(route, async () => {
   <div id="l-cate">
     <Pagination @nexpr="nexpr" @next="next" @prev="prev" :page-count="count">
       <template #content>
-        <div class="fsz-1.25 mb-10">{{ label }}</div>
+        <div class="fsz-1.25 mb-10">{{ hint }}</div>
         <EssayItem v-if="data" :data="data" />
       </template>
     </Pagination>

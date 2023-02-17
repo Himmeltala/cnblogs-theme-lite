@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { useStorage } from "@vueuse/core";
 import { nav } from "@/helpers/route-helper";
 import { follow, unfollow } from "@/utils/remote-api";
-import { getSideBloggerInfo, getSideBlogInfo, getSideCateList, getSideBlogRank, getSideTopList } from "@/utils/local-api";
 import { __LITE_CONFIG__, blogApp, isFollow, isOwner } from "@/lite.config";
+import { getSideBloggerInfo, getSideBlogInfo, getSideCateList, getSideBlogRank, getSideTopList } from "@/utils/local-api";
 
 const cabinet = __LITE_CONFIG__.cabinet;
 const router = useRouter();
@@ -28,8 +27,6 @@ async function unfocus() {
   const data = await unfollow();
   if (data) ElMessage({ message: "取消关注博主！", type: "success", grouping: true });
 }
-
-const isFixedCabinetNav = useStorage(`l-${blogApp}-fixed-cabinet-nav`, false);
 </script>
 
 <template>
@@ -155,7 +152,7 @@ const isFixedCabinetNav = useStorage(`l-${blogApp}-fixed-cabinet-nav`, false);
         </el-tabs>
       </CabinetItem>
     </div>
-    <div class="noscroll f-c ofw-auto h-4%" v-show="isFixedCabinetNav">
+    <div class="noscroll f-c ofw-auto h-4%">
       <div class="hover mr-4 wce-nowrap" @click="nav({ path: 'https://www.cnblogs.com' })">博客园</div>
       <div class="hover mr-4 wce-nowrap" @click="nav({ path: '/', router })">首页</div>
       <div class="hover wce-nowrap" :class="{ 'mr-4': __LITE_CONFIG__.cabinet?.navs }" @click="nav({ path: '/', router })">标签</div>

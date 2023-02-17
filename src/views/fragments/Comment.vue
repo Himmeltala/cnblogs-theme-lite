@@ -2,14 +2,14 @@
 import { isLogin } from "@/lite.config";
 import { nav } from "@/helpers/route-helper";
 import { getCommentCount, getCommentList } from "@/utils/remote-api";
-import { useCommentsAnchorStore } from "@/store";
+import { useAnchorStore } from "@/store";
 
 const props = defineProps({
   postId: { type: Number, required: true }
 });
 
 const level = ref(null);
-const { commentAnchor: anchor } = storeToRefs(useCommentsAnchorStore());
+const { anchor } = storeToRefs(useAnchorStore());
 const count = ref(await getCommentCount(props.postId));
 const index = ref(count.value);
 const comments = ref(await getCommentList(props.postId, index.value, anchor.value));

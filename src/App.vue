@@ -5,8 +5,8 @@ import { useStorage } from "@vueuse/core";
 const hiddenLeft = ref(true);
 const hiddenRight = ref(true);
 
-const isFixedLeftCabinet = useStorage(`l-${blogApp}-fixed-left-cabinet`, true);
-const isFixedRightCabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, true);
+const isFixedLeftCabinet = useStorage(`l-${blogApp}-fixed-left-cabinet`, false);
+const isFixedRightCabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, false);
 
 function listener(el: string, fn: any, ev?: string) {
   document.querySelector(el).addEventListener(ev || "click", fn);
@@ -30,13 +30,11 @@ onMounted(() => {
 
 <template>
   <GitHub />
-  <el-tooltip content="点击展示陈列柜" placement="right">
-    <div
-      v-show="!isFixedLeftCabinet"
-      id="left-strip"
-      :class="{ 'left-250px': !hiddenLeft, 'left-0 w-6px l-strip-bg rd-2': hiddenLeft }"
-      class="z-999 fixed top-40vh h-20vh cursor-pointer opacity-70"></div>
-  </el-tooltip>
+  <div
+    id="left-strip"
+    v-show="!isFixedLeftCabinet"
+    :class="{ 'left-250px': !hiddenLeft, 'left-0 w-5px l-strip-bg rd-2': hiddenLeft }"
+    class="z-999 fixed top-47.5vh h-5vh cursor-pointer opacity-70"></div>
   <LeftCabinet
     class="lcabinet"
     :class="{
@@ -45,6 +43,7 @@ onMounted(() => {
       'fixed-left-cabinet fixed top-0': isFixedLeftCabinet
     }" />
   <div id="l-content">
+    {{}}
     <span id="top-nail"></span>
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
@@ -66,15 +65,13 @@ onMounted(() => {
   </div>
   <div
     id="full-modal"
-    class="full-modal z-999 opacity-50 l-modal-bg"
+    class="z-999 opacity-50 l-modal-bg"
     :class="{ 'fixed top-0 left-0 w-100% h-100vh': !hiddenRight || !hiddenLeft }"></div>
-  <el-tooltip content="点击展示陈列柜" placement="left">
-    <div
-      v-show="!isFixedRightCabinet"
-      id="right-strip"
-      :class="{ 'right-250px': !hiddenRight, 'right-0 w-6px l-strip-bg rd-2': hiddenRight }"
-      class="z-999 fixed top-40vh h-20vh cursor-pointer opacity-70"></div>
-  </el-tooltip>
+  <div
+    id="right-strip"
+    v-show="!isFixedRightCabinet"
+    :class="{ 'right-250px': !hiddenRight, 'right-0 w-5px rd-2 l-strip-bg': hiddenRight }"
+    class="z-999 fixed top-47.5vh h-5vh cursor-pointer opacity-70"></div>
   <RightCabinet
     class="rcabinet"
     :class="{
@@ -98,11 +95,6 @@ $quota: 10;
   #l-content {
     --at-apply: p-5 w-100%;
   }
-
-  .rcabinet,
-  .lcabinet {
-    display: none !important;
-  }
 }
 
 .fixed-left-cabinet {
@@ -113,80 +105,54 @@ $quota: 10;
   right: calc(25vw - 19rem);
 }
 
-.show-nav {
-  animation: shownav 0.2s ease-in;
-  transform: translateY(0);
-}
-
-@keyframes shownav {
-  @for $i from 0 to $quota {
-    #{$i * 10%} {
-      transform: translateY(-6vh + ($i * 0.6vh));
-    }
-  }
-}
-
-.hidden-nav {
-  animation: hiddennav 0.2s ease-out;
-  transform: translateY(-6vh);
-}
-
-@keyframes hiddennav {
-  @for $i from 0 to $quota {
-    #{$i * 10%} {
-      transform: translateY($i * -0.6vh);
-    }
-  }
-}
-
 .show-lcabinet {
-  animation: showlcase 0.2s ease-in;
+  animation: showlcabinet 0.2s ease-in;
   transform: translateX(0);
 }
 
-@keyframes showlcase {
+@keyframes showlcabinet {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateX(-250px + ($i * 25px));
+      transform: translateX(-12.5rem + ($i * 1.25rem));
     }
   }
 }
 
 .hidden-lcabinet {
-  animation: hiddenlcase 0.2s ease-out;
-  transform: translateX(-250px);
+  animation: hiddenlcabinet 0.2s ease-out;
+  transform: translateX(-17.5rem);
 }
 
-@keyframes hiddenlcase {
+@keyframes hiddenlcabinet {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateX($i * -25px);
+      transform: translateX($i * -1.75rem);
     }
   }
 }
 
 .show-rcabinet {
-  animation: showrcase 0.2s ease-in;
+  animation: showrcabinet 0.2s ease-in;
   transform: translateX(0);
 }
 
-@keyframes showrcase {
+@keyframes showrcabinet {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateX(250px + ($i * -25px));
+      transform: translateX(17.5rem + ($i * -1.75rem));
     }
   }
 }
 
 .hidden-rcabinet {
-  animation: hiddenrcase 0.2s ease-out;
-  transform: translateX(250px);
+  animation: hiddenrcabinet 0.2s ease-out;
+  transform: translateX(17.5rem);
 }
 
-@keyframes hiddenrcase {
+@keyframes hiddenrcabinet {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateX($i * 25px);
+      transform: translateX($i * 1.75rem);
     }
   }
 }

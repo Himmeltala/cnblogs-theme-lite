@@ -1,22 +1,22 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
-export const useAnchorStore = defineStore("catalogAnchor", () => {
-  let _anchors = ref();
+export const useCatalogStore = defineStore("catalogStore", () => {
+  let _catalog = ref();
 
-  function setAnchors(anchors: any) {
-    _anchors.value = anchors;
+  function setCatalog(catalog: any) {
+    _catalog.value = catalog;
   }
 
-  return { anchors: _anchors, setAnchors };
+  return { catalog: _catalog, setCatalog };
 });
 
-export const useCommentsAnchorStore = defineStore("commentsAnchor", () => {
-  let _commentAnchor = ref(0);
+export const useAnchorStore = defineStore("anchorStore", () => {
+  let _anchor = ref(0);
 
-  function setAnchor(commentAnchor: number) {
-    _commentAnchor.value = commentAnchor;
+  function setAnchor(anchor: number) {
+    _anchor.value = anchor;
   }
 
-  return { commentAnchor: _commentAnchor, setAnchor };
+  return { anchor: _anchor, setAnchor };
 });

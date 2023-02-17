@@ -7,7 +7,7 @@ import { closeLoader } from "@/utils/common";
 const data = ref((await getEssayList(1, false)).array);
 const pages = (await getEssayList(1, true)).pages;
 const count = ref(pages[pages.length - 1]);
-const isOpenPager = useStorage(`l-${blogApp}-open-pager`, true);
+const isOpenPager = useStorage(`l-${blogApp}-open-pager`, false);
 
 closeLoader();
 

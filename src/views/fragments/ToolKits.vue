@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { blogApp } from "@/lite.config";
+import { blogApp, pcDevice } from "@/lite.config";
 import { useStorage } from "@vueuse/core";
 import { nav } from "@/helpers/route-helper";
 
@@ -49,10 +49,10 @@ watch(themeColor, val => {
 
 const router = useRouter();
 const settingDialog = ref(false);
-const isOpenPager = useStorage(`l-${blogApp}-open-pager`, true);
-const isFixedLeftCabinet = useStorage(`l-${blogApp}-fixed-left-cabinet`, true);
-const isFixedRightCabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, true);
-const isFixedCabinetNav = useStorage(`l-${blogApp}-fixed-cabinet-nav`, true);
+
+const isOpenPager = useStorage(`l-${blogApp}-open-pager`, false);
+const isFixedLeftCabinet = useStorage(`l-${blogApp}-fixed-left-cabinet`, false);
+const isFixedRightCabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, false);
 </script>
 
 <template>
@@ -96,23 +96,19 @@ const isFixedCabinetNav = useStorage(`l-${blogApp}-fixed-cabinet-nav`, true);
       </div>
     </div>
     <el-dialog v-model="settingDialog" title="设置博客" align-center width="25rem">
-      <div class="">
-        <span><span v-show="!isFixedCabinetNav">隐藏</span><span v-show="isFixedCabinetNav">显示</span>陈列柜导航</span>
-        <el-switch v-model="isFixedCabinetNav" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
-      </div>
-      <div class="mt-4">
+      <div class="mt-4" v-if="pcDevice">
         <span><span v-show="!isFixedLeftCabinet">隐藏</span><span v-show="isFixedLeftCabinet">固定</span>左陈列柜</span>
         <el-switch v-model="isFixedLeftCabinet" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
       </div>
-      <div class="mt-4">
+      <div class="mt-4" v-if="pcDevice">
         <span><span v-show="!isFixedRightCabinet">隐藏</span><span v-show="isFixedRightCabinet">固定</span>右陈列柜</span>
         <el-switch v-model="isFixedRightCabinet" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
       </div>
-      <div class="mt-4">
+      <div class="mt-4" v-if="pcDevice">
         <span><span v-show="!isOpenPager">隐藏</span><span v-show="isOpenPager">开启</span>翻页按钮</span>
         <el-switch v-model="isOpenPager" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
       </div>
-      <div class="mt-4">
+      <div :class="{ 'mt-4': pcDevice }">
         <span class="mr-2">设置主题颜色</span>
         <el-color-picker size="small" :predefine="preColors" show-alpha v-model="themeColor" />
       </div>

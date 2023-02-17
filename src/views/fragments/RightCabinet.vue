@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useAnchorStore } from "@/store";
+import { useCatalogStore } from "@/store";
 import { __LITE_CONFIG__ } from "@/lite.config";
 
 const route = useRoute();
 const anchors = ref();
-const store = useAnchorStore();
+const store = useCatalogStore();
 
 store.$onAction(({ store, args }) => {
   anchors.value = args[0];
@@ -23,7 +23,7 @@ watch(route, val => {
           <i-ep-location />
         </el-icon>
       </template>
-      <div class="catalog mb-2 fsz-0.9" v-for="(item, index) in anchors" :key="index" v-html="item.content" v-anchor-event="item" />
+      <div class="catalog mb-2 fsz-0.9" v-for="(item, index) in anchors" :key="index" v-html="item.content" v-cateve="item" />
     </CabinetItem>
     <CabinetItem text="我的技术栈" v-if="__LITE_CONFIG__.graph">
       <template #icon>

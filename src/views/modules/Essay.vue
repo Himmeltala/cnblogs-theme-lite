@@ -13,21 +13,21 @@ const isLocked = ref(false);
 const catesTags = await getEssayCatesAndTags(postId);
 const prevNext = await getPrevNext(postId);
 const essayVote = ref(await getEssayVote(postId));
-const password = ref("");
+const cipher = ref("");
 
 if (!(essay.value.content && essay.value.text)) isLocked.value = true;
 
 closeLoader();
 
 async function submit() {
-  const data = await getIsUnlock(password.value, postId + "");
+  const data = await getIsUnlock(cipher.value, postId + "");
   if (data) {
     ElMessage({
       message: "密码输入正确！",
       grouping: true,
       type: "success"
     });
-    essay.value = await getLockedEssay(password.value, postId);
+    essay.value = await getLockedEssay(cipher.value, postId);
     isLocked.value = false;
   } else {
     ElMessage({
@@ -119,7 +119,7 @@ async function vote(voteType: BlogType.VoteType) {
           </div>
         </div>
       </div>
-      <div id="p-content" class="mt-8 fsz-1.1" v-html="essay?.content" v-hljs v-anchor v-mathjax />
+      <div id="p-content" class="mt-8 fsz-1.1" v-html="essay?.content" v-hljs v-catalog v-mathjax />
       <div class="divider" />
       <div class="l-sec-color f-c-e fsz-0.8">
         <div class="f-c-c mr-4">
@@ -178,7 +178,7 @@ async function vote(voteType: BlogType.VoteType) {
     <div v-else class="modal fixed w-100vw h-100vh top-0 left-0 l-box-bg f-c-c">
       <el-form>
         <el-form-item label="密码：">
-          <el-input show-password type="password" v-model="password" placeholder="输入博文阅读密码" />
+          <el-input show-password type="password" v-model="cipher" placeholder="输入博文阅读密码" />
         </el-form-item>
         <el-form-item>
           <el-button size="small" type="primary" @click="submit">确定</el-button>

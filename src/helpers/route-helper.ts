@@ -8,7 +8,7 @@
 
 import { Router } from "vue-router";
 import { blogApp } from "@/lite.config";
-import { useCommentsAnchorStore } from "@/store";
+import { useAnchorStore } from "@/store";
 
 export enum RouteName {
   ESSAY = "essay",
@@ -33,10 +33,10 @@ const routeReg = {
  */
 function storeCommentAnchor(URL: string) {
   try {
-    const commentAnchor = URL.match(/#\/\d+/g)[0].split("#/")[1];
-    if (commentAnchor) {
-      const { setAnchor } = useCommentsAnchorStore();
-      setAnchor(parseInt(commentAnchor));
+    const anchor = URL.match(/#\/\d+/g)[0].split("#/")[1];
+    if (anchor) {
+      const { setAnchor } = useAnchorStore();
+      setAnchor(parseInt(anchor));
     }
   } catch (e) {}
 }
