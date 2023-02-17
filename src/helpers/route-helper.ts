@@ -31,7 +31,7 @@ const routeReg = {
  * 从评论链接点击进入时，获取其携带的评论锚点位置
  * @param URL 从评论点击过来的链接
  */
-function storeCommentAnchor(URL: string) {
+function storeAnchor(URL: string) {
   try {
     const anchor = URL.match(/#\/\d+/g)[0].split("#/")[1];
     if (anchor) {
@@ -58,7 +58,7 @@ export function redirect(next: any): () => void {
 
   if (routeReg.ESSAY.test(URL)) {
     const id = URL.match(routeReg.ESSAY)[0].split("/")[2].split(".")[0];
-    storeCommentAnchor(URL);
+    storeAnchor(URL);
     nextParam = {
       name: RouteName.ESSAY,
       params: { id }
@@ -76,10 +76,10 @@ export function redirect(next: any): () => void {
       params: { tag }
     };
   } else if (routeReg.GALLERY.test(URL)) {
-    const tag = decodeURI(URL).match(routeReg.TAGCOLL)![0].split("/")[2];
+    console.log("匹配到相册页面");
+
     nextParam = {
-      name: RouteName.GALLERY,
-      params: { tag }
+      name: RouteName.GALLERY
     };
   }
 
