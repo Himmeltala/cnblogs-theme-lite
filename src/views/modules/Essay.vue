@@ -22,20 +22,15 @@ closeLoader();
 async function submit() {
   const data = await getIsUnlock(cipher.value, postId + "");
   if (data) {
-    ElMessage({
-      message: "密码输入正确！",
-      grouping: true,
-      type: "success"
-    });
     essay.value = await getLockedEssay(cipher.value, postId);
     isLocked.value = false;
-  } else {
-    ElMessage({
-      message: "密码错误！",
-      grouping: true,
-      type: "error"
-    });
   }
+
+  ElMessage({
+    message: data ? "密码输入正确！" : "密码错误！",
+    grouping: true,
+    type: data ? "success" : "error"
+  });
 }
 
 async function vote(voteType: BlogType.VoteType) {
@@ -119,7 +114,7 @@ async function vote(voteType: BlogType.VoteType) {
           </div>
         </div>
       </div>
-      <div id="p-content" class="mt-8 fsz-1.1" v-html="essay?.content" v-hljs v-catalog v-mathjax />
+      <div id="p-content" class="mt-8 fsz-1.1" v-html="essay.content" v-hljs v-catalog v-mathjax />
       <div class="divider" />
       <div class="l-sec-color f-c-e fsz-0.8">
         <div class="f-c-c mr-4">
@@ -227,15 +222,21 @@ pre {
   position: relative;
 
   code {
+    overflow: hidden;
     background: var(--l-precode-bg) !important;
+    transition: all 0.5s ease-in-out;
 
     &::-webkit-scrollbar {
-      display: none;
-      height: 0.4rem;
+      height: 0.5rem;
+      width: 0;
     }
 
-    &:hover::-webkit-scrollbar {
-      display: block;
+    &::-webkit-scrollbar-corner {
+      display: none;
+    }
+
+    &:hover::-webkit-scrollbar-thumb {
+      background-color: var(--l-divider-bg);
     }
 
     &,
@@ -261,6 +262,23 @@ code {
   color: #767676;
   right: 4px;
   top: 0;
+}
+
+.hight-code {
+  height: 380px;
+}
+
+.hight-code-modal {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, var(--l-code-hidden) 100%);
+  height: 3rem;
+}
+
+.remove-hight-code-modal {
+  display: none;
 }
 
 blockquote {

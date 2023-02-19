@@ -16,17 +16,45 @@ export function useDirective(Vue: any) {
     mounted(el: any) {
       $(el)
         .find("pre code")
-        .each((i, elem) => {
-          let lang = String(
-            $(elem)
+        .each((i, ele) => {
+          const height = $(ele).height();
+          if (height > 380) {
+            $(ele).addClass("hight-code");
+
+            const click = $(`<div class="fsz-0.9 l-thr-color hover noselect">展开</div>`);
+            const modal = $(`<div class="hight-code-modal f-c-c rd-2"></div>`);
+            modal.prepend(click);
+
+            click.on("click", () => {
+              let counter = 9;
+              let cHeight = 0;
+
+              const interval = setInterval(() => {
+                cHeight += height / 10;
+                $(ele).height(cHeight);
+                counter--;
+                if (counter == 0) {
+                  $(ele).height(height);
+                  clearInterval(interval);
+                  $(ele).removeClass("hight-code");
+                  $(ele).removeClass("hight-code-modal");
+                  modal.addClass("remove-hight-code-modal");
+                }
+              }, 10);
+            });
+
+            $(ele).parent().prepend(modal);
+          }
+          const lang = String(
+            $(ele)
               .attr("class")
               ?.match(/(language-\w*){0,1}/g)
           )
             .split(",")[0]
             .split("-")[1]
             .toUpperCase();
-          $(elem).parent().prepend(`<span class="cblock">${lang}</span>`);
-          hljs.highlightElement(elem);
+          $(ele).parent().prepend(`<span class="cblock">${lang}</span>`);
+          hljs.highlightElement(ele);
         });
     }
   });
@@ -38,12 +66,10 @@ export function useDirective(Vue: any) {
     mounted(el: any) {
       // @ts-ignore
       const MathJax = window.MathJax;
-      const mathDom = document.querySelectorAll(".math");
+      const nodes = document.querySelectorAll(".math");
 
-      if (MathJax && mathDom.length > 0) {
-        MathJax.startup.promise = MathJax.startup.promise
-          .then(() => MathJax.typesetPromise(mathDom))
-          .catch((err: any) => console.error(err));
+      if (MathJax && nodes.length > 0) {
+        MathJax.startup.promise = MathJax.startup.promise.then(() => MathJax.typesetPromise(nodes)).catch((err: any) => console.error(err));
       }
     }
   });
@@ -67,6 +93,11 @@ export function useDirective(Vue: any) {
   });
 }
 
+/**
+ * 通过随笔 html，获取里面有多少个 h 标签，制作一个目录
+ *
+ * @param dom 随笔内容的 html
+ */
 function makeAnchor(dom: any) {
   const store = useCatalogStore();
   const title = $(dom).children("h1,h2,h3");
@@ -89,16 +120,16 @@ function makeAnchor(dom: any) {
       h2 = 0;
       h3 = 0;
       if (level) item = `${h1}.${item}`;
-      content = `<div id="anchor-${id}" class="hover">${item}</div>`;
+      content = `<div id="catalog-${id}" class="hover">${item}</div>`;
     } else if (type === "h2") {
       h2++;
       h3 = 0;
       if (level) item = `${h1}.${h2}.${item}`;
-      content = `<div id="anchor-${id}" class="hover" style="margin-left: 10px">${item}</div>`;
+      content = `<div id="catalog-${id}" class="hover" style="margin-left: 10px">${item}</div>`;
     } else if (type === "h3") {
       h3++;
       if (level) item = `${h1}.${h2}.${h3}.${item}`;
-      content = `<div id="anchor-${id}" class="hover" style="margin-left: 20px">${item}</div>`;
+      content = `<div id="catalog-${id}" class="hover" style="margin-left: 20px">${item}</div>`;
     }
 
     catalog.push({ id, content });
@@ -107,8 +138,13 @@ function makeAnchor(dom: any) {
   store.setCatalog(catalog);
 }
 
-function makeAnchorEvent(catalogItem: any) {
-  $(`#anchor-${catalogItem.id}`).on("click", e => {
-    document.querySelector(`#${catalogItem.id}`).scrollIntoView();
+/**
+ * 列表渲染目录项，获取目录对应文章中的标题，添加一个跳转位置的点击事件。
+ *
+ * @param item 目录项
+ */
+function makeAnchorEvent(item: any) {
+  $(`#catalog-${item.id}`).on("click", e => {
+    document.querySelector(`#${item.id}`).scrollIntoView();
   });
 }

@@ -136,6 +136,6 @@ export function useLite(dev: Function, pro: Function) {
 
   $("html").attr("class", themeMode);
   $("html").css({ "--l-theme-color": themeColor });
-  preLog("Lite Theme v1.2.0", "Powered By Himmelbleu");
+  preLog("Lite Theme v1.3.0", "Powered By Himmelbleu");
   preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
 }

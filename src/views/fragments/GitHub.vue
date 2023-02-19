@@ -3,7 +3,7 @@ import { __LITE_CONFIG__ } from "@/lite.config";
 </script>
 
 <template>
-  <a id="github" class="fixed top-0 left-0 w-15 h-15 border-0 cursor-pointer" :href="__LITE_CONFIG__.github" target="_blank">
+  <a id="github-corner" class="fixed top-0 left-0 w-15 h-15 border-0 cursor-pointer" :href="__LITE_CONFIG__.github" target="_blank">
     <svg viewBox="0 0 250 250" style="color: #fff">
       <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
       <path
@@ -20,12 +20,12 @@ import { __LITE_CONFIG__ } from "@/lite.config";
 
 <style scoped lang="scss">
 @include mb() {
-  #github {
+  #github-corner {
     display: none;
   }
 }
 
-#github {
+#github-corner {
   &:hover .octo-arm {
     animation: octocat-wave 560ms ease-in-out;
   }
