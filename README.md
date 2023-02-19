@@ -2,7 +2,7 @@
 
 打开博客园的随笔详细页、标签页等，都是整页重新加载，比较影响体验。Lite 基于 Vue3 + Vite 开发，SPA 应用可以减少整页加载，实现局部刷新。
 
-本人已部署在自己的博客，浏览：[Lite 博客](https://www.cnblogs.com/Enziandom/#/)。
+本人已部署在自己的博客，浏览：[Lite 博客](https://www.cnblogs.com/Himmelbleu/#/)。
 
 [GitHub](https://github.com/Himmelbleu/cnblogs-theme-lite) 或 [Gitee](https://gitee.com/Himmelbleu/cnblogs-theme-lite)，请点个 :star:star 哟~。
 
@@ -195,6 +195,8 @@ cabinet 是陈列柜，点击浏览器左右中间的透明条可以呼出。
 |  avatar   |      头像      |
 | signature |    个性签名    |
 |   navs    | 左陈列柜导航项 |
+
+鼠标悬浮在陈列柜项上时，比如“博客信息”，右边会有一个小的箭头出现，点击之后可以对该项内容进行收起或展开。
 
 ## 技能栈
 

@@ -4,11 +4,7 @@ import { useStorage } from "@vueuse/core";
 import { nav } from "@/utils/router-helper";
 
 function moveToTopNail() {
-  document.querySelector("#top-nail").scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-    inline: "start"
-  });
+  document.querySelector("#top-nail").scrollIntoView();
 }
 
 const themeMode = useStorage(`l-${blogApp}-theme-mode`, "");
@@ -86,7 +82,7 @@ const fixedrcabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, false);
         :class="{ 'show-3 l-box-bg': disToolKits, 'close-3': !disToolKits }"
         @click="settingDialog = !settingDialog"
         class="setting absolute hover left-0 w-8 h-8 f-c-c rd-2">
-        <i-ep-setting class="rotate" />
+        <i-ep-setting class="rotate-setting" />
       </div>
       <div
         @click="disToolKits = !disToolKits"
@@ -188,12 +184,18 @@ $close-end: 10rem;
   }
 }
 
-.rotate:hover {
-  animation: 1.5s infinite rotate-animation;
+.rotate-setting:hover {
+  animation: 1.5s infinite rotate-setting-animation;
 }
 
-@keyframes rotate-animation {
+@keyframes rotate-setting-animation {
   @for $index from 0 to 10 {
+    #{$index * 10%} {
+      transform: rotate($index * 36deg);
+    }
+  }
+
+  @for $index from 10 to 0 {
     #{$index * 10%} {
       transform: rotate($index * 36deg);
     }

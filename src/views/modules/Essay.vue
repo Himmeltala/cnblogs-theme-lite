@@ -241,7 +241,7 @@ pre {
     &,
     span {
       --at-apply: fsz-1;
-      font-family: Hack, monospace;
+      font-family: #{"Hack", var(--font-family)};
       @include font-space($spacing: 0.5px);
     }
   }

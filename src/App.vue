@@ -25,6 +25,9 @@ onMounted(() => {
 
 <template>
   <GitHub />
+  <div id="progress" class="f-c-c">
+    <div class="bar" :class="{ exebar: false }"></div>
+  </div>
   <div
     id="left-strip"
     v-show="!fixedlcabinet"
@@ -75,6 +78,30 @@ onMounted(() => {
 
 <style scoped lang="scss">
 $quota: 10;
+
+#progress {
+  height: 2px;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  transition: all 0.6s ease-in-out;
+}
+
+#progress .exebar {
+  height: inherit;
+  animation: exebar infinite 10s ease-in-out;
+  background-color: var(--l-theme-color);
+}
+
+@keyframes exebar {
+  @for $i from 0 to 100 {
+    #{$i * 1%} {
+      width: $i * 1vw;
+    }
+  }
+}
 
 @include pc() {
   #l-content {

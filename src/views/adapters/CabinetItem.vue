@@ -22,6 +22,7 @@ onMounted(() => {
   } else {
     content.value.style.height = `${height}px`;
   }
+
   toggle = () => {
     let counter = 9;
     if (isToggle.value) {
@@ -60,7 +61,7 @@ onMounted(() => {
         <slot name="icon" />
         {{ text }}
       </div>
-      <div @click="toggle" class="f-c-c opacity-60 hover" :class="{ 'arrow-up': !isToggle, 'arrow-down': isToggle }">
+      <div @click="toggle" class="f-c-c opacity-70 hover" :class="{ 'arrow-up': !isToggle, 'arrow-down': isToggle }">
         <div class="arrow">
           <i-ep-arrow-down />
         </div>
