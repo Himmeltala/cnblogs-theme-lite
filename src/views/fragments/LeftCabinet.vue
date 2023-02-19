@@ -32,7 +32,7 @@ async function unfocus() {
 <template>
   <div id="l-cabinet" class="w-70 h-100vh px-2 l-box-bg">
     <div class="noscroll ofw-auto h-96%">
-      <CabinetItem text="博客信息">
+      <ExpandableBox text="博客信息">
         <template #icon>
           <el-icon class="mr-1">
             <i-ep-house />
@@ -103,8 +103,8 @@ async function unfocus() {
             </el-icon>
           </template>
         </el-input>
-      </CabinetItem>
-      <CabinetItem text="博客数据">
+      </ExpandableBox>
+      <ExpandableBox text="博客数据">
         <template #icon>
           <el-icon class="mr-1">
             <i-ep-collection />
@@ -150,7 +150,7 @@ async function unfocus() {
             </div>
           </el-tab-pane>
         </el-tabs>
-      </CabinetItem>
+      </ExpandableBox>
     </div>
     <div class="noscroll f-c ofw-auto h-4%">
       <div class="hover mr-4 wce-nowrap" @click="nav({ path: 'https://www.cnblogs.com' })">博客园</div>

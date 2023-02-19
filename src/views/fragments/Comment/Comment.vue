@@ -104,7 +104,7 @@ function onEdFinish(response: any) {
 
 <style lang="scss">
 .c-content {
-  @include font-space();
+  line-height: 1.7;
 
   a {
     padding-bottom: 1px;

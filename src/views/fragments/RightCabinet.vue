@@ -17,23 +17,23 @@ watch(route, val => {
 
 <template>
   <div id="r-cabinet" class="noscroll w-70 h-100vh px-2 l-box-bg ofw-auto">
-    <CabinetItem text="随笔目录" v-if="anchors && anchors.length">
+    <ExpandableBox text="随笔目录" v-if="anchors && anchors.length">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-location />
         </el-icon>
       </template>
       <div class="catalog mb-2 fsz-0.9" v-for="(item, index) in anchors" :key="index" v-html="item.content" v-cateve="item" />
-    </CabinetItem>
-    <CabinetItem text="我的技术栈" v-if="__LITE_CONFIG__.graph">
+    </ExpandableBox>
+    <ExpandableBox text="我的技术栈" v-if="__LITE_CONFIG__.graph">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-aim />
         </el-icon>
       </template>
       <SkillGraph />
-    </CabinetItem>
-    <CabinetItem text="常用链接" v-if="__LITE_CONFIG__.links && __LITE_CONFIG__.links.length">
+    </ExpandableBox>
+    <ExpandableBox text="常用链接" v-if="__LITE_CONFIG__.links && __LITE_CONFIG__.links.length">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-link />
@@ -47,8 +47,8 @@ watch(route, val => {
         target="_blank">
         {{ item.text }}
       </a>
-    </CabinetItem>
-    <CabinetItem text="推荐书籍" v-if="__LITE_CONFIG__.books && __LITE_CONFIG__.books.length">
+    </ExpandableBox>
+    <ExpandableBox text="推荐书籍" v-if="__LITE_CONFIG__.books && __LITE_CONFIG__.books.length">
       <template #icon>
         <el-icon style="margin-right: 5px">
           <i-ep-notebook />
@@ -69,6 +69,6 @@ watch(route, val => {
           <el-rate style="width: 100%" v-model="item.rate" disabled size="small" />
         </div>
       </div>
-    </CabinetItem>
+    </ExpandableBox>
   </div>
 </template>

@@ -8,10 +8,9 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BuryComment: typeof import('./src/views/fragments/comment/BuryComment.vue')['default']
-    CabinetItem: typeof import('./src/views/adapters/CabinetItem.vue')['default']
     Card: typeof import('./src/components/Card.vue')['default']
     Category: typeof import('./src/views/modules/Category.vue')['default']
-    Comment: typeof import('./src/views/fragments/Comment.vue')['default']
+    Comment: typeof import('./src/views/fragments/comment/Comment.vue')['default']
     DeleteComment: typeof import('./src/views/fragments/comment/DeleteComment.vue')['default']
     DiggComment: typeof import('./src/views/fragments/comment/DiggComment.vue')['default']
     EditComment: typeof import('./src/views/fragments/comment/EditComment.vue')['default']
@@ -38,6 +37,7 @@ declare module '@vue/runtime-core' {
     Essay: typeof import('./src/views/modules/Essay.vue')['default']
     EssayItem: typeof import('./src/views/adapters/EssayItem.vue')['default']
     EssaySynopsis: typeof import('./src/views/adapters/EssaySynopsis.vue')['default']
+    ExpandableBox: typeof import('./src/components/ExpandableBox.vue')['default']
     Gallery: typeof import('./src/views/modules/Gallery.vue')['default']
     GitHub: typeof import('./src/views/fragments/GitHub.vue')['default']
     Home: typeof import('./src/views/modules/Home.vue')['default']

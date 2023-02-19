@@ -16,11 +16,10 @@
 }
 
 @mixin hover($border-color: bottom, $font-color: true) {
+  cursor: pointer;
   transition: 0.3s !important;
-  cursor: pointer !important;
 
   &:hover {
-    transition: 0.3s !important;
     @if ($font-color == true) {
       color: var(--el-color-primary) !important;
     }
@@ -32,45 +31,34 @@
   }
 }
 
-@mixin font-space($spacing: 1px, $line: 1.6) {
-  letter-spacing: $spacing;
-  line-height: $line;
-}
-
+// PC 端
 @mixin pc() {
   @media screen and (min-width: 1000px) {
     @content;
   }
 }
 
+// 移动端
 @mixin mb() {
   @media screen and (max-width: 1000px) {
     @content;
   }
 }
 
-@mixin textarea($height: 15rem) {
-  --at-apply: rd-2 p-2 0.5 fsz-0.9;
-  background-color: var(--l-textarea-bg);
-  width: 100%;
-  border: none;
-  outline: none;
-  color: var(--l-pri-color);
-  height: $height;
-  resize: none;
-}
-
-@mixin container() {
+.textarea {
   --at-apply: mb-5 rd-2;
   border: 1px solid var(--el-border-color-lighter);
   background-color: var(--l-textarea-bg);
   @include hover($border-color: all, $font-color: false);
-}
-
-.textarea {
-  @include container();
 
   textarea {
-    @include textarea();
+    --at-apply: rd-2 p-2 fsz-0.9;
+    background-color: var(--l-textarea-bg);
+    width: 100%;
+    height: 15rem;
+    border: none;
+    outline: none;
+    color: var(--l-pri-color);
+    resize: none;
   }
 }

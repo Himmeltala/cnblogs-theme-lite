@@ -217,14 +217,15 @@ h6 {
   font-size: 1rem !important;
 }
 
+// 代码块
 pre {
   border-radius: 6px;
   position: relative;
 
   code {
     overflow: hidden;
-    background: var(--l-precode-bg) !important;
     transition: all 0.5s ease-in-out;
+    background: var(--l-precode-bg) !important;
 
     &::-webkit-scrollbar {
       height: 0.5rem;
@@ -243,11 +244,12 @@ pre {
     span {
       --at-apply: fsz-1;
       font-family: #{"Hack", var(--font-family)};
-      @include font-space($spacing: 0.5px);
+      line-height: 1.5;
     }
   }
 }
 
+// 行内代码块
 code {
   --at-apply: rd-2;
   background: var(--l-code-bg);
@@ -256,6 +258,7 @@ code {
   margin: 0;
 }
 
+// 代码块语言类型提示
 .cblock {
   --at-apply: fsz-0.8 absolute;
   padding: 4px;
@@ -264,23 +267,27 @@ code {
   top: 0;
 }
 
+// 代码块过高时将高度设置为 380px
 .hight-code {
   height: 380px;
 }
 
+// 过高时设置的代码块底部模态遮罩
 .hight-code-modal {
-  position: absolute;
   width: 100%;
+  height: 3rem;
+  position: absolute;
   bottom: 0;
   left: 0;
   background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, var(--l-code-hidden) 100%);
-  height: 3rem;
 }
 
+// 移除模态遮罩
 .remove-hight-code-modal {
   display: none;
 }
 
+// 引用
 blockquote {
   --at-apply: rd-1 l-sec-color;
   margin: 0;
@@ -299,28 +306,27 @@ blockquote {
   }
 }
 
+// 随笔内容
 #p-content {
   u {
     text-decoration: none;
     padding-bottom: 1px;
-    border-bottom: 1px solid var(--l-pri-color);
+    border-bottom: 1px dotted var(--l-pri-color);
   }
 
   a {
-    padding-bottom: 1px;
-    border-bottom: 1px dotted var(--l-pri-color);
-    @include hover($border-color: bottom);
+    color: var(--l-theme-color);
   }
 
   p {
-    @include font-space($spacing: 1px !important, $line: 1.7 !important);
+    line-height: 1.7;
     margin: 0.7rem 0 !important;
   }
 
   ol,
   ul {
     li {
-      @include font-space($spacing: 1px !important, $line: 1.7 !important);
+      line-height: 1.7;
     }
 
     li:last-child {
@@ -329,28 +335,20 @@ blockquote {
   }
 
   table {
-    --at-apply: fsz-1;
-    padding: 10px;
-    box-sizing: border-box;
-
     th {
-      font-weight: 600 !important;
+      font-weight: 600;
     }
 
     th,
     td {
-      padding: 8px 13px;
-      border-bottom: 1px solid var(--l-divider-bg);
+      padding: 0.7rem 1.5rem;
+      border: 1px dotted var(--l-divider-bg);
+      border-radius: 0.5rem;
     }
+  }
 
-    th,
-    tr:nth-child(odd) {
-      background-color: var(--l-precode-bg);
-    }
-
-    tr:nth-child(even) {
-      background-color: var(--l-code-bg);
-    }
+  strong {
+    font-weight: 600;
   }
 }
 </style>
