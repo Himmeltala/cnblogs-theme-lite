@@ -49,6 +49,7 @@ export function useLite(dev: Function, pro: Function) {
     __LITE_CONFIG__ = {
       github: "https://github.com/Himmelbleu",
       cabinet: {
+        avatar: "https://img0.baidu.com/it/u=331777869,3713462458&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
         navs: [
           {
             href: "https://i.cnblogs.com/posts/edit",

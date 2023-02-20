@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useStorage } from "@vueuse/core";
 import { blogApp } from "@/lite.config";
+import $ from "jquery";
 
 const props = defineProps({
   text: {
@@ -15,7 +16,7 @@ let toggle = () => {};
 const content = ref();
 
 onMounted(() => {
-  const height = content.value.clientHeight;
+  const height = $(content.value).height();
 
   if (!isToggle.value) {
     content.value.style.height = `${0}px`;
@@ -55,10 +56,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div class="l-thr-color">
     <div class="title f-c-b my-5 fsz-1.2 pl-1.5 rd-1">
       <div class="f-c-s">
-        <slot name="icon" />
+        <div class="f-c-c mr-1">
+          <slot name="icon" />
+        </div>
         {{ text }}
       </div>
       <div @click="toggle" class="f-c-c opacity-70 hover" :class="{ 'arrow-up': !isToggle, 'arrow-down': isToggle }">

@@ -30,15 +30,13 @@ async function unfocus() {
 </script>
 
 <template>
-  <div id="l-cabinet" class="w-70 h-100vh px-2 l-box-bg">
+  <div id="l-cabinet" class="fsz-0.9 w-70 h-100vh px-2 l-box-bg">
     <div class="noscroll ofw-auto h-96%">
       <ExpandableBox text="博客信息">
         <template #icon>
-          <el-icon class="mr-1">
-            <i-ep-house />
-          </el-icon>
+          <i-ep-house />
         </template>
-        <div v-if="cabinet?.avatar" class="f-c-c my-5">
+        <div v-if="cabinet?.avatar" class="f-c-c mb-5">
           <el-tooltip effect="dark" placement="right">
             <img class="h-25 w-25 cursor-pointer rd-50" alt="FAILED" :src="cabinet?.avatar" />
             <template #content>
@@ -47,7 +45,7 @@ async function unfocus() {
             </template>
           </el-tooltip>
         </div>
-        <div class="f-c-c" v-if="!isOwner">
+        <div class="f-c-c mb-5" v-if="!isOwner">
           <el-popconfirm @confirm="unfocus" confirm-button-text="确定" cancel-button-text="取消" title="确定取消关注？">
             <template #reference>
               <el-button v-if="isFollow" type="danger" text bg> -取消关注 </el-button>
@@ -55,120 +53,78 @@ async function unfocus() {
           </el-popconfirm>
           <el-button @click="focus" v-if="!isFollow" type="primary" text bg> +关注博主 </el-button>
         </div>
-        <div class="item" v-for="(item, index) in blogger" :key="index">
-          <div class="text hover" @click="nav({ path: item.href })">
-            <div class="f-c-s" v-if="index === 0">
-              <el-icon class="mr-2">
-                <i-ep-user-filled />
-              </el-icon>
-              昵称：{{ item.text }}
-            </div>
-            <div class="f-c-s" v-else-if="index === 1">
-              <el-icon class="mr-2">
-                <i-ep-clock />
-              </el-icon>
-              园龄：{{ item.text }}
-            </div>
-            <div class="f-c-s" v-else-if="index === 2">
-              <el-icon class="mr-2">
-                <i-ep-star-filled />
-              </el-icon>
-              粉丝：{{ item.text }}
-            </div>
-            <div class="f-c-s" v-else>
-              <el-icon class="mr-2">
-                <i-ep-bell-filled />
-              </el-icon>
-              关注：{{ item.text }}
-            </div>
+        <div class="hover mb-3" v-for="(item, index) in blogger" :key="index" @click="nav({ path: item.href })">
+          <div class="f-c-s" v-if="index === 0">
+            <i-ep-user-filled class="mr-2" />
+            昵称：{{ item.text }}
+          </div>
+          <div class="f-c-s" v-else-if="index === 1">
+            <i-ep-clock class="mr-2" />
+            园龄：{{ item.text }}
+          </div>
+          <div class="f-c-s" v-else-if="index === 2">
+            <i-ep-star-filled class="mr-2" />
+            粉丝：{{ item.text }}
+          </div>
+          <div class="f-c-s" v-else>
+            <i-ep-bell-filled class="mr-2" />
+            关注：{{ item.text }}
           </div>
         </div>
         <el-tooltip effect="dark" placement="bottom">
           <template #content>
-            <span :class="{ 'mr-3': index !== blogRank.length - 1 }" v-for="(item, index) in blogRank" :key="index">
-              {{ item.text }} - {{ item.digg }}
-            </span>
+            <span class="mr-3" v-for="(item, index) in blogRank" :key="index"> {{ item.text }} - {{ item.digg }} </span>
           </template>
-          <div class="hover mb-3 fsz-0.9 cursor-pointer">
-            <span :class="{ 'mr-2.5': index !== blogInfo.length - 1 }" v-for="(item, index) in blogInfo" :key="index">
-              {{ item.text }} - {{ item.digg }}
-            </span>
+          <div class="mb-3">
+            <span class="hover mr-3" v-for="(item, index) in blogInfo" :key="index"> {{ item.text }} - {{ item.digg }} </span>
           </div>
         </el-tooltip>
         <el-input clearable @keyup.enter="search" v-model="searchVal">
-          <template #prepend>搜索</template>
           <template #prefix>
-            <el-icon @click="search">
-              <i-ep-search />
-            </el-icon>
+            <i-ep-search />
           </template>
         </el-input>
       </ExpandableBox>
       <ExpandableBox text="博客数据">
         <template #icon>
-          <el-icon class="mr-1">
-            <i-ep-collection />
-          </el-icon>
+          <i-ep-collection />
         </template>
         <el-tabs stretch type="card" v-model="tabName">
           <el-tab-pane label="随笔" name="随笔">
-            <div class="item" v-for="(item, index) in cates.cates" :key="index">
-              <div class="text hover" @click="nav({ path: '/sort/' + item.id, router })">
-                {{ item.text }}
-              </div>
+            <div class="mb-3 hover" v-for="(item, index) in cates.cates" :key="index" @click="nav({ path: '/sort/' + item.id, router })">
+              {{ item.text }}
             </div>
           </el-tab-pane>
           <el-tab-pane label="标签" name="标签">
-            <div class="item" v-for="(item, index) in cates.tags" :key="index">
-              <div class="text hover" @click="nav({ path: '/label/' + item.id, router })">
-                {{ item.text }}
-              </div>
+            <div v-for="(item, index) in cates.tags" @click="nav({ path: '/label/' + item.id, router })" class="mb-3 hover" :key="index">
+              {{ item.text }}
             </div>
-            <div class="item">
-              <div class="text hover" @click="nav({ path: '/labels', router })">更多...</div>
-            </div>
+            <div class="mb-3 hover" @click="nav({ path: '/labels', router })">更多...</div>
           </el-tab-pane>
           <el-tab-pane label="阅读排行榜" name="阅读排行榜">
-            <div class="item" v-for="(item, index) in toplist" :key="index">
-              <div class="text hover" @click="nav({ path: '/p/' + item.id, router })">
-                {{ item.text }}
-              </div>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="推荐排行榜" name="推荐排行榜">
-            <div class="item" v-for="(item, index) in toplist" :key="index">
-              <div class="text hover" @click="nav({ path: '/p/' + item.id, router })">
-                {{ item.text }}
-              </div>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="评论排行榜" name="评论排行榜">
-            <div class="item" v-for="(item, index) in toplist" :key="index">
-              <div class="text hover" @click="nav({ path: '/p/' + item.id, router })">
-                {{ item.text }}
-              </div>
+            <div class="mb-3 hover" v-for="(item, index) in toplist" :key="index" @click="nav({ path: '/p/' + item.id, router })">
+              {{ item.text }}
             </div>
           </el-tab-pane>
         </el-tabs>
       </ExpandableBox>
     </div>
-    <div class="noscroll f-c ofw-auto h-4%">
-      <div class="hover mr-4 wce-nowrap" @click="nav({ path: 'https://www.cnblogs.com' })">博客园</div>
-      <div class="hover mr-4 wce-nowrap" @click="nav({ path: '/', router })">首页</div>
-      <div class="hover wce-nowrap" :class="{ 'mr-4': __LITE_CONFIG__.cabinet?.navs }" @click="nav({ path: '/', router })">标签</div>
+    <div class="noscroll l-thr-color f-c ofw-auto h-4% wce-nowrap">
+      <div class="hover mr-4" @click="nav({ path: 'https://www.cnblogs.com' })">博客园</div>
+      <div class="hover mr-4" @click="nav({ path: '/', router })">首页</div>
       <div
         v-if="__LITE_CONFIG__.cabinet?.navs"
         v-for="(item, index) in __LITE_CONFIG__.cabinet.navs"
         :key="index"
         :class="{ 'mr-4': index !== __LITE_CONFIG__.cabinet.navs.length - 1 }"
-        class="hover f-c-c wce-nowrap">
+        class="hover f-c-c">
         <div v-if="item.text" @click="nav({ path: item.href })">{{ item.text }}</div>
         <div class="f-c-c w-6 h-6" v-else>
           <svg
-            class="w-6 h-6"
             v-if="(item.svg || item.img) && item.svg"
-            fill="var(--l-pri-color)"
             @click="nav({ path: item.href })"
+            class="w-6 h-6"
+            fill="var(--l-thr-color)"
             viewBox="0 0 1024 1024"
             v-html="item.svg"></svg>
           <img v-else class="rd-50 w-6 h-6" alt="FAILED" @click="nav({ path: item.href })" :src="item.img" />
@@ -177,13 +133,3 @@ async function unfocus() {
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-.item {
-  --at-apply: my-3 fsz-0.9;
-
-  .text {
-    --at-apply: cursor-pointer;
-  }
-}
-</style>

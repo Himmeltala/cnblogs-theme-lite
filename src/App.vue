@@ -33,13 +33,15 @@ onMounted(() => {
     v-show="!fixedlcabinet"
     :class="{ 'left-70': !lstrip, 'left-0 w-5px l-strip-bg rd-2': lstrip }"
     class="fixed top-47.5vh h-5vh cursor-pointer opacity-70"></div>
-  <LeftCabinet
-    class="lcabinet"
-    :class="{
-      'show-lcabinet fixed top-0 left-0 z-999': !lstrip && !fixedlcabinet,
-      'hidden-lcabinet fixed top-0 left-0': lstrip && !fixedlcabinet,
-      'fixed-left-cabinet fixed top-0': fixedlcabinet
-    }" />
+  <Suspense>
+    <LeftCabinet
+      class="lcabinet"
+      :class="{
+        'show-lcabinet fixed top-0 left-0 z-999': !lstrip && !fixedlcabinet,
+        'hidden-lcabinet fixed top-0 left-0': lstrip && !fixedlcabinet,
+        'fixed-left-cabinet fixed top-0': fixedlcabinet
+      }" />
+  </Suspense>
   <div id="l-content">
     <span id="top-nail"></span>
     <RouterView v-slot="{ Component }">
@@ -53,11 +55,11 @@ onMounted(() => {
     </RouterView>
     <div class="f-c-c py-2 fsz-0.8 l-sec-color h-4">
       Created By
-      <a class="hover mx-1 l-sec-color" href="https://github.com/Himmelbleu/cnblogs-theme-lite" target="__blank"> Himmelbleu, </a>
+      <a class="hover mx-1" href="https://github.com/Himmelbleu/cnblogs-theme-lite" target="__blank"> Himmelbleu, </a>
       powered by
-      <a class="hover mx-1 l-sec-color" href="https://v3.cn.vuejs.org/" target="__blank">Vue3</a>
+      <a class="hover mx-1" href="https://v3.cn.vuejs.org/" target="__blank">Vue3</a>
       on
-      <a class="hover mx-1 l-sec-color" href="https://vitejs.cn/vite3-cn/" target="__blank">Vite.</a>
+      <a class="hover mx-1" href="https://vitejs.cn/vite3-cn/" target="__blank">Vite.</a>
     </div>
   </div>
   <div id="full-modal" class="z-99 opacity-50 l-modal-bg" :class="{ 'fixed top-0 left-0 w-100% h-100vh': !rstrip || !lstrip }"></div>

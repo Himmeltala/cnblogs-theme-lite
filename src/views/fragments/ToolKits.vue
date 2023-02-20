@@ -54,12 +54,11 @@ const fixedrcabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, false);
 <template>
   <div id="toolkits" class="noselect fixed right-15 top-65vh fsz-1.2 z-99">
     <div class="relative">
-      <div :class="{ 'show-0 l-box-bg': disToolKits, 'close-0': !disToolKits }" class="back-home absolute left-0 w-8 h-8 f-c-c rd-2">
-        <div class="hover f-c-c">
-          <div @click="nav({ path: 'back', router })">
-            <i-ep-back />
-          </div>
-        </div>
+      <div
+        :class="{ 'show-0 l-box-bg': disToolKits, 'close-0': !disToolKits }"
+        class="back-home absolute hover left-0 w-8 h-8 f-c-c rd-2"
+        @click="nav({ path: 'back', router })">
+        <i-ep-back />
       </div>
       <div
         :class="{ 'show-1 l-box-bg': disToolKits, 'close-1': !disToolKits }"

@@ -25,7 +25,6 @@ async function submit() {
     essay.value = await getLockedEssay(cipher.value, postId);
     isLocked.value = false;
   }
-
   ElMessage({
     message: data ? "密码输入正确！" : "密码错误！",
     grouping: true,
@@ -184,40 +183,14 @@ async function vote(voteType: BlogType.VoteType) {
 </template>
 
 <style lang="scss">
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 400 !important;
+code {
+  --at-apply: rd-2;
+  background: var(--l-code-bg);
+  color: var(--el-color-danger-light-3);
+  padding: 0.15rem 0.4rem;
+  margin: 0;
 }
 
-h1 {
-  font-size: 1.5rem !important;
-}
-
-h2 {
-  font-size: 1.4rem !important;
-}
-
-h3 {
-  font-size: 1.3rem !important;
-}
-
-h4 {
-  font-size: 1.2rem !important;
-}
-
-h5 {
-  font-size: 1.1rem !important;
-}
-
-h6 {
-  font-size: 1rem !important;
-}
-
-// 代码块
 pre {
   border-radius: 6px;
   position: relative;
@@ -240,74 +213,91 @@ pre {
       background-color: var(--l-divider-bg);
     }
 
-    &,
     span {
       --at-apply: fsz-1;
+      line-height: 1.3;
       font-family: #{"Hack", var(--font-family)};
-      line-height: 1.5;
     }
   }
-}
 
-// 行内代码块
-code {
-  --at-apply: rd-2;
-  background: var(--l-code-bg);
-  color: var(--el-color-danger-light-3);
-  padding: 0.15rem 0.4rem;
-  margin: 0;
-}
-
-// 代码块语言类型提示
-.cblock {
-  --at-apply: fsz-0.8 absolute;
-  padding: 4px;
-  color: #767676;
-  right: 4px;
-  top: 0;
-}
-
-// 代码块过高时将高度设置为 380px
-.hight-code {
-  height: 380px;
-}
-
-// 过高时设置的代码块底部模态遮罩
-.hight-code-modal {
-  width: 100%;
-  height: 3rem;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, var(--l-code-hidden) 100%);
-}
-
-// 移除模态遮罩
-.remove-hight-code-modal {
-  display: none;
-}
-
-// 引用
-blockquote {
-  --at-apply: rd-1 l-sec-color;
-  margin: 0;
-  background: var(--l-precode-bg);
-  padding: {
-    left: 0.5rem;
-    top: 0.1rem;
-    bottom: 0.1rem;
+  .cblock {
+    --at-apply: fsz-0.9 absolute;
+    color: #767676;
+    padding: 4px;
+    right: 0;
+    top: 0;
   }
-  border: {
-    left: {
-      width: 0.3rem;
-      color: var(--l-theme-color);
-      style: solid;
-    }
+
+  .hight-code {
+    height: 380px;
+  }
+
+  .hight-code-modal {
+    width: 100%;
+    height: 3rem;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, var(--l-code-hidden) 100%);
+  }
+
+  .remove-hight-code-modal {
+    display: none;
   }
 }
 
-// 随笔内容
 #p-content {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 400 !important;
+  }
+
+  h1 {
+    font-size: 1.5rem !important;
+  }
+
+  h2 {
+    font-size: 1.4rem !important;
+  }
+
+  h3 {
+    font-size: 1.3rem !important;
+  }
+
+  h4 {
+    font-size: 1.2rem !important;
+  }
+
+  h5 {
+    font-size: 1.1rem !important;
+  }
+
+  h6 {
+    font-size: 1rem !important;
+  }
+
+  blockquote {
+    --at-apply: rd-1 l-sec-color;
+    margin: 0;
+    background: var(--l-precode-bg);
+    padding: {
+      left: 0.5rem;
+      top: 0.1rem;
+      bottom: 0.1rem;
+    }
+    border: {
+      left: {
+        width: 0.3rem;
+        color: var(--l-theme-color);
+        style: solid;
+      }
+    }
+  }
+
   u {
     text-decoration: none;
     padding-bottom: 1px;
