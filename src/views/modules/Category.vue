@@ -30,7 +30,7 @@ watch(route, async () => {
 </script>
 
 <template>
-  <div id="l-cate">
+  <div id="l-cate" class="min-height">
     <Pagination @nexpr="nexpr" @next="next" @prev="prev" :page-count="count">
       <template #content>
         <div class="fsz-1.25 mb-10">{{ hint }}</div>

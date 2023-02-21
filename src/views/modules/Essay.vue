@@ -48,7 +48,7 @@ async function vote(voteType: BlogType.VoteType) {
 </script>
 
 <template>
-  <div id="l-essay">
+  <div id="l-essay" class="min-height">
     <div v-if="!isLocked">
       <div class="fsz-1.5">{{ essay.text }}</div>
       <div class="l-sec-color f-c-s mt-4 fsz-0.8">
@@ -192,33 +192,8 @@ code {
 }
 
 pre {
-  border-radius: 6px;
+  --at-apply: rd-2;
   position: relative;
-
-  code {
-    overflow: hidden;
-    transition: all 0.5s ease-in-out;
-    background: var(--l-precode-bg) !important;
-
-    &::-webkit-scrollbar {
-      height: 0.5rem;
-      width: 0;
-    }
-
-    &::-webkit-scrollbar-corner {
-      display: none;
-    }
-
-    &:hover::-webkit-scrollbar-thumb {
-      background-color: var(--l-divider-bg);
-    }
-
-    span {
-      --at-apply: fsz-1;
-      line-height: 1.3;
-      font-family: #{"Hack", var(--font-family)};
-    }
-  }
 
   .cblock {
     --at-apply: fsz-0.9 absolute;

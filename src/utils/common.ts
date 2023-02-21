@@ -65,6 +65,20 @@ export function preLog(title: string, msg: string) {
 }
 
 /**
+ * 美化 console.log
+ *
+ * @param title 标题
+ * @param msg 信息
+ */
+export function preWarningLog(title: string, msg: string) {
+  console.log(
+    `%c${title}%c${msg}`,
+    "background: #ea5d5e; color: #fff; border-radius: 3px 0 0 3px; padding: 10px",
+    "background: #707070; color: #fff; border-radius: 0 3px 3px 0; padding: 10px"
+  );
+}
+
+/**
  * 把一串数字转换为“xx万”的形式
  *
  * @param num 被格式化的数字

@@ -12,7 +12,7 @@ import "./style.scss";
 
 /* Import Lite */
 import { useDirective } from "./directive";
-import { useLite, initLiteVars } from "./lite.config";
+import { useLite, initLiteVars, blogApp } from "./lite.config";
 
 /* Start */
 const app = createApp(App);
@@ -23,10 +23,16 @@ app.use(createPinia());
 useDirective(app);
 useLite(
   () => app.mount("#app"),
-  () =>
-    // @ts-ignore
-    (window["__LITE_CONFIG__"].onLoaded = () => {
+  () => {
+    if (localStorage.getItem(`l-${blogApp}-blogdata-from-remote`) == "true") {
       initLiteVars();
       app.mount("#app");
-    })
+    } else {
+      // @ts-ignore
+      window["__LITE_CONFIG__"].onLoaded = () => {
+        initLiteVars();
+        app.mount("#app");
+      };
+    }
+  }
 );

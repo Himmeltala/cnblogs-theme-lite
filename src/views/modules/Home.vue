@@ -25,7 +25,7 @@ async function nexpr(e: any) {
 </script>
 
 <template>
-  <div id="l-home">
+  <div id="l-home" class="min-height">
     <Pagination @prev="prev" @next="next" @nexpr="nexpr" :page-count="count" :disabled="isOpenPager">
       <template #content>
         <EssayItem v-if="data" :data="data" />

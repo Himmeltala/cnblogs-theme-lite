@@ -21,28 +21,20 @@ defineProps({
 <template>
   <div class="f-c fsz-0.9 l-sec-color" :style="{ 'justify-content': align }">
     <div class="mr-3 f-c-c">
-      <el-icon class="mr-1">
-        <i-ep-clock />
-      </el-icon>
-      <span>{{ data.date }}</span>
+      <i-ep-clock class="mr-1" />
+      {{ data.date }}
     </div>
     <div class="mr-3 f-c-c">
-      <el-icon class="mr-1">
-        <i-ep-view />
-      </el-icon>
-      <span>{{ data.view }}</span>
+      <i-ep-view class="mr-1" />
+      {{ data.view }}
     </div>
     <div class="mr-3 f-c-c">
-      <el-icon class="mr-1">
-        <i-ep-chat-line-square />
-      </el-icon>
-      <span>{{ data.comm }}</span>
+      <i-ep-chat-line-square class="mr-1" />
+      {{ data.comm }}
     </div>
     <div class="f-c-c">
-      <el-icon class="mr-1">
-        <i-ep-star />
-      </el-icon>
-      <span> {{ data.digg }}</span>
+      <i-ep-star class="mr-1" />
+      {{ data.digg }}
     </div>
   </div>
 </template>

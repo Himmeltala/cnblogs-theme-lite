@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { preLog } from "@/utils/common";
+import { preLog, preWarningLog } from "@/utils/common";
 import { CustType } from "@/types/data-type";
 
 export let __LITE_CONFIG__: CustType.Lite;
@@ -123,20 +123,24 @@ export function useLite(dev: Function, pro: Function) {
 
   $("head").append(`<link rel="shortcut icon" href="${__LITE_CONFIG__.icon}">`);
 
-  let themeMode = localStorage.getItem(`l-${blogApp}-theme-mode`);
+  const themeMode = localStorage.getItem(`l-${blogApp}-theme-mode`);
   if (!themeMode) {
-    themeMode = "dark";
-    localStorage.setItem(`l-${blogApp}-theme-mode`, themeMode);
+    localStorage.setItem(`l-${blogApp}-theme-mode`, "dark");
   }
 
-  let themeColor = localStorage.getItem(`l-${blogApp}-theme-color`);
+  const themeColor = localStorage.getItem(`l-${blogApp}-theme-color`);
   if (!themeColor) {
-    themeColor = "#409eff";
-    localStorage.setItem(`l-${blogApp}-theme-color`, themeColor);
+    localStorage.setItem(`l-${blogApp}-theme-color`, "#409eff");
+  }
+
+  const remoteApi = localStorage.getItem(`l-${blogApp}-blogdata-from-remote`);
+  if (!remoteApi) {
+    localStorage.setItem(`l-${blogApp}-blogdata-from-remote`, "true");
   }
 
   $("html").attr("class", themeMode);
   $("html").css({ "--l-theme-color": themeColor });
-  preLog("Lite Theme v1.3.0", "Powered By Himmelbleu");
   preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
+  preLog("v1.4.0", "Powered By Himmelbleu");
+  preWarningLog("启动速度慢？", "https://github.com/Himmelbleu/cnblogs-theme-lite#启动速度慢");
 }

@@ -144,6 +144,7 @@
 <script type="module" src="https://blog-static.cnblogs.com/files/blogs/666252/index.js"></script>
 <!-- run lite -->
 <script>
+  // 如果访问外网速度本身就很快，建议使用下面的代码。访问速度慢建议删除该 script 标签。
   window.onload = () => {
     window.__LITE_CONFIG__.onLoaded();
   };
@@ -151,6 +152,15 @@
 ```
 
 在你的博客园后台“选项”中，勾选“启用数学公式支持”和“数学公式渲染引擎”（选择 MathJax3），否则数学公式不生效。
+
+## 启动速度慢
+
+部署说明中展示的启动方式可以减少请求数量，但博客园会带有一个国外的请求，导致速度变慢。
+
+如果遇到长时间停止在 loading 屏幕：
+
+1. 清除缓存；
+2. 改用部署说明中的启动方式。
 
 # 配置说明
 

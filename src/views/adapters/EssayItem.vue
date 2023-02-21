@@ -15,16 +15,16 @@ const router = useRouter();
 
 <template>
   <Card
-    class="pb-4"
-    :class="{ 'mb-6': index !== data.length - 1 }"
     v-for="(item, index) in data"
     :index="index"
-    :length="data.length"
-    :key="index">
+    :key="index"
+    class="pb-5"
+    :class="{ 'mb-5': index !== data.length - 1 }"
+    :length="data.length">
     <div class="f-c-b" :class="{ 'mb-5': item.surface }">
       <el-image v-if="index % 2 !== 0 && item.surface" class="cover h-35 rd-2" :src="item.surface" fit="cover" />
       <div :class="{ 'w-100%': !item.surface, 'has-cover w-60%': item.surface }">
-        <div class="hover mb-5 fsz-1.3 cursor-pointer" @click="nav({ path: '/p/' + item.id, router })">
+        <div class="hover mb-5 fsz-1.3" @click="nav({ path: '/p/' + item.id, router })">
           {{ item.text }}
         </div>
         <div class="l-thr-color" :class="{ 'mb-5': !item.surface, 'f-c-s': item.isLocked }">
@@ -34,11 +34,9 @@ const router = useRouter();
       </div>
       <el-image v-if="index % 2 === 0 && item.surface" class="cover h-35 rd-2" :src="item.surface" fit="cover" />
     </div>
-    <div class="f-c-s mb-5 fsz-0.9">
-      <el-icon>
-        <i-ep-caret-right />
-      </el-icon>
-      <router-link class="hover l-pri-color ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id"> 阅读全文 </router-link>
+    <div class="hover f-c-s mb-5 fsz-0.9">
+      <i-ep-caret-right />
+      <router-link class="ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id"> 阅读全文 </router-link>
     </div>
     <EssaySynopsis :align="'flex-end'" :data="{ date: item.date, comm: item.comm, digg: item.digg, view: item.view }" />
   </Card>

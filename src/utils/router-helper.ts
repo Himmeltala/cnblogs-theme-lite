@@ -76,8 +76,6 @@ export function redirect(next: any): () => void {
       params: { tag }
     };
   } else if (routeReg.GALLERY.test(URL)) {
-    console.log("匹配到相册页面");
-
     nextParam = {
       name: RouteName.GALLERY
     };

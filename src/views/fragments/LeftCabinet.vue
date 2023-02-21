@@ -1,16 +1,39 @@
 <script setup lang="ts">
+import { useStorage } from "@vueuse/core";
 import { nav } from "@/utils/router-helper";
 import { follow, unfollow } from "@/utils/remote-api";
 import { __LITE_CONFIG__, blogApp, isFollow, isOwner } from "@/lite.config";
-import { getSideBloggerInfo, getSideBlogInfo, getSideCateList, getSideBlogRank, getSideTopList } from "@/utils/local-api";
+import {
+  getSideBloggerInfo as lo1,
+  getSideBlogInfo as lo2,
+  getSideCateList as lo3,
+  getSideBlogRank as lo4,
+  getSideTopList as lo5
+} from "@/utils/local-api";
+import { getSideBloggerInfo as re1, getSideBlogInfo as re2, getSideCateList as re3, getSideTopList as re4 } from "@/utils/remote-api";
 
+const remoteApi = useStorage(`l-${blogApp}-blogdata-from-remote`, true);
+
+let blogger: any;
+let blogInfo: any;
+let cates: any;
+let toplist: any;
+
+if (remoteApi.value) {
+  blogger = await re1();
+  blogInfo = await re2();
+  cates = await re3();
+  toplist = await re4();
+} else {
+  blogger = lo1();
+  blogInfo = lo2();
+  cates = lo3();
+  toplist = lo5();
+}
+
+const blogRank = lo4();
 const cabinet = __LITE_CONFIG__.cabinet;
 const router = useRouter();
-const cates = getSideCateList();
-const blogger = getSideBloggerInfo();
-const blogInfo = getSideBlogInfo();
-const toplist = getSideTopList();
-const blogRank = getSideBlogRank();
 const tabName = ref("随笔");
 const searchVal = ref();
 
@@ -96,7 +119,7 @@ async function unfocus() {
             </div>
           </el-tab-pane>
           <el-tab-pane label="标签" name="标签">
-            <div v-for="(item, index) in cates.tags" @click="nav({ path: '/label/' + item.id, router })" class="mb-3 hover" :key="index">
+            <div class="mb-3 hover" v-for="(item, index) in cates.tags" @click="nav({ path: '/label/' + item.id, router })" :key="index">
               {{ item.text }}
             </div>
             <div class="mb-3 hover" @click="nav({ path: '/labels', router })">更多...</div>

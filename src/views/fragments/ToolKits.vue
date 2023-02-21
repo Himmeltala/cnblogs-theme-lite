@@ -49,6 +49,7 @@ const settingDialog = ref(false);
 const isOpenPager = useStorage(`l-${blogApp}-open-pager`, false);
 const fixedlcabinet = useStorage(`l-${blogApp}-fixed-left-cabinet`, false);
 const fixedrcabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, false);
+const remoteApi = useStorage(`l-${blogApp}-blogdata-from-remote`, true);
 </script>
 
 <template>
@@ -102,6 +103,12 @@ const fixedrcabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, false);
       <div class="mt-4" v-if="pcDevice">
         <span><span v-show="!isOpenPager">隐藏</span><span v-show="isOpenPager">开启</span>翻页按钮</span>
         <el-switch v-model="isOpenPager" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
+      </div>
+      <div class="mt-4" v-if="pcDevice">
+        <el-tooltip content="博客园会请求一个国外的插件，导致博客加载速度很慢，具体查看仓库自述文件。" placement="top">
+          <span>博客数据从<span v-show="!remoteApi">本地</span><span v-show="remoteApi">远程</span>加载</span>
+        </el-tooltip>
+        <el-switch v-model="remoteApi" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
       </div>
       <div :class="{ 'mt-4': pcDevice }">
         <span class="mr-2">设置主题颜色</span>

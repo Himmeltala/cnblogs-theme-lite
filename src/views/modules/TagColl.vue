@@ -18,7 +18,7 @@ watch(route, async () => {
 </script>
 
 <template>
-  <div id="l-tagcoll">
+  <div id="l-tagcoll" class="min-height">
     <div class="fsz-1.25 mb-10">{{ tagName }}</div>
     <div class="content">
       <Card class="item mr-6 mb-6 pb-4" v-for="(item, index) in tagList" :key="index">

@@ -133,7 +133,7 @@ $quota: 10;
 @keyframes showlcabinet {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateX(-12.5rem + ($i * 1.25rem));
+      transform: translateX(-17.5rem + ($i * 1.75rem));
     }
   }
 }
