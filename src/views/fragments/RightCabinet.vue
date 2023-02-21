@@ -16,7 +16,7 @@ watch(route, val => {
 </script>
 
 <template>
-  <div id="r-cabinet" class="noscroll fsz-0.9 w-70 h-100vh px-2 l-box-bg ofw-auto">
+  <div id="r-cabinet" class="noscroll fsz-0.9 h-100vh px-2 l-box-bg ofw-auto" style="width: var(--cabinet-width)">
     <ExpandableBox text="随笔目录" v-if="anchors && anchors.length">
       <template #icon>
         <i-ep-location />
@@ -59,3 +59,9 @@ watch(route, val => {
     </ExpandableBox>
   </div>
 </template>
+
+<style scoped lang="scss">
+#r-cabinet {
+  transition: var(--l-transition);
+}
+</style>

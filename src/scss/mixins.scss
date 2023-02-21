@@ -17,7 +17,7 @@
 
 @mixin hover($border-color: bottom, $font-color: true) {
   cursor: pointer;
-  transition: 0.3s !important;
+  transition: var(--l-transition);
 
   &:hover {
     @if ($font-color == true) {

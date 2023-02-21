@@ -1,5 +1,4 @@
 import $ from "jquery";
-import { __LITE_CONFIG__, blogApp } from "@/lite.config";
 
 let fillColor = "",
   strokeColor = "";
@@ -177,10 +176,9 @@ export function calcSize(sideWidthVw: number) {
   return (sideWidthVw / 100) * window.innerWidth;
 }
 
-export function createRadar(vw: number) {
-  const config = __LITE_CONFIG__.graph;
+export function createRadar(vw: number, color: string, config: any) {
   if (config) {
-    fillColor = localStorage.getItem(`l-${blogApp}-theme-color`);
+    fillColor = color;
     strokeColor = config.strokeColor || "#a7a7a7";
     config.textColor = config.textColor || "#a7a7a7";
     config.lineColor = config.textColor || "#a7a7a7";

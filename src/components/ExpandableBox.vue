@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useStorage } from "@vueuse/core";
 import { blogApp } from "@/lite.config";
+import { CustType } from "@/types/data-type";
 import $ from "jquery";
 
 const props = defineProps({
@@ -10,15 +11,22 @@ const props = defineProps({
   }
 });
 
-const isToggle = useStorage(`l-${blogApp}-${props.text}-toggle`, true);
+const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
+const record = `${props.text}`;
+if (!settings.value.toggles[record]) {
+  settings.value.toggles[record] = {
+    open: true,
+    show: true
+  };
+}
 
-let toggle = () => {};
+let toggle: any;
 const content = ref();
 
 onMounted(() => {
   const height = $(content.value).height();
 
-  if (!isToggle.value) {
+  if (!settings.value.toggles[record]?.open) {
     content.value.style.height = `${0}px`;
   } else {
     content.value.style.height = `${height}px`;
@@ -26,7 +34,7 @@ onMounted(() => {
 
   toggle = () => {
     let counter = 9;
-    if (isToggle.value) {
+    if (settings.value.toggles[record]?.open) {
       let cHeight = height;
       const interval = setInterval(() => {
         cHeight -= height / 10;
@@ -34,7 +42,7 @@ onMounted(() => {
         counter--;
         if (counter == 0) {
           content.value.style.height = `${0}px`;
-          isToggle.value = !isToggle.value;
+          settings.value.toggles[record].open = !settings.value.toggles[record].open;
           clearInterval(interval);
         }
       }, 10);
@@ -46,7 +54,7 @@ onMounted(() => {
         counter--;
         if (counter == 0) {
           content.value.style.height = `${height}px`;
-          isToggle.value = !isToggle.value;
+          settings.value.toggles[record].open = !settings.value.toggles[record].open;
           clearInterval(interval);
         }
       }, 10);
@@ -56,7 +64,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="l-thr-color">
+  <div class="l-thr-color" v-show="settings.toggles[record]?.show">
     <div class="title f-c-b my-5 fsz-1.2 pl-1.5 rd-1">
       <div class="f-c-s">
         <div class="f-c-c mr-1">
@@ -64,7 +72,10 @@ onMounted(() => {
         </div>
         {{ text }}
       </div>
-      <div @click="toggle" class="f-c-c opacity-70 hover" :class="{ 'arrow-up': !isToggle, 'arrow-down': isToggle }">
+      <div
+        @click="toggle"
+        class="f-c-c opacity-70 hover"
+        :class="{ 'arrow-up': !settings.toggles[record]?.open, 'arrow-down': settings.toggles[record]?.open }">
         <div class="arrow">
           <i-ep-arrow-down />
         </div>
@@ -83,7 +94,6 @@ onMounted(() => {
 
 .arrow {
   transform: scale(0, 0);
-  transition: all 0.2s ease-in-out;
 }
 
 .title:hover .arrow {
@@ -118,6 +128,6 @@ onMounted(() => {
 
 .content {
   overflow: hidden;
-  transition: all 0.5s ease-in-out;
+  transition: var(--l-transition);
 }
 </style>

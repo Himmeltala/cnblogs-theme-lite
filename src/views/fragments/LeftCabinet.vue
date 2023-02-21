@@ -11,15 +11,16 @@ import {
   getSideTopList as lo5
 } from "@/utils/local-api";
 import { getSideBloggerInfo as re1, getSideBlogInfo as re2, getSideCateList as re3, getSideTopList as re4 } from "@/utils/remote-api";
+import { CustType } from "@/types/data-type";
 
-const remoteApi = useStorage(`l-${blogApp}-blogdata-from-remote`, true);
+const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
 
 let blogger: any;
 let blogInfo: any;
 let cates: any;
 let toplist: any;
 
-if (remoteApi.value) {
+if (settings.value.cabinet.remote) {
   blogger = await re1();
   blogInfo = await re2();
   cates = await re3();
@@ -53,7 +54,7 @@ async function unfocus() {
 </script>
 
 <template>
-  <div id="l-cabinet" class="fsz-0.9 w-70 h-100vh px-2 l-box-bg">
+  <div id="l-cabinet" class="fsz-0.9 h-100vh px-2 l-box-bg" style="width: var(--cabinet-width)">
     <div class="noscroll ofw-auto h-96%">
       <ExpandableBox text="博客信息">
         <template #icon>
@@ -156,3 +157,9 @@ async function unfocus() {
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+#l-cabinet {
+  transition: var(--l-transition);
+}
+</style>

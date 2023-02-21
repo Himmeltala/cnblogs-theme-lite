@@ -20,3 +20,13 @@ export const useAnchorStore = defineStore("anchorStore", () => {
 
   return { anchor: _anchor, setAnchor };
 });
+
+export const useToolKitsSettingStore = defineStore("toolKitsSettingStore", () => {
+  let _settig = ref(false);
+
+  function setToolKitsSetting(settig: boolean) {
+    _settig.value = settig;
+  }
+
+  return { toolKitsSetting: _settig, setToolKitsSetting };
+});

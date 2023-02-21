@@ -1,9 +1,19 @@
 <script setup lang="ts">
-import { __LITE_CONFIG__ } from "@/lite.config";
+import { useStorage } from "@vueuse/core";
+import { __LITE_CONFIG__, blogApp } from "@/lite.config";
+import { CustType } from "@/types/data-type";
+
+const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
 </script>
 
 <template>
-  <a id="github-corner" class="fixed top-0 left-0 w-15 h-15 border-0 cursor-pointer" :href="__LITE_CONFIG__.github" target="_blank">
+  <a
+    id="github-corner"
+    class="fixed top-0 w-15 h-15 border-0"
+    :style="{ transform: settings.cornerPosition === 'right' ? 'rotate(90deg)' : 'rotate(0deg)' }"
+    :class="{ 'left-0': settings.cornerPosition === 'left', 'right-0': settings.cornerPosition === 'right' }"
+    :href="__LITE_CONFIG__.github"
+    target="_blank">
     <svg viewBox="0 0 250 250" style="color: #fff">
       <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
       <path

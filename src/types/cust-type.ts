@@ -185,3 +185,30 @@ export interface PrevNext {
   prev: PrevNextType;
   next: PrevNextType;
 }
+
+type Toggle = Record<
+  string,
+  {
+    open: boolean;
+    show: boolean;
+  }
+>;
+
+export interface Settings {
+  toggles?: Toggle;
+  themeMode?: string;
+  themeColor?: string;
+  openToolKits?: boolean;
+  openPager?: boolean;
+  cornerPosition?: "left" | "right";
+  contentWidth?: number;
+  cabinet?: {
+    left?: number;
+    right?: number;
+    break?: boolean;
+    remote?: boolean;
+    pinLeft?: boolean;
+    pinRight?: boolean;
+    width?: number;
+  };
+}

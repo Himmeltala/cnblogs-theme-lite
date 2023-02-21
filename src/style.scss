@@ -62,6 +62,7 @@ a:link {
  */
 
 :root {
+  --l-transition: all 0.4s ease-in-out;
   --font-size: 14px;
   --font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 }
@@ -199,7 +200,7 @@ html[class="light"] {
   display: block;
   overflow: hidden;
   color: var(--l-pri-color);
-  transition: all 0.5s ease-in-out;
+  transition: var(--l-transition);
   background: var(--l-precode-bg) !important;
 
   &::-webkit-scrollbar {

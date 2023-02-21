@@ -21,6 +21,41 @@ export function initLiteVars() {
 }
 
 /**
+ * 初始化自定义博客设置
+ */
+function initSettings() {
+  let settings: CustType.Settings = JSON.parse(localStorage.getItem(`l-${blogApp}-settings`));
+  if ($.isEmptyObject(settings)) {
+    settings = {
+      toggles: {},
+      themeMode: "dark",
+      themeColor: "#409eff",
+      openToolKits: true,
+      openPager: false,
+      contentWidth: 50,
+      cornerPosition: "left",
+      cabinet: {
+        left: 0,
+        right: 0,
+        break: false,
+        remote: true,
+        pinLeft: false,
+        pinRight: false,
+        width: 17.5
+      }
+    };
+    localStorage.setItem(`l-${blogApp}-settings`, JSON.stringify(settings));
+  }
+
+  $("html").attr("class", settings.themeMode);
+  $("html").css({
+    "--l-theme-color": settings.themeColor,
+    "--cabinet-width": settings.cabinet.width + "rem",
+    "--content-width": settings.contentWidth + "vw"
+  });
+}
+
+/**
  * 初始化 lite，所有工作准备完成之后，走回调函数，挂载 app。
  * @param dev 开发模式下直接挂载 app
  * @param pro 生产模式下，打包部署之后，给 window 注册一个函数，等待博客园资源加载完成之后再挂载 app。
@@ -41,6 +76,7 @@ export function useLite(dev: Function, pro: Function) {
     // @ts-ignore
     isOwner = isBlogOwner;
     baseAPI = `https://www.cnblogs.com/${blogApp}`;
+    initSettings();
     pro();
   } else if (import.meta.env.DEV) {
     blogId = import.meta.env.VITE_BLOG_ID;
@@ -118,29 +154,12 @@ export function useLite(dev: Function, pro: Function) {
         }
       ]
     };
+    initSettings();
     dev();
   }
 
   $("head").append(`<link rel="shortcut icon" href="${__LITE_CONFIG__.icon}">`);
-
-  const themeMode = localStorage.getItem(`l-${blogApp}-theme-mode`);
-  if (!themeMode) {
-    localStorage.setItem(`l-${blogApp}-theme-mode`, "dark");
-  }
-
-  const themeColor = localStorage.getItem(`l-${blogApp}-theme-color`);
-  if (!themeColor) {
-    localStorage.setItem(`l-${blogApp}-theme-color`, "#409eff");
-  }
-
-  const remoteApi = localStorage.getItem(`l-${blogApp}-blogdata-from-remote`);
-  if (!remoteApi) {
-    localStorage.setItem(`l-${blogApp}-blogdata-from-remote`, "true");
-  }
-
-  $("html").attr("class", themeMode);
-  $("html").css({ "--l-theme-color": themeColor });
   preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
-  preLog("v1.4.0", "Powered By Himmelbleu");
+  preLog("v1.4.1", "Powered By Himmelbleu using Vue3 & Vite.");
   preWarningLog("启动速度慢？", "https://github.com/Himmelbleu/cnblogs-theme-lite#启动速度慢");
 }

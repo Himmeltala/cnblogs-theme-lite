@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
 import { useStorage } from "@vueuse/core";
+import { CustType } from "@/types/data-type";
+
+const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
 
 const lstrip = ref(true);
 const rstrip = ref(true);
-const fixedlcabinet = useStorage(`l-${blogApp}-fixed-left-cabinet`, false);
-const fixedrcabinet = useStorage(`l-${blogApp}-fixed-right-cabinet`, false);
 
 onMounted(() => {
   document.querySelector("#left-strip").addEventListener("click", () => {
@@ -30,16 +31,17 @@ onMounted(() => {
   </div>
   <div
     id="left-strip"
-    v-show="!fixedlcabinet"
+    v-show="!settings.cabinet.pinLeft"
     :class="{ 'left-70': !lstrip, 'left-0 w-5px l-strip-bg rd-2': lstrip }"
     class="fixed top-47.5vh h-5vh cursor-pointer opacity-70"></div>
   <Suspense>
     <LeftCabinet
-      class="lcabinet"
+      :style="{ left: settings.cabinet.pinLeft && settings.cabinet.break ? settings.cabinet.left + 'vw' : 0 }"
       :class="{
-        'show-lcabinet fixed top-0 left-0 z-999': !lstrip && !fixedlcabinet,
-        'hidden-lcabinet fixed top-0 left-0': lstrip && !fixedlcabinet,
-        'fixed-left-cabinet fixed top-0': fixedlcabinet
+        'show-lcabinet fixed top-0 left-0 z-999': !lstrip && !settings.cabinet.pinLeft,
+        'hidden-lcabinet fixed top-0 left-0': lstrip && !settings.cabinet.pinLeft,
+        'fixed-left-cabinet fixed top-0': settings.cabinet.pinLeft && !settings.cabinet.break,
+        'fixed top-0': settings.cabinet.pinLeft && settings.cabinet.break
       }" />
   </Suspense>
   <div id="l-content">
@@ -65,15 +67,16 @@ onMounted(() => {
   <div id="full-modal" class="z-99 opacity-50 l-modal-bg" :class="{ 'fixed top-0 left-0 w-100% h-100vh': !rstrip || !lstrip }"></div>
   <div
     id="right-strip"
-    v-show="!fixedrcabinet"
+    v-show="!settings.cabinet.pinRight"
     :class="{ 'right-70': !rstrip, 'right-0 w-5px l-strip-bg rd-2': rstrip }"
     class="fixed top-47.5vh h-5vh cursor-pointer opacity-70"></div>
   <RightCabinet
-    class="rcabinet"
+    :style="{ right: settings.cabinet.pinRight && settings.cabinet.break ? settings.cabinet.right + 'vw' : 0 }"
     :class="{
-      'show-rcabinet fixed top-0 right-0 z-999': !rstrip && !fixedrcabinet,
-      'hidden-rcabinet fixed top-0 right-0': rstrip && !fixedrcabinet,
-      'fixed-right-cabinet fixed top-0': fixedrcabinet
+      'show-rcabinet fixed top-0 right-0 z-999': !rstrip && !settings.cabinet.pinRight,
+      'hidden-rcabinet fixed top-0 right-0': rstrip && !settings.cabinet.pinRight,
+      'fixed-right-cabinet fixed top-0': settings.cabinet.pinRight && !settings.cabinet.break,
+      'fixed top-0': settings.cabinet.pinRight && settings.cabinet.break
     }" />
   <ToolKits />
 </template>
@@ -88,7 +91,6 @@ $quota: 10;
   top: 0;
   left: 0;
   z-index: 9999;
-  transition: all 0.6s ease-in-out;
 }
 
 #progress .exebar {
@@ -107,7 +109,8 @@ $quota: 10;
 
 @include pc() {
   #l-content {
-    --at-apply: py-5 w-50vw;
+    width: var(--content-width);
+    --at-apply: py-5;
   }
 }
 
@@ -118,11 +121,11 @@ $quota: 10;
 }
 
 .fixed-left-cabinet {
-  left: calc(25vw - 19rem);
+  left: calc(calc(var(--content-width) / 2) - calc(var(--cabinet-width) + 2rem)) !important;
 }
 
 .fixed-right-cabinet {
-  right: calc(25vw - 19rem);
+  left: calc(calc(var(--content-width) / 2) + var(--content-width) + 2rem) !important;
 }
 
 .show-lcabinet {
@@ -133,20 +136,20 @@ $quota: 10;
 @keyframes showlcabinet {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateX(-17.5rem + ($i * 1.75rem));
+      transform: translateX(calc(calc(-1 * var(--cabinet-width)) + calc($i * calc(var(--cabinet-width) / 10))));
     }
   }
 }
 
 .hidden-lcabinet {
   animation: hiddenlcabinet 0.2s ease-out;
-  transform: translateX(-17.5rem);
+  transform: translateX(calc(-1 * var(--cabinet-width)));
 }
 
 @keyframes hiddenlcabinet {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateX($i * -1.75rem);
+      transform: translateX(calc($i * calc(calc(-1 * var(--cabinet-width)) / 10)));
     }
   }
 }
@@ -159,20 +162,21 @@ $quota: 10;
 @keyframes showrcabinet {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateX(17.5rem + ($i * -1.75rem));
+      transform: translateX(calc(var(--cabinet-width) + calc($i * calc(calc(-1 * var(--cabinet-width)) / 10))));
     }
   }
 }
 
 .hidden-rcabinet {
   animation: hiddenrcabinet 0.2s ease-out;
-  transform: translateX(17.5rem);
+  transform: translateX(var(--cabinet-width));
 }
 
 @keyframes hiddenrcabinet {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateX($i * 1.75rem);
+      // transform: translateX($i * 1.75rem);
+      transform: translateX(calc($i * calc(var(--cabinet-width) / 10)));
     }
   }
 }

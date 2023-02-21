@@ -1,10 +1,20 @@
 <script setup lang="ts">
 import { createRadar } from "./index";
-import { __LITE_CONFIG__ } from "@/lite.config";
+import { useStorage } from "@vueuse/core";
+import { CustType } from "@/types/data-type";
+import { __LITE_CONFIG__, blogApp } from "@/lite.config";
+
+const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
+
+watch(settings, (val, old) => {
+  if (val.themeColor != old.themeColor) {
+    createRadar(110, settings.value.themeColor, __LITE_CONFIG__.graph);
+  }
+});
 
 onMounted(() => {
   if (__LITE_CONFIG__.graph) {
-    createRadar(110);
+    createRadar(110, settings.value.themeColor, __LITE_CONFIG__.graph);
   }
 });
 </script>
