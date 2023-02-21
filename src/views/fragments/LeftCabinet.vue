@@ -54,7 +54,7 @@ async function unfocus() {
 </script>
 
 <template>
-  <div id="l-cabinet" class="fsz-0.9 h-100vh px-2 l-box-bg" style="width: var(--cabinet-width)">
+  <Card id="l-cabinet" class="h-100vh fsz-0.9 px-2" style="width: var(--cabinet-width)">
     <div class="noscroll ofw-auto h-96%">
       <ExpandableBox text="博客信息">
         <template #icon>
@@ -155,7 +155,7 @@ async function unfocus() {
         </div>
       </div>
     </div>
-  </div>
+  </Card>
 </template>
 
 <style scoped lang="scss">

@@ -9,7 +9,7 @@ const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
 <template>
   <a
     id="github-corner"
-    class="fixed top-0 w-15 h-15 border-0"
+    class="fixed top-0 w-15 h-15 border-0 z-2"
     :style="{ transform: settings.cornerPosition === 'right' ? 'rotate(90deg)' : 'rotate(0deg)' }"
     :class="{ 'left-0': settings.cornerPosition === 'left', 'right-0': settings.cornerPosition === 'right' }"
     :href="__LITE_CONFIG__.github"

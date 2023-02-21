@@ -198,6 +198,13 @@ export interface Settings {
   toggles?: Toggle;
   themeMode?: string;
   themeColor?: string;
+  themeCard?: {
+    radius?: number;
+    color?: string;
+    open?: boolean;
+  };
+  bgImage?: string;
+  bgFilter?: number;
   openToolKits?: boolean;
   openPager?: boolean;
   cornerPosition?: "left" | "right";

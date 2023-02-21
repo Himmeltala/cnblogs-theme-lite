@@ -21,6 +21,13 @@ onMounted(() => {
     if (!lstrip.value) lstrip.value = true;
     else if (!rstrip.value) rstrip.value = true;
   });
+
+  document.getElementById("l-bg-img").setAttribute("src", settings.value.bgImage);
+  watch(settings, (val, old) => {
+    if (val.bgImage != old.bgImage) {
+      document.getElementById("l-bg-img").setAttribute("src", settings.value.bgImage);
+    }
+  });
 });
 </script>
 
@@ -28,6 +35,9 @@ onMounted(() => {
   <GitHub />
   <div id="progress" class="f-c-c">
     <div class="bar" :class="{ exebar: false }"></div>
+  </div>
+  <div id="l-bg-box" class="fixed left-0 top-0 w-100vw h-100vw z-0" v-show="settings.bgImage">
+    <img id="l-bg-img" />
   </div>
   <div
     id="left-strip"
@@ -55,7 +65,7 @@ onMounted(() => {
         </KeepAlive>
       </template>
     </RouterView>
-    <div class="f-c-c py-2 fsz-0.8 l-sec-color h-4">
+    <div class="f-c-c my-2 fsz-0.8 l-sec-color h-4">
       Created By
       <a class="hover mx-1" href="https://github.com/Himmelbleu/cnblogs-theme-lite" target="__blank"> Himmelbleu, </a>
       powered by
@@ -84,6 +94,26 @@ onMounted(() => {
 <style scoped lang="scss">
 $quota: 10;
 
+#l-bg-box {
+  #l-bg-img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    backdrop-filter: blur(var(--l-bg-filter));
+  }
+}
+
 #progress {
   height: 2px;
   width: 100vw;
@@ -110,13 +140,12 @@ $quota: 10;
 @include pc() {
   #l-content {
     width: var(--content-width);
-    --at-apply: py-5;
   }
 }
 
 @include mb() {
   #l-content {
-    --at-apply: p-5 w-100%;
+    --at-apply: w-100%;
   }
 }
 
@@ -175,7 +204,6 @@ $quota: 10;
 @keyframes hiddenrcabinet {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      // transform: translateX($i * 1.75rem);
       transform: translateX(calc($i * calc(var(--cabinet-width) / 10)));
     }
   }

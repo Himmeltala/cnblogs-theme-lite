@@ -28,20 +28,29 @@ function changeDayTime() {
 <template>
   <div id="toolkits" class="noselect fixed right-15 top-65vh fsz-1.2 z-99">
     <div class="relative">
-      <div
-        :class="{ 'show-0 l-box-bg': settings.openToolKits, 'close-0': !settings.openToolKits }"
+      <Card
+        :class="{
+          'show-0': settings.openToolKits,
+          'close-0': !settings.openToolKits
+        }"
         class="back-home absolute hover left-0 w-8 h-8 f-c-c rd-2"
         @click="nav({ path: 'back', router })">
         <i-ep-back />
-      </div>
-      <div
-        :class="{ 'show-1 l-box-bg': settings.openToolKits, 'close-1': !settings.openToolKits }"
+      </Card>
+      <Card
+        :class="{
+          'show-1': settings.openToolKits,
+          'close-1': !settings.openToolKits
+        }"
         class="back-top absolute hover left-0 w-8 h-8 f-c-c rd-2"
         @click="moveToTopNail">
         <i-ep-position />
-      </div>
-      <div
-        :class="{ 'show-2 l-box-bg': settings.openToolKits, 'close-2': !settings.openToolKits }"
+      </Card>
+      <Card
+        :class="{
+          'show-2': settings.openToolKits,
+          'close-2': !settings.openToolKits
+        }"
         @click="changeDayTime"
         class="daytime absolute hover left-0 w-8 h-8 f-c-c rd-2">
         <template v-if="settings.themeMode === 'light'">
@@ -50,19 +59,25 @@ function changeDayTime() {
         <template v-else>
           <i-ep-moon />
         </template>
-      </div>
-      <div
-        :class="{ 'show-3 l-box-bg': settings.openToolKits, 'close-3': !settings.openToolKits }"
+      </Card>
+      <Card
+        :class="{
+          'show-3': settings.openToolKits,
+          'close-3': !settings.openToolKits
+        }"
         @click="toolKitsSetting = !toolKitsSetting"
         class="setting absolute hover left-0 w-8 h-8 f-c-c rd-2">
         <i-ep-setting class="rotate-setting" />
-      </div>
-      <div
+      </Card>
+      <Card
         @click="settings.openToolKits = !settings.openToolKits"
-        :class="{ 'show-toolkits': settings.openToolKits, 'close-toolkits': !settings.openToolKits }"
-        class="kits-box absolute hover top-40 left-0 w-8 h-8 f-c-c l-box-bg rd-2">
+        :class="{
+          'show-toolkits': settings.openToolKits,
+          'close-toolkits': !settings.openToolKits
+        }"
+        class="kits-box absolute hover top-40 left-0 w-8 h-8 f-c-c rd-2">
         <i-ep-arrow-right />
-      </div>
+      </Card>
     </div>
   </div>
   <LiteSetting />

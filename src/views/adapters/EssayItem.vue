@@ -16,6 +16,7 @@ const router = useRouter();
 <template>
   <Card
     v-for="(item, index) in data"
+    :padding="true"
     :index="index"
     :key="index"
     class="pb-5"

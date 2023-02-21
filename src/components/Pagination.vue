@@ -54,10 +54,7 @@ function nexprChange(elIndex: number) {
 
 <template>
   <div class="relative">
-    <div
-      class="hover sorter left-23vw w-10 h-10 z-9 f-c-c l-thr-color fixed top-50vh rd-l-4 opacity-50"
-      @click="prevChange"
-      v-show="disabled">
+    <div class="hover sorter left w-10 h-10 z-9 f-c-c l-thr-color fixed top-50vh rd-l-4 opacity-70" @click="prevChange" v-show="disabled">
       <el-tooltip effect="dark" content="上一页" placement="left">
         <el-icon>
           <i-ep-arrow-left-bold />
@@ -65,10 +62,7 @@ function nexprChange(elIndex: number) {
       </el-tooltip>
     </div>
     <slot name="content" />
-    <div
-      class="hover sorter right-23vw w-10 h-10 z-9 f-c-c l-thr-color fixed top-50vh rd-l-4 opacity-50"
-      @click="nextChange"
-      v-show="disabled">
+    <div class="hover sorter right w-10 h-10 z-9 f-c-c l-thr-color fixed top-50vh rd-l-4 opacity-70" @click="nextChange" v-show="disabled">
       <el-tooltip effect="dark" content="下一页" placement="right">
         <el-icon>
           <i-ep-arrow-right-bold />
@@ -85,6 +79,16 @@ function nexprChange(elIndex: number) {
 @include mb() {
   .sorter {
     display: none;
+  }
+}
+
+@include pc() {
+  .sorter.left {
+    left: calc(calc(calc(100vw - var(--content-width)) / 2) - 2.5rem);
+  }
+
+  .sorter.right {
+    right: calc(calc(calc(100vw - var(--content-width)) / 2) - 2.5rem);
   }
 }
 </style>

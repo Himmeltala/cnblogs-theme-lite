@@ -25,6 +25,7 @@ export function initLiteVars() {
  */
 function initSettings() {
   let settings: CustType.Settings = JSON.parse(localStorage.getItem(`l-${blogApp}-settings`));
+
   if ($.isEmptyObject(settings)) {
     settings = {
       toggles: {},
@@ -44,14 +45,26 @@ function initSettings() {
         width: 17.5
       }
     };
-    localStorage.setItem(`l-${blogApp}-settings`, JSON.stringify(settings));
+
+    if (!settings.themeCard) {
+      settings.bgFilter = 6;
+      settings.bgImage = "";
+      settings.themeCard = {
+        color: "#409eff",
+        open: false,
+        radius: 2
+      };
+    }
   }
+
+  localStorage.setItem(`l-${blogApp}-settings`, JSON.stringify(settings));
 
   $("html").attr("class", settings.themeMode);
   $("html").css({
     "--l-theme-color": settings.themeColor,
     "--cabinet-width": settings.cabinet.width + "rem",
-    "--content-width": settings.contentWidth + "vw"
+    "--content-width": settings.contentWidth + "vw",
+    "--l-bg-filter": settings.bgFilter + "px"
   });
 }
 
@@ -160,6 +173,6 @@ export function useLite(dev: Function, pro: Function) {
 
   $("head").append(`<link rel="shortcut icon" href="${__LITE_CONFIG__.icon}">`);
   preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
-  preLog("v1.4.1", "Powered By Himmelbleu using Vue3 & Vite.");
+  preLog("v1.4.2", "Powered By Himmelbleu using Vue3 & Vite.");
   preWarningLog("启动速度慢？", "https://github.com/Himmelbleu/cnblogs-theme-lite#启动速度慢");
 }

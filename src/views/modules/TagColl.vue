@@ -19,9 +19,9 @@ watch(route, async () => {
 
 <template>
   <div id="l-tagcoll" class="min-height">
-    <div class="fsz-1.25 mb-10">{{ tagName }}</div>
+    <div class="fsz-1.25 mb-5 mt-4">{{ tagName }}</div>
     <div class="content">
-      <Card class="item mr-6 mb-6 pb-4" v-for="(item, index) in tagList" :key="index">
+      <Card :padding="true" class="item mr-6 mb-6 pb-4" v-for="(item, index) in tagList" :key="index">
         <div class="fsz-1.2">
           <router-link class="hover" :to="'/p/' + item.id">
             {{ item.title }}

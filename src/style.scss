@@ -92,8 +92,10 @@ html[class="dark"] {
   --l-sec-color: #8d9095;
   // 三级文字
   --l-thr-color: #878787;
-  // 卡片、盒子背景颜色
+  // 盒子背景颜色
   --l-box-bg: #191919;
+  // 卡片背景颜色
+  --l-card-bg: #222222;
   // 文本域背景颜色
   --l-textarea-bg: #202020;
   // 代码块背景颜色
@@ -130,8 +132,10 @@ html[class="light"] {
   --l-sec-color: #4e4e4e;
   // 三级文字
   --l-thr-color: #707070;
-  // 卡片、盒子背景颜色
-  --l-box-bg: #ffffff;
+  // 盒子背景颜色
+  --l-box-bg: #f9f9f980;
+  // 卡片背景颜色
+  --l-card-bg: #ffffff;
   // 文本域背景颜色
   --l-textarea-bg: #fafafa;
   // 代码块背景颜色
@@ -198,7 +202,8 @@ html[class="light"] {
 .hljs {
   padding: 1rem;
   display: block;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   color: var(--l-pri-color);
   transition: var(--l-transition);
   background: var(--l-precode-bg) !important;
