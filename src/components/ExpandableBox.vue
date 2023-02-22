@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { useStorage } from "@vueuse/core";
-import { blogApp } from "@/lite.config";
-import { CustType } from "@/types/data-type";
 import $ from "jquery";
+import { getSetting } from "@/utils/common";
 
+const setting = getSetting();
 const props = defineProps({
   text: {
     type: String,
@@ -11,10 +10,9 @@ const props = defineProps({
   }
 });
 
-const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
 const record = `${props.text}`;
-if (!settings.value.toggles[record]) {
-  settings.value.toggles[record] = {
+if (!setting.value.toggles[record]) {
+  setting.value.toggles[record] = {
     open: true,
     show: true
   };
@@ -26,7 +24,7 @@ const content = ref();
 onMounted(() => {
   const height = $(content.value).height();
 
-  if (!settings.value.toggles[record]?.open) {
+  if (!setting.value.toggles[record]?.open) {
     content.value.style.height = `${0}px`;
   } else {
     content.value.style.height = `${height}px`;
@@ -34,7 +32,7 @@ onMounted(() => {
 
   toggle = () => {
     let counter = 9;
-    if (settings.value.toggles[record]?.open) {
+    if (setting.value.toggles[record]?.open) {
       let cHeight = height;
       const interval = setInterval(() => {
         cHeight -= height / 10;
@@ -42,7 +40,7 @@ onMounted(() => {
         counter--;
         if (counter == 0) {
           content.value.style.height = `${0}px`;
-          settings.value.toggles[record].open = !settings.value.toggles[record].open;
+          setting.value.toggles[record].open = !setting.value.toggles[record].open;
           clearInterval(interval);
         }
       }, 10);
@@ -54,7 +52,7 @@ onMounted(() => {
         counter--;
         if (counter == 0) {
           content.value.style.height = `${height}px`;
-          settings.value.toggles[record].open = !settings.value.toggles[record].open;
+          setting.value.toggles[record].open = !setting.value.toggles[record].open;
           clearInterval(interval);
         }
       }, 10);
@@ -64,7 +62,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="l-thr-color" v-show="settings.toggles[record]?.show">
+  <div class="l-thr-color" v-show="setting.toggles[record]?.show">
     <div class="title f-c-b my-5 fsz-1.2 pl-1.5 rd-1">
       <div class="f-c-s">
         <div class="f-c-c mr-1">
@@ -75,7 +73,7 @@ onMounted(() => {
       <div
         @click="toggle"
         class="f-c-c opacity-70 hover"
-        :class="{ 'arrow-up': !settings.toggles[record]?.open, 'arrow-down': settings.toggles[record]?.open }">
+        :class="{ 'arrow-up': !setting.toggles[record]?.open, 'arrow-down': setting.toggles[record]?.open }">
         <div class="arrow">
           <i-ep-arrow-down />
         </div>

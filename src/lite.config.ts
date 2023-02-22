@@ -23,8 +23,8 @@ export function initLiteVars() {
 /**
  * 初始化自定义博客设置
  */
-function initSettings() {
-  let settings: CustType.Settings = JSON.parse(localStorage.getItem(`l-${blogApp}-settings`));
+function initSetting() {
+  let settings: CustType.Setting = JSON.parse(localStorage.getItem(`l-${blogApp}-setting`));
 
   if ($.isEmptyObject(settings)) {
     settings = {
@@ -34,7 +34,7 @@ function initSettings() {
       openToolKits: true,
       openPager: false,
       contentWidth: 50,
-      cornerPosition: "left",
+      githubPostion: "left",
       cabinet: {
         left: 0,
         right: 0,
@@ -47,24 +47,26 @@ function initSettings() {
     };
 
     if (!settings.themeCard) {
-      settings.bgFilter = 6;
-      settings.bgImage = "";
+      settings.background = {
+        filter: 6,
+        src: ""
+      };
       settings.themeCard = {
-        color: "#409eff",
+        color: "rgba(31, 31, 31, 1)",
         open: false,
-        radius: 2
+        radius: 10
       };
     }
   }
 
-  localStorage.setItem(`l-${blogApp}-settings`, JSON.stringify(settings));
+  localStorage.setItem(`l-${blogApp}-setting`, JSON.stringify(settings));
 
   $("html").attr("class", settings.themeMode);
   $("html").css({
     "--l-theme-color": settings.themeColor,
     "--cabinet-width": settings.cabinet.width + "rem",
     "--content-width": settings.contentWidth + "vw",
-    "--l-bg-filter": settings.bgFilter + "px"
+    "--l-bg-filter": settings.background.filter + "px"
   });
 }
 
@@ -89,7 +91,7 @@ export function useLite(dev: Function, pro: Function) {
     // @ts-ignore
     isOwner = isBlogOwner;
     baseAPI = `https://www.cnblogs.com/${blogApp}`;
-    initSettings();
+    initSetting();
     pro();
   } else if (import.meta.env.DEV) {
     blogId = import.meta.env.VITE_BLOG_ID;
@@ -167,12 +169,12 @@ export function useLite(dev: Function, pro: Function) {
         }
       ]
     };
-    initSettings();
+    initSetting();
     dev();
   }
 
   $("head").append(`<link rel="shortcut icon" href="${__LITE_CONFIG__.icon}">`);
   preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
-  preLog("v1.4.2", "Powered By Himmelbleu using Vue3 & Vite.");
+  preLog("v1.4.4", "Powered By Himmelbleu using Vue3 & Vite.");
   preWarningLog("启动速度慢？", "https://github.com/Himmelbleu/cnblogs-theme-lite#启动速度慢");
 }

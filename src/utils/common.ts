@@ -7,7 +7,9 @@
  */
 
 import $ from "jquery";
-import { __LITE_CONFIG__ } from "@/lite.config";
+import { useStorage } from "@vueuse/core";
+import { CustType } from "@/types/data-type";
+import { __LITE_CONFIG__, blogApp } from "@/lite.config";
 
 /**
  * 关闭 loading 屏
@@ -51,31 +53,23 @@ export function openImageUploadWindow(el: string, onUploaded: (img: string) => v
 }
 
 /**
- * 美化 console.log
+ * 打印普通消息 log
  *
  * @param title 标题
  * @param msg 信息
  */
 export function preLog(title: string, msg: string) {
-  console.log(
-    `%c${title}%c${msg}`,
-    "background: #409eff; color: #fff; border-radius: 3px 0 0 3px; padding: 10px",
-    "background: #707070; color: #fff; border-radius: 0 3px 3px 0; padding: 10px"
-  );
+  console.log(`%c${title}%c${msg}`, "background: #409eff; color: #fff; border-radius: 3px 0 0 3px; padding: 10px", "margin-left: 10px;");
 }
 
 /**
- * 美化 console.log
+ * 打印警告 log
  *
  * @param title 标题
  * @param msg 信息
  */
 export function preWarningLog(title: string, msg: string) {
-  console.log(
-    `%c${title}%c${msg}`,
-    "background: #ea5d5e; color: #fff; border-radius: 3px 0 0 3px; padding: 10px",
-    "background: #707070; color: #fff; border-radius: 0 3px 3px 0; padding: 10px"
-  );
+  console.log(`%c${title}%c${msg}`, "background: #ea5d5e; color: #fff; border-radius: 3px 0 0 3px; padding: 10px", "margin-left: 10px;");
 }
 
 /**
@@ -112,4 +106,8 @@ export function regTrim(source: string, regExps: RegExp[], replacement?: string[
     replaced = replaced.replace(regExps[i], substitute);
   }
   return replaced;
+}
+
+export function getSetting() {
+  return useStorage<CustType.Setting>(`l-${blogApp}-setting`, {});
 }

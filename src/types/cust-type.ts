@@ -194,7 +194,7 @@ type Toggle = Record<
   }
 >;
 
-export interface Settings {
+export interface Setting {
   toggles?: Toggle;
   themeMode?: string;
   themeColor?: string;
@@ -203,11 +203,13 @@ export interface Settings {
     color?: string;
     open?: boolean;
   };
-  bgImage?: string;
-  bgFilter?: number;
+  background?: {
+    filter?: number;
+    src?: string;
+  };
   openToolKits?: boolean;
   openPager?: boolean;
-  cornerPosition?: "left" | "right";
+  githubPostion?: "left" | "right";
   contentWidth?: number;
   cabinet?: {
     left?: number;

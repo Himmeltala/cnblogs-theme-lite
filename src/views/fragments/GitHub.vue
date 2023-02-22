@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { useStorage } from "@vueuse/core";
-import { __LITE_CONFIG__, blogApp } from "@/lite.config";
-import { CustType } from "@/types/data-type";
+import { getSetting } from "@/utils/common";
+import { __LITE_CONFIG__ } from "@/lite.config";
 
-const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
+const setting = getSetting();
 </script>
 
 <template>
   <a
-    id="github-corner"
-    class="fixed top-0 w-15 h-15 border-0 z-2"
-    :style="{ transform: settings.cornerPosition === 'right' ? 'rotate(90deg)' : 'rotate(0deg)' }"
-    :class="{ 'left-0': settings.cornerPosition === 'left', 'right-0': settings.cornerPosition === 'right' }"
+    id="l-github"
+    class="fixed top-0 w-15 h-15 border-0 z-1"
+    :style="{ transform: setting.githubPostion === 'right' ? 'rotate(90deg)' : 'rotate(0deg)' }"
+    :class="{ 'left-0': setting.githubPostion === 'left', 'right-0': setting.githubPostion === 'right' }"
     :href="__LITE_CONFIG__.github"
     target="_blank">
     <svg viewBox="0 0 250 250" style="color: #fff">
@@ -30,12 +29,12 @@ const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
 
 <style scoped lang="scss">
 @include mb() {
-  #github-corner {
+  #l-github {
     display: none;
   }
 }
 
-#github-corner {
+#l-github {
   &:hover .octo-arm {
     animation: octocat-wave 560ms ease-in-out;
   }

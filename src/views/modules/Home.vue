@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { blogApp } from "@/lite.config";
-import { useStorage } from "@vueuse/core";
-import { getEssayList } from "@/utils/remote-api";
+import { getSetting } from "@/utils/common";
 import { closeLoader } from "@/utils/common";
-import { CustType } from "@/types/data-type";
+import { getEssayList } from "@/utils/remote-api";
 
-const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
+const setting = getSetting();
 const data = ref((await getEssayList(1, false)).array);
 const pages = (await getEssayList(1, true)).pages;
 const count = ref(pages[pages.length - 1]);
@@ -27,7 +25,7 @@ async function nexpr(e: any) {
 
 <template>
   <div id="l-home" class="min-height">
-    <Pagination @prev="prev" @next="next" @nexpr="nexpr" :page-count="count" :disabled="settings.openPager">
+    <Pagination @prev="prev" @next="next" @nexpr="nexpr" :page-count="count" :disabled="setting.openPager">
       <template #content>
         <EssayItem v-if="data" :data="data" />
       </template>

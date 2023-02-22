@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { useStorage } from "@vueuse/core";
-import { blogApp, pcDevice } from "@/lite.config";
-import { CustType } from "@/types/data-type";
+import { pcDevice } from "@/lite.config";
+import { getSetting } from "@/utils/common";
 
-const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
+const setting = getSetting();
 </script>
 
 <template>
   <div v-if="pcDevice">
     <el-tooltip content="建议开启，具体请阅读仓库自述文件。" placement="top">
-      <span>博客数据从<span v-show="!settings.cabinet.remote">本地</span><span v-show="settings.cabinet.remote">远程</span>加载</span>
+      <span>博客数据从<span v-show="!setting.cabinet.remote">本地</span><span v-show="setting.cabinet.remote">远程</span>加载</span>
     </el-tooltip>
-    <el-switch v-model="settings.cabinet.remote" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
+    <el-switch v-model="setting.cabinet.remote" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
   </div>
 </template>

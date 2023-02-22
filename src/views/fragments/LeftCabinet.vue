@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useStorage } from "@vueuse/core";
 import { nav } from "@/utils/router-helper";
 import { follow, unfollow } from "@/utils/remote-api";
 import { __LITE_CONFIG__, blogApp, isFollow, isOwner } from "@/lite.config";
@@ -11,16 +10,15 @@ import {
   getSideTopList as lo5
 } from "@/utils/local-api";
 import { getSideBloggerInfo as re1, getSideBlogInfo as re2, getSideCateList as re3, getSideTopList as re4 } from "@/utils/remote-api";
-import { CustType } from "@/types/data-type";
+import { getSetting } from "@/utils/common";
 
-const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
-
+const setting = getSetting();
 let blogger: any;
 let blogInfo: any;
 let cates: any;
 let toplist: any;
 
-if (settings.value.cabinet.remote) {
+if (setting.value.cabinet.remote) {
   blogger = await re1();
   blogInfo = await re2();
   cates = await re3();

@@ -7,7 +7,7 @@ const collapseActive = ref("1");
 </script>
 
 <template>
-  <el-dialog v-model="toolKitsSetting" title="自定义博客" align-center width="25rem">
+  <el-dialog draggable v-model="toolKitsSetting" title="自定义博客" align-center width="25rem">
     <el-collapse v-model="collapseActive" accordion>
       <el-collapse-item title="陈列柜设置" v-if="pcDevice">
         <CabinetSetting />
@@ -20,6 +20,9 @@ const collapseActive = ref("1");
       </el-collapse-item>
       <el-collapse-item title="其他设置">
         <OtherSetting />
+      </el-collapse-item>
+      <el-collapse-item title="管理设置">
+        <ManageSetting />
       </el-collapse-item>
       <el-collapse-item title="隐藏设置">
         <SecrecySetting />

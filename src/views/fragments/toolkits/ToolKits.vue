@@ -1,37 +1,35 @@
 <script setup lang="ts">
-import { blogApp } from "@/lite.config";
-import { useStorage } from "@vueuse/core";
-import { useToolKitsSettingStore } from "@/store";
 import { nav } from "@/utils/router-helper";
-import { CustType } from "@/types/data-type";
+import { getSetting } from "@/utils/common";
+import { useToolKitsSettingStore } from "@/store";
 
+const setting = getSetting();
 const router = useRouter();
 const { toolKitsSetting } = storeToRefs(useToolKitsSettingStore());
-const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
 
 function moveToTopNail() {
-  document.querySelector("#top-nail").scrollIntoView();
+  document.querySelector("#l-nail").scrollIntoView();
 }
 
 function changeDayTime() {
   const html = document.querySelector("html");
-  if (settings.value.themeMode === "dark") {
+  if (setting.value.themeMode === "dark") {
     html.className = "light";
-    settings.value.themeMode = "light";
+    setting.value.themeMode = "light";
   } else {
     html.className = "dark";
-    settings.value.themeMode = "dark";
+    setting.value.themeMode = "dark";
   }
 }
 </script>
 
 <template>
-  <div id="toolkits" class="noselect fixed right-15 top-65vh fsz-1.2 z-99">
+  <div id="toolkits" class="noselect fixed right-15 top-65vh fsz-1.2 z-1">
     <div class="relative">
       <Card
         :class="{
-          'show-0': settings.openToolKits,
-          'close-0': !settings.openToolKits
+          'show-0': setting.openToolKits,
+          'close-0': !setting.openToolKits
         }"
         class="back-home absolute hover left-0 w-8 h-8 f-c-c rd-2"
         @click="nav({ path: 'back', router })">
@@ -39,8 +37,8 @@ function changeDayTime() {
       </Card>
       <Card
         :class="{
-          'show-1': settings.openToolKits,
-          'close-1': !settings.openToolKits
+          'show-1': setting.openToolKits,
+          'close-1': !setting.openToolKits
         }"
         class="back-top absolute hover left-0 w-8 h-8 f-c-c rd-2"
         @click="moveToTopNail">
@@ -48,12 +46,12 @@ function changeDayTime() {
       </Card>
       <Card
         :class="{
-          'show-2': settings.openToolKits,
-          'close-2': !settings.openToolKits
+          'show-2': setting.openToolKits,
+          'close-2': !setting.openToolKits
         }"
         @click="changeDayTime"
         class="daytime absolute hover left-0 w-8 h-8 f-c-c rd-2">
-        <template v-if="settings.themeMode === 'light'">
+        <template v-if="setting.themeMode === 'light'">
           <i-ep-sunny />
         </template>
         <template v-else>
@@ -62,18 +60,18 @@ function changeDayTime() {
       </Card>
       <Card
         :class="{
-          'show-3': settings.openToolKits,
-          'close-3': !settings.openToolKits
+          'show-3': setting.openToolKits,
+          'close-3': !setting.openToolKits
         }"
         @click="toolKitsSetting = !toolKitsSetting"
         class="setting absolute hover left-0 w-8 h-8 f-c-c rd-2">
         <i-ep-setting class="rotate-setting" />
       </Card>
       <Card
-        @click="settings.openToolKits = !settings.openToolKits"
+        @click="setting.openToolKits = !setting.openToolKits"
         :class="{
-          'show-toolkits': settings.openToolKits,
-          'close-toolkits': !settings.openToolKits
+          'show-toolkits': setting.openToolKits,
+          'close-toolkits': !setting.openToolKits
         }"
         class="kits-box absolute hover top-40 left-0 w-8 h-8 f-c-c rd-2">
         <i-ep-arrow-right />

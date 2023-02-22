@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import { createRadar } from "./index";
-import { useStorage } from "@vueuse/core";
-import { CustType } from "@/types/data-type";
-import { __LITE_CONFIG__, blogApp } from "@/lite.config";
+import { getSetting } from "@/utils/common";
+import { __LITE_CONFIG__ } from "@/lite.config";
 
-const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
+const setting = getSetting();
 
-watch(settings, (val, old) => {
+watch(setting, (val, old) => {
   if (val.themeColor != old.themeColor) {
-    createRadar(110, settings.value.themeColor, __LITE_CONFIG__.graph);
+    createRadar(110, setting.value.themeColor, __LITE_CONFIG__.graph);
   }
 });
 
 onMounted(() => {
   if (__LITE_CONFIG__.graph) {
-    createRadar(110, settings.value.themeColor, __LITE_CONFIG__.graph);
+    createRadar(110, setting.value.themeColor, __LITE_CONFIG__.graph);
   }
 });
 </script>
@@ -44,7 +43,7 @@ onMounted(() => {
     position: absolute;
     display: none;
     white-space: nowrap;
-    z-index: 999;
+    z-index: 2;
     transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s, top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
     background-color: var(--l-box-bg);
     padding: 10px;

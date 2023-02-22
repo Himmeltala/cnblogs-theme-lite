@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { blogApp } from "@/lite.config";
-import { useStorage } from "@vueuse/core";
-import { CustType } from "@/types/data-type";
+import { getSetting } from "@/utils/common";
 
+const setting = getSetting();
 defineProps({
   index: {
     type: Number
@@ -19,26 +18,24 @@ defineProps({
     default: false
   }
 });
-
-const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
 </script>
 
 <template>
   <div
     :style="{
-      'background-color': settings.themeCard?.open ? settings.themeCard.color : false || 'initial',
-      'border-radius': settings.themeCard?.open ? settings.themeCard.radius + 'px' : false || 'initial'
+      'background-color': setting.themeCard?.open ? setting.themeCard.color : false || 'initial',
+      'border-radius': setting.themeCard?.open ? setting.themeCard.radius + 'px' : false || 'initial'
     }"
     :class="{
-      'bt-border': index !== length - 1 && !settings.themeCard?.open && !border,
-      'p-4': padding && settings.themeCard?.open
+      border: index !== length - 1 && !setting.themeCard?.open && border,
+      'p-4': setting.themeCard?.open && padding
     }">
     <slot />
   </div>
 </template>
 
 <style scoped lang="scss">
-.bt-border {
+.border {
   border: {
     bottom: {
       width: 1px;

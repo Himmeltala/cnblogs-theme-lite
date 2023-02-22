@@ -1,23 +1,21 @@
 <script setup lang="ts">
-import { blogApp } from "@/lite.config";
-import { useStorage } from "@vueuse/core";
-import { CustType } from "@/types/data-type";
+import { getSetting } from "@/utils/common";
 
-const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
+const setting = getSetting();
 const isSetContentWidth = ref(false);
 
-if (settings.value.cabinet.pinLeft || settings.value.cabinet.pinRight) {
+if (setting.value.cabinet.pinLeft || setting.value.cabinet.pinRight) {
   isSetContentWidth.value = false;
-  settings.value.contentWidth = 50;
+  setting.value.contentWidth = 50;
 } else {
   isSetContentWidth.value = true;
 }
 
-watch(settings, (val, old) => {
+watch(setting, (val, old) => {
   if (val.cabinet.pinLeft != old.cabinet.pinLeft || val.cabinet.pinRight != old.cabinet.pinRight) {
-    if (val.cabinet.pinLeft || settings.value.cabinet.pinRight) {
+    if (val.cabinet.pinLeft || setting.value.cabinet.pinRight) {
       isSetContentWidth.value = false;
-      settings.value.contentWidth = 50;
+      setting.value.contentWidth = 50;
     } else {
       isSetContentWidth.value = true;
     }
@@ -31,11 +29,11 @@ watch(settings, (val, old) => {
 <template>
   <div>
     <div class="mb-2">设置陈列柜宽度</div>
-    <el-slider :min="13" :step="0.5" :max="17.5" v-model="settings.cabinet.width" size="small" show-input />
+    <el-slider :min="13" :step="0.5" :max="17.5" v-model="setting.cabinet.width" size="small" show-input />
   </div>
   <div class="mt-4">
     <div class="mb-2">设置中间内容宽度</div>
-    <el-slider :disabled="!isSetContentWidth" :min="50" :step="1" :max="60" v-model="settings.contentWidth" size="small" show-input />
+    <el-slider :disabled="!isSetContentWidth" :min="50" :step="1" :max="60" v-model="setting.contentWidth" size="small" show-input />
   </div>
 </template>
 

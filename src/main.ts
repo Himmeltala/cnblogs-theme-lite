@@ -24,8 +24,8 @@ useDirective(app);
 useLite(
   () => app.mount("#app"),
   () => {
-    const settings = JSON.parse(localStorage.getItem(`l-${blogApp}-settings`));
-    if (settings.cabinet.remote == true) {
+    const setting = JSON.parse(localStorage.getItem(`l-${blogApp}-setting`));
+    if (setting.cabinet.remote == true) {
       initLiteVars();
       app.mount("#app");
     } else {

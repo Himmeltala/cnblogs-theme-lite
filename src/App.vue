@@ -1,117 +1,110 @@
 <script setup lang="ts">
-import { blogApp } from "@/lite.config";
-import { useStorage } from "@vueuse/core";
-import { CustType } from "@/types/data-type";
+import { getSetting } from "@/utils/common";
 
-const settings = useStorage<CustType.Settings>(`l-${blogApp}-settings`, {});
-
+const setting = getSetting();
 const lstrip = ref(true);
 const rstrip = ref(true);
 
 onMounted(() => {
-  document.querySelector("#left-strip").addEventListener("click", () => {
+  document.querySelector("#l-lstrip").addEventListener("click", () => {
     lstrip.value = !lstrip.value;
   });
 
-  document.querySelector("#right-strip").addEventListener("click", () => {
+  document.querySelector("#l-rstrip").addEventListener("click", () => {
     rstrip.value = !rstrip.value;
   });
 
-  document.querySelector("#full-modal").addEventListener("click", () => {
+  document.querySelector("#l-matte").addEventListener("click", () => {
     if (!lstrip.value) lstrip.value = true;
     else if (!rstrip.value) rstrip.value = true;
   });
 
-  document.getElementById("l-bg-img").setAttribute("src", settings.value.bgImage);
-  watch(settings, (val, old) => {
-    if (val.bgImage != old.bgImage) {
-      document.getElementById("l-bg-img").setAttribute("src", settings.value.bgImage);
+  document.getElementById("l-photo").setAttribute("src", setting.value.background.src);
+  watch(setting, (val, old) => {
+    if (val.background.src != old.background.src) {
+      document.getElementById("l-photo").setAttribute("src", setting.value.background.src);
     }
   });
 });
 </script>
 
 <template>
-  <GitHub />
-  <div id="progress" class="f-c-c">
-    <div class="bar" :class="{ exebar: false }"></div>
-  </div>
-  <div id="l-bg-box" class="fixed left-0 top-0 w-100vw h-100vw z-0" v-show="settings.bgImage">
-    <img id="l-bg-img" />
-  </div>
-  <div
-    id="left-strip"
-    v-show="!settings.cabinet.pinLeft"
-    :class="{ 'left-70': !lstrip, 'left-0 w-5px l-strip-bg rd-2': lstrip }"
-    class="fixed top-47.5vh h-5vh cursor-pointer opacity-70"></div>
-  <Suspense>
-    <LeftCabinet
-      :style="{ left: settings.cabinet.pinLeft && settings.cabinet.break ? settings.cabinet.left + 'vw' : 0 }"
-      :class="{
-        'show-lcabinet fixed top-0 left-0 z-999': !lstrip && !settings.cabinet.pinLeft,
-        'hidden-lcabinet fixed top-0 left-0': lstrip && !settings.cabinet.pinLeft,
-        'fixed-left-cabinet fixed top-0': settings.cabinet.pinLeft && !settings.cabinet.break,
-        'fixed top-0': settings.cabinet.pinLeft && settings.cabinet.break
-      }" />
-  </Suspense>
-  <div id="l-content">
-    <span id="top-nail"></span>
-    <RouterView v-slot="{ Component }">
-      <template v-if="Component">
-        <KeepAlive :include="['Home']">
-          <Suspense>
-            <component :is="Component" />
-          </Suspense>
-        </KeepAlive>
-      </template>
-    </RouterView>
-    <div class="f-c-c my-2 fsz-0.8 l-sec-color h-4">
-      Created By
-      <a class="hover mx-1" href="https://github.com/Himmelbleu/cnblogs-theme-lite" target="__blank"> Himmelbleu, </a>
-      powered by
-      <a class="hover mx-1" href="https://v3.cn.vuejs.org/" target="__blank">Vue3</a>
-      on
-      <a class="hover mx-1" href="https://vitejs.cn/vite3-cn/" target="__blank">Vite.</a>
+  <div id="l-left">
+    <GitHub />
+    <div id="l-progress" class="f-c-c">
+      <div class="bar" :class="{ exebar: false }"></div>
     </div>
+    <div id="l-back" class="fixed left-0 top-0 w-100vw h-100vw" v-show="setting.background.src">
+      <img id="l-photo" class="w-100% h-100%" />
+    </div>
+    <div
+      id="l-lstrip"
+      v-show="!setting.cabinet.pinLeft"
+      class="fixed left-0 top-47.5vh w-5px h-5vh rd-2 cursor-pointer opacity-70 l-strip-bg"></div>
+    <Suspense>
+      <LeftCabinet
+        :style="{ left: setting.cabinet.pinLeft && setting.cabinet.break ? setting.cabinet.left + 'vw' : 0 }"
+        :class="{
+          'show-lcabinet fixed top-0 left-0 z-2': !lstrip && !setting.cabinet.pinLeft,
+          'hidden-lcabinet fixed top-0 left-0': lstrip && !setting.cabinet.pinLeft,
+          'fixed-left-cabinet fixed top-0': setting.cabinet.pinLeft && !setting.cabinet.break,
+          'fixed top-0': setting.cabinet.pinLeft && setting.cabinet.break
+        }" />
+    </Suspense>
   </div>
-  <div id="full-modal" class="z-99 opacity-50 l-modal-bg" :class="{ 'fixed top-0 left-0 w-100% h-100vh': !rstrip || !lstrip }"></div>
-  <div
-    id="right-strip"
-    v-show="!settings.cabinet.pinRight"
-    :class="{ 'right-70': !rstrip, 'right-0 w-5px l-strip-bg rd-2': rstrip }"
-    class="fixed top-47.5vh h-5vh cursor-pointer opacity-70"></div>
-  <RightCabinet
-    :style="{ right: settings.cabinet.pinRight && settings.cabinet.break ? settings.cabinet.right + 'vw' : 0 }"
-    :class="{
-      'show-rcabinet fixed top-0 right-0 z-999': !rstrip && !settings.cabinet.pinRight,
-      'hidden-rcabinet fixed top-0 right-0': rstrip && !settings.cabinet.pinRight,
-      'fixed-right-cabinet fixed top-0': settings.cabinet.pinRight && !settings.cabinet.break,
-      'fixed top-0': settings.cabinet.pinRight && settings.cabinet.break
-    }" />
-  <ToolKits />
+  <div id="l-content" class="z-1">
+    <div id="l-nail"></div>
+    <div id="l-main">
+      <RouterView v-slot="{ Component }">
+        <template v-if="Component">
+          <KeepAlive :include="['Home']">
+            <Suspense>
+              <component :is="Component" />
+            </Suspense>
+          </KeepAlive>
+        </template>
+      </RouterView>
+    </div>
+    <Card>
+      <div class="f-c-c my-2 fsz-0.8 l-sec-color h-4">
+        Created By
+        <a class="hover mx-1" href="https://github.com/Himmelbleu/cnblogs-theme-lite" target="__blank"> Himmelbleu, </a>
+        powered by
+        <a class="hover mx-1" href="https://v3.cn.vuejs.org/" target="__blank">Vue3</a>
+        on
+        <a class="hover mx-1" href="https://vitejs.cn/vite3-cn/" target="__blank">Vite.</a>
+      </div>
+    </Card>
+  </div>
+  <div id="l-right">
+    <div id="l-matte" class="fixed top-0 left-0 z-1 opacity-50 l-matee-bg" :class="{ 'w-100% h-100vh': !rstrip || !lstrip }"></div>
+    <div
+      id="l-rstrip"
+      v-show="!setting.cabinet.pinRight"
+      class="fixed right-0 top-47.5vh w-5px h-5vh rd-2 cursor-pointer opacity-70 l-strip-bg"></div>
+    <RightCabinet
+      :style="{ right: setting.cabinet.pinRight && setting.cabinet.break ? setting.cabinet.right + 'vw' : 0 }"
+      :class="{
+        'show-rcabinet fixed top-0 right-0 z-2': !rstrip && !setting.cabinet.pinRight,
+        'hidden-rcabinet fixed top-0 right-0': rstrip && !setting.cabinet.pinRight,
+        'fixed-right-cabinet fixed top-0': setting.cabinet.pinRight && !setting.cabinet.break,
+        'fixed top-0': setting.cabinet.pinRight && setting.cabinet.break
+      }" />
+    <ToolKits />
+  </div>
 </template>
 
 <style scoped lang="scss">
 $quota: 10;
 
-#l-bg-box {
-  #l-bg-img {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    z-index: 1;
-    backdrop-filter: blur(var(--l-bg-filter));
-  }
+#l-back::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  backdrop-filter: blur(var(--l-bg-filter));
 }
 
 #progress {
@@ -145,7 +138,7 @@ $quota: 10;
 
 @include mb() {
   #l-content {
-    --at-apply: w-100%;
+    width: 100%;
   }
 }
 
