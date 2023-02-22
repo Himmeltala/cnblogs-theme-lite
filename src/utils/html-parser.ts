@@ -8,7 +8,7 @@
 
 import $ from "jquery";
 import { CustType } from "@/types/data-type";
-import { regTrim, parseUnit } from "@/utils/common";
+import { replaceText, parseUnit } from "@/utils/common";
 
 /**
  * 由于一些问题，有时候请求过来的 DOM 不是真实的 DOM，所以不能被 JQ 解析，必须先调用该函数进行转换
@@ -43,20 +43,18 @@ function calcPages(sorter: any, calc: boolean): number[] {
  * @param calc 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
  * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
  */
-export function parseEssayList(realDOM: any, calc: boolean): CustType.JottingList {
+export function parseEssayList(realDOM: any, calc: boolean): CustType.IEssayList {
   const id = $(realDOM).find(".postTitle2");
-  const title = $(realDOM).find(".postTitle");
-  const describe = $(realDOM).find(".c_b_p_desc");
-  const record = $(realDOM).find(".postDesc").text();
-  const date = record.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
-  const view = record.match(/阅读\([0-9]+\)/g);
-  const comm = record.match(/评论\([0-9]+\)/g);
-  const digg = record.match(/推荐\([0-9]+\)/g);
-  const array: Array<CustType.Jotting> = [];
+  const head = $(realDOM).find(".postTitle");
+  const desc = $(realDOM).find(".c_b_p_desc");
+  const data = $(realDOM).find(".postDesc").text();
+  const date = data.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
+  const view = data.match(/阅读\([0-9]+\)/g);
+  const comm = data.match(/评论\([0-9]+\)/g);
+  const digg = data.match(/推荐\([0-9]+\)/g);
+  const array: Array<CustType.IEssay> = [];
 
-  $(describe).each((i, e) => {
-    const surface = $(e).find(".desc_img").attr("src");
-    const isLocked = $(id[i]).find(`img[title="密码保护"]`).attr("title") ? true : false;
+  $(desc).each((i, e) => {
     const identifier = parseInt(
       $(id[i])
         .attr("href")!
@@ -65,14 +63,16 @@ export function parseEssayList(realDOM: any, calc: boolean): CustType.JottingLis
 
     array.push({
       id: identifier,
-      text: $(title[i]).text().trim(),
-      desc: regTrim($(describe[i]).text(), [/阅读全文/g]),
+      text: replaceText($(head[i]).text().trim(), [/\[置顶\]/g]),
+      desc: replaceText($(desc[i]).text(), [/阅读全文/g]),
       date: date![i],
       view: view![i],
       comm: comm![i],
       digg: digg![i],
-      surface: surface || "",
-      isLocked
+      surface: $(e).find(".desc_img").attr("src") || "",
+      isLocked: !!$(id[i]).find(`img[title="密码保护"]`).attr("title"),
+      isOnlyMe: !!$(id[i]).find(`img[title="仅自己可见"]`).attr("title"),
+      isTop: $(head[i]).find(".pinned-post-mark").text() === "[置顶]"
     });
   });
 
@@ -88,7 +88,7 @@ export function parseEssayList(realDOM: any, calc: boolean): CustType.JottingLis
  * @param id 随笔 ID
  * @param realDOM 请求响应消息
  */
-export function parseEssay(id: number, realDOM: any): CustType.Jotting {
+export function parseEssay(id: number, realDOM: any): CustType.IEssay {
   return {
     id: id,
     text: $(realDOM).find(".postTitle > a > span").text(),
@@ -107,8 +107,8 @@ export function parseEssay(id: number, realDOM: any): CustType.Jotting {
  *
  * @param strDOM 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parseCommentList(strDOM: any): Array<CustType.Comment> {
-  let comments: Array<CustType.Comment> = [];
+export function parseCommentList(strDOM: any): Array<CustType.IComment> {
+  let comments: Array<CustType.IComment> = [];
 
   $(parseStrToDom(strDOM))
     .find(".feedbackItem")
@@ -149,8 +149,8 @@ export function parseCommentPages(json: any): number {
  *
  * @param strDOM 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parseEssayCatesAndTags(strDOM: any): CustType.JottingCateAndTagList {
-  const array = <CustType.JottingCateAndTagList>{ tags: [], cates: [] };
+export function parseEssayCatesAndTags(strDOM: any): CustType.IEssayCateAndTagList {
+  const array = <CustType.IEssayCateAndTagList>{ tags: [], cates: [] };
   const dom = parseStrToDom(strDOM);
 
   $(dom)
@@ -182,8 +182,8 @@ export function parseEssayCatesAndTags(strDOM: any): CustType.JottingCateAndTagL
  *
  * @param strDOM 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parsePrevNext(strDOM: any): CustType.PrevNext {
-  const prevNext: CustType.PrevNext = { prev: {}, next: {} };
+export function parsePrevNext(strDOM: any): CustType.IPrevNext {
+  const prevNext: CustType.IPrevNext = { prev: {}, next: {} };
 
   $(parseStrToDom(strDOM))
     .find("a")
@@ -211,7 +211,7 @@ export function parsePrevNext(strDOM: any): CustType.PrevNext {
  * @param realDOM 真实 DOM
  * @param calc 是否计算页数
  */
-export function parseCateList(realDOM: any, calc: boolean): CustType.CateList {
+export function parseCateList(realDOM: any, calc: boolean): CustType.ICateList {
   let dom = $(realDOM).find(".entrylistItem");
 
   let id = $(dom).find(".entrylistItemTitle");
@@ -223,7 +223,7 @@ export function parseCateList(realDOM: any, calc: boolean): CustType.CateList {
   let comm = record.match(/评论\([0-9]+\)/g);
   let digg = record.match(/推荐\([0-9]+\)/g);
 
-  let array: Array<CustType.Jotting> = [];
+  let array: Array<CustType.IEssay> = [];
   $(dom).each((i, e) => {
     let surface = $(e).find(".c_b_p_desc > .desc_img").attr("src");
     array.push({
@@ -254,7 +254,7 @@ export function parseCateList(realDOM: any, calc: boolean): CustType.CateList {
  *
  * @param realDOM 真实 DOM
  */
-export function parseTagPageList(realDOM: any): CustType.TagColl {
+export function parseTagPageList(realDOM: any): CustType.ITagColl {
   const title = $(realDOM).find(".PostList > .postTitl2 > a");
   const describe = $(realDOM).find(".PostList > .postDesc2");
   const tagTitle = $(realDOM).find(".PostListTitle").text().trim();
@@ -289,9 +289,9 @@ export function parseTagPageList(realDOM: any): CustType.TagColl {
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideCateList(strDOM: string): CustType.SideCateAndTagList {
+export function parseSideCateList(strDOM: string): CustType.ICabinetCateAndTagList {
   const dom = parseStrToDom(strDOM);
-  const array: CustType.SideCateAndTagList = { tags: [], cates: [] };
+  const array: CustType.ICabinetCateAndTagList = { tags: [], cates: [] };
 
   const tags = $(dom).find("#sidebar_toptags ul li > a");
   for (let i = 0; i < $(tags).length; i++) {
@@ -320,8 +320,8 @@ export function parseSideCateList(strDOM: string): CustType.SideCateAndTagList {
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideBloggerInfo(strDOM: string): Array<CustType.Blogger> {
-  const array: Array<CustType.Blogger> = [];
+export function parseSideBloggerInfo(strDOM: string): Array<CustType.IAuthor> {
+  const array: Array<CustType.IAuthor> = [];
   const a = $(parseStrToDom(strDOM)).find("#profile_block > a");
   $(a).each((i, e) => {
     array.push({ text: $(e).text().trim(), href: $(e).attr("href")! });
@@ -334,8 +334,8 @@ export function parseSideBloggerInfo(strDOM: string): Array<CustType.Blogger> {
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideBlogInfo(strDOM: string): Array<CustType.SideBlog> {
-  const array: Array<CustType.SideBlog> = [];
+export function parseSideBlogInfo(strDOM: string): Array<CustType.IBlogData> {
+  const array: Array<CustType.IBlogData> = [];
   $(parseStrToDom(strDOM))
     .find("span")
     .each((i, d) => {
@@ -355,8 +355,8 @@ export function parseSideBlogInfo(strDOM: string): Array<CustType.SideBlog> {
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideRank(strDOM: string): CustType.SideRankList[] {
-  const array: Array<CustType.SideRankList> = [];
+export function parseSideRank(strDOM: string): CustType.ICabinetRankList[] {
+  const array: Array<CustType.ICabinetRankList> = [];
   $(parseStrToDom(strDOM))
     .find("li")
     .each((i, d) => {
@@ -373,8 +373,8 @@ export function parseSideRank(strDOM: string): CustType.SideRankList[] {
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideBlogTopList(strDOM: string): CustType.SideTopList[] {
-  const array: Array<CustType.SideTopList> = [];
+export function parseSideBlogTopList(strDOM: string): CustType.ICabinetTopList[] {
+  const array: Array<CustType.ICabinetTopList> = [];
   $(parseStrToDom(strDOM))
     .find("#TopViewPostsBlock ul > li > a")
     .each((i, e) => {
@@ -383,14 +383,14 @@ export function parseSideBlogTopList(strDOM: string): CustType.SideTopList[] {
           .attr("href")
           ?.match(/\/p\/\d+/g)![0]
           .split("/")[2],
-        text: regTrim($(e).text().trim(), [/\n+/g])
+        text: replaceText($(e).text().trim(), [/\n+/g])
       });
     });
   return array;
 }
 
-export function parseTags(realDOM: any): Array<CustType.Tag> {
-  const array: Array<CustType.Tag> = [];
+export function parseTags(realDOM: any): Array<CustType.ITag> {
+  const array: Array<CustType.ITag> = [];
   $(realDOM)
     .find("#MyTag1_dtTagList")
     .find("td")

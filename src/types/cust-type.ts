@@ -1,4 +1,4 @@
-export interface Jotting {
+export interface IEssay {
   // 随笔 ID
   id?: number;
   // 随笔标题
@@ -17,10 +17,15 @@ export interface Jotting {
   digg?: string;
   // 随笔封面
   surface?: string;
+  // 文章是否被密码锁定
   isLocked?: boolean;
+  // 是否仅限于自己可见
+  isOnlyMe?: boolean;
+  // 是否置顶
+  isTop?: boolean;
 }
 
-export interface Comment {
+export interface IComment {
   // 是否正在编辑
   isEditingUpdate?: boolean;
   // 是否正在回复
@@ -51,7 +56,7 @@ export interface Comment {
   pageIndex?: number;
 }
 
-export interface TagColl {
+export interface ITagColl {
   text: string;
   array: Array<{
     id: string;
@@ -64,7 +69,7 @@ export interface TagColl {
   }>;
 }
 
-export interface Lite {
+export interface ILite {
   // github
   github?: string;
   // 网站 icon
@@ -103,7 +108,7 @@ export interface Lite {
   books?: { href?: string; text: string; img: string; author: string; rate: number }[];
 }
 
-export interface Tag {
+export interface ITag {
   count: number;
   href: string;
   text: string;
@@ -112,15 +117,15 @@ export interface Tag {
 /**
  * 随笔列表，返回列表的页数、列表数组。
  */
-export interface JottingList {
+export interface IEssayList {
   pages: number[];
-  array: Array<Jotting>;
+  array: Array<IEssay>;
 }
 
 /**
  * 随笔的分类和标签数组
  */
-export interface JottingCateAndTagList {
+export interface IEssayCateAndTagList {
   tags: { text: string }[];
   cates: { href: string; text: string }[];
 }
@@ -128,16 +133,16 @@ export interface JottingCateAndTagList {
 /**
  * 随笔分类列表，返回页数、分类名、列表数组
  */
-export interface CateList {
+export interface ICateList {
   pages: number[];
   label: string;
-  array: Array<Jotting>;
+  array: Array<IEssay>;
 }
 
 /**
  * 侧边栏标签和分类数组
  */
-export interface SideCateAndTagList {
+export interface ICabinetCateAndTagList {
   cates: {
     id: string;
     text: string;
@@ -151,7 +156,7 @@ export interface SideCateAndTagList {
 /**
  * 侧边栏博主排行榜、积分
  */
-export interface SideRankList {
+export interface ICabinetRankList {
   text: string;
   digg: string;
 }
@@ -159,7 +164,7 @@ export interface SideRankList {
 /**
  * 侧边栏阅读排行榜
  */
-export interface SideTopList {
+export interface ICabinetTopList {
   id: string;
   text: string;
 }
@@ -167,7 +172,7 @@ export interface SideTopList {
 /**
  * 博主信息，粉丝、昵称、关注、园龄，每一个都有对应的 a 链接，text 是文本信息
  */
-export interface Blogger {
+export interface IAuthor {
   text: string;
   href: string;
 }
@@ -175,18 +180,18 @@ export interface Blogger {
 /**
  * 侧边栏博客信息，随笔数量、文章数量、评论数量、阅读数量
  */
-export interface SideBlog extends SideRankList {}
+export interface IBlogData extends ICabinetRankList {}
 
 /**
  * 随笔上一篇或下一篇随笔数据类型
  */
 type PrevNextType = { text?: string; href?: string };
-export interface PrevNext {
+export interface IPrevNext {
   prev: PrevNextType;
   next: PrevNextType;
 }
 
-type Toggle = Record<
+type ToggleType = Record<
   string,
   {
     open: boolean;
@@ -194,8 +199,8 @@ type Toggle = Record<
   }
 >;
 
-export interface Setting {
-  toggles?: Toggle;
+export interface ISetting {
+  toggles?: ToggleType;
   themeMode?: string;
   themeColor?: string;
   themeCard?: {

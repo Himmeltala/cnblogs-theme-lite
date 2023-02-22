@@ -9,22 +9,40 @@ const collapseActive = ref("1");
 <template>
   <el-dialog draggable v-model="toolKitsSetting" title="自定义博客" align-center width="25rem">
     <el-collapse v-model="collapseActive" accordion>
-      <el-collapse-item title="陈列柜设置" v-if="pcDevice">
+      <el-collapse-item v-if="pcDevice">
+        <template #title>
+          <span class="fsz-1">陈列柜设置</span>
+        </template>
         <CabinetSetting />
       </el-collapse-item>
-      <el-collapse-item title="宽度设置" v-if="pcDevice">
+      <el-collapse-item v-if="pcDevice">
+        <template #title>
+          <span class="fsz-1">宽度设置</span>
+        </template>
         <WidthSetting />
       </el-collapse-item>
-      <el-collapse-item title="主题设置">
+      <el-collapse-item>
+        <template #title>
+          <span class="fsz-1">主题设置</span>
+        </template>
         <ThemeSetting />
       </el-collapse-item>
-      <el-collapse-item title="其他设置">
+      <el-collapse-item>
+        <template #title>
+          <span class="fsz-1">其他设置</span>
+        </template>
         <OtherSetting />
       </el-collapse-item>
-      <el-collapse-item title="管理设置">
+      <el-collapse-item>
+        <template #title>
+          <span class="fsz-1">管理设置</span>
+        </template>
         <ManageSetting />
       </el-collapse-item>
-      <el-collapse-item title="隐藏设置">
+      <el-collapse-item>
+        <template #title>
+          <span class="fsz-1">隐藏设置</span>
+        </template>
         <SecrecySetting />
       </el-collapse-item>
     </el-collapse>

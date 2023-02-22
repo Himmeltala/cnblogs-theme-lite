@@ -26,7 +26,7 @@ const setting = getSetting();
     <el-slider v-model="setting.cabinet.right" show-input size="small" />
   </div>
   <el-collapse>
-    <el-collapse-item title="陈列柜项设置">
+    <el-collapse-item title="选项开关">
       <div v-for="(v, k, i) in setting.toggles" class="mt-4">
         <span><span v-show="!v.show">隐藏</span><span v-show="v.show">显示</span>{{ k }}项</span>
         <el-switch v-model="v.show" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />

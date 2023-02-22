@@ -94,8 +94,7 @@ export function parseUnit(num: string): string {
  * @param replacement 不传递，默认被替换的字符串是 ""。传递的数组等于 regExps 的长度，就一一对应进行替换。如果传递的
  * 数组小于 regExps，就与前几个进行对应替换，其余的用默认 "" 替换。
  */
-export function regTrim(source: string, regExps: RegExp[], replacement?: string[]) {
-  let replaced = source;
+export function replaceText(source: string, regExps: RegExp[], replacement?: string[]) {
   let substitute = "";
   for (let i = 0; i < regExps.length; i++) {
     if (!replacement) substitute = "";
@@ -103,11 +102,11 @@ export function regTrim(source: string, regExps: RegExp[], replacement?: string[
       if (!replacement[i]) substitute = "";
       else substitute = replacement[i];
     }
-    replaced = replaced.replace(regExps[i], substitute);
+    source = source.replace(regExps[i], substitute);
   }
-  return replaced;
+  return source;
 }
 
 export function getSetting() {
-  return useStorage<CustType.Setting>(`l-${blogApp}-setting`, {});
+  return useStorage<CustType.ISetting>(`l-${blogApp}-setting`, {});
 }

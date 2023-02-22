@@ -6,18 +6,18 @@ const lstrip = ref(true);
 const rstrip = ref(true);
 
 onMounted(() => {
-  document.querySelector("#l-lstrip").addEventListener("click", () => {
+  document.getElementById("l-lstrip").onclick = () => {
     lstrip.value = !lstrip.value;
-  });
+  };
 
-  document.querySelector("#l-rstrip").addEventListener("click", () => {
+  document.getElementById("l-rstrip").onclick = () => {
     rstrip.value = !rstrip.value;
-  });
+  };
 
-  document.querySelector("#l-matte").addEventListener("click", () => {
+  document.getElementById("l-matte").onclick = () => {
     if (!lstrip.value) lstrip.value = true;
     else if (!rstrip.value) rstrip.value = true;
-  });
+  };
 
   document.getElementById("l-photo").setAttribute("src", setting.value.background.src);
   watch(setting, (val, old) => {
@@ -31,12 +31,14 @@ onMounted(() => {
 <template>
   <div id="l-left">
     <GitHub />
-    <div id="l-progress" class="f-c-c">
-      <div class="bar" :class="{ exebar: false }"></div>
-    </div>
-    <div id="l-back" class="fixed left-0 top-0 w-100vw h-100vw" v-show="setting.background.src">
-      <img id="l-photo" class="w-100% h-100%" />
-    </div>
+    <ContextMenu width="18rem">
+      <div id="l-back" class="fixed left-0 top-0 w-100vw h-100vw">
+        <img v-show="setting.background.src" id="l-photo" class="w-100% h-100%" />
+      </div>
+      <template #content>
+        <ThemeSetting />
+      </template>
+    </ContextMenu>
     <div
       id="l-lstrip"
       v-show="!setting.cabinet.pinLeft"
@@ -97,39 +99,6 @@ onMounted(() => {
 <style scoped lang="scss">
 $quota: 10;
 
-#l-back::after {
-  content: "";
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  backdrop-filter: blur(var(--l-bg-filter));
-}
-
-#progress {
-  height: 2px;
-  width: 100vw;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-}
-
-#progress .exebar {
-  height: inherit;
-  animation: exebar infinite 10s ease-in-out;
-  background-color: var(--l-theme-color);
-}
-
-@keyframes exebar {
-  @for $i from 0 to 100 {
-    #{$i * 1%} {
-      width: $i * 1vw;
-    }
-  }
-}
-
 @include pc() {
   #l-content {
     width: var(--content-width);
@@ -140,6 +109,16 @@ $quota: 10;
   #l-content {
     width: 100%;
   }
+}
+
+#l-back::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  backdrop-filter: blur(var(--l-bg-filter));
 }
 
 .fixed-left-cabinet {

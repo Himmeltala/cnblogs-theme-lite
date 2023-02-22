@@ -2,7 +2,7 @@ import $ from "jquery";
 import { preLog, preWarningLog } from "@/utils/common";
 import { CustType } from "@/types/data-type";
 
-export let __LITE_CONFIG__: CustType.Lite;
+export let __LITE_CONFIG__: CustType.ILite;
 export let blogId = 0;
 export let baseAPI = "";
 export let blogApp = "";
@@ -24,7 +24,7 @@ export function initLiteVars() {
  * 初始化自定义博客设置
  */
 function initSetting() {
-  let settings: CustType.Setting = JSON.parse(localStorage.getItem(`l-${blogApp}-setting`));
+  let settings: CustType.ISetting = JSON.parse(localStorage.getItem(`l-${blogApp}-setting`));
 
   if ($.isEmptyObject(settings)) {
     settings = {
@@ -64,9 +64,9 @@ function initSetting() {
   $("html").attr("class", settings.themeMode);
   $("html").css({
     "--l-theme-color": settings.themeColor,
-    "--cabinet-width": settings.cabinet.width + "rem",
-    "--content-width": settings.contentWidth + "vw",
-    "--l-bg-filter": settings.background.filter + "px"
+    "--cabinet-width": `${settings.cabinet.width}rem`,
+    "--content-width": `${settings.contentWidth}vw`,
+    "--l-bg-filter": `${settings.background.filter}px`
   });
 }
 
@@ -78,6 +78,10 @@ function initSetting() {
 export function useLite(dev: Function, pro: Function) {
   $("body").append(`<div id="app"></div>`);
   $("head").append(`<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack-subset.css" />`);
+
+  window.oncontextmenu = () => {
+    return false;
+  };
 
   // @ts-ignore
   __LITE_CONFIG__ = window["__LITE_CONFIG__"];
@@ -176,5 +180,4 @@ export function useLite(dev: Function, pro: Function) {
   $("head").append(`<link rel="shortcut icon" href="${__LITE_CONFIG__.icon}">`);
   preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
   preLog("v1.4.4", "Powered By Himmelbleu using Vue3 & Vite.");
-  preWarningLog("启动速度慢？", "https://github.com/Himmelbleu/cnblogs-theme-lite#启动速度慢");
 }

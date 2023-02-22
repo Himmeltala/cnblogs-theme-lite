@@ -37,20 +37,20 @@ watch(setting, (val, old) => {
         <el-switch v-model="setting.themeCard.open" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
       </div>
       <div class="mb-4">
-        <span class="mr-2">设置卡片背景颜色</span>
+        <div class="mb-2">设置卡片背景颜色</div>
         <el-color-picker size="small" :predefine="colors" show-alpha v-model="setting.themeCard.color" />
       </div>
       <div>
-        <span class="mr-2">设置卡片圆角单位</span>
+        <div class="mb-2">设置卡片圆角单位</div>
         <el-input-number size="small" v-model="setting.themeCard.radius" :precision="2" :min="0.5" :step="0.5" :max="30" />
       </div>
     </el-collapse-item>
   </el-collapse>
   <el-collapse>
     <el-collapse-item title="背景样式设置">
-      <div class="mb-4 f-c-s">
-        <span class="mr-2 w-28%">设置背景图片</span>
-        <el-input class="w-60%" size="small" v-model="setting.background.src" placeholder="请输入网络地址" />
+      <div class="mb-4">
+        <div class="mb-2">设置背景图片</div>
+        <el-input size="small" v-model="setting.background.src" placeholder="请输入网络地址" />
       </div>
       <div>
         <div class="mb-2">设置背景毛玻璃效果</div>

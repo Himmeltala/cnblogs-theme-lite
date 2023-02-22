@@ -29,7 +29,7 @@ watch(setting, (val, old) => {
 <template>
   <div>
     <div class="mb-2">设置陈列柜宽度</div>
-    <el-slider :min="13" :step="0.5" :max="17.5" v-model="setting.cabinet.width" size="small" show-input />
+    <el-slider :min="13" :step="0.5" :max="20" v-model="setting.cabinet.width" size="small" show-input />
   </div>
   <div class="mt-4">
     <div class="mb-2">设置中间内容宽度</div>
