@@ -204,12 +204,24 @@ export interface ISetting {
   themeMode?: string;
   themeColor?: string;
   themeCard?: {
-    padding?: number;
+    padding?: {
+      left: number;
+      right: number;
+      top: number;
+      bottom: number;
+    };
+    margin?: {
+      left: number;
+      right: number;
+      top: number;
+      bottom: number;
+    };
     radius?: number;
     color?: string;
     open?: boolean;
   };
   background?: {
+    open?: boolean;
     filter?: number;
     src?: string;
   };

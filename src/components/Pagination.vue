@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getSetting } from "@/utils/common";
+
 const props = defineProps({
   pageCount: {
     type: Number,
@@ -11,6 +13,7 @@ const props = defineProps({
 });
 const emits = defineEmits(["next", "prev", "nexpr"]);
 
+const setting = getSetting();
 const currIndex = ref(1);
 const index = ref(1);
 
@@ -69,8 +72,10 @@ function nexprChange(elIndex: number) {
         </el-icon>
       </el-tooltip>
     </div>
-    <div class="f-c-e my-4">
-      <el-pagination layout="pager, next" :page-count="pageCount" v-model:current-page="index" @current-change="nexprChange" />
+    <div class="f-c-e my-4" :class="{ 'l-box-bg': !setting.themeCard.open }">
+      <Card>
+        <el-pagination layout="pager, next" :page-count="pageCount" v-model:current-page="index" @current-change="nexprChange" />
+      </Card>
     </div>
   </div>
 </template>

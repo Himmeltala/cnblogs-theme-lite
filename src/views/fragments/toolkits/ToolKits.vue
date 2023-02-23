@@ -27,28 +27,19 @@ function changeDayTime() {
   <div id="toolkits" class="noselect fixed right-15 top-65vh fsz-1.2 z-1">
     <div class="relative">
       <Card
-        :class="{
-          'show-0': setting.openToolKits,
-          'close-0': !setting.openToolKits
-        }"
+        :class="{ 'l-box-bg': !setting.themeCard.open, 'show-0': setting.openToolKits, 'close-0': !setting.openToolKits }"
         class="back-home absolute hover left-0 w-8 h-8 f-c-c rd-2"
         @click="nav({ path: 'back', router })">
         <i-ep-back />
       </Card>
       <Card
-        :class="{
-          'show-1': setting.openToolKits,
-          'close-1': !setting.openToolKits
-        }"
+        :class="{ 'l-box-bg': !setting.themeCard.open, 'show-1': setting.openToolKits, 'close-1': !setting.openToolKits }"
         class="back-top absolute hover left-0 w-8 h-8 f-c-c rd-2"
         @click="moveToTopNail">
         <i-ep-position />
       </Card>
       <Card
-        :class="{
-          'show-2': setting.openToolKits,
-          'close-2': !setting.openToolKits
-        }"
+        :class="{ 'l-box-bg': !setting.themeCard.open, 'show-2': setting.openToolKits, 'close-2': !setting.openToolKits }"
         @click="changeDayTime"
         class="daytime absolute hover left-0 w-8 h-8 f-c-c rd-2">
         <template v-if="setting.themeMode === 'light'">
@@ -59,20 +50,14 @@ function changeDayTime() {
         </template>
       </Card>
       <Card
-        :class="{
-          'show-3': setting.openToolKits,
-          'close-3': !setting.openToolKits
-        }"
+        :class="{ 'l-box-bg': !setting.themeCard.open, 'show-3': setting.openToolKits, 'close-3': !setting.openToolKits }"
         @click="toolKitsSetting = !toolKitsSetting"
         class="setting absolute hover left-0 w-8 h-8 f-c-c rd-2">
         <i-ep-setting class="rotate-setting" />
       </Card>
       <Card
         @click="setting.openToolKits = !setting.openToolKits"
-        :class="{
-          'show-toolkits': setting.openToolKits,
-          'close-toolkits': !setting.openToolKits
-        }"
+        :class="{ 'l-box-bg': !setting.themeCard.open, 'show-toolkits': setting.openToolKits, 'close-toolkits': !setting.openToolKits }"
         class="kits-box absolute hover top-40 left-0 w-8 h-8 f-c-c rd-2">
         <i-ep-arrow-right />
       </Card>

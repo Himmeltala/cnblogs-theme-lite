@@ -145,5 +145,5 @@ export function useLite(dev: Function, pro: Function) {
 
   $("head").append(`<link rel="shortcut icon" href="${__LITE_CONFIG__.icon}">`);
   preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
-  preLog("v1.4.5", "Powered By Himmelbleu using Vue3 & Vite.");
+  preLog("v1.4.6", "Powered By Himmelbleu using Vue3 & Vite.");
 }

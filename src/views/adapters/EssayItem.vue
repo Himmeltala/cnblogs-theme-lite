@@ -14,14 +14,7 @@ defineProps({
 </script>
 
 <template>
-  <Card
-    v-for="(item, index) in data"
-    :padding="true"
-    :index="index"
-    :key="index"
-    class="pb-5"
-    :class="{ 'mb-5': index !== data.length - 1 }"
-    :length="data.length">
+  <Card v-for="(item, index) in data" :index="index" :key="index" :length="data.length" padding margin-top margin-bottom>
     <div class="head f-c-b" :class="{ 'mb-5': item.surface }">
       <el-image v-if="index % 2 !== 0 && item.surface" class="cover h-35 rd-2" :src="item.surface" fit="cover" />
       <div :class="{ 'w-100%': !item.surface, 'has-cover w-60%': item.surface }">

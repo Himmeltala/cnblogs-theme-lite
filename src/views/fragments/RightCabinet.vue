@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useCatalogStore } from "@/store";
 import { __LITE_CONFIG__ } from "@/lite.config";
+import { getSetting } from "@/utils/common";
 
+const setting = getSetting();
 const route = useRoute();
 const anchors = ref();
 const store = useCatalogStore();
@@ -16,8 +18,13 @@ watch(route, val => {
 </script>
 
 <template>
-  <Card id="l-rcabinet" class="fsz-0.9 px-2 h-100vh noscroll ofw-auto" style="width: var(--cabinet-width)">
-    <ContextMenu>
+  <Card
+    :class="{ 'l-box-bg': !setting.themeCard.open }"
+    id="l-rcabinet"
+    class="fsz-0.9 h-100vh noscroll ofw-auto"
+    :padding="true"
+    style="width: var(--cabinet-width)">
+    <ContextMenu :class="{ 'py-2 px-4': !setting.themeCard.open }">
       <ExpandableBox text="随笔目录" v-if="anchors && anchors.length">
         <template #icon>
           <i-ep-location />

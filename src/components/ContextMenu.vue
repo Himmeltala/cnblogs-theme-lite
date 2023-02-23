@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useDraggable } from "@vueuse/core";
+import { getSetting } from "@/utils/common";
 
+const setting = getSetting();
 const timestamp = new Date().getMilliseconds();
 const menu = ref<HTMLElement>();
 const panel = ref<HTMLElement>();
@@ -39,7 +41,12 @@ onMounted(() => {
   <div ref="menu" class="l-menu">
     <slot />
     <Teleport to="body">
-      <div ref="panel" :id="'l-panel-' + timestamp" :style="style" class="l-menu-panel z-99 fixed">
+      <div
+        ref="panel"
+        :class="{ 'l-box-bg': !setting.themeCard.open }"
+        :id="'l-panel-' + timestamp"
+        :style="style"
+        class="l-menu-panel z-99 fixed">
         <Card>
           <div ref="head" class="head px-4 pt-4 f-c-b mb-6 cursor-move">
             <div class="title">
@@ -57,5 +64,3 @@ onMounted(() => {
     </Teleport>
   </div>
 </template>
-
-<style scoped lang="scss"></style>

@@ -30,12 +30,16 @@ watch(setting, (val, old) => {
     <span class="mr-2">设置主题颜色</span>
     <el-color-picker size="small" :predefine="colors" show-alpha v-model="setting.themeColor" />
   </div>
+  <div class="mb-4">
+    <span><span v-show="setting.themeCard.open">开启</span><span v-show="!setting.themeCard.open">关闭</span>卡片样式</span>
+    <el-switch v-model="setting.themeCard.open" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
+  </div>
+  <div class="mb-4">
+    <span><span v-show="setting.background.open">开启</span><span v-show="!setting.background.open">关闭</span>背景图片</span>
+    <el-switch v-model="setting.background.open" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
+  </div>
   <el-collapse>
     <el-collapse-item title="卡片样式设置">
-      <div class="mb-4">
-        <span><span v-show="setting.themeCard.open">开启</span><span v-show="!setting.themeCard.open">关闭</span>卡片样式</span>
-        <el-switch v-model="setting.themeCard.open" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
-      </div>
       <div class="mb-4">
         <div class="mb-2">设置卡片背景颜色</div>
         <el-color-picker size="small" :predefine="colors" show-alpha v-model="setting.themeCard.color" />
@@ -44,20 +48,54 @@ watch(setting, (val, old) => {
         <div class="mb-2">设置卡片圆角单位</div>
         <el-input-number size="small" v-model="setting.themeCard.radius" :precision="2" :min="0.5" :step="0.5" :max="30" />
       </div>
-      <div>
-        <div class="mb-2">设置卡片内边距</div>
-        <el-input-number size="small" v-model="setting.themeCard.padding" :precision="2" :min="0.5" :step="0.5" :max="30" />
-      </div>
+      <el-collapse>
+        <el-collapse-item title="设置内边距">
+          <div class="mb-4">
+            <div class="mb-2">设置卡片左内边距</div>
+            <el-input-number size="small" v-model="setting.themeCard.padding.left" :precision="2" :min="0" :step="0.1" :max="10" />
+          </div>
+          <div class="mb-4">
+            <div class="mb-2">设置卡片右内边距</div>
+            <el-input-number size="small" v-model="setting.themeCard.padding.right" :precision="2" :min="0" :step="0.1" :max="10" />
+          </div>
+          <div class="mb-4">
+            <div class="mb-2">设置卡片上内边距</div>
+            <el-input-number size="small" v-model="setting.themeCard.padding.top" :precision="2" :min="0" :step="0.1" :max="10" />
+          </div>
+          <div>
+            <div class="mb-2">设置卡片下内边距</div>
+            <el-input-number size="small" v-model="setting.themeCard.padding.bottom" :precision="2" :min="0" :step="0.1" :max="10" />
+          </div>
+        </el-collapse-item>
+        <el-collapse-item title="设置外边距">
+          <div class="mb-4">
+            <div class="mb-2">设置卡片左外边距</div>
+            <el-input-number size="small" v-model="setting.themeCard.margin.left" :precision="2" :min="0" :step="0.1" :max="10" />
+          </div>
+          <div class="mb-4">
+            <div class="mb-2">设置卡片右外边距</div>
+            <el-input-number size="small" v-model="setting.themeCard.margin.right" :precision="2" :min="0" :step="0.1" :max="10" />
+          </div>
+          <div class="mb-4">
+            <div class="mb-2">设置卡片上外边距</div>
+            <el-input-number size="small" v-model="setting.themeCard.margin.top" :precision="2" :min="0" :step="0.1" :max="10" />
+          </div>
+          <div>
+            <div class="mb-2">设置卡片下外边距</div>
+            <el-input-number size="small" v-model="setting.themeCard.margin.bottom" :precision="2" :min="0" :step="0.1" :max="10" />
+          </div>
+        </el-collapse-item>
+      </el-collapse>
     </el-collapse-item>
   </el-collapse>
   <el-collapse>
     <el-collapse-item title="背景样式设置">
       <div class="mb-4">
-        <div class="mb-2">设置背景图片</div>
+        <div class="mb-2">图片网络地址</div>
         <el-input size="small" v-model="setting.background.src" placeholder="请输入网络地址" />
       </div>
       <div>
-        <div class="mb-2">设置背景毛玻璃效果</div>
+        <div class="mb-2">背景毛玻璃效果</div>
         <el-slider v-model="setting.background.filter" />
       </div>
     </el-collapse-item>

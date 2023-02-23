@@ -1,10 +1,11 @@
 # 主题说明
 
-打开博客园的随笔详细页、标签页等，都是整页重新加载，比较影响体验。Lite 基于 Vue3 + Vite 开发，SPA 应用可以减少整页加载，实现局部刷新。
-
 本人已部署在自己的博客，浏览：[Lite 博客](https://www.cnblogs.com/Himmelbleu/#/)。
-
 [GitHub](https://github.com/Himmelbleu/cnblogs-theme-lite) 或 [Gitee](https://gitee.com/Himmelbleu/cnblogs-theme-lite)，请点个 :star:star 哟~。
+
+Lite 基于 Vue3 + Vite 开发，SPA 应用可以减少整页加载，实现局部刷新。打开博客园的随笔详细页、标签页等，都是整页重新加载，比较影响体验。
+
+主题提供了，背景设置、卡片样式、背景图片、内边距、外边距、字体颜色、字体大小、主题颜色等大量设置。右键随便哪个区域都可以呼出设置面板，每一个区域的设置面板都不一样，也可以统一在右下角的工具箱中打开设置。设置好了之后可以导出设置以作备份。
 
 # 部署说明
 
@@ -24,35 +25,48 @@
 <link rel="stylesheet" href="https://blog-static.cnblogs.com/files/blogs/666252/index.css" />
 <!-- lite loading style -->
 <style>
+  @media screen and (max-width: 1000px) {
+    #sakana-widget {
+      display: none;
+    }
+  }
+
   #home {
     display: none !important;
   }
+
   @-webkit-keyframes loading {
     0% {
       opacity: 0;
     }
+
     to {
       opacity: 1;
     }
   }
+
   @keyframes loading {
     0% {
       opacity: 0;
     }
+
     to {
       opacity: 1;
     }
   }
+
   .dark-loading {
     background: #222;
   }
+
   .light-loading {
     background: #fff;
   }
+
   .dark-loading,
   .light-loading {
-    font-size: 14px !important;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    font-size: 1rem !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
     font-weight: 400;
     position: fixed;
     top: 0;
@@ -70,9 +84,10 @@
     -ms-flex-align: center;
     z-index: 999999;
   }
+
   .box h2 {
-    font-size: 14px !important;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    font-size: 1rem !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
     font-weight: 400;
     color: #777;
     margin: 0;
@@ -80,9 +95,10 @@
     letter-spacing: 0.1em;
     text-align: center;
   }
+
   .box span {
-    font-size: 14px !important;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    font-size: 1rem !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
     font-weight: 400;
     display: inline-block;
     vertical-align: middle;
@@ -94,31 +110,37 @@
     -webkit-animation: loading 1s infinite alternate;
     animation: loading 1s infinite alternate;
   }
+
   .box span:nth-of-type(2) {
     background: #008fb2;
     -webkit-animation-delay: 0.2s;
     animation-delay: 0.2s;
   }
+
   .box span:nth-of-type(3) {
     background: #009b9e;
     -webkit-animation-delay: 0.4s;
     animation-delay: 0.4s;
   }
+
   .box span:nth-of-type(4) {
     background: #00a77d;
     -webkit-animation-delay: 0.6s;
     animation-delay: 0.6s;
   }
+
   .box span:nth-of-type(5) {
     background: #00b247;
     -webkit-animation-delay: 0.8s;
     animation-delay: 0.8s;
   }
+
   .box span:nth-of-type(6) {
     background: #5ab027;
     -webkit-animation-delay: 1s;
     animation-delay: 1s;
   }
+
   .box span:nth-of-type(7) {
     background: #a0b61e;
     -webkit-animation-delay: 1.2s;
@@ -143,8 +165,8 @@
 </script>
 <script type="module" src="https://blog-static.cnblogs.com/files/blogs/666252/index.js"></script>
 <!-- run lite -->
+<!-- 如果访问外网速度本身就很快，建议使用下面的代码。访问速度慢建议删除该 script 标签。 -->
 <script>
-  // 如果访问外网速度本身就很快，建议使用下面的代码。访问速度慢建议删除该 script 标签。
   window.onload = () => {
     window.__LITE_CONFIG__.onLoaded();
   };
@@ -153,14 +175,18 @@
 
 在你的博客园后台“选项”中，勾选“启用数学公式支持”和“数学公式渲染引擎”（选择 MathJax3），否则数学公式不生效。
 
-## 启动速度慢
+# 部署问题
 
-部署说明中展示的启动方式可以减少请求数量，但博客园会带有一个国外的请求，导致速度变慢。
+## 速度很慢
 
-如果遇到长时间停止在 loading 屏幕：
+博客园会带有一个国外的请求，所以会比较慢，这不是主题的问题。如果遇到长时间停止在 loading 屏幕：
 
 1. 清除缓存；
 2. 改用部署说明中的启动方式。
+
+## 控制台报错
+
+如果遇到控制台报错，因为一些配置存储在 localStorage 中，可能是因为博主更新了，需要你手动清除 localStorage。
 
 # 配置说明
 

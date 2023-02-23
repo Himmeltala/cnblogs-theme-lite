@@ -149,6 +149,7 @@ export const settingTempl: CustType.ISetting = {
     width: 17.5
   },
   background: {
+    open: false,
     filter: 6,
     src: ""
   },
@@ -156,7 +157,18 @@ export const settingTempl: CustType.ISetting = {
     color: "rgba(31, 31, 31, 1)",
     open: false,
     radius: 10,
-    padding: 10
+    padding: {
+      left: 1,
+      right: 1,
+      top: 1,
+      bottom: 1
+    },
+    margin: {
+      left: 0,
+      right: 1,
+      top: 0,
+      bottom: 1
+    }
   }
 };
 
@@ -164,16 +176,17 @@ export const settingTempl: CustType.ISetting = {
  * 对一个对象的字段进行裁剪或添加
  *
  * @param source 要被裁剪或添加字段的对象
- * @param objectTemplate 一个对象，根据该模板（对象）对 store 进行裁剪或添加字段
+ * @param objectTemplate 一个对象，根据该模板（对象）对 source 进行裁剪或添加字段
  * @returns
  */
 export function refactorObjectProperties(source: any, objectTemplate: any) {
+  if (!source) {
+    source = objectTemplate;
+  }
   const sourceKeys = Object.keys(source);
   const templateKeys = Object.keys(objectTemplate);
 
-  // 长度不相等，存在缺少的字段
   if (sourceKeys.length !== templateKeys.length) {
-    // store 的字段长于模板的字段，说明要进行剔除
     if (sourceKeys.length > templateKeys.length) {
       sourceKeys.forEach(sourceKey => {
         const nonentity = templateKeys.find(templateKey => templateKey === sourceKey);
@@ -181,28 +194,22 @@ export function refactorObjectProperties(source: any, objectTemplate: any) {
           Reflect.deleteProperty(source, sourceKey);
         }
       });
-      // store 字段小于模板的字段，说明要增加
     } else if (sourceKeys.length < templateKeys.length) {
-      // 对 store 每一个字段进行检查
       templateKeys.forEach(templateKey => {
-        // 找到 store 中不存在的字段
         const nonentity = sourceKeys.find(sourceKey => templateKey === sourceKey);
         if (!nonentity) {
-          // 从模板中拿对应的字段添加到 store 中
           source[templateKey] = objectTemplate[templateKey];
         } else {
-          // 字段都存在，检查其字段是否是 Object 类型，再检查是否长度相等，进行递归
           if (typeof objectTemplate[templateKey] === "object") {
             refactorObjectProperties(source[templateKey], objectTemplate[templateKey]);
           }
         }
       });
     }
-    // 长度相等，查看它对象下是否有缺少的字段
   } else {
     templateKeys.forEach(templateKey => {
       if (typeof objectTemplate[templateKey] === "object") {
-        if (typeof source[templateKey] !== "object") {
+        if (typeof source[templateKey] !== "object" || !source[templateKey]) {
           source[templateKey] = objectTemplate[templateKey];
         }
         refactorObjectProperties(source[templateKey], objectTemplate[templateKey]);

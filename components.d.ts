@@ -107,6 +107,7 @@ declare module '@vue/runtime-core' {
     Tags: typeof import('./src/views/modules/Tags.vue')['default']
     ThemeSetting: typeof import('./src/views/fragments/toolkits/ThemeSetting.vue')['default']
     ToolKits: typeof import('./src/views/fragments/toolkits/ToolKits.vue')['default']
+    UpdatePanel: typeof import('./src/views/fragments/UpdatePanel.vue')['default']
     WidthSetting: typeof import('./src/views/fragments/toolkits/WidthSetting.vue')['default']
   }
 }

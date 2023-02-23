@@ -33,7 +33,7 @@ onMounted(() => {
     <GitHub />
     <ContextMenu>
       <div id="l-back" class="fixed left-0 top-0 w-100vw h-100vw">
-        <img v-show="setting.background.src" id="l-photo" class="w-100% h-100%" />
+        <img v-show="setting.background.src && setting.background.open" id="l-photo" class="w-100% h-100%" />
       </div>
       <template #title> 主题设置 </template>
       <template #content>
@@ -50,12 +50,12 @@ onMounted(() => {
         :class="{
           'show-lcabinet fixed top-0 left-0 z-2': !lstrip && !setting.cabinet.pinLeft,
           'hidden-lcabinet fixed top-0 left-0': lstrip && !setting.cabinet.pinLeft,
-          'fixed-left-cabinet fixed top-0': setting.cabinet.pinLeft && !setting.cabinet.break,
+          'fixed-lcabinet fixed top-0': setting.cabinet.pinLeft && !setting.cabinet.break,
           'fixed top-0': setting.cabinet.pinLeft && setting.cabinet.break
         }" />
     </Suspense>
   </div>
-  <div id="l-content" class="z-1">
+  <div id="l-content" class="z-1" :class="{ 'l-box-bg py-2 px-4': !setting.themeCard.open }">
     <div id="l-nail"></div>
     <div id="l-main">
       <RouterView v-slot="{ Component }">
@@ -90,7 +90,7 @@ onMounted(() => {
       :class="{
         'show-rcabinet fixed top-0 right-0 z-2': !rstrip && !setting.cabinet.pinRight,
         'hidden-rcabinet fixed top-0 right-0': rstrip && !setting.cabinet.pinRight,
-        'fixed-right-cabinet fixed top-0': setting.cabinet.pinRight && !setting.cabinet.break,
+        'fixed-rcabinet fixed top-0': setting.cabinet.pinRight && !setting.cabinet.break,
         'fixed top-0': setting.cabinet.pinRight && setting.cabinet.break
       }" />
     <ToolKits />
@@ -122,11 +122,11 @@ $quota: 10;
   backdrop-filter: blur(var(--l-bg-filter));
 }
 
-.fixed-left-cabinet {
+.fixed-lcabinet {
   left: calc(calc(var(--content-width) / 2) - calc(var(--cabinet-width) + 2rem)) !important;
 }
 
-.fixed-right-cabinet {
+.fixed-rcabinet {
   left: calc(calc(var(--content-width) / 2) + var(--content-width) + 2rem) !important;
 }
 
