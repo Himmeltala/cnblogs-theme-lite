@@ -51,7 +51,16 @@ async function vote(voteType: BlogType.VoteType) {
   <div id="l-essay" class="min-height">
     <Card :padding="true">
       <div v-if="!isLocked">
-        <div class="fsz-1.5">{{ essay.text }}</div>
+        <el-page-header :icon="null" @back="nav({ path: 'back', router })">
+          <template #title>
+            <div class="f-c-c">
+              <i-ep-back />
+            </div>
+          </template>
+          <template #content>
+            <div class="fsz-1.5">{{ essay.text }}</div>
+          </template>
+        </el-page-header>
         <div class="l-sec-color f-c-s mt-4 fsz-0.8">
           <div class="f-c-c mr-4">
             <el-icon class="mr-1">
