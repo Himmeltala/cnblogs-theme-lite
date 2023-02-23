@@ -19,11 +19,11 @@ const setting = getSetting();
   </div>
   <div class="mb-4" v-show="setting.cabinet.break">
     <div class="mb-2">左陈列柜偏移量</div>
-    <el-slider v-model="setting.cabinet.left" show-input size="small" />
+    <el-slider v-model="setting.cabinet.left" size="small" />
   </div>
   <div class="mb-4" v-show="setting.cabinet.break">
     <div class="mb-2">右陈列柜偏移量</div>
-    <el-slider v-model="setting.cabinet.right" show-input size="small" />
+    <el-slider v-model="setting.cabinet.right" size="small" />
   </div>
   <el-collapse>
     <el-collapse-item title="选项开关">

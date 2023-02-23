@@ -1,52 +1,61 @@
 <script setup lang="ts">
-const props = defineProps({
-  width: {
-    type: String,
-    required: true
-  }
-});
+import { useDraggable } from "@vueuse/core";
 
+const timestamp = new Date().getMilliseconds();
 const menu = ref<HTMLElement>();
-const main = ref<HTMLElement>();
+const panel = ref<HTMLElement>();
+const head = ref<HTMLElement>();
+
+const { x, y, style } = useDraggable(head);
+
 let close = () => {};
 
 onMounted(() => {
-  main.value.style.transform = "scale(0, 0)";
+  panel.value.style.display = "none";
 
   menu.value.onmouseup = e => {
     if (e.button == 2) {
-      main.value.style.left = e.offsetX + "px";
-      main.value.style.top = e.clientY + "px";
-      main.value.style.transform = "scale(1, 1)";
+      const panels = document.querySelectorAll(".l-menu-panel");
+      panels.forEach(ele => {
+        if (ele.id !== "l-panel-" + timestamp) {
+          // @ts-ignore
+          ele.style.display = "none";
+        }
+      });
+
+      panel.value.style.left = e.clientX + "px";
+      panel.value.style.top = e.clientY + "px";
+      panel.value.style.display = "block";
     }
   };
 
   close = () => {
-    main.value.style.transform = "scale(0, 0)";
+    panel.value.style.display = "none";
   };
 });
 </script>
 
 <template>
-  <div class="l-menu" ref="menu">
+  <div ref="menu" class="l-menu">
     <slot />
-    <div ref="main" class="menu-content z-99 absolute" :style="{ width: width }">
-      <Card class="p-4">
-        <div class="head f-c-e mb-4">
-          <div class="hover" @click="close">
-            <i-ep-close />
+    <Teleport to="body">
+      <div ref="panel" :id="'l-panel-' + timestamp" :style="style" class="l-menu-panel z-99 fixed">
+        <Card>
+          <div ref="head" class="head px-4 pt-4 f-c-b mb-6 cursor-move">
+            <div class="title">
+              <slot name="title" />
+            </div>
+            <div class="hover f-c-c" @click="close">
+              <i-ep-close />
+            </div>
           </div>
-        </div>
-        <div class="menu-main">
-          <slot name="content" />
-        </div>
-      </Card>
-    </div>
+          <div class="main px-4 pb-4">
+            <slot name="content" />
+          </div>
+        </Card>
+      </div>
+    </Teleport>
   </div>
 </template>
 
-<style scoped lang="scss">
-.menu-content {
-  transition: all 0.2s ease-in-out;
-}
-</style>
+<style scoped lang="scss"></style>

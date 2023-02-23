@@ -31,10 +31,11 @@ onMounted(() => {
 <template>
   <div id="l-left">
     <GitHub />
-    <ContextMenu width="18rem">
+    <ContextMenu>
       <div id="l-back" class="fixed left-0 top-0 w-100vw h-100vw">
         <img v-show="setting.background.src" id="l-photo" class="w-100% h-100%" />
       </div>
+      <template #title> 主题设置 </template>
       <template #content>
         <ThemeSetting />
       </template>

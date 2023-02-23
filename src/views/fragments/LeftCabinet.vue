@@ -53,7 +53,7 @@ async function unfocus() {
 
 <template>
   <Card id="l-lcabinet">
-    <ContextMenu width="18rem">
+    <ContextMenu>
       <div class="h-100vh px-2 fsz-0.9" style="width: var(--cabinet-width)">
         <div class="noscroll ofw-auto h-96%">
           <ExpandableBox text="博客信息">
@@ -164,6 +164,7 @@ async function unfocus() {
           </div>
         </div>
       </div>
+      <template #title> 陈列柜设置 </template>
       <template #content>
         <CabinetSetting />
         <el-collapse>

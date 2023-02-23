@@ -17,7 +17,7 @@ watch(route, val => {
 
 <template>
   <Card id="l-rcabinet" class="fsz-0.9 px-2 h-100vh noscroll ofw-auto" style="width: var(--cabinet-width)">
-    <ContextMenu width="18rem">
+    <ContextMenu>
       <ExpandableBox text="随笔目录" v-if="anchors && anchors.length">
         <template #icon>
           <i-ep-location />
@@ -58,6 +58,7 @@ watch(route, val => {
           </div>
         </div>
       </ExpandableBox>
+      <template #title> 陈列柜设置 </template>
       <template #content>
         <CabinetSetting />
         <el-collapse>
