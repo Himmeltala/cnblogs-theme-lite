@@ -21,7 +21,7 @@ watch(route, val => {
   <Card
     :class="{ 'l-box-bg': !setting.themeCard.open }"
     id="l-rcabinet"
-    class="fsz-0.9 h-100vh noscroll ofw-auto"
+    class="fsz-0.9 h-100vh noscroll ofw-auto z-1"
     :padding="true"
     style="width: var(--cabinet-width)">
     <ContextMenu :class="{ 'py-2 px-4': !setting.themeCard.open }">

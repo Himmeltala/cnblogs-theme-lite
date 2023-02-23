@@ -89,11 +89,11 @@ function nexprChange(elIndex: number) {
 
 @include pc() {
   .sorter.left {
-    left: calc(calc(calc(100vw - var(--content-width)) / 2) - 2.5rem);
+    left: calc(calc(calc(100vw - var(--content-width)) / 2) - 2.2rem);
   }
 
   .sorter.right {
-    right: calc(calc(calc(100vw - var(--content-width)) / 2) - 2.5rem);
+    right: calc(calc(calc(100vw - var(--content-width)) / 2) - 2.2rem);
   }
 }
 </style>

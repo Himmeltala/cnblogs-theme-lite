@@ -52,7 +52,7 @@ async function unfocus() {
 </script>
 
 <template>
-  <ContextMenu :class="{ 'l-box-bg py-2 px-4': !setting.themeCard.open }" id="l-lcabinet" style="width: var(--cabinet-width)">
+  <ContextMenu class="z-1" :class="{ 'l-box-bg py-2 px-4': !setting.themeCard.open }" id="l-lcabinet" style="width: var(--cabinet-width)">
     <Card class="h-100vh fsz-0.9" :padding="true">
       <div class="noscroll ofw-auto h-96%">
         <ExpandableBox text="博客信息">
