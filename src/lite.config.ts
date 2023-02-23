@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { preLog, preWarningLog } from "@/utils/common";
+import { preLog, refactorObjectProperties, settingTempl } from "@/utils/common";
 import { CustType } from "@/types/data-type";
 
 export let __LITE_CONFIG__: CustType.ILite;
@@ -24,49 +24,15 @@ export function initLiteVars() {
  * 初始化自定义博客设置
  */
 function initSetting() {
-  let settings: CustType.ISetting = JSON.parse(localStorage.getItem(`l-${blogApp}-setting`));
+  const setting: CustType.ISetting = JSON.parse(localStorage.getItem(`l-${blogApp}-setting`));
+  localStorage.setItem(`l-${blogApp}-setting`, JSON.stringify(refactorObjectProperties(setting, settingTempl)));
 
-  if ($.isEmptyObject(settings)) {
-    settings = {
-      toggles: {},
-      themeMode: "dark",
-      themeColor: "#409eff",
-      openToolKits: true,
-      openPager: false,
-      contentWidth: 50,
-      githubPostion: "left",
-      cabinet: {
-        left: 0,
-        right: 0,
-        break: false,
-        remote: true,
-        pinLeft: false,
-        pinRight: false,
-        width: 17.5
-      }
-    };
-
-    if (!settings.themeCard) {
-      settings.background = {
-        filter: 6,
-        src: ""
-      };
-      settings.themeCard = {
-        color: "rgba(31, 31, 31, 1)",
-        open: false,
-        radius: 10
-      };
-    }
-  }
-
-  localStorage.setItem(`l-${blogApp}-setting`, JSON.stringify(settings));
-
-  $("html").attr("class", settings.themeMode);
+  $("html").attr("class", setting.themeMode);
   $("html").css({
-    "--l-theme-color": settings.themeColor,
-    "--cabinet-width": `${settings.cabinet.width}rem`,
-    "--content-width": `${settings.contentWidth}vw`,
-    "--l-bg-filter": `${settings.background.filter}px`
+    "--l-theme-color": setting.themeColor,
+    "--cabinet-width": `${setting.cabinet.width}rem`,
+    "--content-width": `${setting.contentWidth}vw`,
+    "--l-bg-filter": `${setting.background.filter}px`
   });
 }
 
@@ -179,5 +145,5 @@ export function useLite(dev: Function, pro: Function) {
 
   $("head").append(`<link rel="shortcut icon" href="${__LITE_CONFIG__.icon}">`);
   preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
-  preLog("v1.4.4", "Powered By Himmelbleu using Vue3 & Vite.");
+  preLog("v1.4.5", "Powered By Himmelbleu using Vue3 & Vite.");
 }

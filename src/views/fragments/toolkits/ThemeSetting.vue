@@ -40,9 +40,13 @@ watch(setting, (val, old) => {
         <div class="mb-2">设置卡片背景颜色</div>
         <el-color-picker size="small" :predefine="colors" show-alpha v-model="setting.themeCard.color" />
       </div>
-      <div>
+      <div class="mb-4">
         <div class="mb-2">设置卡片圆角单位</div>
         <el-input-number size="small" v-model="setting.themeCard.radius" :precision="2" :min="0.5" :step="0.5" :max="30" />
+      </div>
+      <div>
+        <div class="mb-2">设置卡片内边距</div>
+        <el-input-number size="small" v-model="setting.themeCard.padding" :precision="2" :min="0.5" :step="0.5" :max="30" />
       </div>
     </el-collapse-item>
   </el-collapse>

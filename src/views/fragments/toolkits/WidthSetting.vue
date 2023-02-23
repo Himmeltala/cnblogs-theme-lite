@@ -2,23 +2,20 @@
 import { getSetting } from "@/utils/common";
 
 const setting = getSetting();
-const isSetContentWidth = ref(false);
+const disabled = ref(inspect());
 
-if (setting.value.cabinet.pinLeft || setting.value.cabinet.pinRight) {
-  isSetContentWidth.value = false;
-  setting.value.contentWidth = 50;
-} else {
-  isSetContentWidth.value = true;
+function inspect() {
+  if (setting.value.cabinet.pinLeft || setting.value.cabinet.pinRight) {
+    setting.value.contentWidth = 50;
+    return false;
+  } else {
+    return true;
+  }
 }
 
 watch(setting, (val, old) => {
   if (val.cabinet.pinLeft != old.cabinet.pinLeft || val.cabinet.pinRight != old.cabinet.pinRight) {
-    if (val.cabinet.pinLeft || setting.value.cabinet.pinRight) {
-      isSetContentWidth.value = false;
-      setting.value.contentWidth = 50;
-    } else {
-      isSetContentWidth.value = true;
-    }
+    disabled.value = inspect();
   }
 
   document.querySelector("html").style.setProperty("--cabinet-width", val.cabinet.width + "rem");
@@ -33,7 +30,7 @@ watch(setting, (val, old) => {
   </div>
   <div class="mt-4">
     <div class="mb-2">设置中间内容宽度</div>
-    <el-slider :disabled="!isSetContentWidth" :min="50" :step="1" :max="60" v-model="setting.contentWidth" size="small" />
+    <el-slider :disabled="!disabled" :min="50" :step="1" :max="60" v-model="setting.contentWidth" size="small" />
   </div>
 </template>
 

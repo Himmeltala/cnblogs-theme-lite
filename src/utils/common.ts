@@ -107,6 +107,115 @@ export function replaceText(source: string, regExps: RegExp[], replacement?: str
   return source;
 }
 
+/**
+ * Lite 主题设置模板对象
+ */
+export const settingTempl: CustType.ISetting = {
+  toggles: {
+    我的技术栈: {
+      open: true,
+      show: true
+    },
+    博客信息: {
+      open: true,
+      show: true
+    },
+    常用链接: {
+      open: true,
+      show: true
+    },
+    博客数据: {
+      open: true,
+      show: true
+    },
+    推荐书籍: {
+      open: true,
+      show: true
+    }
+  },
+  themeMode: "dark",
+  themeColor: "#409eff",
+  openToolKits: true,
+  githubPostion: "left",
+  openPager: false,
+  contentWidth: 50,
+  cabinet: {
+    left: 0,
+    right: 0,
+    break: false,
+    remote: true,
+    pinLeft: false,
+    pinRight: false,
+    width: 17.5
+  },
+  background: {
+    filter: 6,
+    src: ""
+  },
+  themeCard: {
+    color: "rgba(31, 31, 31, 1)",
+    open: false,
+    radius: 10,
+    padding: 10
+  }
+};
+
+/**
+ * 对一个对象的字段进行裁剪或添加
+ *
+ * @param source 要被裁剪或添加字段的对象
+ * @param objectTemplate 一个对象，根据该模板（对象）对 store 进行裁剪或添加字段
+ * @returns
+ */
+export function refactorObjectProperties(source: any, objectTemplate: any) {
+  const sourceKeys = Object.keys(source);
+  const templateKeys = Object.keys(objectTemplate);
+
+  // 长度不相等，存在缺少的字段
+  if (sourceKeys.length !== templateKeys.length) {
+    // store 的字段长于模板的字段，说明要进行剔除
+    if (sourceKeys.length > templateKeys.length) {
+      sourceKeys.forEach(sourceKey => {
+        const nonentity = templateKeys.find(templateKey => templateKey === sourceKey);
+        if (!nonentity) {
+          Reflect.deleteProperty(source, sourceKey);
+        }
+      });
+      // store 字段小于模板的字段，说明要增加
+    } else if (sourceKeys.length < templateKeys.length) {
+      // 对 store 每一个字段进行检查
+      templateKeys.forEach(templateKey => {
+        // 找到 store 中不存在的字段
+        const nonentity = sourceKeys.find(sourceKey => templateKey === sourceKey);
+        if (!nonentity) {
+          // 从模板中拿对应的字段添加到 store 中
+          source[templateKey] = objectTemplate[templateKey];
+        } else {
+          // 字段都存在，检查其字段是否是 Object 类型，再检查是否长度相等，进行递归
+          if (typeof objectTemplate[templateKey] === "object") {
+            refactorObjectProperties(source[templateKey], objectTemplate[templateKey]);
+          }
+        }
+      });
+    }
+    // 长度相等，查看它对象下是否有缺少的字段
+  } else {
+    templateKeys.forEach(templateKey => {
+      if (typeof objectTemplate[templateKey] === "object") {
+        if (typeof source[templateKey] !== "object") {
+          source[templateKey] = objectTemplate[templateKey];
+        }
+        refactorObjectProperties(source[templateKey], objectTemplate[templateKey]);
+      } else if (typeof objectTemplate[templateKey] !== "object") {
+        if (typeof source[templateKey] === "object") {
+          source[templateKey] = objectTemplate[templateKey];
+        }
+      }
+    });
+  }
+  return source;
+}
+
 export function getSetting() {
   return useStorage<CustType.ISetting>(`l-${blogApp}-setting`, {});
 }

@@ -2,7 +2,7 @@
 import type { UploadInstance, UploadProps, UploadRawFile } from "element-plus";
 import { genFileId } from "element-plus";
 import { useNow, useDateFormat } from "@vueuse/core";
-import { getSetting } from "@/utils/common";
+import { getSetting, refactorObjectProperties, settingTempl } from "@/utils/common";
 
 const upload = ref<UploadInstance>();
 const setting = getSetting();
@@ -19,8 +19,8 @@ function exportJson() {
 }
 
 function confirm() {
-  setting.value = JSON.parse(result.value);
-  dialog.value = false;
+  setting.value = refactorObjectProperties(JSON.parse(result.value), settingTempl);
+  dialog.value = !dialog.value;
   ElMessage({
     message: "导入成功！",
     type: "success"
@@ -28,7 +28,7 @@ function confirm() {
 }
 
 function cancel() {
-  dialog.value = false;
+  dialog.value = !dialog.value;
 }
 
 const exceed: UploadProps["onExceed"] = files => {
@@ -43,7 +43,7 @@ const importJson: UploadProps["onChange"] = async file => {
     const reader = new FileReader();
     reader.readAsText(file.raw);
     reader.onload = () => {
-      dialog.value = true;
+      dialog.value = !dialog.value;
       result.value = reader.result;
     };
   }

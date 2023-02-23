@@ -204,6 +204,7 @@ export interface ISetting {
   themeMode?: string;
   themeColor?: string;
   themeCard?: {
+    padding?: number;
     radius?: number;
     color?: string;
     open?: boolean;
