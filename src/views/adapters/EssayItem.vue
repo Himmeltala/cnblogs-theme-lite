@@ -14,7 +14,7 @@ defineProps({
 </script>
 
 <template>
-  <Card v-for="(item, index) in data" :index="index" :key="index" :length="data.length" padding margin-top margin-bottom>
+  <Card v-for="(item, index) in data" :index="index" :key="index" :length="data.length">
     <div class="head f-c-b" :class="{ 'mb-5': item.surface }">
       <el-image v-if="index % 2 !== 0 && item.surface" class="cover h-35 rd-2" :src="item.surface" fit="cover" />
       <div :class="{ 'w-100%': !item.surface, 'has-cover w-60%': item.surface }">
@@ -27,12 +27,12 @@ defineProps({
       </div>
       <el-image v-if="index % 2 === 0 && item.surface" class="cover h-35 rd-2" :src="item.surface" fit="cover" />
     </div>
-    <div class="read hover f-c-s mb-5 fsz-0.9">
+    <div class="read hover f-c-s mb-4 fsz-0.9">
       <i-ep-caret-right />
       <router-link class="ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id"> 阅读全文 </router-link>
     </div>
     <EssaySynopsis :align="'flex-end'" :data="{ date: item.date, comm: item.comm, digg: item.digg, view: item.view }" />
-    <div class="bottom">
+    <div class="bottom" :class="{ 'mt-4': item.isTop || item.isOnlyMe || item.isLocked }">
       <el-tag v-if="item.isTop" size="small" round effect="plain" class="mr-2">置顶随笔</el-tag>
       <el-tag v-if="item.isOnlyMe" class="mr-2" size="small" round effect="plain">仅自己可见</el-tag>
       <el-tag v-if="item.isLocked" class="mr-2" size="small" round effect="plain">被密码锁定</el-tag>

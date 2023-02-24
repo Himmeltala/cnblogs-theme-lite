@@ -49,7 +49,7 @@ onMounted(() => {
         class="l-menu-panel z-99 fixed">
         <Card>
           <div ref="head" class="head px-4 pt-4 f-c-b mb-6 cursor-move">
-            <div class="title">
+            <div class="title mr-10">
               <slot name="title" />
             </div>
             <div class="hover f-c-c" @click="close">

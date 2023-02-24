@@ -35,6 +35,7 @@ const cabinet = __LITE_CONFIG__.cabinet;
 const router = useRouter();
 const tabName = ref("随笔");
 const searchVal = ref();
+const active = ref("1");
 
 function search() {
   window.open(`https://zzk.cnblogs.com/s?w=blog:${blogApp}%${searchVal.value}`, "__blank");
@@ -52,8 +53,12 @@ async function unfocus() {
 </script>
 
 <template>
-  <ContextMenu class="z-1" :class="{ 'l-box-bg py-2 px-4': !setting.themeCard.open }" id="l-lcabinet" style="width: var(--cabinet-width)">
-    <Card class="h-100vh fsz-0.9" :padding="true">
+  <ContextMenu id="l-lcabinet" class="z-1" style="width: var(--cabinet-width)">
+    <Card
+      class="h-100vh fsz-0.9"
+      :class="{ 'l-box-bg': !setting.themeCard.open }"
+      :padding="setting.cabinet.lcabinet.padding"
+      :margin="setting.cabinet.lcabinet.margin">
       <div class="noscroll ofw-auto h-96%">
         <ExpandableBox text="博客信息">
           <template #icon>
@@ -155,12 +160,18 @@ async function unfocus() {
         </div>
       </div>
     </Card>
-    <template #title> 陈列柜设置 </template>
+    <template #title> 左陈列柜设置 </template>
     <template #content>
-      <CabinetSetting />
-      <el-collapse>
-        <el-collapse-item title="宽度设置">
-          <WidthSetting />
+      <el-collapse v-model="active" accordion>
+        <el-collapse-item title="统一设置">
+          <div class="ml-4">
+            <CabinetSetting />
+          </div>
+        </el-collapse-item>
+        <el-collapse-item title="盒子模型">
+          <div class="ml-4">
+            <BoxSetting :padding="setting.cabinet.lcabinet.padding" :margin="setting.cabinet.lcabinet.margin" />
+          </div>
         </el-collapse-item>
       </el-collapse>
     </template>

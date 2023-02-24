@@ -8,7 +8,7 @@ closeLoader();
 </script>
 
 <template>
-  <Card :padding="true" :border="false">
+  <Card border>
     <div id="l-tags" class="min-height">
       <Label class="item mb-4 p-3 fsz-0.8 f-c-s" v-for="(item, index) in tags" :key="index">
         <router-link class="hover" :to="'/label/' + item.text"> {{ item.text }} ({{ item.count }}) </router-link>

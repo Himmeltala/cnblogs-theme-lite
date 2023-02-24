@@ -21,7 +21,7 @@ watch(route, async () => {
   <div id="l-tagcoll" class="min-height">
     <div class="fsz-1.25 mb-5 mt-4">{{ tagName }}</div>
     <div class="content">
-      <Card margin-right margin-bottom padding class="item mr-6 mb-6 pb-4" v-for="(item, index) in tagList" :key="index">
+      <Card class="item mr-6 mb-6 pb-4" v-for="(item, index) in tagList" :key="index">
         <div class="fsz-1.2">
           <router-link class="hover" :to="'/p/' + item.id">
             {{ item.title }}

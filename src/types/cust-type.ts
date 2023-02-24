@@ -199,6 +199,9 @@ type ToggleType = Record<
   }
 >;
 
+/**
+ * Lite 主题设置数据类型
+ */
 export interface ISetting {
   toggles?: ToggleType;
   themeMode?: string;
@@ -230,12 +233,27 @@ export interface ISetting {
   githubPostion?: "left" | "right";
   contentWidth?: number;
   cabinet?: {
+    lcabinet?: {
+      padding?: IBox;
+      margin?: IBox;
+    };
+    rcabinet?: {
+      padding?: IBox;
+      margin?: IBox;
+    };
     left?: number;
     right?: number;
+    width?: number;
     break?: boolean;
     remote?: boolean;
     pinLeft?: boolean;
     pinRight?: boolean;
-    width?: number;
   };
+}
+
+export interface IBox {
+  left?: number;
+  right?: number;
+  top?: number;
+  bottom?: number;
 }

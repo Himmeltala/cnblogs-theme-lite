@@ -140,13 +140,41 @@ export const settingTempl: CustType.ISetting = {
   openPager: false,
   contentWidth: 50,
   cabinet: {
+    lcabinet: {
+      padding: {
+        left: 1,
+        right: 1,
+        top: 0,
+        bottom: 0
+      },
+      margin: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0
+      }
+    },
+    rcabinet: {
+      padding: {
+        left: 1,
+        right: 1,
+        top: 0,
+        bottom: 0
+      },
+      margin: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0
+      }
+    },
     left: 0,
     right: 0,
+    width: 17.5,
     break: false,
     remote: true,
     pinLeft: false,
-    pinRight: false,
-    width: 17.5
+    pinRight: false
   },
   background: {
     open: false,

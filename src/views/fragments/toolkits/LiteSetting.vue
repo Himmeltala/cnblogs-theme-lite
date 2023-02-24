@@ -13,13 +13,9 @@ const collapseActive = ref("1");
         <template #title>
           <span class="fsz-1">陈列柜设置</span>
         </template>
-        <CabinetSetting />
-      </el-collapse-item>
-      <el-collapse-item v-if="pcDevice">
-        <template #title>
-          <span class="fsz-1">宽度设置</span>
-        </template>
-        <WidthSetting />
+        <div class="ml-4">
+          <CabinetSetting />
+        </div>
       </el-collapse-item>
       <el-collapse-item>
         <template #title>

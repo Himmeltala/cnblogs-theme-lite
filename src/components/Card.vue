@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PropType } from "vue";
 import { getSetting } from "@/utils/common";
 
 const setting = getSetting();
@@ -13,46 +14,41 @@ const props = defineProps({
     type: Boolean,
     default: true
   },
+  margin: {
+    type: Object as PropType<any>,
+    default: {
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0
+    }
+  },
   padding: {
-    type: Boolean,
-    default: false
-  },
-  // 左外边距
-  marginLeft: {
-    type: Boolean,
-    default: false
-  },
-  // 上外边距
-  marginTop: {
-    type: Boolean,
-    default: false
-  },
-  // 底外边距
-  marginBottom: {
-    type: Boolean,
-    default: false
-  },
-  // 右外边距
-  marginRight: {
-    type: Boolean,
-    default: false
+    type: Object as PropType<any>,
+    default: {
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0
+    }
   }
 });
 </script>
 
 <template>
   <div
+    class="l-card"
     :style="{
       'background-color': setting.themeCard?.open ? setting.themeCard.color : 'initial',
       'border-radius': setting.themeCard?.open ? setting.themeCard.radius + 'px' : 'initial',
-      'padding-left': setting.themeCard?.open && padding ? setting.themeCard.padding.left + 'rem' : 0,
-      'padding-right': setting.themeCard?.open && padding ? setting.themeCard.padding.right + 'rem' : 0,
-      'padding-top': setting.themeCard?.open && padding ? setting.themeCard.padding.top + 'rem' : 0,
-      'padding-bottom': padding ? setting.themeCard.padding.bottom + 'rem' : 0,
-      'margin-left': setting.themeCard?.open && marginLeft ? setting.themeCard.margin.left + 'rem' : 0,
-      'margin-right': setting.themeCard?.open && marginRight ? setting.themeCard.margin.right + 'rem' : 0,
-      'margin-top': setting.themeCard?.open && marginTop ? setting.themeCard.margin.top + 'rem' : 0,
-      'margin-bottom': marginBottom ? setting.themeCard.margin.bottom + 'rem' : 0
+      'padding-left': padding.left + 'rem',
+      'padding-right': padding.right + 'rem',
+      'padding-top': padding.top + 'rem',
+      'padding-bottom': padding.bottom + 'rem',
+      'margin-left': margin.left + 'rem',
+      'margin-right': margin.right + 'rem',
+      'margin-top': margin.top + 'rem',
+      'margin-bottom': margin.bottom + 'rem'
     }"
     :class="{
       border: index !== length - 1 && !setting.themeCard?.open && border

@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    BoxSetting: typeof import('./src/views/fragments/toolkits/BoxSetting.vue')['default']
     BuryComment: typeof import('./src/views/fragments/comment/BuryComment.vue')['default']
     CabinetSetting: typeof import('./src/views/fragments/toolkits/CabinetSetting.vue')['default']
     Card: typeof import('./src/components/Card.vue')['default']
@@ -108,6 +109,5 @@ declare module '@vue/runtime-core' {
     Tags: typeof import('./src/views/modules/Tags.vue')['default']
     ThemeSetting: typeof import('./src/views/fragments/toolkits/ThemeSetting.vue')['default']
     ToolKits: typeof import('./src/views/fragments/toolkits/ToolKits.vue')['default']
-    WidthSetting: typeof import('./src/views/fragments/toolkits/WidthSetting.vue')['default']
   }
 }

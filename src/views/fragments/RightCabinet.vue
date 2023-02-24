@@ -7,6 +7,7 @@ const setting = getSetting();
 const route = useRoute();
 const anchors = ref();
 const store = useCatalogStore();
+const active = ref("1");
 
 store.$onAction(({ store, args }) => {
   anchors.value = args[0];
@@ -18,13 +19,12 @@ watch(route, val => {
 </script>
 
 <template>
-  <Card
-    :class="{ 'l-box-bg': !setting.themeCard.open }"
-    id="l-rcabinet"
-    class="fsz-0.9 h-100vh noscroll ofw-auto z-1"
-    :padding="true"
-    style="width: var(--cabinet-width)">
-    <ContextMenu :class="{ 'py-2 px-4': !setting.themeCard.open }">
+  <ContextMenu id="l-rcabinet" class="z-1" style="width: var(--cabinet-width)">
+    <Card
+      class="noscroll fsz-0.9 h-100vh ofw-auto"
+      :class="{ 'l-box-bg': !setting.themeCard.open }"
+      :padding="setting.cabinet.rcabinet.padding"
+      :margin="setting.cabinet.rcabinet.margin">
       <ExpandableBox text="随笔目录" v-if="anchors && anchors.length">
         <template #icon>
           <i-ep-location />
@@ -65,17 +65,23 @@ watch(route, val => {
           </div>
         </div>
       </ExpandableBox>
-      <template #title> 陈列柜设置 </template>
-      <template #content>
-        <CabinetSetting />
-        <el-collapse>
-          <el-collapse-item title="宽度设置">
-            <WidthSetting />
-          </el-collapse-item>
-        </el-collapse>
-      </template>
-    </ContextMenu>
-  </Card>
+    </Card>
+    <template #title> 右陈列柜设置 </template>
+    <template #content>
+      <el-collapse v-model="active" accordion>
+        <el-collapse-item title="统一设置">
+          <div class="ml-4">
+            <CabinetSetting />
+          </div>
+        </el-collapse-item>
+        <el-collapse-item title="盒子模型">
+          <div class="ml-4">
+            <BoxSetting :padding="setting.cabinet.rcabinet.padding" :margin="setting.cabinet.rcabinet.margin" />
+          </div>
+        </el-collapse-item>
+      </el-collapse>
+    </template>
+  </ContextMenu>
 </template>
 
 <style scoped lang="scss">

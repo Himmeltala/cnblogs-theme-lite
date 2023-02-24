@@ -49,7 +49,7 @@ async function vote(voteType: BlogType.VoteType) {
 
 <template>
   <div id="l-essay" class="min-height">
-    <Card :padding="true">
+    <Card >
       <div v-if="!isLocked">
         <el-page-header :icon="null" @back="nav({ path: 'back', router })">
           <template #title>
