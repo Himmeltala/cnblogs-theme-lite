@@ -79,7 +79,7 @@ function cancel() {
     </div>
     <div
       v-show="!comment.isEditingUpdate"
-      class="float-right f-c-e fsz-0.8 l-sec-color"
+      class="float-right f-c-e l-fiv-size l-sec-color"
       :class="{ 'ed-item': !comment.isEditingReplay, ' w-100%': comment.isEditingReplay }">
       <div v-show="!comment.isEditingReplay" class="hover f-c-e" @click="before">
         <el-icon class="mr-1">

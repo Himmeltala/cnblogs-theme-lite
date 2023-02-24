@@ -32,7 +32,7 @@ export function useDirective(Vue: any) {
 
           if (height >= 380) {
             $ele.addClass("hight-code");
-            const $click = $(`<div class="fsz-0.9 l-thr-color hover noselect">展开</div>`);
+            const $click = $(`<div class="l-fiv-size l-thr-color hover">展开</div>`);
             const $modal = $(`<div class="hight-code-modal f-c-c rd-2"></div>`);
             $modal.prepend($click);
 

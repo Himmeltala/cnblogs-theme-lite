@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BlogType } from "@/types/data-type";
-import { closeLoader } from "@/utils/common";
+import { closeLoader, getSetting } from "@/utils/common";
 import { nav } from "@/utils/router-helper";
 import { isOwner } from "@/lite.config";
 import { getLockedEssay, getIsUnlock, getEssay, getEssayCatesAndTags, getPrevNext, getEssayVote, voteEssay } from "@/utils/remote-api";
@@ -14,6 +14,7 @@ const catesTags = await getEssayCatesAndTags(postId);
 const prevNext = await getPrevNext(postId);
 const essayVote = ref(await getEssayVote(postId));
 const cipher = ref("");
+const setting = getSetting();
 
 if (!(essay.value.content && essay.value.text)) isLocked.value = true;
 
@@ -48,8 +49,8 @@ async function vote(voteType: BlogType.VoteType) {
 </script>
 
 <template>
-  <div id="l-essay" class="min-height">
-    <Card >
+  <ContextMenu id="l-essay" class="min-height">
+    <Card :padding="setting.article.padding" :margin="setting.article.margin">
       <div v-if="!isLocked">
         <el-page-header :icon="null" @back="nav({ path: 'back', router })">
           <template #title>
@@ -58,10 +59,10 @@ async function vote(voteType: BlogType.VoteType) {
             </div>
           </template>
           <template #content>
-            <div class="fsz-1.5">{{ essay.text }}</div>
+            <div class="l-for-size">{{ essay.text }}</div>
           </template>
         </el-page-header>
-        <div class="l-sec-color f-c-s mt-4 fsz-0.8">
+        <div class="l-sec-color f-c-s mt-4 l-fiv-size">
           <div class="f-c-c mr-4">
             <el-icon class="mr-1">
               <i-ep-clock />
@@ -89,7 +90,7 @@ async function vote(voteType: BlogType.VoteType) {
         </div>
         <div class="l-sec-color mt-4">
           <div class="mb-2 f-c-s" v-if="catesTags.cates.length > 0">
-            <div class="f-c-c fsz-1">
+            <div class="f-c-c l-for-size">
               <el-icon class="mr-1">
                 <i-ep-folder-opened />
               </el-icon>
@@ -97,7 +98,7 @@ async function vote(voteType: BlogType.VoteType) {
             </div>
             <div
               v-for="(item, index) in catesTags.cates"
-              class="fsz-0.8"
+              class="l-fiv-size"
               :class="{ 'mr-2': index !== catesTags.cates.length - 1 }"
               :key="index">
               <Label class="px-2 py-1.5" @click="nav({ path: '/sort/' + item.href, router })">
@@ -106,7 +107,7 @@ async function vote(voteType: BlogType.VoteType) {
             </div>
           </div>
           <div class="f-c-s" v-if="catesTags.tags.length > 0">
-            <div class="f-c-c fsz-1">
+            <div class="f-c-c l-for-size">
               <el-icon class="mr-1">
                 <i-ep-price-tag />
               </el-icon>
@@ -114,7 +115,7 @@ async function vote(voteType: BlogType.VoteType) {
             </div>
             <div
               v-for="(item, index) in catesTags.tags"
-              class="fsz-0.8"
+              class="l-fiv-size"
               :class="{ 'mr-2': index !== catesTags.tags.length - 1 }"
               :key="index">
               <Label class="px-2 py-1.5" @click="nav({ path: '/label/' + item.text, router })">
@@ -123,9 +124,9 @@ async function vote(voteType: BlogType.VoteType) {
             </div>
           </div>
         </div>
-        <div id="p-content" class="mt-8 fsz-1.1" v-html="essay.content" v-hljs v-catalog v-mathjax />
+        <div id="p-content" class="mt-8 l-thr-size" v-html="essay.content" v-hljs v-catalog v-mathjax />
         <div class="divider" />
-        <div class="l-sec-color f-c-e fsz-0.8">
+        <div class="l-sec-color f-c-e l-fiv-size">
           <div class="f-c-c mr-4">
             <el-icon class="mr-1">
               <i-ep-clock />
@@ -145,7 +146,7 @@ async function vote(voteType: BlogType.VoteType) {
             <span>{{ essay.comm }}条评论</span>
           </div>
         </div>
-        <div class="prev-next mt-10 fsz-0.9">
+        <div class="prev-next mt-10 l-fiv-size">
           <div class="prev hover f-c-s mb-2" v-if="prevNext.prev.href">
             <el-icon>
               <i-ep-d-arrow-left />
@@ -162,7 +163,7 @@ async function vote(voteType: BlogType.VoteType) {
         <div class="my-10 f-c-e">
           <div class="mr-5">
             <el-button plain @click="vote('Digg')">
-              <span class="fsz-0.9"> 点赞 {{ essayVote.diggCount }} </span>
+              <span class="l-fiv-size"> 点赞 {{ essayVote.diggCount }} </span>
               <template #icon>
                 <i-ep-caret-top />
               </template>
@@ -170,7 +171,7 @@ async function vote(voteType: BlogType.VoteType) {
           </div>
           <div>
             <el-button plain @click="vote('Bury')">
-              <span class="fsz-0.9"> 反对 {{ essayVote.buryCount }} </span>
+              <span class="l-fiv-size"> 反对 {{ essayVote.buryCount }} </span>
               <template #icon>
                 <i-ep-caret-bottom />
               </template>
@@ -190,7 +191,11 @@ async function vote(voteType: BlogType.VoteType) {
         </el-form>
       </div>
     </Card>
-  </div>
+    <template #title>随笔盒子模型设置</template>
+    <template #content>
+      <BoxSetting :padding="setting.article.padding" :margin="setting.article.margin" />
+    </template>
+  </ContextMenu>
 </template>
 
 <style lang="scss">
@@ -207,7 +212,7 @@ pre {
   position: relative;
 
   .cblock {
-    --at-apply: fsz-0.9 absolute;
+    --at-apply: l-fiv-size absolute;
     color: #767676;
     padding: 4px;
     right: 0;

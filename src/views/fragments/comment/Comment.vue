@@ -55,7 +55,7 @@ function onEdFinish(response: any) {
             <div class="hover cursor-pointer" @click="nav({ path: item.space })">
               {{ item.author }}
             </div>
-            <div class="fsz-0.8 l-sec-color mt-2 f-c-c">
+            <div class="l-fiv-size l-sec-color mt-2 f-c-c">
               <div :id="'level-' + item.commentId" class="mr-2">
                 <span v-if="anchor === item.commentId" ref="level">{{ item.layer }}</span>
                 <span v-else>{{ item.layer }}</span>
@@ -70,7 +70,7 @@ function onEdFinish(response: any) {
         </div>
         <el-dropdown v-show="!item.isEditingUpdate && !item.isEditingReplay" class="float-right more-item f-c-e">
           <span class="hover">
-            <i-ep-more class="fsz-0.8 l-sec-color hover" />
+            <i-ep-more class="l-fiv-size l-sec-color hover" />
           </span>
           <template #dropdown>
             <el-dropdown-menu>

@@ -7,6 +7,7 @@ import { getSetting, refactorObjectProperties, settingTempl } from "@/utils/comm
 const upload = ref<UploadInstance>();
 const setting = getSetting();
 const dialog = ref(false);
+const resetDialog = ref(false);
 const result = ref();
 
 function exportJson() {
@@ -21,14 +22,7 @@ function exportJson() {
 function confirm() {
   setting.value = refactorObjectProperties(JSON.parse(result.value), settingTempl);
   dialog.value = !dialog.value;
-  ElMessage({
-    message: "导入成功！",
-    type: "success"
-  });
-}
-
-function cancel() {
-  dialog.value = !dialog.value;
+  ElMessage({ message: "导入成功！", type: "success" });
 }
 
 const exceed: UploadProps["onExceed"] = files => {
@@ -48,11 +42,18 @@ const importJson: UploadProps["onChange"] = async file => {
     };
   }
 };
+
+function reset() {
+  setting.value = settingTempl;
+  ElMessage({ message: "成功恢复默认设置！", type: "success" });
+  resetDialog.value = !resetDialog.value;
+}
 </script>
 
 <template>
-  <div class="mb-4">
+  <div class="mb-4 f-c-b">
     <el-button size="small" plain type="primary" @click="exportJson">导出设置</el-button>
+    <el-button size="small" plain @click="resetDialog = !resetDialog">恢复默认</el-button>
   </div>
   <el-upload drag ref="upload" :limit="1" :auto-upload="false" :on-change="importJson" :on-exceed="exceed">
     点击导入 (可拖拽上传)
@@ -61,7 +62,14 @@ const importJson: UploadProps["onChange"] = async file => {
     <div class="mb-10">该操作会覆盖之前的设置，是否继续执行本次操作？</div>
     <div class="f-c-c">
       <el-button size="small" type="primary" @click="confirm">确定</el-button>
-      <el-button size="small" @click="cancel">取消</el-button>
+      <el-button size="small" @click="dialog = !dialog">取消</el-button>
+    </div>
+  </el-dialog>
+  <el-dialog draggable align-center v-model="resetDialog" width="20rem" title="操作提示">
+    <div class="mb-10">建议先导出一份设置做备份，本次操作会恢复所有设置到默认状态。</div>
+    <div class="f-c-c">
+      <el-button size="small" type="primary" @click="reset">确定</el-button>
+      <el-button size="small" @click="resetDialog = !resetDialog">取消</el-button>
     </div>
   </el-dialog>
 </template>

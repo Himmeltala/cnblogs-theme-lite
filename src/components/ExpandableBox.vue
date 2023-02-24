@@ -11,8 +11,8 @@ const props = defineProps({
 });
 
 const record = `${props.text}`;
-if (!setting.value.toggles[record]) {
-  setting.value.toggles[record] = {
+if (!setting.value.cabinet.toggles[record]) {
+  setting.value.cabinet.toggles[record] = {
     open: true,
     show: true
   };
@@ -24,7 +24,7 @@ const content = ref();
 onMounted(() => {
   const height = $(content.value).height();
 
-  if (!setting.value.toggles[record]?.open) {
+  if (!setting.value.cabinet.toggles[record]?.open) {
     content.value.style.height = `${0}px`;
   } else {
     content.value.style.height = `${height}px`;
@@ -32,7 +32,7 @@ onMounted(() => {
 
   toggle = () => {
     let counter = 9;
-    if (setting.value.toggles[record]?.open) {
+    if (setting.value.cabinet.toggles[record]?.open) {
       let cHeight = height;
       const interval = setInterval(() => {
         cHeight -= height / 10;
@@ -40,7 +40,7 @@ onMounted(() => {
         counter--;
         if (counter == 0) {
           content.value.style.height = `${0}px`;
-          setting.value.toggles[record].open = !setting.value.toggles[record].open;
+          setting.value.cabinet.toggles[record].open = !setting.value.cabinet.toggles[record].open;
           clearInterval(interval);
         }
       }, 10);
@@ -52,7 +52,7 @@ onMounted(() => {
         counter--;
         if (counter == 0) {
           content.value.style.height = `${height}px`;
-          setting.value.toggles[record].open = !setting.value.toggles[record].open;
+          setting.value.cabinet.toggles[record].open = !setting.value.cabinet.toggles[record].open;
           clearInterval(interval);
         }
       }, 10);
@@ -62,8 +62,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="l-thr-color" v-show="setting.toggles[record]?.show">
-    <div class="title f-c-b my-5 fsz-1.2 pl-1.5 rd-1">
+  <div class="l-thr-color" v-show="setting.cabinet.toggles[record]?.show">
+    <div class="title f-c-b my-5 l-sec-size pl-1.5 rd-1">
       <div class="f-c-s">
         <div class="f-c-c mr-1">
           <slot name="icon" />
@@ -73,7 +73,7 @@ onMounted(() => {
       <div
         @click="toggle"
         class="f-c-c opacity-70 hover"
-        :class="{ 'arrow-up': !setting.toggles[record]?.open, 'arrow-down': setting.toggles[record]?.open }">
+        :class="{ 'arrow-up': !setting.cabinet.toggles[record]?.open, 'arrow-down': setting.cabinet.toggles[record]?.open }">
         <div class="arrow">
           <i-ep-arrow-down />
         </div>

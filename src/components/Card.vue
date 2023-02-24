@@ -4,15 +4,9 @@ import { getSetting } from "@/utils/common";
 
 const setting = getSetting();
 const props = defineProps({
-  index: {
-    type: Number
-  },
-  length: {
-    type: Number
-  },
-  border: {
+  line: {
     type: Boolean,
-    default: true
+    default: false
   },
   margin: {
     type: Object as PropType<any>,
@@ -39,21 +33,28 @@ const props = defineProps({
   <div
     class="l-card"
     :style="{
-      'background-color': setting.themeCard?.open ? setting.themeCard.color : 'initial',
-      'border-radius': setting.themeCard?.open ? setting.themeCard.radius + 'px' : 'initial',
-      'padding-left': padding.left + 'rem',
-      'padding-right': padding.right + 'rem',
-      'padding-top': padding.top + 'rem',
-      'padding-bottom': padding.bottom + 'rem',
+      'background-color': setting.card?.open ? setting.card.color : 'initial',
+      'border-radius': setting.card?.open ? setting.card.radius + 'px' : 'initial',
       'margin-left': margin.left + 'rem',
       'margin-right': margin.right + 'rem',
       'margin-top': margin.top + 'rem',
       'margin-bottom': margin.bottom + 'rem'
-    }"
-    :class="{
-      border: index !== length - 1 && !setting.themeCard?.open && border
     }">
-    <slot />
+    <div
+      :style="{
+        'padding-left': setting.card?.open ? padding.left + 'rem' : 0,
+        'padding-right': setting.card?.open ? padding.right + 'rem' : 0,
+        'padding-top': padding.top + 'rem',
+        'padding-bottom': setting.card?.open ? padding.bottom + 'rem' : 0
+      }">
+      <div>
+        <slot />
+      </div>
+      <div
+        v-if="line"
+        :style="{ 'margin-top': !setting.card?.open ? padding.bottom + 'rem' : 0 }"
+        :class="{ border: !setting.card?.open }"></div>
+    </div>
   </div>
 </template>
 

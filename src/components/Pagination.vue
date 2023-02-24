@@ -72,7 +72,7 @@ function nexprChange(elIndex: number) {
         </el-icon>
       </el-tooltip>
     </div>
-    <div class="f-c-e my-4" :class="{ 'l-box-bg': !setting.themeCard.open }">
+    <div class="f-c-e my-4" :class="{ 'l-box-bg': !setting.card.open }">
       <Card>
         <el-pagination layout="pager, next" :page-count="pageCount" v-model:current-page="index" @current-change="nexprChange" />
       </Card>

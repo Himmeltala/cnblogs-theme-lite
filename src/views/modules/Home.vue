@@ -24,11 +24,17 @@ async function nexpr(e: any) {
 </script>
 
 <template>
-  <div id="l-home" class="min-height">
-    <Pagination @prev="prev" @next="next" @nexpr="nexpr" :page-count="count" :disabled="setting.openPager">
-      <template #content>
-        <EssayItem v-if="data" :data="data" />
-      </template>
-    </Pagination>
-  </div>
+  <ContextMenu>
+    <div id="l-home" class="min-height">
+      <Pagination @prev="prev" @next="next" @nexpr="nexpr" :page-count="count" :disabled="setting.openPager">
+        <template #content>
+          <EssayItem v-if="data" :data="data" />
+        </template>
+      </Pagination>
+    </div>
+    <template #title>列表项盒子模型设置</template>
+    <template #content>
+      <BoxSetting :padding="setting.listing.padding" :margin="setting.listing.margin" />
+    </template>
+  </ContextMenu>
 </template>

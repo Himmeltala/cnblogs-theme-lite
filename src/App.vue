@@ -42,20 +42,20 @@ onMounted(() => {
     </ContextMenu>
     <div
       id="l-lstrip"
-      v-show="!setting.cabinet.pinLeft"
+      v-show="!setting.cabinet.left.pin"
       class="fixed left-0 top-47.5vh w-5px h-5vh rd-2 cursor-pointer opacity-70 l-strip-bg"></div>
     <Suspense>
       <LeftCabinet
-        :style="{ left: setting.cabinet.pinLeft && setting.cabinet.break ? setting.cabinet.left + 'vw' : 0 }"
+        :style="{ left: setting.cabinet.left.pin && setting.cabinet.position.break ? setting.cabinet.position.left + 'vw' : 0 }"
         :class="{
-          'show-lcabinet fixed top-0 left-0 z-2': !lstrip && !setting.cabinet.pinLeft,
-          'hidden-lcabinet fixed top-0 left-0': lstrip && !setting.cabinet.pinLeft,
-          'fixed-lcabinet fixed top-0': setting.cabinet.pinLeft && !setting.cabinet.break,
-          'fixed top-0': setting.cabinet.pinLeft && setting.cabinet.break
+          'show-lcabinet fixed top-0 left-0 z-2': !lstrip && !setting.cabinet.left.pin,
+          'hidden-lcabinet fixed top-0 left-0': lstrip && !setting.cabinet.left.pin,
+          'fixed-lcabinet fixed top-0': setting.cabinet.left.pin && !setting.cabinet.position.break,
+          'fixed top-0': setting.cabinet.left.pin && setting.cabinet.position.break
         }" />
     </Suspense>
   </div>
-  <div id="l-content" class="z-1" :class="{ 'l-box-bg py-2 px-4': !setting.themeCard.open }">
+  <div id="l-content" class="z-1" :class="{ 'l-box-bg py-2 px-4': !setting.card.open }">
     <div id="l-nail"></div>
     <div id="l-main">
       <RouterView v-slot="{ Component }">
@@ -69,7 +69,7 @@ onMounted(() => {
       </RouterView>
     </div>
     <Card>
-      <div class="f-c-c my-2 fsz-0.8 l-sec-color h-4">
+      <div class="f-c-c my-2 l-six-size l-sec-color h-4">
         Created By
         <a class="hover mx-1" href="https://github.com/Himmelbleu/cnblogs-theme-lite" target="__blank"> Himmelbleu, </a>
         powered by
@@ -83,15 +83,15 @@ onMounted(() => {
     <div id="l-matte" class="fixed top-0 left-0 z-1 opacity-50 l-matee-bg" :class="{ 'w-100% h-100vh': !rstrip || !lstrip }"></div>
     <div
       id="l-rstrip"
-      v-show="!setting.cabinet.pinRight"
+      v-show="!setting.cabinet.right.pin"
       class="fixed right-0 top-47.5vh w-5px h-5vh rd-2 cursor-pointer opacity-70 l-strip-bg"></div>
     <RightCabinet
-      :style="{ right: setting.cabinet.pinRight && setting.cabinet.break ? setting.cabinet.right + 'vw' : 0 }"
+      :style="{ right: setting.cabinet.right.pin && setting.cabinet.position.break ? setting.cabinet.position.right + 'vw' : 0 }"
       :class="{
-        'show-rcabinet fixed top-0 right-0 z-2': !rstrip && !setting.cabinet.pinRight,
-        'hidden-rcabinet fixed top-0 right-0': rstrip && !setting.cabinet.pinRight,
-        'fixed-rcabinet fixed top-0': setting.cabinet.pinRight && !setting.cabinet.break,
-        'fixed top-0': setting.cabinet.pinRight && setting.cabinet.break
+        'show-rcabinet fixed top-0 right-0 z-2': !rstrip && !setting.cabinet.right.pin,
+        'hidden-rcabinet fixed top-0 right-0': rstrip && !setting.cabinet.right.pin,
+        'fixed-rcabinet fixed top-0': setting.cabinet.right.pin && !setting.cabinet.position.break,
+        'fixed top-0': setting.cabinet.right.pin && setting.cabinet.position.break
       }" />
     <ToolKits />
   </div>

@@ -94,7 +94,6 @@ declare module '@vue/runtime-core' {
     IEpView: typeof import('~icons/ep/view')['default']
     Label: typeof import('./src/components/Label.vue')['default']
     LeftCabinet: typeof import('./src/views/fragments/LeftCabinet.vue')['default']
-    LiteSetting: typeof import('./src/views/fragments/toolkits/LiteSetting.vue')['default']
     ManageSetting: typeof import('./src/views/fragments/toolkits/ManageSetting.vue')['default']
     OtherSetting: typeof import('./src/views/fragments/toolkits/OtherSetting.vue')['default']
     Pagination: typeof import('./src/components/Pagination.vue')['default']

@@ -52,7 +52,7 @@
   @include hover($border-color: all, $font-color: false);
 
   textarea {
-    --at-apply: rd-2 p-2 fsz-0.9;
+    --at-apply: rd-2 p-2 l-fiv-size;
     background-color: var(--l-textarea-bg);
     width: 100%;
     height: 15rem;

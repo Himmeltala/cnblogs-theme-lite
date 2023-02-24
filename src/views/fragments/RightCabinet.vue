@@ -21,10 +21,10 @@ watch(route, val => {
 <template>
   <ContextMenu id="l-rcabinet" class="z-1" style="width: var(--cabinet-width)">
     <Card
-      class="noscroll fsz-0.9 h-100vh ofw-auto"
-      :class="{ 'l-box-bg': !setting.themeCard.open }"
-      :padding="setting.cabinet.rcabinet.padding"
-      :margin="setting.cabinet.rcabinet.margin">
+      class="noscroll l-fiv-size h-100vh ofw-auto"
+      :class="{ 'l-box-bg px-2': !setting.card.open }"
+      :padding="setting.cabinet.right.padding"
+      :margin="setting.cabinet.right.margin">
       <ExpandableBox text="随笔目录" v-if="anchors && anchors.length">
         <template #icon>
           <i-ep-location />
@@ -76,7 +76,7 @@ watch(route, val => {
         </el-collapse-item>
         <el-collapse-item title="盒子模型">
           <div class="ml-4">
-            <BoxSetting :padding="setting.cabinet.rcabinet.padding" :margin="setting.cabinet.rcabinet.margin" />
+            <BoxSetting :padding="setting.cabinet.right.padding" :margin="setting.cabinet.right.margin" />
           </div>
         </el-collapse-item>
       </el-collapse>

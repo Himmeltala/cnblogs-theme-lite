@@ -2,8 +2,10 @@
 import { PropType } from "vue";
 import { CustType } from "@/types/data-type";
 import { nav } from "@/utils/router-helper";
+import { getSetting } from "@/utils/common";
 
 const router = useRouter();
+const setting = getSetting();
 
 defineProps({
   data: {
@@ -14,11 +16,11 @@ defineProps({
 </script>
 
 <template>
-  <Card v-for="(item, index) in data" :index="index" :key="index" :length="data.length">
+  <Card v-for="(item, index) in data" :key="index" line :padding="setting.listing.padding" :margin="setting.listing.margin">
     <div class="head f-c-b" :class="{ 'mb-5': item.surface }">
       <el-image v-if="index % 2 !== 0 && item.surface" class="cover h-35 rd-2" :src="item.surface" fit="cover" />
       <div :class="{ 'w-100%': !item.surface, 'has-cover w-60%': item.surface }">
-        <div class="title hover f-c-s mb-5 fsz-1.3" @click="nav({ path: '/p/' + item.id, router })">
+        <div class="title hover f-c-s mb-5 l-pri-size" @click="nav({ path: '/p/' + item.id, router })">
           {{ item.text }}
         </div>
         <div class="desc l-thr-color" :class="{ 'mb-5': !item.surface, 'f-c-s': item.isLocked }">
@@ -27,7 +29,7 @@ defineProps({
       </div>
       <el-image v-if="index % 2 === 0 && item.surface" class="cover h-35 rd-2" :src="item.surface" fit="cover" />
     </div>
-    <div class="read hover f-c-s mb-4 fsz-0.9">
+    <div class="read hover f-c-s mb-4 l-fiv-size">
       <i-ep-caret-right />
       <router-link class="ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id"> 阅读全文 </router-link>
     </div>

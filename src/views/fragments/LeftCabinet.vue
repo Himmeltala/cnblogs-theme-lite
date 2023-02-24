@@ -55,11 +55,11 @@ async function unfocus() {
 <template>
   <ContextMenu id="l-lcabinet" class="z-1" style="width: var(--cabinet-width)">
     <Card
-      class="h-100vh fsz-0.9"
-      :class="{ 'l-box-bg': !setting.themeCard.open }"
-      :padding="setting.cabinet.lcabinet.padding"
-      :margin="setting.cabinet.lcabinet.margin">
-      <div class="noscroll ofw-auto h-96%">
+      class="l-fiv-size"
+      :class="{ 'l-box-bg px-2': !setting.card.open }"
+      :padding="setting.cabinet.left.padding"
+      :margin="setting.cabinet.left.margin">
+      <div class="noscroll ofw-auto h-96vh">
         <ExpandableBox text="博客信息">
           <template #icon>
             <i-ep-house />
@@ -137,7 +137,7 @@ async function unfocus() {
           </el-tabs>
         </ExpandableBox>
       </div>
-      <div class="noscroll ofw-auto h-4% l-thr-color f-c wce-nowrap">
+      <div class="noscroll ofw-auto h-4vh l-thr-color f-c wce-nowrap">
         <div class="hover mr-4" @click="nav({ path: 'https://www.cnblogs.com' })">博客园</div>
         <div class="hover mr-4" @click="nav({ path: '/', router })">首页</div>
         <div
@@ -170,7 +170,7 @@ async function unfocus() {
         </el-collapse-item>
         <el-collapse-item title="盒子模型">
           <div class="ml-4">
-            <BoxSetting :padding="setting.cabinet.lcabinet.padding" :margin="setting.cabinet.lcabinet.margin" />
+            <BoxSetting :padding="setting.cabinet.left.padding" :margin="setting.cabinet.left.margin" />
           </div>
         </el-collapse-item>
       </el-collapse>

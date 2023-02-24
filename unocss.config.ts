@@ -1,22 +1,12 @@
 import { Rule, UserShortcuts } from "unocss";
 
 const rules = <Rule<any>[]>[
-  // 字体
-  [/^fsz-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "font-size": `${d}rem !important` })],
-  // 间距
-  [/^lts-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "letter-spacing": `${d}rem !important` })],
-  // 行高
-  [/^leh-(\d+\.{0,1}\d{0,2})$/, ([, d]) => ({ "line-height": `${d} !important` })],
+  // fon size
+  [/^l-([a-z]*)-size$/, ([, d]) => ({ "font-size": `var(--l-${d}-size) !important` })],
   // overflow
-  [
-    /^ofw-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/,
-    ([, d]) => ({ overflow: `${d}` })
-  ],
+  [/^ofw-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/, ([, d]) => ({ overflow: `${d}` })],
   // white-space
-  [
-    /^wce-(normal|pre|nowrap|pre-wrap|pre-line)$/,
-    ([, d]) => ({ "white-space": `${d} !important` })
-  ],
+  [/^wce-(normal|pre|nowrap|pre-wrap|pre-line)$/, ([, d]) => ({ "white-space": `${d} !important` })],
   // font color
   [/^l-([a-z]*)-color$/, ([, d]) => ({ color: `var(--l-${d}-color) !important` })],
   // background color

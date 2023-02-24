@@ -7,9 +7,8 @@ const setting = getSetting();
 
 <template>
   <div v-if="pcDevice">
-    <el-tooltip content="建议开启，具体请阅读仓库自述文件。" placement="top">
-      <span>博客数据从<span v-show="!setting.cabinet.remote">本地</span><span v-show="setting.cabinet.remote">远程</span>加载</span>
-    </el-tooltip>
+    <span>博客数据从<span v-show="!setting.cabinet.remote">本地</span><span v-show="setting.cabinet.remote">远程</span>加载</span>
     <el-switch v-model="setting.cabinet.remote" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
+    <div class="mt-4 l-fiv-size l-thr-color">博客园自带一个国外请求，导致加载变慢，所以建议开启该选项，具体阅读仓库自述文件。</div>
   </div>
 </template>

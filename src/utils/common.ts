@@ -111,92 +111,39 @@ export function replaceText(source: string, regExps: RegExp[], replacement?: str
  * Lite 主题设置模板对象
  */
 export const settingTempl: CustType.ISetting = {
-  toggles: {
-    我的技术栈: {
-      open: true,
-      show: true
-    },
-    博客信息: {
-      open: true,
-      show: true
-    },
-    常用链接: {
-      open: true,
-      show: true
-    },
-    博客数据: {
-      open: true,
-      show: true
-    },
-    推荐书籍: {
-      open: true,
-      show: true
-    }
-  },
-  themeMode: "dark",
-  themeColor: "#409eff",
+  theme: { mode: "dark", color: "#409eff" },
   openToolKits: true,
   githubPostion: "left",
   openPager: false,
-  contentWidth: 50,
+  font: {
+    size: { level1: 1.3, level2: 1.2, level3: 1.1, level4: 1, level5: 0.9, level6: 0.8 },
+    light: { color: { level1: "#393939", level2: "#4e4e4e", level3: "#707070" } },
+    dark: { color: { level1: "#a7a7a7", level2: "#8d9095", level3: "#878787" } }
+  },
+  content: { width: 50, padding: { left: 0, right: 0, top: 0, bottom: 0 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
+  listing: { padding: { left: 1, right: 1, top: 0, bottom: 1.5 }, margin: { left: 0, right: 0, top: 0, bottom: 1 } },
+  article: { padding: { left: 1, right: 1, top: 1, bottom: 1 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
   cabinet: {
-    lcabinet: {
-      padding: {
-        left: 1,
-        right: 1,
-        top: 0,
-        bottom: 0
-      },
-      margin: {
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0
-      }
+    position: { left: 0, right: 0, break: false },
+    left: { pin: false, padding: { left: 1, right: 1, top: 0, bottom: 0 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
+    right: { pin: false, padding: { left: 1, right: 1, top: 0, bottom: 0 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
+    toggles: {
+      我的技术栈: { open: true, show: true },
+      博客信息: { open: true, show: true },
+      常用链接: { open: true, show: true },
+      博客数据: { open: true, show: true },
+      推荐书籍: { open: true, show: true }
     },
-    rcabinet: {
-      padding: {
-        left: 1,
-        right: 1,
-        top: 0,
-        bottom: 0
-      },
-      margin: {
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0
-      }
-    },
-    left: 0,
-    right: 0,
     width: 17.5,
-    break: false,
-    remote: true,
-    pinLeft: false,
-    pinRight: false
+    remote: true
   },
-  background: {
-    open: false,
-    filter: 6,
-    src: ""
-  },
-  themeCard: {
+  background: { open: false, filter: 6, src: "" },
+  card: {
     color: "rgba(31, 31, 31, 1)",
     open: false,
     radius: 10,
-    padding: {
-      left: 1,
-      right: 1,
-      top: 1,
-      bottom: 1
-    },
-    margin: {
-      left: 0,
-      right: 1,
-      top: 0,
-      bottom: 1
-    }
+    padding: { left: 1, right: 1, top: 1, bottom: 1 },
+    margin: { left: 0, right: 1, top: 0, bottom: 1 }
   }
 };
 
@@ -208,9 +155,7 @@ export const settingTempl: CustType.ISetting = {
  * @returns
  */
 export function refactorObjectProperties(source: any, objectTemplate: any) {
-  if (!source) {
-    source = objectTemplate;
-  }
+  if (!source) source = objectTemplate;
   const sourceKeys = Object.keys(source);
   const templateKeys = Object.keys(objectTemplate);
 
@@ -218,16 +163,13 @@ export function refactorObjectProperties(source: any, objectTemplate: any) {
     if (sourceKeys.length > templateKeys.length) {
       sourceKeys.forEach(sourceKey => {
         const nonentity = templateKeys.find(templateKey => templateKey === sourceKey);
-        if (!nonentity) {
-          Reflect.deleteProperty(source, sourceKey);
-        }
+        if (!nonentity) Reflect.deleteProperty(source, sourceKey);
       });
     } else if (sourceKeys.length < templateKeys.length) {
       templateKeys.forEach(templateKey => {
         const nonentity = sourceKeys.find(sourceKey => templateKey === sourceKey);
-        if (!nonentity) {
-          source[templateKey] = objectTemplate[templateKey];
-        } else {
+        if (!nonentity) source[templateKey] = objectTemplate[templateKey];
+        else {
           if (typeof objectTemplate[templateKey] === "object") {
             refactorObjectProperties(source[templateKey], objectTemplate[templateKey]);
           }
@@ -242,9 +184,7 @@ export function refactorObjectProperties(source: any, objectTemplate: any) {
         }
         refactorObjectProperties(source[templateKey], objectTemplate[templateKey]);
       } else if (typeof objectTemplate[templateKey] !== "object") {
-        if (typeof source[templateKey] === "object") {
-          source[templateKey] = objectTemplate[templateKey];
-        }
+        if (typeof source[templateKey] === "object") source[templateKey] = objectTemplate[templateKey];
       }
     });
   }

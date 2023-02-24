@@ -6,21 +6,18 @@ const active = ref("1");
 const disabled = ref(inspect());
 
 function inspect() {
-  if (setting.value.cabinet.pinLeft || setting.value.cabinet.pinRight) {
-    setting.value.contentWidth = 50;
+  if (setting.value.cabinet.left.pin || setting.value.cabinet.right.pin) {
+    setting.value.content.width = 50;
     return false;
   } else {
     return true;
   }
 }
 
-watch(setting, (val, old) => {
-  if (val.cabinet.pinLeft != old.cabinet.pinLeft || val.cabinet.pinRight != old.cabinet.pinRight) {
-    disabled.value = inspect();
-  }
-
+watch(setting, val => {
+  disabled.value = inspect();
   document.querySelector("html").style.setProperty("--cabinet-width", val.cabinet.width + "rem");
-  document.querySelector("html").style.setProperty("--content-width", val.contentWidth + "vw");
+  document.querySelector("html").style.setProperty("--content-width", val.content.width + "vw");
 });
 </script>
 
@@ -28,28 +25,37 @@ watch(setting, (val, old) => {
   <el-collapse v-model="active" accordion>
     <el-collapse-item title="位置设置">
       <div class="mb-4">
-        <span><span v-show="!setting.cabinet.pinLeft">隐藏</span><span v-show="setting.cabinet.pinLeft">固定</span>左陈列柜</span>
-        <el-switch v-model="setting.cabinet.pinLeft" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
+        <span>
+          <span v-show="!setting.cabinet.left.pin">隐藏</span>
+          <span v-show="setting.cabinet.left.pin">固定</span>左陈列柜
+        </span>
+        <el-switch v-model="setting.cabinet.left.pin" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
       </div>
       <div class="mb-4">
-        <span><span v-show="!setting.cabinet.pinRight">隐藏</span><span v-show="setting.cabinet.pinRight">固定</span>右陈列柜</span>
-        <el-switch v-model="setting.cabinet.pinRight" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
+        <span>
+          <span v-show="!setting.cabinet.right.pin">隐藏</span>
+          <span v-show="setting.cabinet.right.pin">固定</span>右陈列柜
+        </span>
+        <el-switch v-model="setting.cabinet.right.pin" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
       </div>
       <div class="mb-4">
-        <span><span v-show="setting.cabinet.break">脱离</span><span v-show="!setting.cabinet.break">贴住</span>中间内容</span>
-        <el-switch v-model="setting.cabinet.break" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
+        <span>
+          <span v-show="setting.cabinet.position.break">脱离</span>
+          <span v-show="!setting.cabinet.position.break">贴住</span>中间内容
+        </span>
+        <el-switch v-model="setting.cabinet.position.break" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
       </div>
-      <div class="mb-4" v-show="setting.cabinet.break">
+      <div class="mb-4" v-show="setting.cabinet.position.break">
         <div class="mb-2">左陈列柜偏移量</div>
-        <el-slider v-model="setting.cabinet.left" size="small" />
+        <el-input-number v-model="setting.cabinet.position.left" :precision="2" :min="0" ::max="100" size="small" />
       </div>
-      <div class="mb-4" v-show="setting.cabinet.break">
+      <div class="mb-4" v-show="setting.cabinet.position.break">
         <div class="mb-2">右陈列柜偏移量</div>
-        <el-slider v-model="setting.cabinet.right" size="small" />
+        <el-input-number v-model="setting.cabinet.position.right" :precision="2" :min="0" ::max="100" size="small" />
       </div>
     </el-collapse-item>
     <el-collapse-item title="选项开关">
-      <div v-for="(v, k, i) in setting.toggles" class="mt-4">
+      <div v-for="(v, k, i) in setting.cabinet.toggles" class="mt-4">
         <span><span v-show="!v.show">隐藏</span><span v-show="v.show">显示</span>{{ k }}项</span>
         <el-switch v-model="v.show" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
       </div>
@@ -61,7 +67,7 @@ watch(setting, (val, old) => {
       </div>
       <div>
         <div class="mb-2">设置中间内容宽度</div>
-        <el-slider :disabled="!disabled" :min="50" :step="1" :max="60" v-model="setting.contentWidth" size="small" />
+        <el-slider :disabled="!disabled" :min="50" :step="1" :max="60" v-model="setting.content.width" size="small" />
       </div>
     </el-collapse-item>
   </el-collapse>

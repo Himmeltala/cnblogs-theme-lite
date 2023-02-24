@@ -19,7 +19,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="f-c fsz-0.9 l-sec-color" :style="{ 'justify-content': align }">
+  <div class="f-c l-fiv-size l-sec-color" :style="{ 'justify-content': align }">
     <div class="mr-3 f-c-c">
       <i-ep-clock class="mr-1" />
       {{ data.date }}

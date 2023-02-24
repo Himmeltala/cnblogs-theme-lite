@@ -8,13 +8,11 @@ const menu = ref<HTMLElement>();
 const panel = ref<HTMLElement>();
 const head = ref<HTMLElement>();
 
-const { x, y, style } = useDraggable(head);
+const { x, y } = useDraggable(head);
 
 let close = () => {};
 
 onMounted(() => {
-  panel.value.style.display = "none";
-
   menu.value.onmouseup = e => {
     if (e.button == 2) {
       const panels = document.querySelectorAll(".l-menu-panel");
@@ -25,8 +23,8 @@ onMounted(() => {
         }
       });
 
-      panel.value.style.left = e.clientX + "px";
-      panel.value.style.top = e.clientY + "px";
+      panel.value.style.left = `${e.clientX}px`;
+      panel.value.style.top = `${e.clientY}px`;
       panel.value.style.display = "block";
     }
   };
@@ -43,13 +41,13 @@ onMounted(() => {
     <Teleport to="body">
       <div
         ref="panel"
-        :class="{ 'l-box-bg': !setting.themeCard.open }"
+        :class="{ 'l-box-bg': !setting.card.open }"
         :id="'l-panel-' + timestamp"
-        :style="style"
-        class="l-menu-panel z-99 fixed">
+        :style="{ left: 'calc(' + x + 'px + 1rem)', top: 'calc(' + y + 'px + 1rem)' }"
+        class="l-menu-panel z-99 fixed hidden">
         <Card>
           <div ref="head" class="head px-4 pt-4 f-c-b mb-6 cursor-move">
-            <div class="title mr-10">
+            <div class="title mr-10 l-for-size pl-1.5 rd-1">
               <slot name="title" />
             </div>
             <div class="hover f-c-c" @click="close">
@@ -64,3 +62,9 @@ onMounted(() => {
     </Teleport>
   </div>
 </template>
+
+<style scoped lang="scss">
+.title {
+  border-left: 4px solid var(--el-color-primary);
+}
+</style>

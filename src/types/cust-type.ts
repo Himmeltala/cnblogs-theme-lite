@@ -58,15 +58,7 @@ export interface IComment {
 
 export interface ITagColl {
   text: string;
-  array: Array<{
-    id: string;
-    title: string;
-    href: string;
-    date: string;
-    view: string;
-    comm: string;
-    digg: string;
-  }>;
+  array: Array<{ id: string; title: string; href: string; date: string; view: string; comm: string; digg: string }>;
 }
 
 export interface ILite {
@@ -77,19 +69,11 @@ export interface ILite {
   // 主题配置项
   theme?: {};
   // 侧边栏配置项
-  cabinet?: {
-    avatar?: string;
-    signature?: string;
-    navs?: { href: string; text?: string; svg?: string; img?: string }[];
-  };
-  // 博客设置
-  setting?: {};
+  cabinet?: { avatar?: string; signature?: string; navs?: { href: string; text?: string; svg?: string; img?: string }[] };
   // 目录配置项
   catalog?: {
     level?: boolean;
   };
-  // 导航栏配置项
-  navor?: {};
   // 技能栈配置项
   graph?: {
     strokeColor?: string;
@@ -191,63 +175,35 @@ export interface IPrevNext {
   next: PrevNextType;
 }
 
-type ToggleType = Record<
-  string,
-  {
-    open: boolean;
-    show: boolean;
-  }
->;
+type ToggleType = Record<string, { open: boolean; show: boolean }>;
 
 /**
  * Lite 主题设置数据类型
  */
 export interface ISetting {
-  toggles?: ToggleType;
-  themeMode?: string;
-  themeColor?: string;
-  themeCard?: {
-    padding?: {
-      left: number;
-      right: number;
-      top: number;
-      bottom: number;
-    };
-    margin?: {
-      left: number;
-      right: number;
-      top: number;
-      bottom: number;
-    };
-    radius?: number;
-    color?: string;
-    open?: boolean;
+  theme?: { color?: string; mode?: string };
+  font?: {
+    size?: { level1?: number; level2?: number; level3?: number; level4?: number; level5?: number; level6?: number };
+    dark?: { color?: { level1?: string; level2?: string; level3?: string } };
+    light?: { color?: { level1?: string; level2?: string; level3?: string } };
   };
-  background?: {
-    open?: boolean;
-    filter?: number;
-    src?: string;
-  };
+  card?: { padding?: IBox; margin?: IBox; radius?: number; color?: string; open?: boolean };
+  background?: { src?: string; open?: boolean; filter?: number };
+  listing?: { padding?: IBox; margin?: IBox };
+  article?: { padding?: IBox; margin?: IBox };
+  toolkits?: { pin?: boolean };
   openToolKits?: boolean;
   openPager?: boolean;
   githubPostion?: "left" | "right";
-  contentWidth?: number;
+  content?: { width?: number; padding?: IBox; margin?: IBox };
   cabinet?: {
-    lcabinet?: {
-      padding?: IBox;
-      margin?: IBox;
-    };
-    rcabinet?: {
-      padding?: IBox;
-      margin?: IBox;
-    };
-    left?: number;
-    right?: number;
+    position?: { left?: number; right?: number; break?: boolean };
+    left?: { pin?: boolean; padding?: IBox; margin?: IBox };
+    right?: { pin?: boolean; padding?: IBox; margin?: IBox };
+    toggles?: ToggleType;
     width?: number;
     break?: boolean;
     remote?: boolean;
-    pinLeft?: boolean;
-    pinRight?: boolean;
   };
 }
 

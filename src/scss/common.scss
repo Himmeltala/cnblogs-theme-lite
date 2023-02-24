@@ -39,14 +39,6 @@
   }
 }
 
-.noselect {
-  outline: none;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-}
-
 .min-height {
   min-height: calc(100vh - 3.25rem);
 }

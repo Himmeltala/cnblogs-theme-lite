@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { pcDevice } from "@/lite.config";
 import { nav } from "@/utils/router-helper";
 import { getSetting } from "@/utils/common";
-import { useToolKitsSettingStore } from "@/store";
 
 const setting = getSetting();
 const router = useRouter();
-const { toolKitsSetting } = storeToRefs(useToolKitsSettingStore());
+const active = ref("1");
+const dialog = ref(false);
 
 function moveToTopNail() {
   document.querySelector("#l-nail").scrollIntoView();
@@ -13,36 +14,36 @@ function moveToTopNail() {
 
 function changeDayTime() {
   const html = document.querySelector("html");
-  if (setting.value.themeMode === "dark") {
+  if (setting.value.theme.mode === "dark") {
     html.className = "light";
-    setting.value.themeMode = "light";
+    setting.value.theme.mode = "light";
   } else {
     html.className = "dark";
-    setting.value.themeMode = "dark";
+    setting.value.theme.mode = "dark";
   }
 }
 </script>
 
 <template>
-  <div id="toolkits" class="noselect fixed right-15 top-65vh fsz-1.2 z-1">
+  <div id="l-toolkits" class="fixed right-15 top-65vh l-thr-size z-1">
     <div class="relative">
       <Card
-        :class="{ 'l-box-bg': !setting.themeCard.open, 'show-0': setting.openToolKits, 'close-0': !setting.openToolKits }"
+        :class="{ 'l-box-bg': !setting.card.open, 'show-0': setting.openToolKits, 'close-0': !setting.openToolKits }"
         class="back-home absolute hover left-0 w-8 h-8 f-c-c rd-2"
         @click="nav({ path: 'back', router })">
         <i-ep-back />
       </Card>
       <Card
-        :class="{ 'l-box-bg': !setting.themeCard.open, 'show-1': setting.openToolKits, 'close-1': !setting.openToolKits }"
+        :class="{ 'l-box-bg': !setting.card.open, 'show-1': setting.openToolKits, 'close-1': !setting.openToolKits }"
         class="back-top absolute hover left-0 w-8 h-8 f-c-c rd-2"
         @click="moveToTopNail">
         <i-ep-position />
       </Card>
       <Card
-        :class="{ 'l-box-bg': !setting.themeCard.open, 'show-2': setting.openToolKits, 'close-2': !setting.openToolKits }"
+        :class="{ 'l-box-bg': !setting.card.open, 'show-2': setting.openToolKits, 'close-2': !setting.openToolKits }"
         @click="changeDayTime"
         class="daytime absolute hover left-0 w-8 h-8 f-c-c rd-2">
-        <template v-if="setting.themeMode === 'light'">
+        <template v-if="setting.theme.mode === 'light'">
           <i-ep-sunny />
         </template>
         <template v-else>
@@ -50,20 +51,55 @@ function changeDayTime() {
         </template>
       </Card>
       <Card
-        :class="{ 'l-box-bg': !setting.themeCard.open, 'show-3': setting.openToolKits, 'close-3': !setting.openToolKits }"
-        @click="toolKitsSetting = !toolKitsSetting"
+        :class="{ 'l-box-bg': !setting.card.open, 'show-3': setting.openToolKits, 'close-3': !setting.openToolKits }"
+        @click="dialog = !dialog"
         class="setting absolute hover left-0 w-8 h-8 f-c-c rd-2">
         <i-ep-setting class="rotate-setting" />
       </Card>
       <Card
         @click="setting.openToolKits = !setting.openToolKits"
-        :class="{ 'l-box-bg': !setting.themeCard.open, 'show-toolkits': setting.openToolKits, 'close-toolkits': !setting.openToolKits }"
+        :class="{ 'l-box-bg': !setting.card.open, 'show-toolkits': setting.openToolKits, 'close-toolkits': !setting.openToolKits }"
         class="kits-box absolute hover top-40 left-0 w-8 h-8 f-c-c rd-2">
         <i-ep-arrow-right />
       </Card>
     </div>
   </div>
-  <LiteSetting />
+  <el-dialog draggable v-model="dialog" title="自定义博客" align-center width="25rem">
+    <el-collapse v-model="active" accordion>
+      <el-collapse-item v-if="pcDevice">
+        <template #title>
+          <span class="l-for-size">陈列柜设置</span>
+        </template>
+        <div class="ml-4">
+          <CabinetSetting />
+        </div>
+      </el-collapse-item>
+      <el-collapse-item>
+        <template #title>
+          <span class="l-for-size">主题设置</span>
+        </template>
+        <ThemeSetting />
+      </el-collapse-item>
+      <el-collapse-item>
+        <template #title>
+          <span class="l-for-size">其他设置</span>
+        </template>
+        <OtherSetting />
+      </el-collapse-item>
+      <el-collapse-item>
+        <template #title>
+          <span class="l-for-size">管理设置</span>
+        </template>
+        <ManageSetting />
+      </el-collapse-item>
+      <el-collapse-item>
+        <template #title>
+          <span class="l-for-size">隐藏设置</span>
+        </template>
+        <SecrecySetting />
+      </el-collapse-item>
+    </el-collapse>
+  </el-dialog>
 </template>
 
 <style scoped lang="scss">

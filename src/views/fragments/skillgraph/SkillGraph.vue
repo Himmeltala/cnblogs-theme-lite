@@ -6,14 +6,14 @@ import { __LITE_CONFIG__ } from "@/lite.config";
 const setting = getSetting();
 
 watch(setting, (val, old) => {
-  if (val.themeColor != old.themeColor) {
-    createRadar(110, setting.value.themeColor, __LITE_CONFIG__.graph);
+  if (val.theme.color != old.theme.color) {
+    createRadar(110, setting.value.theme.color, __LITE_CONFIG__.graph);
   }
 });
 
 onMounted(() => {
   if (__LITE_CONFIG__.graph) {
-    createRadar(110, setting.value.themeColor, __LITE_CONFIG__.graph);
+    createRadar(110, setting.value.theme.color, __LITE_CONFIG__.graph);
   }
 });
 </script>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { getTagPageList } from "@/utils/remote-api";
-import { closeLoader } from "@/utils/common";
+import { closeLoader, getSetting } from "@/utils/common";
 
 const route = useRoute();
 const data = await getTagPageList(String(route.params.tag));
-
-let tagName = ref(data.text);
-let tagList = ref(data.array);
+const tagName = ref(data.text);
+const tagList = ref(data.array);
+const setting = getSetting();
 
 closeLoader();
 
@@ -18,39 +18,25 @@ watch(route, async () => {
 </script>
 
 <template>
-  <div id="l-tagcoll" class="min-height">
-    <div class="fsz-1.25 mb-5 mt-4">{{ tagName }}</div>
-    <div class="content">
-      <Card class="item mr-6 mb-6 pb-4" v-for="(item, index) in tagList" :key="index">
-        <div class="fsz-1.2">
+  <ContextMenu>
+    <div id="l-tagcoll" class="min-height">
+      <div class="l-sec-size mb-5 mt-4">{{ tagName }}</div>
+      <Card v-for="(item, index) in tagList" :key="index" line :padding="setting.listing.padding" :margin="setting.listing.margin">
+        <div class="l-sec-size">
           <router-link class="hover" :to="'/p/' + item.id">
             {{ item.title }}
           </router-link>
         </div>
-        <div class="f-c-s fsz-0.9 mt-6">
-          <el-icon>
-            <i-ep-caret-right />
-          </el-icon>
+        <div class="f-c-s l-fiv-size mt-4">
+          <i-ep-caret-right />
           <router-link class="hover ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id"> 阅读全文 </router-link>
         </div>
-        <EssaySynopsis class="mt-6" :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
+        <EssaySynopsis class="mt-4" :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
       </Card>
     </div>
-  </div>
+    <template #title>列表项盒子模型设置</template>
+    <template #content>
+      <BoxSetting :padding="setting.listing.padding" :margin="setting.listing.margin" />
+    </template>
+  </ContextMenu>
 </template>
-
-<style scoped lang="scss">
-.content {
-  @include flex($justify: space-between, $items: stretch, $content: stretch);
-
-  .item {
-    flex: 1 1 40%;
-  }
-
-  @include mb() {
-    .item {
-      flex: 1 1 100%;
-    }
-  }
-}
-</style>

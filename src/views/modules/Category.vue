@@ -33,7 +33,7 @@ watch(route, async () => {
   <div id="l-cate" class="min-height">
     <Pagination @nexpr="nexpr" @next="next" @prev="prev" :page-count="count">
       <template #content>
-        <div class="fsz-1.25 mb-5 mt-4">{{ hint }}</div>
+        <div class="l-for-size mb-5 mt-4">{{ hint }}</div>
         <EssayItem v-if="data" :data="data" />
       </template>
     </Pagination>
