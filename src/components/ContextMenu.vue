@@ -15,9 +15,9 @@ let close = () => {};
 onMounted(() => {
   menu.value.onmouseup = e => {
     if (e.button == 2) {
-      const panels = document.querySelectorAll(".l-menu-panel");
+      const panels = document.querySelectorAll(".l-menu__panel");
       panels.forEach(ele => {
-        if (ele.id !== "l-panel-" + timestamp) {
+        if (ele.id !== "l-menu__panel__" + timestamp) {
           // @ts-ignore
           ele.style.display = "none";
         }
@@ -41,20 +41,20 @@ onMounted(() => {
     <Teleport to="body">
       <div
         ref="panel"
+        :id="'l-menu__panel__' + timestamp"
         :class="{ 'l-box-bg': !setting.card.open }"
-        :id="'l-panel-' + timestamp"
-        :style="{ left: 'calc(' + x + 'px + 1rem)', top: 'calc(' + y + 'px + 1rem)' }"
-        class="l-menu-panel z-99 fixed hidden">
+        class="l-menu__panel z-99 fixed hidden"
+        :style="{ left: 'calc(' + x + 'px + 1rem)', top: 'calc(' + y + 'px + 1rem)' }">
         <Card>
-          <div ref="head" class="head px-4 pt-4 f-c-b mb-6 cursor-move">
-            <div class="title mr-10 l-for-size pl-1.5 rd-1">
+          <div ref="head" class="l-menu__head px-4 pt-4 f-c-b mb-6 cursor-move">
+            <div class="l-menu__title mr-10 l-for-size pl-1.5 rd-1">
               <slot name="title" />
             </div>
             <div class="hover f-c-c" @click="close">
               <i-ep-close />
             </div>
           </div>
-          <div class="main px-4 pb-4">
+          <div class="l-menu__main px-4 pb-4">
             <slot name="content" />
           </div>
         </Card>
@@ -64,7 +64,7 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.title {
+.l-menu__title {
   border-left: 4px solid var(--el-color-primary);
 }
 </style>

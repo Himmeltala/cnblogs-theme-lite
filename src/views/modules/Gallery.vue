@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { getGalleryImg } from "@/utils/local-api";
+import { blogApp } from "@/lite.config";
 import { closeLoader } from "@/utils/common";
+import { getGalleryImg } from "@/utils/local-api";
 
 const router = useRouter();
 const imgUrl = getGalleryImg();
+
+document.querySelector("title").innerText = `相册 - ${blogApp} - 博客园`;
 
 closeLoader();
 </script>

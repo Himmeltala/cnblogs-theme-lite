@@ -13,7 +13,7 @@ const props = defineProps({
     required: true
   },
   postId: {
-    type: Number,
+    type: String,
     required: true
   }
 });
@@ -64,13 +64,13 @@ function cancel() {
 </script>
 
 <template>
-  <div class="replay-comment">
+  <div class="l-comment__replay">
     <div class="float-right w-100%" v-show="comment.isEditingReplay">
       <div class="mb-2 f-c-e">
         <el-tooltip content="插入图片" placement="top-start">
-          <el-icon class="cursor-pointer" @click="uploadImage('upload-img-' + index)">
+          <span class="hover" @click="uploadImage('upload-img-' + index)">
             <i-ep-picture-rounded />
-          </el-icon>
+          </span>
         </el-tooltip>
       </div>
       <div class="textarea">
@@ -82,21 +82,15 @@ function cancel() {
       class="float-right f-c-e l-fiv-size l-sec-color"
       :class="{ 'ed-item': !comment.isEditingReplay, ' w-100%': comment.isEditingReplay }">
       <div v-show="!comment.isEditingReplay" class="hover f-c-e" @click="before">
-        <el-icon class="mr-1">
-          <i-ep-chat-round />
-        </el-icon>
+        <i-ep-chat-round class="mr-1" />
         <span>回复</span>
       </div>
       <div v-show="comment.isEditingReplay" class="hover f-c-e mr-4" @click="finish">
-        <el-icon class="mr-1">
-          <i-ep-check />
-        </el-icon>
+        <i-ep-check class="mr-1" />
         <span>完成回复</span>
       </div>
       <div v-show="comment.isEditingReplay" class="hover f-c-e" @click="cancel">
-        <el-icon class="mr-1">
-          <i-ep-close />
-        </el-icon>
+        <i-ep-close class="mr-1" />
         <span>取消回复</span>
       </div>
     </div>

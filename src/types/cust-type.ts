@@ -1,6 +1,6 @@
-export interface IEssay {
+export interface IArticle {
   // 随笔 ID
-  id?: number;
+  id?: string;
   // 随笔标题
   text?: string;
   // 随笔内容
@@ -101,33 +101,33 @@ export interface ITag {
 /**
  * 随笔列表，返回列表的页数、列表数组。
  */
-export interface IEssayList {
+export interface IArticleList {
   pages: number[];
-  array: Array<IEssay>;
+  array: Array<IArticle>;
 }
 
 /**
  * 随笔的分类和标签数组
  */
-export interface IEssayCateAndTagList {
+export interface IArticleProps {
   tags: { text: string }[];
-  cates: { href: string; text: string }[];
+  sorts: { href: string; text: string }[];
 }
 
 /**
  * 随笔分类列表，返回页数、分类名、列表数组
  */
-export interface ICateList {
+export interface ISorts {
   pages: number[];
   label: string;
-  array: Array<IEssay>;
+  array: Array<IArticle>;
 }
 
 /**
  * 侧边栏标签和分类数组
  */
-export interface ICabinetCateAndTagList {
-  cates: {
+export interface ICabinetColumn {
+  sorts: {
     id: string;
     text: string;
   }[];
@@ -164,7 +164,7 @@ export interface IAuthor {
 /**
  * 侧边栏博客信息，随笔数量、文章数量、评论数量、阅读数量
  */
-export interface IBlogData extends ICabinetRankList {}
+export interface IMasterData extends ICabinetRankList {}
 
 /**
  * 随笔上一篇或下一篇随笔数据类型

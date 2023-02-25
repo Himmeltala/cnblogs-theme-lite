@@ -56,23 +56,19 @@ function nexprChange(elIndex: number) {
 </script>
 
 <template>
-  <div class="relative">
-    <div class="hover sorter left w-10 h-10 z-1 f-c-c l-thr-color fixed top-50vh rd-l-4 opacity-70" @click="prevChange" v-show="disabled">
+  <div class="l-pagination relative">
+    <div class="hover l-pagination__sorter left z-1 f-c-c rd-l-4" @click="prevChange" v-show="disabled">
       <el-tooltip effect="dark" content="上一页" placement="left">
-        <el-icon>
-          <i-ep-arrow-left-bold />
-        </el-icon>
+        <i-ep-arrow-left-bold />
       </el-tooltip>
     </div>
     <slot name="content" />
-    <div class="hover sorter right w-10 h-10 z-1 f-c-c l-thr-color fixed top-50vh rd-l-4 opacity-70" @click="nextChange" v-show="disabled">
+    <div class="hover l-pagination__sorter right z-1 f-c-c rd-l-4" @click="nextChange" v-show="disabled">
       <el-tooltip effect="dark" content="下一页" placement="right">
-        <el-icon>
-          <i-ep-arrow-right-bold />
-        </el-icon>
+        <i-ep-arrow-right-bold />
       </el-tooltip>
     </div>
-    <div class="f-c-e my-4" :class="{ 'l-box-bg': !setting.card.open }">
+    <div class="l-pagination__bottom f-c-e my-4" :class="{ 'l-box-bg': !setting.card.open }">
       <Card>
         <el-pagination layout="pager, next" :page-count="pageCount" v-model:current-page="index" @current-change="nexprChange" />
       </Card>
@@ -82,17 +78,26 @@ function nexprChange(elIndex: number) {
 
 <style scoped lang="scss">
 @include mb() {
-  .sorter {
+  .l-pagination__sorter {
     display: none;
   }
 }
 
 @include pc() {
-  .sorter.left {
+  .l-pagination__sorter {
+    position: fixed;
+    top: 50vh;
+    opacity: 0.7;
+    color: var(--l-thr-color);
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .l-pagination__sorter.left {
     left: calc(calc(calc(100vw - var(--content-width)) / 2) - 2.2rem);
   }
 
-  .sorter.right {
+  .l-pagination__sorter.right {
     right: calc(calc(calc(100vw - var(--content-width)) / 2) - 2.2rem);
   }
 }

@@ -8,14 +8,14 @@ const routes = [
     component: () => import("./views/modules/Home.vue")
   },
   {
-    name: RouteName.ESSAY,
+    name: RouteName.Article,
     path: "/p/:id",
-    component: () => import("./views/modules/Essay.vue")
+    component: () => import("./views/modules/Article.vue")
   },
   {
-    name: RouteName.CATEGORY,
+    name: RouteName.Sort,
     path: "/sort/:id",
-    component: () => import("./views/modules/Category.vue")
+    component: () => import("./views/modules/Sort.vue")
   },
   {
     name: RouteName.TAGCOLL,

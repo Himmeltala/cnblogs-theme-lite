@@ -8,7 +8,7 @@ const props = defineProps({
     required: true
   },
   postId: {
-    type: Number,
+    type: String,
     required: true
   }
 });
@@ -32,10 +32,11 @@ async function diggComment() {
 </script>
 
 <template>
-  <div v-show="!comment.isEditingUpdate && !comment.isEditingReplay" class="hover l-fiv-size l-sec-color" @click="diggComment">
-    <el-icon class="mr-1">
-      <i-ep-caret-top />
-    </el-icon>
+  <div
+    v-show="!comment.isEditingUpdate && !comment.isEditingReplay"
+    class="l-comment__digg hover l-fiv-size l-sec-color"
+    @click="diggComment">
+    <i-ep-caret-top class="mr-1" />
     <span>{{ comment.digg }}</span>
   </div>
 </template>

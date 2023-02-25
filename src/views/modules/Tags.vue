@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { getTags } from "@/utils/remote-api";
+import { blogApp } from "@/lite.config";
 import { closeLoader } from "@/utils/common";
+import { getTags } from "@/utils/remote-api";
 
 const tags = await getTags();
+
+document.querySelector("title").innerText = `标签 - ${blogApp} - 博客园`;
 
 closeLoader();
 </script>

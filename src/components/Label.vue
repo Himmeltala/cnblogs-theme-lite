@@ -1,11 +1,11 @@
 <template>
-  <div class="label rd-2 b-1 b-#5d5d5d b-dotted">
+  <div class="l-label rd-2 b-1 b-#5d5d5d b-dotted">
     <slot />
   </div>
 </template>
 
 <style scoped lang="scss">
-.label {
+.l-label {
   @include hover($border-color: all);
 }
 </style>

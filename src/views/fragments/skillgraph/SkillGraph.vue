@@ -19,14 +19,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="graph__packer" v-if="__LITE_CONFIG__.graph">
+  <div class="skillgraph" v-if="__LITE_CONFIG__.graph">
     <canvas id="graph" width="220" height="220"></canvas>
     <div id="floating"></div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.graph__packer {
+.skillgraph {
   width: inherit;
   height: 210px;
   display: flex;

@@ -1,40 +1,33 @@
 <script setup lang="ts">
-import { nav } from "@/utils/router-helper";
-import { follow, unfollow } from "@/utils/remote-api";
-import { __LITE_CONFIG__, blogApp, isFollow, isOwner } from "@/lite.config";
-import {
-  getSideBloggerInfo as lo1,
-  getSideBlogInfo as lo2,
-  getSideCateList as lo3,
-  getSideBlogRank as lo4,
-  getSideTopList as lo5
-} from "@/utils/local-api";
-import { getSideBloggerInfo as re1, getSideBlogInfo as re2, getSideCateList as re3, getSideTopList as re4 } from "@/utils/remote-api";
 import { getSetting } from "@/utils/common";
+import { nav } from "@/utils/router-helper";
+import * as LocalApi from "@/utils/local-api";
+import * as RemoteApi from "@/utils/remote-api";
+import { __LITE_CONFIG__, blogApp, isFollow, isOwner } from "@/lite.config";
 
 const setting = getSetting();
-let blogger: any;
-let blogInfo: any;
-let cates: any;
 let toplist: any;
+let columnData: any;
+let authorData: any;
+let masterData: any;
 
 if (setting.value.cabinet.remote) {
-  blogger = await re1();
-  blogInfo = await re2();
-  cates = await re3();
-  toplist = await re4();
+  authorData = await RemoteApi.getAuthor();
+  masterData = await RemoteApi.getMasterData();
+  toplist = await RemoteApi.getCabinetTopList();
+  columnData = await RemoteApi.getCabinetColumn();
 } else {
-  blogger = lo1();
-  blogInfo = lo2();
-  cates = lo3();
-  toplist = lo5();
+  authorData = LocalApi.getAuthor();
+  masterData = LocalApi.getMasterData();
+  toplist = LocalApi.getCabinetTopList();
+  columnData = LocalApi.getCabinetColumn();
 }
 
-const blogRank = lo4();
+const blogRank = LocalApi.getCabinetRankList();
 const cabinet = __LITE_CONFIG__.cabinet;
 const router = useRouter();
-const tabName = ref("随笔");
 const searchVal = ref();
+const tabName = ref("随笔");
 const active = ref("1");
 
 function search() {
@@ -42,12 +35,12 @@ function search() {
 }
 
 async function focus() {
-  const data = await follow();
+  const data = await RemoteApi.follow();
   if (data) ElMessage({ message: "已经关注博主！", type: "success", grouping: true });
 }
 
 async function unfocus() {
-  const data = await unfollow();
+  const data = await RemoteApi.unfollow();
   if (data) ElMessage({ message: "取消关注博主！", type: "success", grouping: true });
 }
 </script>
@@ -81,7 +74,7 @@ async function unfocus() {
             </el-popconfirm>
             <el-button @click="focus" v-if="!isFollow" type="primary" text bg> +关注博主 </el-button>
           </div>
-          <div class="hover mb-3" v-for="(item, index) in blogger" :key="index" @click="nav({ path: item.href })">
+          <div class="hover mb-3" v-for="(item, index) in authorData" :key="index" @click="nav({ path: item.href })">
             <div class="f-c-s" v-if="index === 0">
               <i-ep-user-filled class="mr-2" />
               昵称：{{ item.text }}
@@ -104,7 +97,7 @@ async function unfocus() {
               <span class="mr-3" v-for="(item, index) in blogRank" :key="index"> {{ item.text }} - {{ item.digg }} </span>
             </template>
             <div class="mb-3">
-              <span class="hover mr-3" v-for="(item, index) in blogInfo" :key="index"> {{ item.text }} - {{ item.digg }} </span>
+              <span class="hover mr-3" v-for="(item, index) in masterData" :key="index"> {{ item.text }} - {{ item.digg }} </span>
             </div>
           </el-tooltip>
           <el-input clearable @keyup.enter="search" v-model="searchVal">
@@ -119,12 +112,20 @@ async function unfocus() {
           </template>
           <el-tabs stretch type="card" v-model="tabName">
             <el-tab-pane label="随笔" name="随笔">
-              <div class="mb-3 hover" v-for="(item, index) in cates.cates" :key="index" @click="nav({ path: '/sort/' + item.id, router })">
+              <div
+                class="mb-3 hover"
+                v-for="(item, index) in columnData.sorts"
+                :key="index"
+                @click="nav({ path: '/sort/' + item.id, router })">
                 {{ item.text }}
               </div>
             </el-tab-pane>
             <el-tab-pane label="标签" name="标签">
-              <div class="mb-3 hover" v-for="(item, index) in cates.tags" @click="nav({ path: '/label/' + item.id, router })" :key="index">
+              <div
+                class="mb-3 hover"
+                v-for="(item, index) in columnData.tags"
+                @click="nav({ path: '/label/' + item.id, router })"
+                :key="index">
                 {{ item.text }}
               </div>
               <div class="mb-3 hover" @click="nav({ path: '/labels', router })">更多...</div>

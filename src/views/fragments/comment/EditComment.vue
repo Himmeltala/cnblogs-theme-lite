@@ -13,7 +13,7 @@ const props = defineProps({
     required: true
   },
   postId: {
-    type: Number,
+    type: String,
     required: true
   }
 });
@@ -60,13 +60,13 @@ function cancel() {
 </script>
 
 <template>
-  <div class="edit-comment">
+  <div class="l-comment__editor">
     <div class="float-right w-100%" v-show="comment.isEditingUpdate">
       <div class="mb-2 f-c-e">
         <el-tooltip effect="dark" content="插入图片" placement="top-start">
-          <el-icon class="cursor-pointer" @click="uploadImage('upload-img-' + index)">
+          <span class="hover" @click="uploadImage('upload-img-' + index)">
             <i-ep-picture-rounded />
-          </el-icon>
+          </span>
         </el-tooltip>
       </div>
       <div class="textarea">
@@ -78,24 +78,18 @@ function cancel() {
       class="float-right f-c-e l-fiv-size l-sec-color"
       :class="{ 're-item': !comment.isEditingUpdate, 'w-100%': comment.isEditingUpdate }">
       <div v-show="!comment.isEditingUpdate" class="hover f-c-e" @click="before">
-        <el-icon class="mr-1">
-          <i-ep-edit-pen />
-        </el-icon>
+        <i-ep-edit-pen class="mr-1" />
         <span>编辑</span>
       </div>
       <div v-show="comment.isEditingUpdate" class="hover f-c-e mr-4" @click="finish">
-        <el-icon class="mr-1">
-          <i-ep-circle-check />
-        </el-icon>
+        <i-ep-circle-check class="mr-1" />
         <span>完成编辑</span>
       </div>
       <div class="hover" v-if="comment.isEditingUpdate">
         <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" title="确定取消编辑该评论？" @confirm="cancel">
           <template #reference>
             <div class="hover f-c-e">
-              <el-icon class="mr-1">
-                <i-ep-circle-close />
-              </el-icon>
+              <i-ep-circle-close class="mr-1" />
               <span>取消编辑</span>
             </div>
           </template>

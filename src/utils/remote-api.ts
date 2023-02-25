@@ -54,19 +54,19 @@ async function sendAwaitPost(url: string, data: any): Promise<any> {
  * @param page 页数，可以是 0，也可以是 1，都代表第一页。
  * @param isCalc 是否计算页数，由于第一页没有显示页数，只有第二页才有，所以为了不多次重复计算页数，该变量用于控制。
  */
-export async function getEssayList(page: number, isCalc: boolean) {
+export async function getArticleList(page: number, isCalc: boolean) {
   const { data } = await sendAwaitGet(`${baseAPI}/default.html?page=${page}`);
-  return Parser.parseEssayList(data, isCalc);
+  return Parser.parseArticleList(data, isCalc);
 }
 
 /**
  * 获取随笔
  *
- * @param id 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
+ * @param postId 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
  */
-export async function getEssay(id: number) {
-  const { data } = await sendAwaitGet(`${baseAPI}/p/${id}.html`);
-  return Parser.parseEssay(id, data);
+export async function getArticle(postId: string) {
+  const { data } = await sendAwaitGet(`${baseAPI}/p/${postId}.html`);
+  return Parser.parseArticle(postId, data);
 }
 
 /**
@@ -75,7 +75,7 @@ export async function getEssay(id: number) {
  * @param comment 评论实体
  * @return 获取响应的消息，返回一个 axios 中 data 部分消息
  */
-export async function setComment(comment: BlogType.BlogComment): Promise<BlogType.AjaxType> {
+export async function setComment(comment: BlogType.IBlogComment): Promise<BlogType.AjaxType> {
   const { data } = await sendAwaitPost(`${baseAPI}/ajax/PostComment/Add.aspx`, comment);
   return data;
 }
@@ -85,7 +85,7 @@ export async function setComment(comment: BlogType.BlogComment): Promise<BlogTyp
  *
  * @param comment 评论实体
  */
-export async function deleteComment(comment: BlogType.BlogComment) {
+export async function deleteComment(comment: BlogType.IBlogComment) {
   const { data } = await sendAwaitPost(`${baseAPI}/ajax/comment/DeleteComment.aspx`, comment);
   return data;
 }
@@ -95,7 +95,7 @@ export async function deleteComment(comment: BlogType.BlogComment) {
  *
  * @param comment 评论实体，对应博客园默认的评论字段，需要传递一个包含评论 ID 的实体
  */
-export async function getComment(comment: BlogType.BlogComment) {
+export async function getComment(comment: BlogType.IBlogComment) {
   const { data } = await sendAwaitPost(`${baseAPI}/ajax/comment/GetCommentBody.aspx`, comment);
   return data;
 }
@@ -105,7 +105,7 @@ export async function getComment(comment: BlogType.BlogComment) {
  *
  * @param comment 评论实体，对应博客园默认的评论字段，需要传递一个包含评论 ID、评论内容的实体
  */
-export async function updateComment(comment: BlogType.BlogComment): Promise<BlogType.AjaxType> {
+export async function updateComment(comment: BlogType.IBlogComment): Promise<BlogType.AjaxType> {
   const { data } = await sendAwaitPost(`${baseAPI}/ajax/PostComment/Update.aspx`, comment);
   return data;
 }
@@ -125,7 +125,7 @@ export async function getCommentCount(id: number | string) {
  *
  * @param comment 被操作的评论的实体，需要 isAbandoned、postId、voteType 三个字段，其中 voteType 请见 DataType.VoteType，只有两种类型。
  */
-export async function voteComment(comment: BlogType.BlogComment): Promise<BlogType.AjaxType> {
+export async function voteComment(comment: BlogType.IBlogComment): Promise<BlogType.AjaxType> {
   const { data } = await sendAwaitPost(`${baseAPI}/ajax/vote/comment`, comment);
   return data;
 }
@@ -135,7 +135,7 @@ export async function voteComment(comment: BlogType.BlogComment): Promise<BlogTy
  *
  * @param comment 博客园原有的评论实体，需要 body、parentCommentId、postId。parentCommentId 就是回复的那一条的 ID。
  */
-export async function replayComment(comment: BlogType.BlogComment): Promise<BlogType.AjaxType> {
+export async function replayComment(comment: BlogType.IBlogComment): Promise<BlogType.AjaxType> {
   const { data } = await sendAwaitPost(`${baseAPI}/ajax/PostComment/Add.aspx`, comment);
   return data;
 }
@@ -157,11 +157,11 @@ export async function getCommentList(id: number | string, page: number, anchorId
 /**
  * 获取随笔的标签和分类
  *
- * @param id 进入随笔页面之后，从 vue-router 参数中获取
+ * @param postId 进入随笔页面之后，从 vue-router 参数中获取
  */
-export async function getEssayCatesAndTags(id: number | string) {
-  const { data } = await sendAwaitGet(`${baseAPI}/ajax/CategoriesTags.aspx?blogId=${blogId}&postId=${id}`);
-  return Parser.parseEssayCatesAndTags(data);
+export async function getArticleProps(postId: string) {
+  const { data } = await sendAwaitGet(`${baseAPI}/ajax/CategoriesTags.aspx?blogId=${blogId}&postId=${postId}`);
+  return Parser.parseArticleProps(data);
 }
 
 /**
@@ -169,7 +169,7 @@ export async function getEssayCatesAndTags(id: number | string) {
  *
  * @param id 进入随笔页面之后，从 vue-router 参数中获取
  */
-export async function getPrevNext(id: number | string) {
+export async function getPrevNext(id: string) {
   const { data } = await sendAwaitGet(`${baseAPI}/ajax/post/prevnext?postId=${id}`);
   return Parser.parsePrevNext(data);
 }
@@ -179,7 +179,7 @@ export async function getPrevNext(id: number | string) {
  *
  * @param entity 随笔实体。必须包含：isAbandoned、postId、voteType 三个字段。
  */
-export async function voteEssay(entity: BlogType.BlogEssay): Promise<BlogType.AjaxType> {
+export async function voteArticle(entity: BlogType.IBlogArticle): Promise<BlogType.AjaxType> {
   const { data } = await sendAwaitPost(`${baseAPI}/ajax/vote/blogpost`, entity);
   return data;
 }
@@ -189,7 +189,7 @@ export async function voteEssay(entity: BlogType.BlogEssay): Promise<BlogType.Aj
  *
  * @param postId 传递一个数组，数组第一个就是 postId 的值
  */
-export async function getEssayVote(postId: number | string): Promise<BlogType.BlogEssayVote> {
+export async function getArticleVote(postId: string): Promise<BlogType.BlogArticleVote> {
   const { data } = await sendAwaitPost(`${baseAPI}/ajax/GetPostStat`, [postId]);
   return data[0];
 }
@@ -201,9 +201,9 @@ export async function getEssayVote(postId: number | string): Promise<BlogType.Bl
  * @param calcPage 是否计算页数？参考 getEssayList 函数对其详细的售卖
  * @param page 页数
  */
-export async function getCateList(id: any, calcPage: boolean, page: any) {
+export async function getSorts(id: any, calcPage: boolean, page: any) {
   const { data } = await sendAwaitGet(`${baseAPI}/category/${id}.html?page=${page}`);
-  return Parser.parseCateList(data, calcPage);
+  return Parser.parseSorts(data, calcPage);
 }
 
 /**
@@ -211,42 +211,42 @@ export async function getCateList(id: any, calcPage: boolean, page: any) {
  *
  * @param tag 标签名称
  */
-export async function getTagPageList(tag: string) {
+export async function getTagColl(tag: string) {
   const { data } = await sendAwaitGet(`${baseAPI}/tag/${tag}`);
-  return Parser.parseTagPageList(data);
+  return Parser.parseTagColl(data);
 }
 
 /**
- * 获取侧边栏的部分随笔分类列表
+ * 获取侧边栏分类列表、标签列表，... 列表
  */
-export async function getSideCateList() {
+export async function getCabinetColumn() {
   const { data } = await sendAwaitGet(`${baseAPI}/ajax/sidecolumn.aspx`);
-  return Parser.parseSideCateList(data);
+  return Parser.parseCabinetColumn(data);
 }
 
 /**
  * 获取侧边栏的博主信息
  *
  */
-export async function getSideBloggerInfo() {
+export async function getAuthor() {
   const { data } = await sendAwaitGet(`${baseAPI}/ajax/news.aspx`);
-  return Parser.parseSideBloggerInfo(data);
+  return Parser.parseAuthor(data);
 }
 
 /**
- * 获取侧边栏博客的数据
+ * 获取博主主人的排行榜、积分、阅读等数据
  */
-export async function getSideBlogInfo() {
+export async function getMasterData() {
   const { data } = await sendAwaitGet(`${baseAPI}/ajax/blogStats`);
-  return Parser.parseSideBlogInfo(data);
+  return Parser.parseMasterData(data);
 }
 
 /**
  * 获取侧边栏阅读排行榜列表
  */
-export async function getSideTopList() {
+export async function getCabinetTopList() {
   const { data } = await sendAwaitGet(`${baseAPI}/ajax/TopLists.aspx`);
-  return Parser.parseSideBlogTopList(data);
+  return Parser.parseCabinetTopList(data);
 }
 
 /**
@@ -295,12 +295,12 @@ export async function getIsUnlock(password: string, id: string) {
  * 获取上锁的博文内容，普通的 API 无法获取
  *
  * @param password 博文阅读密码
- * @param id 博文 ID
+ * @param postId 博文 ID
  * @returns 输入密码正确时返回这个博文内容
  */
-export async function getLockedEssay(password: string, id: number) {
+export async function getLockedArticle(password: string, postId: string) {
   const formData = new FormData();
   formData.append("Password", password);
-  const { data } = await sendAwaitPost(`${baseAPI}/protected/p/${id}.html`, formData);
-  return Parser.parseEssay(id, data);
+  const { data } = await sendAwaitPost(`${baseAPI}/protected/p/${postId}.html`, formData);
+  return Parser.parseArticle(postId, data);
 }

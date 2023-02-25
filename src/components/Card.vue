@@ -41,16 +41,18 @@ const props = defineProps({
       'margin-bottom': margin.bottom + 'rem'
     }">
     <div
+      class="l-card__content"
       :style="{
         'padding-left': setting.card?.open ? padding.left + 'rem' : 0,
         'padding-right': setting.card?.open ? padding.right + 'rem' : 0,
         'padding-top': padding.top + 'rem',
         'padding-bottom': setting.card?.open ? padding.bottom + 'rem' : 0
       }">
-      <div>
+      <div class="l-card__main">
         <slot />
       </div>
       <div
+        class="l-card__border"
         v-if="line"
         :style="{ 'margin-top': !setting.card?.open ? padding.bottom + 'rem' : 0 }"
         :class="{ border: !setting.card?.open }"></div>

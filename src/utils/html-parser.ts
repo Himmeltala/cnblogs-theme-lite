@@ -43,7 +43,7 @@ function calcPages(sorter: any, calc: boolean): number[] {
  * @param calc 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
  * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
  */
-export function parseEssayList(realDOM: any, calc: boolean): CustType.IEssayList {
+export function parseArticleList(realDOM: any, calc: boolean): CustType.IArticleList {
   const id = $(realDOM).find(".postTitle2");
   const head = $(realDOM).find(".postTitle");
   const desc = $(realDOM).find(".c_b_p_desc");
@@ -52,17 +52,13 @@ export function parseEssayList(realDOM: any, calc: boolean): CustType.IEssayList
   const view = data.match(/阅读\([0-9]+\)/g);
   const comm = data.match(/评论\([0-9]+\)/g);
   const digg = data.match(/推荐\([0-9]+\)/g);
-  const array: Array<CustType.IEssay> = [];
+  const array: Array<CustType.IArticle> = [];
 
   $(desc).each((i, e) => {
-    const identifier = parseInt(
-      $(id[i])
-        .attr("href")!
-        .match(/[0-9]+/g)![0]
-    );
-
     array.push({
-      id: identifier,
+      id: $(id[i])
+        .attr("href")!
+        .match(/[0-9]+/g)![0],
       text: replaceText($(head[i]).text().trim(), [/\[置顶\]/g]),
       desc: replaceText($(desc[i]).text(), [/阅读全文/g]),
       date: date![i],
@@ -85,12 +81,12 @@ export function parseEssayList(realDOM: any, calc: boolean): CustType.IEssayList
 /**
  * 解析随笔详细页面
  *
- * @param id 随笔 ID
+ * @param postId 随笔 ID
  * @param realDOM 请求响应消息
  */
-export function parseEssay(id: number, realDOM: any): CustType.IEssay {
+export function parseArticle(postId: string, realDOM: any): CustType.IArticle {
   return {
-    id: id,
+    id: postId,
     text: $(realDOM).find(".postTitle > a > span").text(),
     content: $(realDOM).find("#cnblogs_post_body").html(),
     date: $(realDOM).find("#post-date").text(),
@@ -145,18 +141,18 @@ export function parseCommentPages(json: any): number {
 }
 
 /**
- * 解析随笔详细页面中的标签和分类
+ * 解析随笔详细页面中的属性：标签、分类
  *
  * @param strDOM 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parseEssayCatesAndTags(strDOM: any): CustType.IEssayCateAndTagList {
-  const array = <CustType.IEssayCateAndTagList>{ tags: [], cates: [] };
+export function parseArticleProps(strDOM: any): CustType.IArticleProps {
+  const array = <CustType.IArticleProps>{ tags: [], sorts: [] };
   const dom = parseStrToDom(strDOM);
 
   $(dom)
     .find("#BlogPostCategory > a")
     .map((i, d) => {
-      array.cates[i] = {
+      array.sorts[i] = {
         href: $(d)
           .attr("href")!
           .match(/\/category\/\d+/g)![0]
@@ -211,7 +207,7 @@ export function parsePrevNext(strDOM: any): CustType.IPrevNext {
  * @param realDOM 真实 DOM
  * @param calc 是否计算页数
  */
-export function parseCateList(realDOM: any, calc: boolean): CustType.ICateList {
+export function parseSorts(realDOM: any, calc: boolean): CustType.ISorts {
   let dom = $(realDOM).find(".entrylistItem");
 
   let id = $(dom).find(".entrylistItemTitle");
@@ -223,15 +219,13 @@ export function parseCateList(realDOM: any, calc: boolean): CustType.ICateList {
   let comm = record.match(/评论\([0-9]+\)/g);
   let digg = record.match(/推荐\([0-9]+\)/g);
 
-  let array: Array<CustType.IEssay> = [];
+  let array: Array<CustType.IArticle> = [];
   $(dom).each((i, e) => {
     let surface = $(e).find(".c_b_p_desc > .desc_img").attr("src");
     array.push({
-      id: parseInt(
-        $(id[i])
-          .attr("href")!
-          .match(/[0-9]+/g)![0]
-      ),
+      id: $(id[i])
+        .attr("href")!
+        .match(/[0-9]+/g)![0],
       text: $(title[i]).text(),
       desc: $(describe[i]).text(),
       date: date![i],
@@ -254,7 +248,7 @@ export function parseCateList(realDOM: any, calc: boolean): CustType.ICateList {
  *
  * @param realDOM 真实 DOM
  */
-export function parseTagPageList(realDOM: any): CustType.ITagColl {
+export function parseTagColl(realDOM: any): CustType.ITagColl {
   const title = $(realDOM).find(".PostList > .postTitl2 > a");
   const describe = $(realDOM).find(".PostList > .postDesc2");
   const tagTitle = $(realDOM).find(".PostListTitle").text().trim();
@@ -285,13 +279,13 @@ export function parseTagPageList(realDOM: any): CustType.ITagColl {
 }
 
 /**
- * 解析侧边栏随笔分类列表
+ * 解析侧边栏分类列表、标签列表，... 列表
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideCateList(strDOM: string): CustType.ICabinetCateAndTagList {
+export function parseCabinetColumn(strDOM: string): CustType.ICabinetColumn {
   const dom = parseStrToDom(strDOM);
-  const array: CustType.ICabinetCateAndTagList = { tags: [], cates: [] };
+  const array: CustType.ICabinetColumn = { tags: [], sorts: [] };
 
   const tags = $(dom).find("#sidebar_toptags ul li > a");
   for (let i = 0; i < $(tags).length; i++) {
@@ -304,7 +298,7 @@ export function parseSideCateList(strDOM: string): CustType.ICabinetCateAndTagLi
 
   const li = $(dom).find("#sidebar_postcategory > ul > li > a");
   $(li).each((i, e) => {
-    array.cates.push({
+    array.sorts.push({
       id: $(e)
         .attr("href")!
         .match(/[0-9]+/g)![0],
@@ -316,11 +310,11 @@ export function parseSideCateList(strDOM: string): CustType.ICabinetCateAndTagLi
 }
 
 /**
- * 解析侧边栏博主信息
+ * 解析侧边栏博主主人基本的昵称、粉丝数、园龄等数据
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideBloggerInfo(strDOM: string): Array<CustType.IAuthor> {
+export function parseAuthor(strDOM: string): Array<CustType.IAuthor> {
   const array: Array<CustType.IAuthor> = [];
   const a = $(parseStrToDom(strDOM)).find("#profile_block > a");
   $(a).each((i, e) => {
@@ -330,12 +324,12 @@ export function parseSideBloggerInfo(strDOM: string): Array<CustType.IAuthor> {
 }
 
 /**
- * 解析博客信息
+ * 解析博主主人的随笔、文章、评论、阅读等数据
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideBlogInfo(strDOM: string): Array<CustType.IBlogData> {
-  const array: Array<CustType.IBlogData> = [];
+export function parseMasterData(strDOM: string): Array<CustType.IMasterData> {
+  const array: Array<CustType.IMasterData> = [];
   $(parseStrToDom(strDOM))
     .find("span")
     .each((i, d) => {
@@ -351,11 +345,11 @@ export function parseSideBlogInfo(strDOM: string): Array<CustType.IBlogData> {
 }
 
 /**
- * 忽哟去侧边栏博客排行信息。
+ * 解析侧边栏博客排行信息。
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideRank(strDOM: string): CustType.ICabinetRankList[] {
+export function parseCabinetRankList(strDOM: string): CustType.ICabinetRankList[] {
   const array: Array<CustType.ICabinetRankList> = [];
   $(parseStrToDom(strDOM))
     .find("li")
@@ -373,7 +367,7 @@ export function parseSideRank(strDOM: string): CustType.ICabinetRankList[] {
  *
  * @param strDOM 真实 DOM
  */
-export function parseSideBlogTopList(strDOM: string): CustType.ICabinetTopList[] {
+export function parseCabinetTopList(strDOM: string): CustType.ICabinetTopList[] {
   const array: Array<CustType.ICabinetTopList> = [];
   $(parseStrToDom(strDOM))
     .find("#TopViewPostsBlock ul > li > a")

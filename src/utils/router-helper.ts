@@ -11,17 +11,17 @@ import { blogApp } from "@/lite.config";
 import { useAnchorStore } from "@/store";
 
 export enum RouteName {
-  ESSAY = "essay",
+  Article = "article",
   HOME = "home",
-  CATEGORY = "sort",
+  Sort = "sort",
   TAGCOLL = "label",
   TAGS = "tags",
   GALLERY = "gallery"
 }
 
 const routeReg = {
-  ESSAY: /\/p\/\d+.html/g,
-  CATEGORY: /\/category\/\d+/g,
+  Article: /\/p\/\d+.html/g,
+  Sort: /\/category\/\d+/g,
   TAGCOLL: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
   Tags: /\d/g,
   GALLERY: /\/gallery\/image/g
@@ -56,18 +56,18 @@ export function redirect(next: any): () => void {
   let nextParam: any;
   const URL = window.location.href;
 
-  if (routeReg.ESSAY.test(URL)) {
-    const id = URL.match(routeReg.ESSAY)[0].split("/")[2].split(".")[0];
+  if (routeReg.Article.test(URL)) {
+    const postId = URL.match(routeReg.Article)[0].split("/")[2].split(".")[0];
     storeAnchor(URL);
     nextParam = {
-      name: RouteName.ESSAY,
-      params: { id }
+      name: RouteName.Article,
+      params: { id: postId }
     };
-  } else if (routeReg.CATEGORY.test(URL)) {
-    const id = URL.match(routeReg.CATEGORY)[0].split("/")[2].split(",")[0];
+  } else if (routeReg.Sort.test(URL)) {
+    const sortId = URL.match(routeReg.Sort)[0].split("/")[2].split(",")[0];
     nextParam = {
-      name: RouteName.CATEGORY,
-      params: { id }
+      name: RouteName.Sort,
+      params: { id: sortId }
     };
   } else if (routeReg.TAGCOLL.test(URL)) {
     const tag = decodeURI(URL).match(routeReg.TAGCOLL)![0].split("/")[2];

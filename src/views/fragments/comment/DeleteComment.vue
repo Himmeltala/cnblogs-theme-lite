@@ -16,7 +16,7 @@ const props = defineProps({
     required: true
   },
   postId: {
-    type: Number,
+    type: String,
     required: true
   }
 });
@@ -36,13 +36,11 @@ async function confirmDeleteComment() {
 </script>
 
 <template>
-  <div class="delete-comment l-sec-color l-fiv-size" v-show="!comment.isEditingUpdate && !comment.isEditingReplay">
+  <div class="l-comment__delete l-sec-color l-fiv-size" v-show="!comment.isEditingUpdate && !comment.isEditingReplay">
     <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" title="确定删除该评论？" @confirm="confirmDeleteComment">
       <template #reference>
         <div class="hover f-c-e">
-          <el-icon class="mr-1">
-            <i-ep-delete />
-          </el-icon>
+          <i-ep-delete class="mr-1" />
           <span>删除评论</span>
         </div>
       </template>

@@ -8,7 +8,7 @@ const props = defineProps({
     required: true
   },
   postId: {
-    type: Number,
+    type: String,
     required: true
   }
 });
@@ -32,10 +32,11 @@ async function buryComment() {
 </script>
 
 <template>
-  <div v-show="!comment.isEditingUpdate && !comment.isEditingReplay" class="hover l-six-size l-sec-color" @click="buryComment">
-    <el-icon class="mr-1">
-      <i-ep-caret-bottom />
-    </el-icon>
+  <div
+    v-show="!comment.isEditingUpdate && !comment.isEditingReplay"
+    class="l-comment__bury hover l-six-size l-sec-color"
+    @click="buryComment">
+    <i-ep-caret-bottom class="mr-1" />
     <span>{{ comment.bury }}</span>
   </div>
 </template>

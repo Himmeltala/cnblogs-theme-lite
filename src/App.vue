@@ -68,16 +68,14 @@ onMounted(() => {
         </template>
       </RouterView>
     </div>
-    <Card>
-      <div class="f-c-c my-2 l-six-size l-sec-color h-4">
-        Created By
-        <a class="hover mx-1" href="https://github.com/Himmelbleu/cnblogs-theme-lite" target="__blank"> Himmelbleu, </a>
-        powered by
-        <a class="hover mx-1" href="https://v3.cn.vuejs.org/" target="__blank">Vue3</a>
-        on
-        <a class="hover mx-1" href="https://vitejs.cn/vite3-cn/" target="__blank">Vite.</a>
-      </div>
-    </Card>
+    <div class="l-copyright f-c-c my-2 l-six-size l-sec-color h-4">
+      Created By
+      <a class="hover mx-1" href="https://github.com/Himmelbleu/cnblogs-theme-lite" target="__blank"> Himmelbleu, </a>
+      powered by
+      <a class="hover mx-1" href="https://v3.cn.vuejs.org/" target="__blank">Vue3</a>
+      on
+      <a class="hover mx-1" href="https://vitejs.cn/vite3-cn/" target="__blank">Vite.</a>
+    </div>
   </div>
   <div id="l-right">
     <div id="l-matte" class="fixed top-0 left-0 z-1 opacity-50 l-matee-bg" :class="{ 'w-100% h-100vh': !rstrip || !lstrip }"></div>

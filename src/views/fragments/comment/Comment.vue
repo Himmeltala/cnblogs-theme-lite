@@ -5,7 +5,7 @@ import { getCommentCount, getCommentList } from "@/utils/remote-api";
 import { useAnchorStore } from "@/store";
 
 const props = defineProps({
-  postId: { type: Number, required: true }
+  postId: { type: String, required: true }
 });
 
 const level = ref(null);
@@ -44,18 +44,18 @@ function onEdFinish(response: any) {
 </script>
 
 <template>
-  <div class="comment">
+  <div class="l-comment">
     <PostComment :post-id="postId" @on-post="onPost" />
     <h3>评论列表</h3>
-    <div class="mt-10" v-if="isLogin && comments?.length">
-      <div class="clearfix mb-12" v-for="(item, index) in comments" :key="index">
-        <div class="f-c-s">
-          <el-image class="mr-4 rd-50 w-14 h-14" :src="item.avatar" fit="fill" />
+    <div class="l-comment__list mt-10" v-if="isLogin && comments?.length">
+      <div class="l-comment__main clearfix mb-12" v-for="(item, index) in comments" :key="index">
+        <div class="l-comment__head f-c-s">
+          <el-image class="l-comment__avatar mr-4 rd-50 w-14 h-14" :src="item.avatar" fit="fill" />
           <div>
-            <div class="hover cursor-pointer" @click="nav({ path: item.space })">
+            <div class="l-comment__author hover cursor-pointer" @click="nav({ path: item.space })">
               {{ item.author }}
             </div>
-            <div class="l-fiv-size l-sec-color mt-2 f-c-c">
+            <div class="l-comment__data l-fiv-size l-sec-color mt-2 f-c-c">
               <div :id="'level-' + item.commentId" class="mr-2">
                 <span v-if="anchor === item.commentId" ref="level">{{ item.layer }}</span>
                 <span v-else>{{ item.layer }}</span>
@@ -64,28 +64,30 @@ function onEdFinish(response: any) {
             </div>
           </div>
         </div>
-        <div class="mt-4 relative" style="margin-left: 4.5rem">
+        <div class="l-comment__middle mt-4 relative" style="margin-left: 4.5rem">
           <textarea class="z--1 opacity-0 absolute top-0 left-0" :id="'upload-img-' + index" />
-          <div class="c-content" v-html="item.content" v-hljs />
+          <div class="l-comment__content" v-html="item.content" v-hljs />
         </div>
-        <el-dropdown v-show="!item.isEditingUpdate && !item.isEditingReplay" class="float-right more-item f-c-e">
-          <span class="hover">
-            <i-ep-more class="l-fiv-size l-sec-color hover" />
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item>
-                <DiggComment :comment="item" :post-id="postId" />
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <BuryComment :comment="item" :post-id="postId" />
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <DeleteComment :comment="item" :comments="comments" :post-id="postId" :index="index" />
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
+        <div class="l-comment__more float-right f-c-e" v-show="!item.isEditingUpdate && !item.isEditingReplay">
+          <el-dropdown>
+            <span class="hover">
+              <i-ep-more class="l-fiv-size l-sec-color" />
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <DiggComment :comment="item" :post-id="postId" />
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <BuryComment :comment="item" :post-id="postId" />
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <DeleteComment :comment="item" :comments="comments" :post-id="postId" :index="index" />
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
         <EditComment @on-finish="onEdFinish" :post-id="postId" :index="index" :comment="item" />
         <ReplayComment @on-finish="onReFinish" :post-id="postId" :index="index" :comment="item" />
       </div>
@@ -103,7 +105,7 @@ function onEdFinish(response: any) {
 </template>
 
 <style lang="scss">
-.c-content {
+.l-comment .l-comment__middle .l-comment__content {
   line-height: 1.7;
 
   a {
@@ -116,13 +118,13 @@ function onEdFinish(response: any) {
 
 <style scoped lang="scss">
 @include pc() {
-  .more-item {
+  .l-comment__more {
     --at-apply: w-5%;
   }
 }
 
 @include mb() {
-  .more-item {
+  .l-comment__more {
     --at-apply: w-10%;
   }
 }

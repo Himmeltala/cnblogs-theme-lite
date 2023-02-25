@@ -1,17 +1,20 @@
 <script setup lang="ts">
-import { getTagPageList } from "@/utils/remote-api";
+import { getTagColl } from "@/utils/remote-api";
 import { closeLoader, getSetting } from "@/utils/common";
+import { blogApp } from "@/lite.config";
 
 const route = useRoute();
-const data = await getTagPageList(String(route.params.tag));
+const data = await getTagColl(String(route.params.tag));
 const tagName = ref(data.text);
 const tagList = ref(data.array);
 const setting = getSetting();
 
+document.querySelector("title").innerText = `${tagName.value} - ${blogApp} - 博客园`;
+
 closeLoader();
 
 watch(route, async () => {
-  const data = await getTagPageList(String(route.params.tag));
+  const data = await getTagColl(String(route.params.tag));
   tagName.value = data.text;
   tagList.value = data.array;
 });
@@ -31,7 +34,7 @@ watch(route, async () => {
           <i-ep-caret-right />
           <router-link class="hover ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id"> 阅读全文 </router-link>
         </div>
-        <EssaySynopsis class="mt-4" :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
+        <ArticleSynopsis class="mt-4" :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
       </Card>
     </div>
     <template #title>列表项盒子模型设置</template>
