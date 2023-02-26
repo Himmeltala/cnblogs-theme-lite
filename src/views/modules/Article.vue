@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { isOwner, blogApp } from "@/lite.config";
 import { nav } from "@/utils/router-helper";
 import { BlogType } from "@/types/data-type";
+import { isOwner, blogApp } from "@/lite.config";
 import { closeLoader, getSetting } from "@/utils/common";
 import { getLockedArticle, getIsUnlock, getArticle, getArticleProps, getPrevNext, getArticleVote, voteArticle } from "@/utils/remote-api";
 

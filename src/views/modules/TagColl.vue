@@ -1,21 +1,23 @@
 <script setup lang="ts">
+import { blogApp } from "@/lite.config";
+import { nav } from "@/utils/router-helper";
 import { getTagColl } from "@/utils/remote-api";
 import { closeLoader, getSetting } from "@/utils/common";
-import { blogApp } from "@/lite.config";
 
 const route = useRoute();
+const router = useRouter();
 const data = await getTagColl(String(route.params.tag));
-const tagName = ref(data.text);
+const hint = ref(data.text);
 const tagList = ref(data.array);
 const setting = getSetting();
 
-document.querySelector("title").innerText = `${tagName.value} - ${blogApp} - 博客园`;
+document.querySelector("title").innerText = `${hint.value} - ${blogApp} - 博客园`;
 
 closeLoader();
 
 watch(route, async () => {
   const data = await getTagColl(String(route.params.tag));
-  tagName.value = data.text;
+  hint.value = data.text;
   tagList.value = data.array;
 });
 </script>
@@ -23,7 +25,16 @@ watch(route, async () => {
 <template>
   <ContextMenu>
     <div id="l-tagcoll" class="min-height">
-      <div class="l-sec-size mb-5 mt-4">{{ tagName }}</div>
+      <el-page-header :icon="null" @back="nav({ path: 'back', router })">
+        <template #title>
+          <div class="f-c-c">
+            <i-ep-back />
+          </div>
+        </template>
+        <template #content>
+          <div class="l-sec-size mb-5 mt-4">{{ hint }}</div>
+        </template>
+      </el-page-header>
       <Card v-for="(item, index) in tagList" :key="index" line :padding="setting.listing.padding" :margin="setting.listing.margin">
         <div class="l-sec-size">
           <router-link class="hover" :to="'/p/' + item.id">

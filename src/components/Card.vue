@@ -3,7 +3,7 @@ import { PropType } from "vue";
 import { getSetting } from "@/utils/common";
 
 const setting = getSetting();
-const props = defineProps({
+defineProps({
   line: {
     type: Boolean,
     default: false

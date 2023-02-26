@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
+import { nav } from "@/utils/router-helper";
 import { closeLoader } from "@/utils/common";
 import { getSorts } from "@/utils/remote-api";
 
 const route = useRoute();
+const router = useRouter();
 const cates = await getSorts(route.params.id, true, 1);
 const count = ref(cates.pages[cates.pages.length - 1]);
 const data = ref(cates.array);
@@ -36,7 +38,16 @@ watch(route, async () => {
   <div id="l-sort" class="min-height">
     <Pagination @nexpr="nexpr" @next="next" @prev="prev" :page-count="count">
       <template #content>
-        <div class="l-sec-size mb-5 mt-4">{{ hint }}</div>
+        <el-page-header :icon="null" @back="nav({ path: 'back', router })">
+          <template #title>
+            <div class="f-c-c">
+              <i-ep-back />
+            </div>
+          </template>
+          <template #content>
+            <div class="l-sec-size mb-5 mt-4">{{ hint }}</div>
+          </template>
+        </el-page-header>
         <ArticleItem v-if="data" :data="data" />
       </template>
     </Pagination>

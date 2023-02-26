@@ -29,38 +29,48 @@ function changeDayTime() {
     <div class="relative">
       <Card
         :class="{ 'l-box-bg': !setting.card.open, 'show-0': setting.openToolKits, 'close-0': !setting.openToolKits }"
-        class="back-home absolute hover left-0 w-8 h-8 f-c-c rd-2"
+        class="back-home absolute hover left-0 rd-2"
         @click="nav({ path: 'back', router })">
-        <i-ep-back />
+        <div class="f-c-c w-8 h-8">
+          <i-ep-back />
+        </div>
       </Card>
       <Card
         :class="{ 'l-box-bg': !setting.card.open, 'show-1': setting.openToolKits, 'close-1': !setting.openToolKits }"
-        class="back-top absolute hover left-0 w-8 h-8 f-c-c rd-2"
+        class="back-top absolute hover left-0 rd-2"
         @click="moveToTopNail">
-        <i-ep-position />
+        <div class="f-c-c w-8 h-8">
+          <i-ep-position />
+        </div>
       </Card>
       <Card
         :class="{ 'l-box-bg': !setting.card.open, 'show-2': setting.openToolKits, 'close-2': !setting.openToolKits }"
         @click="changeDayTime"
-        class="daytime absolute hover left-0 w-8 h-8 f-c-c rd-2">
-        <template v-if="setting.theme.mode === 'light'">
-          <i-ep-sunny />
-        </template>
-        <template v-else>
-          <i-ep-moon />
-        </template>
+        class="daytime absolute hover left-0 rd-2">
+        <div class="f-c-c w-8 h-8">
+          <template v-if="setting.theme.mode === 'light'">
+            <i-ep-sunny />
+          </template>
+          <template v-else>
+            <i-ep-moon />
+          </template>
+        </div>
       </Card>
       <Card
         :class="{ 'l-box-bg': !setting.card.open, 'show-3': setting.openToolKits, 'close-3': !setting.openToolKits }"
         @click="dialog = !dialog"
-        class="setting absolute hover left-0 w-8 h-8 f-c-c rd-2">
-        <i-ep-setting class="rotate-setting" />
+        class="setting absolute hover left-0 rd-2">
+        <div class="f-c-c w-8 h-8">
+          <i-ep-setting class="rotate-setting" />
+        </div>
       </Card>
       <Card
         @click="setting.openToolKits = !setting.openToolKits"
         :class="{ 'l-box-bg': !setting.card.open, 'show-toolkits': setting.openToolKits, 'close-toolkits': !setting.openToolKits }"
-        class="kits-box absolute hover top-40 left-0 w-8 h-8 f-c-c rd-2">
-        <i-ep-arrow-right />
+        class="kits-box absolute hover top-40 left-0 rd-2">
+        <div class="f-c-c w-8 h-8">
+          <i-ep-arrow-right />
+        </div>
       </Card>
     </div>
   </div>

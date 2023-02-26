@@ -62,8 +62,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="l-expandable-box l-thr-color" v-show="setting.cabinet.toggles[record]?.show">
-    <div class="l-expandable-box__title f-c-b my-5 l-sec-size pl-1.5 rd-1">
+  <div class="l-expandable l-thr-color" v-show="setting.cabinet.toggles[record]?.show">
+    <div class="l-expandable__title f-c-b my-5 l-sec-size pl-1.5 rd-1">
       <div class="f-c-s">
         <div class="f-c-c mr-1">
           <slot name="icon" />
@@ -79,14 +79,14 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div ref="content" class="l-expandable-box__content">
+    <div ref="content" class="l-expandable__content">
       <slot />
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.l-expandable-box__title {
+.l-expandable__title {
   border-left: 4px solid var(--el-color-primary);
 }
 
@@ -94,7 +94,7 @@ onMounted(() => {
   transform: scale(0, 0);
 }
 
-.l-expandable-box__title:hover .arrow {
+.l-expandable__title:hover .arrow {
   transform: scale(1, 1);
 }
 
@@ -124,7 +124,7 @@ onMounted(() => {
   }
 }
 
-.l-expandable-box__content {
+.l-expandable__content {
   overflow: hidden;
   transition: var(--l-transition);
 }

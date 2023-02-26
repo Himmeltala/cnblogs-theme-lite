@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { getSetting } from "@/utils/common";
-import { closeLoader } from "@/utils/common";
 import { getArticleList } from "@/utils/remote-api";
+import { getSetting, closeLoader } from "@/utils/common";
 
 const setting = getSetting();
 const data = ref((await getArticleList(1, false)).array);

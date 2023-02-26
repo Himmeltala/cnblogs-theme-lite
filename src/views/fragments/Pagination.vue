@@ -21,11 +21,7 @@ function nextChange() {
   if (currIndex.value < props.pageCount) {
     currIndex.value++;
     index.value = currIndex.value;
-    emits("next", {
-      elIndex: index.value,
-      pageCount: props.pageCount,
-      currentIndex: currIndex.value
-    });
+    emits("next", { elIndex: index.value, pageCount: props.pageCount, currentIndex: currIndex.value });
   } else {
     ElMessage({ message: "已经到末页！", grouping: true, type: "warning" });
   }
@@ -35,11 +31,7 @@ function prevChange() {
   if (currIndex.value > 1) {
     currIndex.value--;
     index.value = currIndex.value;
-    emits("prev", {
-      elIndex: index.value,
-      pageCount: props.pageCount,
-      currentIndex: currIndex.value
-    });
+    emits("prev", { elIndex: index.value, pageCount: props.pageCount, currentIndex: currIndex.value });
   } else {
     ElMessage({ message: "已经到首页！", grouping: true, type: "warning" });
   }
@@ -47,26 +39,20 @@ function prevChange() {
 
 function nexprChange(elIndex: number) {
   currIndex.value = elIndex;
-  emits("nexpr", {
-    elIndex: index.value,
-    pageCount: props.pageCount,
-    currentIndex: currIndex.value
-  });
+  emits("nexpr", { elIndex: index.value, pageCount: props.pageCount, currentIndex: currIndex.value });
 }
 </script>
 
 <template>
   <div class="l-pagination relative">
-    <div class="hover l-pagination__sorter left z-1 f-c-c rd-l-4" @click="prevChange" v-show="disabled">
-      <el-tooltip effect="dark" content="上一页" placement="left">
-        <i-ep-arrow-left-bold />
-      </el-tooltip>
+    <div class="l-pagination__sorter hover left z-1 f-c-c rd-l-4" @click="prevChange" v-show="disabled">
+      <i-ep-arrow-left-bold />
     </div>
-    <slot name="content" />
-    <div class="hover l-pagination__sorter right z-1 f-c-c rd-l-4" @click="nextChange" v-show="disabled">
-      <el-tooltip effect="dark" content="下一页" placement="right">
-        <i-ep-arrow-right-bold />
-      </el-tooltip>
+    <div class="l-pagination__content">
+      <slot name="content" />
+    </div>
+    <div class="l-pagination__sorter hover right z-1 f-c-c rd-l-4" @click="nextChange" v-show="disabled">
+      <i-ep-arrow-right-bold />
     </div>
     <div class="l-pagination__bottom f-c-e my-4" :class="{ 'l-box-bg': !setting.card.open }">
       <Card>

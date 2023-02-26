@@ -3,6 +3,13 @@ import { useCatalogStore } from "@/store";
 import { __LITE_CONFIG__ } from "@/lite.config";
 import { getSetting } from "@/utils/common";
 
+const props = defineProps({
+  disabled: {
+    type: Boolean,
+    default: true
+  }
+});
+
 const setting = getSetting();
 const route = useRoute();
 const anchors = ref();
@@ -16,10 +23,31 @@ store.$onAction(({ store, args }) => {
 watch(route, val => {
   if (val.name === "home") anchors.value = [];
 });
+
+const right = computed(() => {
+  return setting.value.cabinet.right.pin && setting.value.cabinet.position.break ? setting.value.cabinet.position.right + "vw" : 0;
+});
+
+const block = computed(() => {
+  return !props.disabled && !setting.value.cabinet.right.pin;
+});
+
+const hidden = computed(() => {
+  return props.disabled && !setting.value.cabinet.right.pin;
+});
+
+const fixed = computed(() => {
+  return setting.value.cabinet.right.pin && !setting.value.cabinet.position.break;
+});
 </script>
 
 <template>
-  <ContextMenu id="l-rcabinet" class="z-1" style="width: var(--cabinet-width)">
+  <ContextMenu
+    id="l-rcabinet"
+    :style="{ right: right }"
+    class="z-1 fixed top-0 right-0"
+    :class="{ 'show-rcabinet z-2': block, 'hidden-rcabinet': hidden, 'fixed-rcabinet': fixed }"
+    style="width: var(--cabinet-width)">
     <Card
       class="noscroll l-fiv-size h-100vh ofw-auto"
       :class="{ 'l-box-bg px-2': !setting.card.open }"
@@ -85,7 +113,39 @@ watch(route, val => {
 </template>
 
 <style scoped lang="scss">
+$quota: 10;
+
 #l-rcabinet {
   transition: var(--l-transition);
+}
+
+.fixed-rcabinet {
+  left: calc(calc(var(--content-width) / 2) + var(--content-width) + 2rem) !important;
+}
+
+.show-rcabinet {
+  animation: showrcabinet 0.2s ease-in;
+  transform: translateX(0);
+}
+
+@keyframes showrcabinet {
+  @for $i from 0 to $quota {
+    #{$i * 10%} {
+      transform: translateX(calc(var(--cabinet-width) + calc($i * calc(calc(-1 * var(--cabinet-width)) / 10))));
+    }
+  }
+}
+
+.hidden-rcabinet {
+  animation: hiddenrcabinet 0.2s ease-out;
+  transform: translateX(var(--cabinet-width));
+}
+
+@keyframes hiddenrcabinet {
+  @for $i from 0 to $quota {
+    #{$i * 10%} {
+      transform: translateX(calc($i * calc(var(--cabinet-width) / 10)));
+    }
+  }
 }
 </style>

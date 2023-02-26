@@ -5,6 +5,13 @@ import * as LocalApi from "@/utils/local-api";
 import * as RemoteApi from "@/utils/remote-api";
 import { __LITE_CONFIG__, blogApp, isFollow, isOwner } from "@/lite.config";
 
+const props = defineProps({
+  disabled: {
+    type: Boolean,
+    default: true
+  }
+});
+
 const setting = getSetting();
 let toplist: any;
 let columnData: any;
@@ -34,19 +41,40 @@ function search() {
   window.open(`https://zzk.cnblogs.com/s?w=blog:${blogApp}%${searchVal.value}`, "__blank");
 }
 
-async function focus() {
+async function follow() {
   const data = await RemoteApi.follow();
   if (data) ElMessage({ message: "已经关注博主！", type: "success", grouping: true });
 }
 
-async function unfocus() {
+async function unfollow() {
   const data = await RemoteApi.unfollow();
   if (data) ElMessage({ message: "取消关注博主！", type: "success", grouping: true });
 }
+
+const left = computed(() => {
+  return setting.value.cabinet.left.pin && setting.value.cabinet.position.break ? setting.value.cabinet.position.left + "vw" : 0;
+});
+
+const block = computed(() => {
+  return !props.disabled && !setting.value.cabinet.left.pin;
+});
+
+const hidden = computed(() => {
+  return props.disabled && !setting.value.cabinet.left.pin;
+});
+
+const fixed = computed(() => {
+  return setting.value.cabinet.left.pin && !setting.value.cabinet.position.break;
+});
 </script>
 
 <template>
-  <ContextMenu id="l-lcabinet" class="z-1" style="width: var(--cabinet-width)">
+  <ContextMenu
+    id="l-lcabinet"
+    class="z-1 fixed top-0 left-0"
+    :style="{ left: left }"
+    :class="{ 'show-lcabinet z-2': block, 'hidden-lcabinet': hidden, 'fixed-lcabinet': fixed }"
+    style="width: var(--cabinet-width)">
     <Card
       class="l-fiv-size"
       :class="{ 'l-box-bg px-2': !setting.card.open }"
@@ -67,12 +95,12 @@ async function unfocus() {
             </el-tooltip>
           </div>
           <div class="f-c-c mb-5" v-if="!isOwner">
-            <el-popconfirm @confirm="unfocus" confirm-button-text="确定" cancel-button-text="取消" title="确定取消关注？">
+            <el-popconfirm @confirm="unfollow" confirm-button-text="确定" cancel-button-text="取消" title="确定取消关注？">
               <template #reference>
                 <el-button v-if="isFollow" type="danger" text bg> -取消关注 </el-button>
               </template>
             </el-popconfirm>
-            <el-button @click="focus" v-if="!isFollow" type="primary" text bg> +关注博主 </el-button>
+            <el-button @click="follow" v-if="!isFollow" type="primary" text bg> +关注博主 </el-button>
           </div>
           <div class="hover mb-3" v-for="(item, index) in authorData" :key="index" @click="nav({ path: item.href })">
             <div class="f-c-s" v-if="index === 0">
@@ -180,7 +208,39 @@ async function unfocus() {
 </template>
 
 <style scoped lang="scss">
+$quota: 10;
+
 #l-lcabinet {
   transition: var(--l-transition);
+}
+
+.fixed-lcabinet {
+  left: calc(calc(var(--content-width) / 2) - calc(var(--cabinet-width) + 2rem)) !important;
+}
+
+.show-lcabinet {
+  animation: showlcabinet 0.2s ease-in;
+  transform: translateX(0);
+}
+
+@keyframes showlcabinet {
+  @for $i from 0 to $quota {
+    #{$i * 10%} {
+      transform: translateX(calc(calc(-1 * var(--cabinet-width)) + calc($i * calc(var(--cabinet-width) / 10))));
+    }
+  }
+}
+
+.hidden-lcabinet {
+  animation: hiddenlcabinet 0.2s ease-out;
+  transform: translateX(calc(-1 * var(--cabinet-width)));
+}
+
+@keyframes hiddenlcabinet {
+  @for $i from 0 to $quota {
+    #{$i * 10%} {
+      transform: translateX(calc($i * calc(calc(-1 * var(--cabinet-width)) / 10)));
+    }
+  }
 }
 </style>

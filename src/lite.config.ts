@@ -43,6 +43,7 @@ function initSetting() {
  */
 export function useLite(dev: Function, pro: Function) {
   $("body").append(`<div id="app"></div>`);
+  $("body").append(`<div id="l-menu-container"></div>`);
   $("head").append(`<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack-subset.css" />`);
 
   window.oncontextmenu = () => {
@@ -76,6 +77,6 @@ export function useLite(dev: Function, pro: Function) {
   preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
   preLog("v1.4.7", "Powered By Himmelbleu using Vue3 & Vite.");
   console.warn(
-    "控制台报错过多或长时间处于 loading 屏时：1. 清除浏览器缓存；2. 清理本地存储（打开F12，选择“应用程序”-“存储”-“本地存储”-“博客网址”，右键清除）。"
+    "[Lite Warn] 控制台报错或停留在 Loading 屏: 1. 清除浏览器缓存; 2. 打开F12，选择“应用程序”-“存储”-“本地存储”-“博客网址”，右键清除"
   );
 }

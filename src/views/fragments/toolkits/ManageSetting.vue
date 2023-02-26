@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { UploadInstance, UploadProps, UploadRawFile } from "element-plus";
 import { genFileId } from "element-plus";
-import { useNow, useDateFormat } from "@vueuse/core";
 import { getSetting, refactorObjectProperties, settingTempl } from "@/utils/common";
 
 const upload = ref<UploadInstance>();

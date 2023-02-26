@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { useDraggable } from "@vueuse/core";
 import { getSetting } from "@/utils/common";
 
 const setting = getSetting();
-const timestamp = new Date().getMilliseconds();
 const menu = ref<HTMLElement>();
-const panel = ref<HTMLElement>();
 const head = ref<HTMLElement>();
-
+const panel = ref<HTMLElement>();
+const milliseconds = new Date().getMilliseconds();
 const { x, y } = useDraggable(head);
 
 let close = () => {};
@@ -15,14 +13,10 @@ let close = () => {};
 onMounted(() => {
   menu.value.onmouseup = e => {
     if (e.button == 2) {
-      const panels = document.querySelectorAll(".l-menu__panel");
-      panels.forEach(ele => {
-        if (ele.id !== "l-menu__panel__" + timestamp) {
-          // @ts-ignore
-          ele.style.display = "none";
-        }
-      });
-
+      const container = document.querySelector("#l-menu-container");
+      const preId = container.getAttribute("pre-menu-id");
+      preId && (document.getElementById(`l-menu__panel__${preId}`).style.display = "none");
+      container.setAttribute("pre-menu-id", `${milliseconds}`);
       panel.value.style.left = `${e.clientX}px`;
       panel.value.style.top = `${e.clientY}px`;
       panel.value.style.display = "block";
@@ -38,13 +32,13 @@ onMounted(() => {
 <template>
   <div ref="menu" class="l-menu">
     <slot />
-    <Teleport to="body">
+    <Teleport to="#l-menu-container">
       <div
         ref="panel"
-        :id="'l-menu__panel__' + timestamp"
+        :id="'l-menu__panel__' + milliseconds"
         :class="{ 'l-box-bg': !setting.card.open }"
-        class="l-menu__panel z-99 fixed hidden"
-        :style="{ left: 'calc(' + x + 'px + 1rem)', top: 'calc(' + y + 'px + 1rem)' }">
+        :style="{ left: x + 'px', top: y + 'px' }"
+        class="z-99 fixed hidden">
         <Card>
           <div ref="head" class="l-menu__head px-4 pt-4 f-c-b mb-6 cursor-move">
             <div class="l-menu__title mr-10 l-for-size pl-1.5 rd-1">

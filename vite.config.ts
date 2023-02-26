@@ -28,7 +28,7 @@ export default defineConfig(({ command, mode }) => {
         presets: [presetAttributify({}), presetUno()]
       }),
       AutoImport({
-        imports: ["vue", "vue-router", "pinia"],
+        imports: ["vue", "vue-router", "pinia", "@vueuse/core"],
         resolvers: [
           ElementPlusResolver(),
           IconsResolver({
