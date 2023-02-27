@@ -17,10 +17,6 @@ body {
   color: var(--l-pri-color);
   font-size: var(--font-size);
   font-weight: 400;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
 
   &::-webkit-scrollbar {
     display: none;
@@ -90,12 +86,6 @@ html[class="dark"] {
   --l-box-bg: #191919;
   // 卡片背景颜色
   --l-card-bg: #222222;
-  // 文本域背景颜色
-  --l-textarea-bg: #202020;
-  // 代码块背景颜色
-  --l-precode-bg: #1f1f1f;
-  // 行内代码块背景颜色
-  --l-code-bg: #2b2b2b;
   // 分界线背景颜色
   --l-divider-bg: #464646;
   // 模态框背景颜色
@@ -122,12 +112,6 @@ html[class="light"] {
   --l-box-bg: #f9f9f9;
   // 卡片背景颜色
   --l-card-bg: #ffffff;
-  // 文本域背景颜色
-  --l-textarea-bg: #fafafa;
-  // 代码块背景颜色
-  --l-precode-bg: #fafafa;
-  // 行内代码块背景颜色
-  --l-code-bg: #fafafa;
   // 分界线背景颜色
   --l-divider-bg: #e3e3e3;
   // 模态框背景颜色
@@ -162,15 +146,8 @@ html[class="light"] {
   --el-color-primary: var(--l-theme-color) !important;
   --el-border-radius-base: 0.5rem !important;
   --el-color-primary-light-5: var(--l-theme-color) !important;
-}
-
-.el-input__inner,
-.el-button {
-  font-family: var(--font-family);
-}
-
-.el-input__inner {
-  font-size: var(--l-fiv-size) !important;
+  --el-font-size-base: var(--l-fiv-size) !important;
+  --el-fill-color-blank: transparent !important;
 }
 
 .el-rate__icon {
@@ -191,7 +168,7 @@ html[class="light"] {
   overflow-y: hidden;
   color: var(--l-pri-color);
   transition: var(--l-transition);
-  background: var(--l-precode-bg) !important;
+  background: var(--l-code-bg) !important;
 
   &::-webkit-scrollbar {
     height: 0.5rem;

@@ -12,11 +12,22 @@ import { useStorage } from "@vueuse/core";
 import { CustType } from "@/types/data-type";
 import { __LITE_CONFIG__, blogApp } from "@/lite.config";
 
+export function startLoading() {
+  $("#l-content").removeClass("l-transition");
+  $("#l-progress > .l-pro__track").removeClass("track-static").addClass("track-active");
+  $("#l-progress > .l-pro__track > .l-pro__bar").removeClass("bar-static").addClass("bar-active");
+}
+
 /**
  * 关闭 loading 屏
  */
-export function closeLoader() {
+export function endLoading() {
   $(".light-loading, .dark-loading").fadeOut();
+  $("#l-content").addClass("l-transition");
+  setTimeout(() => {
+    $("#l-progress > .l-pro__track").removeClass("track-active").addClass("track-static");
+    $("#l-progress > .l-pro__track > .l-pro__bar").removeClass("bar-active").addClass("bar-static");
+  }, 750);
 }
 
 /**
@@ -113,39 +124,236 @@ export function replaceText(source: string, regExps: RegExp[], replacement?: str
  */
 export function getSettingTemp(): CustType.ISetting {
   return {
-    theme: { mode: "dark", color: "#409eff" },
-    openToolKits: true,
-    githubPostion: "left",
-    openPager: false,
-    font: {
-      size: { level1: 1.3, level2: 1.2, level3: 1.1, level4: 1, level5: 0.9, level6: 0.8 },
-      light: { color: { level1: "#393939", level2: "#4e4e4e", level3: "#707070" } },
-      dark: { color: { level1: "#a7a7a7", level2: "#8d9095", level3: "#878787" } }
+    theme: {
+      mode: "dark",
+      color: "#409eff"
     },
-    content: { width: 50, padding: { left: 0, right: 0, top: 0, bottom: 0 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
-    listing: { padding: { left: 1, right: 1, top: 0, bottom: 1.5 }, margin: { left: 0, right: 0, top: 0, bottom: 1 } },
-    article: { padding: { left: 1, right: 1, top: 1, bottom: 1 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
+    toolkits: {
+      pin: true
+    },
+    pages: {
+      home: {
+        padding: {
+          left: 1,
+          right: 1,
+          top: 0,
+          bottom: 1.5
+        },
+        margin: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 1
+        }
+      },
+      article: {
+        code: {
+          light: {
+            color: "#fafafa"
+          },
+          dark: {
+            color: "#1f1f1f"
+          }
+        },
+        padding: {
+          left: 1,
+          right: 1,
+          top: 0.5,
+          bottom: 1
+        },
+        margin: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0
+        }
+      },
+      tags: {
+        padding: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0
+        },
+        margin: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0
+        }
+      },
+      tagColl: {
+        padding: {
+          left: 0,
+          right: 0,
+          top: 0.5,
+          bottom: 1.5
+        },
+        margin: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0
+        }
+      },
+      gallery: {
+        padding: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0
+        },
+        margin: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0
+        }
+      },
+      sort: {
+        padding: {
+          left: 1,
+          right: 1,
+          top: 0.5,
+          bottom: 1
+        },
+        margin: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 1
+        }
+      }
+    },
+    font: {
+      size: {
+        level1: 1.3,
+        level2: 1.2,
+        level3: 1.1,
+        level4: 1,
+        level5: 0.9,
+        level6: 0.8
+      },
+      light: {
+        color: {
+          level1: "#393939",
+          level2: "#4e4e4e",
+          level3: "#707070"
+        }
+      },
+      dark: {
+        color: {
+          level1: "#a7a7a7",
+          level2: "#8d9095",
+          level3: "#878787"
+        }
+      }
+    },
+    content: {
+      width: 50,
+      padding: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0
+      },
+      margin: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0
+      }
+    },
     cabinet: {
-      position: { left: 0, right: 0, break: false },
-      left: { pin: false, padding: { left: 1, right: 1, top: 0, bottom: 0 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
-      right: { pin: false, padding: { left: 1, right: 1, top: 0, bottom: 0 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
+      position: {
+        left: 0,
+        right: 0,
+        break: false
+      },
+      left: {
+        pin: false,
+        padding: {
+          left: 1,
+          right: 1,
+          top: 0,
+          bottom: 0
+        },
+        margin: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0
+        }
+      },
+      right: {
+        pin: false,
+        padding: {
+          left: 1,
+          right: 1,
+          top: 0,
+          bottom: 0
+        },
+        margin: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0
+        }
+      },
       toggles: {
-        我的技术栈: { open: true, show: true },
-        博客信息: { open: true, show: true },
-        常用链接: { open: true, show: true },
-        博客数据: { open: true, show: true },
-        推荐书籍: { open: true, show: true }
+        我的技术栈: {
+          open: true,
+          show: true
+        },
+        博客信息: {
+          open: true,
+          show: true
+        },
+        常用链接: {
+          open: true,
+          show: true
+        },
+        博客数据: {
+          open: true,
+          show: true
+        },
+        推荐书籍: {
+          open: true,
+          show: true
+        }
       },
       width: 17.5,
       remote: true
     },
-    background: { open: false, filter: 6, src: "" },
+    background: {
+      open: false,
+      filter: 6,
+      src: ""
+    },
     card: {
       color: "rgba(31, 31, 31, 1)",
       open: false,
       radius: 10,
-      padding: { left: 1, right: 1, top: 1, bottom: 1 },
-      margin: { left: 0, right: 1, top: 0, bottom: 1 }
+      padding: {
+        left: 1,
+        right: 1,
+        top: 1,
+        bottom: 1
+      },
+      margin: {
+        left: 0,
+        right: 1,
+        top: 0,
+        bottom: 1
+      }
+    },
+    other: {
+      github: {
+        position: "left"
+      },
+      pagation: {
+        pin: true
+      }
     }
   };
 }

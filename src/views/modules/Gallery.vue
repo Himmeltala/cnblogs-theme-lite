@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
-import { closeLoader } from "@/utils/common";
+import { endLoading, startLoading } from "@/utils/common";
 import { getGalleryImg } from "@/apis/local-api";
+
+startLoading();
 
 const router = useRouter();
 const imgUrl = getGalleryImg();
 
 document.querySelector("title").innerText = `相册 - ${blogApp} - 博客园`;
 
-closeLoader();
+endLoading();
 </script>
 
 <template>

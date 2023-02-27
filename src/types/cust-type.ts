@@ -181,21 +181,36 @@ type ToggleType = Record<string, { open: boolean; show: boolean }>;
  * Lite 主题设置数据类型
  */
 export interface ISetting {
+  // 主题
   theme?: { color?: string; mode?: string };
+  // 字体
   font?: {
     size?: { level1?: number; level2?: number; level3?: number; level4?: number; level5?: number; level6?: number };
     dark?: { color?: { level1?: string; level2?: string; level3?: string } };
     light?: { color?: { level1?: string; level2?: string; level3?: string } };
   };
+  // 卡片
   card?: { padding?: IBox; margin?: IBox; radius?: number; color?: string; open?: boolean };
+  // 背景
   background?: { src?: string; open?: boolean; filter?: number };
+  // pages
+  pages?: {
+    home?: { padding?: IBox; margin?: IBox };
+    article?: { padding?: IBox; margin?: IBox; code?: { light?: { color?: string }; dark?: { color?: string } } };
+    gallery?: { padding?: IBox; margin?: IBox };
+    sort?: { padding?: IBox; margin?: IBox };
+    tags?: { padding?: IBox; margin?: IBox };
+    tagColl?: { padding?: IBox; margin?: IBox };
+  };
   listing?: { padding?: IBox; margin?: IBox };
   article?: { padding?: IBox; margin?: IBox };
+  // 工具箱
   toolkits?: { pin?: boolean };
-  openToolKits?: boolean;
   openPager?: boolean;
   githubPostion?: "left" | "right";
+  // 中间内容
   content?: { width?: number; padding?: IBox; margin?: IBox };
+  // 陈列柜
   cabinet?: {
     position?: { left?: number; right?: number; break?: boolean };
     left?: { pin?: boolean; padding?: IBox; margin?: IBox };
@@ -204,6 +219,14 @@ export interface ISetting {
     width?: number;
     break?: boolean;
     remote?: boolean;
+  };
+  other?: {
+    github?: {
+      position?: "left" | "right";
+    };
+    pagation: {
+      pin?: boolean;
+    };
   };
 }
 

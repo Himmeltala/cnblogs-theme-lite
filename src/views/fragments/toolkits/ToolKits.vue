@@ -27,7 +27,7 @@ function changeDayTime() {
   <div id="l-toolkits" class="fixed right-15 top-65vh l-thr-size z-1">
     <div class="relative">
       <Card
-        :class="{ 'l-box-bg': !setting.card.open, 'show-0': setting.openToolKits, 'close-0': !setting.openToolKits }"
+        :class="{ 'l-box-bg': !setting.card.open, 'show-0': setting.toolkits.pin, 'close-0': !setting.toolkits.pin }"
         class="back-home absolute hover left-0 rd-2"
         @click="nav({ path: 'back', router })">
         <div class="f-c-c w-8 h-8">
@@ -35,7 +35,7 @@ function changeDayTime() {
         </div>
       </Card>
       <Card
-        :class="{ 'l-box-bg': !setting.card.open, 'show-1': setting.openToolKits, 'close-1': !setting.openToolKits }"
+        :class="{ 'l-box-bg': !setting.card.open, 'show-1': setting.toolkits.pin, 'close-1': !setting.toolkits.pin }"
         class="back-top absolute hover left-0 rd-2"
         @click="moveToTopNail">
         <div class="f-c-c w-8 h-8">
@@ -43,7 +43,7 @@ function changeDayTime() {
         </div>
       </Card>
       <Card
-        :class="{ 'l-box-bg': !setting.card.open, 'show-2': setting.openToolKits, 'close-2': !setting.openToolKits }"
+        :class="{ 'l-box-bg': !setting.card.open, 'show-2': setting.toolkits.pin, 'close-2': !setting.toolkits.pin }"
         @click="changeDayTime"
         class="daytime absolute hover left-0 rd-2">
         <div class="f-c-c w-8 h-8">
@@ -56,7 +56,7 @@ function changeDayTime() {
         </div>
       </Card>
       <Card
-        :class="{ 'l-box-bg': !setting.card.open, 'show-3': setting.openToolKits, 'close-3': !setting.openToolKits }"
+        :class="{ 'l-box-bg': !setting.card.open, 'show-3': setting.toolkits.pin, 'close-3': !setting.toolkits.pin }"
         @click="dialog = !dialog"
         class="setting absolute hover left-0 rd-2">
         <div class="f-c-c w-8 h-8">
@@ -64,8 +64,8 @@ function changeDayTime() {
         </div>
       </Card>
       <Card
-        @click="setting.openToolKits = !setting.openToolKits"
-        :class="{ 'l-box-bg': !setting.card.open, 'show-toolkits': setting.openToolKits, 'close-toolkits': !setting.openToolKits }"
+        @click="setting.toolkits.pin = !setting.toolkits.pin"
+        :class="{ 'l-box-bg': !setting.card.open, 'show-toolkits': setting.toolkits.pin, 'close-toolkits': !setting.toolkits.pin }"
         class="kits-box absolute hover top-40 left-0 rd-2">
         <div class="f-c-c w-8 h-8">
           <i-ep-arrow-right />
@@ -89,7 +89,7 @@ function changeDayTime() {
         </template>
         <ThemeSetting />
       </el-collapse-item>
-      <el-collapse-item>
+      <el-collapse-item v-if="pcDevice">
         <template #title>
           <span class="l-for-size">其他设置</span>
         </template>
@@ -101,7 +101,7 @@ function changeDayTime() {
         </template>
         <ManageSetting />
       </el-collapse-item>
-      <el-collapse-item>
+      <el-collapse-item v-if="pcDevice">
         <template #title>
           <span class="l-for-size">隐藏设置</span>
         </template>

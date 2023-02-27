@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { BlogType } from "@/types/data-type";
 import { isOwner, blogApp } from "@/lite.config";
-import { closeLoader, getSetting, nav } from "@/utils/common";
+import { endLoading, startLoading, getSetting, nav } from "@/utils/common";
 import { getLockedArticle, getIsUnlock, getArticle, getArticleProps, getPrevNext, getArticleVote, voteArticle } from "@/apis/remote-api";
+
+startLoading();
 
 const route = useRoute();
 const router = useRouter();
 const postId = `${route.params.id}`;
 const article = ref(await getArticle(postId));
 const isLocked = ref(false);
-const articleProps = await getArticleProps(postId);
+const props = await getArticleProps(postId);
 const prevNext = await getPrevNext(postId);
-const articleVote = ref(await getArticleVote(postId));
+const viewpoint = ref(await getArticleVote(postId));
 const password = ref("");
 const setting = getSetting();
 
@@ -19,7 +21,7 @@ if (!(article.value.content && article.value.text)) isLocked.value = true;
 
 document.querySelector("title").innerText = `${article.value.text} - ${blogApp} - 博客园`;
 
-closeLoader();
+endLoading();
 
 async function submit() {
   const data = await getIsUnlock(password.value, postId + "");
@@ -38,8 +40,8 @@ async function vote(voteType: BlogType.VoteType) {
   const data = await voteArticle({ postId, isAbandoned: false, voteType });
   if (data) {
     if (data.isSuccess)
-      if (voteType == "Bury") articleVote.value.buryCount = articleVote.value.buryCount + 1;
-      else articleVote.value.diggCount = articleVote.value.diggCount + 1;
+      if (voteType == "Bury") viewpoint.value.buryCount = viewpoint.value.buryCount + 1;
+      else viewpoint.value.diggCount = viewpoint.value.diggCount + 1;
     ElMessage({
       message: data.message,
       grouping: true,
@@ -51,7 +53,7 @@ async function vote(voteType: BlogType.VoteType) {
 
 <template>
   <ContextMenu id="l-article" class="min-height">
-    <Card :padding="setting.article.padding" :margin="setting.article.margin">
+    <Card :padding="setting.pages.article.padding" :margin="setting.pages.article.margin">
       <template v-if="!isLocked">
         <el-page-header :icon="null" @back="nav({ path: 'back', router })">
           <template #title>
@@ -82,34 +84,26 @@ async function vote(voteType: BlogType.VoteType) {
           </div>
         </div>
         <div class="l-article__props l-sec-color mt-4">
-          <div class="mb-2 flex-wrap f-c-s" v-if="articleProps.sorts.length > 0">
+          <div class="mb-4 flex-wrap f-c-s" v-if="props.sorts.length > 0">
             <div class="f-c-c l-fiv-size">
               <i-ep-folder-opened class="mr-1" />
               <span>分类：</span>
             </div>
-            <div
-              v-for="(item, index) in articleProps.sorts"
-              class="l-fiv-size"
-              :class="{ 'mr-2': index !== articleProps.sorts.length - 1 }"
-              :key="index">
-              <Label class="px-2 py-1.5" @click="nav({ path: '/sort/' + item.href, router })">
+            <div v-for="(item, index) in props.sorts" class="l-fiv-size" :class="{ 'mr-2': index !== props.sorts.length - 1 }" :key="index">
+              <LTag line="dotted" hover round @click="nav({ path: '/sort/' + item.href, router })">
                 {{ item.text }}
-              </Label>
+              </LTag>
             </div>
           </div>
-          <div class="f-c-s flex-wrap" v-if="articleProps.tags.length > 0">
+          <div class="f-c-s flex-wrap" v-if="props.tags.length > 0">
             <div class="f-c-c l-fiv-size">
               <i-ep-price-tag class="mr-1" />
               <span>标签：</span>
             </div>
-            <div
-              v-for="(item, index) in articleProps.tags"
-              class="l-fiv-size"
-              :class="{ 'mr-2': index !== articleProps.tags.length - 1 }"
-              :key="index">
-              <Label class="px-2 py-1.5" @click="nav({ path: '/label/' + item.text, router })">
+            <div v-for="(item, index) in props.tags" class="l-fiv-size" :class="{ 'mr-2': index !== props.tags.length - 1 }" :key="index">
+              <LTag line="dotted" hover round @click="nav({ path: '/label/' + item.text, router })">
                 {{ item.text }}
-              </Label>
+              </LTag>
             </div>
           </div>
         </div>
@@ -142,7 +136,7 @@ async function vote(voteType: BlogType.VoteType) {
         <div class="l-article__viewpoint my-10 f-c-e">
           <div class="mr-5">
             <el-button plain @click="vote('Digg')">
-              <span class="l-fiv-size"> 点赞 {{ articleVote.diggCount }} </span>
+              点赞 {{ viewpoint.diggCount }}
               <template #icon>
                 <i-ep-caret-top />
               </template>
@@ -150,7 +144,7 @@ async function vote(voteType: BlogType.VoteType) {
           </div>
           <div>
             <el-button plain @click="vote('Bury')">
-              <span class="l-fiv-size"> 反对 {{ articleVote.buryCount }} </span>
+              反对 {{ viewpoint.buryCount }}
               <template #icon>
                 <i-ep-caret-bottom />
               </template>
@@ -170,9 +164,10 @@ async function vote(voteType: BlogType.VoteType) {
         </el-form>
       </template>
     </Card>
-    <template #title>随笔盒子模型设置</template>
+    <template #title>随笔页样式设置</template>
     <template #content>
-      <BoxSetting :padding="setting.article.padding" :margin="setting.article.margin" />
+      <CodeStyleSetting />
+      <BoxSetting :padding="setting.pages.article.padding" :margin="setting.pages.article.margin" />
     </template>
   </ContextMenu>
 </template>

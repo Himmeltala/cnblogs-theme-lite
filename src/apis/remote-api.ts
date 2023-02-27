@@ -9,7 +9,7 @@
 import $ from "jquery";
 import axios from "axios";
 import { BlogType } from "@/types/data-type";
-import * as Parser from "@/services/parse-html-service";
+import * as Parser from "@/services/parse-html";
 import { baseAPI, blogId, userGuid } from "@/lite.config";
 
 /**
@@ -21,7 +21,7 @@ import { baseAPI, blogId, userGuid } from "@/lite.config";
 async function sendAwaitGet(url: string): Promise<any> {
   let awt;
   try {
-    awt = await axios.get(url, { timeout: 5000 });
+    awt = await axios.get(`${baseAPI}${url}`, { timeout: 5000 });
   } catch (e) {
     console.error(e);
   }
@@ -38,7 +38,7 @@ async function sendAwaitGet(url: string): Promise<any> {
 async function sendAwaitPost(url: string, data: any): Promise<any> {
   let awt;
   try {
-    awt = await axios.post(url, data, {
+    awt = await axios.post(`${baseAPI}${url}`, data, {
       timeout: 5000,
       headers: { RequestVerificationToken: $("#antiforgery_token").attr("value") }
     });
@@ -55,7 +55,7 @@ async function sendAwaitPost(url: string, data: any): Promise<any> {
  * @param isCalc 是否计算页数，由于第一页没有显示页数，只有第二页才有，所以为了不多次重复计算页数，该变量用于控制。
  */
 export async function getArticleList(page: number, isCalc: boolean) {
-  const { data } = await sendAwaitGet(`${baseAPI}/default.html?page=${page}`);
+  const { data } = await sendAwaitGet(`/default.html?page=${page}`);
   return Parser.parseArticleList(data, isCalc);
 }
 
@@ -65,7 +65,7 @@ export async function getArticleList(page: number, isCalc: boolean) {
  * @param postId 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
  */
 export async function getArticle(postId: string) {
-  const { data } = await sendAwaitGet(`${baseAPI}/p/${postId}.html`);
+  const { data } = await sendAwaitGet(`/p/${postId}.html`);
   return Parser.parseArticle(postId, data);
 }
 
@@ -76,7 +76,7 @@ export async function getArticle(postId: string) {
  * @return 获取响应的消息，返回一个 axios 中 data 部分消息
  */
 export async function setComment(comment: BlogType.IBlogComment): Promise<BlogType.AjaxType> {
-  const { data } = await sendAwaitPost(`${baseAPI}/ajax/PostComment/Add.aspx`, comment);
+  const { data } = await sendAwaitPost(`/ajax/PostComment/Add.aspx`, comment);
   return data;
 }
 
@@ -86,7 +86,7 @@ export async function setComment(comment: BlogType.IBlogComment): Promise<BlogTy
  * @param comment 评论实体
  */
 export async function deleteComment(comment: BlogType.IBlogComment) {
-  const { data } = await sendAwaitPost(`${baseAPI}/ajax/comment/DeleteComment.aspx`, comment);
+  const { data } = await sendAwaitPost(`/ajax/comment/DeleteComment.aspx`, comment);
   return data;
 }
 
@@ -96,7 +96,7 @@ export async function deleteComment(comment: BlogType.IBlogComment) {
  * @param comment 评论实体，对应博客园默认的评论字段，需要传递一个包含评论 ID 的实体
  */
 export async function getComment(comment: BlogType.IBlogComment) {
-  const { data } = await sendAwaitPost(`${baseAPI}/ajax/comment/GetCommentBody.aspx`, comment);
+  const { data } = await sendAwaitPost(`/ajax/comment/GetCommentBody.aspx`, comment);
   return data;
 }
 
@@ -106,7 +106,7 @@ export async function getComment(comment: BlogType.IBlogComment) {
  * @param comment 评论实体，对应博客园默认的评论字段，需要传递一个包含评论 ID、评论内容的实体
  */
 export async function updateComment(comment: BlogType.IBlogComment): Promise<BlogType.AjaxType> {
-  const { data } = await sendAwaitPost(`${baseAPI}/ajax/PostComment/Update.aspx`, comment);
+  const { data } = await sendAwaitPost(`/ajax/PostComment/Update.aspx`, comment);
   return data;
 }
 
@@ -116,7 +116,7 @@ export async function updateComment(comment: BlogType.IBlogComment): Promise<Blo
  * @param id 随笔 ID
  */
 export async function getCommentCount(id: number | string) {
-  const { data } = await sendAwaitGet(`${baseAPI}/ajax/GetCommentCount.aspx?postId=${id}`);
+  const { data } = await sendAwaitGet(`/ajax/GetCommentCount.aspx?postId=${id}`);
   return Parser.parseCommentPages(data);
 }
 
@@ -126,7 +126,7 @@ export async function getCommentCount(id: number | string) {
  * @param comment 被操作的评论的实体，需要 isAbandoned、postId、voteType 三个字段，其中 voteType 请见 DataType.VoteType，只有两种类型。
  */
 export async function voteComment(comment: BlogType.IBlogComment): Promise<BlogType.AjaxType> {
-  const { data } = await sendAwaitPost(`${baseAPI}/ajax/vote/comment`, comment);
+  const { data } = await sendAwaitPost(`/ajax/vote/comment`, comment);
   return data;
 }
 
@@ -136,7 +136,7 @@ export async function voteComment(comment: BlogType.IBlogComment): Promise<BlogT
  * @param comment 博客园原有的评论实体，需要 body、parentCommentId、postId。parentCommentId 就是回复的那一条的 ID。
  */
 export async function replayComment(comment: BlogType.IBlogComment): Promise<BlogType.AjaxType> {
-  const { data } = await sendAwaitPost(`${baseAPI}/ajax/PostComment/Add.aspx`, comment);
+  const { data } = await sendAwaitPost(`/ajax/PostComment/Add.aspx`, comment);
   return data;
 }
 
@@ -148,7 +148,7 @@ export async function replayComment(comment: BlogType.IBlogComment): Promise<Blo
  * @param anchorId 当进入的是一个回复评论时，需要传递该参数，默认可以不传递
  */
 export async function getCommentList(id: number | string, page: number, anchorId?: number) {
-  let url = `${baseAPI}/ajax/GetComments.aspx?postId=${id}&pageIndex=${page}`;
+  let url = `/ajax/GetComments.aspx?postId=${id}&pageIndex=${page}`;
   if (anchorId) url += `&anchorCommentId=${anchorId}&isDesc=false`;
   const { data } = await sendAwaitGet(url);
   return Parser.parseCommentList(data);
@@ -160,7 +160,7 @@ export async function getCommentList(id: number | string, page: number, anchorId
  * @param postId 进入随笔页面之后，从 vue-router 参数中获取
  */
 export async function getArticleProps(postId: string) {
-  const { data } = await sendAwaitGet(`${baseAPI}/ajax/CategoriesTags.aspx?blogId=${blogId}&postId=${postId}`);
+  const { data } = await sendAwaitGet(`/ajax/CategoriesTags.aspx?blogId=${blogId}&postId=${postId}`);
   return Parser.parseArticleProps(data);
 }
 
@@ -170,7 +170,7 @@ export async function getArticleProps(postId: string) {
  * @param id 进入随笔页面之后，从 vue-router 参数中获取
  */
 export async function getPrevNext(id: string) {
-  const { data } = await sendAwaitGet(`${baseAPI}/ajax/post/prevnext?postId=${id}`);
+  const { data } = await sendAwaitGet(`/ajax/post/prevnext?postId=${id}`);
   return Parser.parsePrevNext(data);
 }
 
@@ -180,7 +180,7 @@ export async function getPrevNext(id: string) {
  * @param entity 随笔实体。必须包含：isAbandoned、postId、voteType 三个字段。
  */
 export async function voteArticle(entity: BlogType.IBlogArticle): Promise<BlogType.AjaxType> {
-  const { data } = await sendAwaitPost(`${baseAPI}/ajax/vote/blogpost`, entity);
+  const { data } = await sendAwaitPost(`/ajax/vote/blogpost`, entity);
   return data;
 }
 
@@ -190,7 +190,7 @@ export async function voteArticle(entity: BlogType.IBlogArticle): Promise<BlogTy
  * @param postId 传递一个数组，数组第一个就是 postId 的值
  */
 export async function getArticleVote(postId: string): Promise<BlogType.BlogArticleVote> {
-  const { data } = await sendAwaitPost(`${baseAPI}/ajax/GetPostStat`, [postId]);
+  const { data } = await sendAwaitPost(`/ajax/GetPostStat`, [postId]);
   return data[0];
 }
 
@@ -202,7 +202,7 @@ export async function getArticleVote(postId: string): Promise<BlogType.BlogArtic
  * @param page 页数
  */
 export async function getSorts(id: any, calcPage: boolean, page: any) {
-  const { data } = await sendAwaitGet(`${baseAPI}/category/${id}.html?page=${page}`);
+  const { data } = await sendAwaitGet(`/category/${id}.html?page=${page}`);
   return Parser.parseSorts(data, calcPage);
 }
 
@@ -212,7 +212,7 @@ export async function getSorts(id: any, calcPage: boolean, page: any) {
  * @param tag 标签名称
  */
 export async function getTagColl(tag: string) {
-  const { data } = await sendAwaitGet(`${baseAPI}/tag/${tag}`);
+  const { data } = await sendAwaitGet(`/tag/${tag}`);
   return Parser.parseTagColl(data);
 }
 
@@ -220,7 +220,7 @@ export async function getTagColl(tag: string) {
  * 获取侧边栏分类列表、标签列表，... 列表
  */
 export async function getCabinetColumn() {
-  const { data } = await sendAwaitGet(`${baseAPI}/ajax/sidecolumn.aspx`);
+  const { data } = await sendAwaitGet(`/ajax/sidecolumn.aspx`);
   return Parser.parseCabinetColumn(data);
 }
 
@@ -229,7 +229,7 @@ export async function getCabinetColumn() {
  *
  */
 export async function getAuthor() {
-  const { data } = await sendAwaitGet(`${baseAPI}/ajax/news.aspx`);
+  const { data } = await sendAwaitGet(`/ajax/news.aspx`);
   return Parser.parseAuthor(data);
 }
 
@@ -237,7 +237,7 @@ export async function getAuthor() {
  * 获取博主主人的排行榜、积分、阅读等数据
  */
 export async function getMasterData() {
-  const { data } = await sendAwaitGet(`${baseAPI}/ajax/blogStats`);
+  const { data } = await sendAwaitGet(`/ajax/blogStats`);
   return Parser.parseMasterData(data);
 }
 
@@ -245,7 +245,7 @@ export async function getMasterData() {
  * 获取侧边栏阅读排行榜列表
  */
 export async function getCabinetTopList() {
-  const { data } = await sendAwaitGet(`${baseAPI}/ajax/TopLists.aspx`);
+  const { data } = await sendAwaitGet(`/ajax/TopLists.aspx`);
   return Parser.parseCabinetTopList(data);
 }
 
@@ -253,7 +253,7 @@ export async function getCabinetTopList() {
  * 获取所有标签列表
  */
 export async function getTags() {
-  const { data } = await sendAwaitGet(`${baseAPI}/tag`);
+  const { data } = await sendAwaitGet(`/tag`);
   return Parser.parseTags(data);
 }
 
@@ -261,7 +261,7 @@ export async function getTags() {
  * 关注博主
  */
 export async function follow() {
-  const { data } = await sendAwaitPost(`${baseAPI}/ajax/Follow/FollowBlogger.aspx`, {
+  const { data } = await sendAwaitPost(`/ajax/Follow/FollowBlogger.aspx`, {
     blogUserGuid: userGuid
   });
   return data === "关注成功" ?? false;
@@ -271,7 +271,7 @@ export async function follow() {
  * 取消关注
  */
 export async function unfollow() {
-  const { data } = await sendAwaitPost(`${baseAPI}/ajax/Follow/RemoveFollow.aspx`, {
+  const { data } = await sendAwaitPost(`/ajax/Follow/RemoveFollow.aspx`, {
     blogUserGuid: userGuid
   });
   return data === "取消成功" ?? false;
@@ -287,7 +287,7 @@ export async function unfollow() {
 export async function getIsUnlock(password: string, id: string) {
   const formData = new FormData();
   formData.append("Password", password);
-  const { data } = await sendAwaitPost(`${baseAPI}/protected/p/${id}.html`, formData);
+  const { data } = await sendAwaitPost(`/protected/p/${id}.html`, formData);
   return Parser.parseIsUnLock(data);
 }
 
@@ -301,6 +301,6 @@ export async function getIsUnlock(password: string, id: string) {
 export async function getLockedArticle(password: string, postId: string) {
   const formData = new FormData();
   formData.append("Password", password);
-  const { data } = await sendAwaitPost(`${baseAPI}/protected/p/${postId}.html`, formData);
+  const { data } = await sendAwaitPost(`/protected/p/${postId}.html`, formData);
   return Parser.parseArticle(postId, data);
 }

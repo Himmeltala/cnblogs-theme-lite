@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { getSetting } from "@/utils/common";
+import { blogApp } from "@/lite.config";
 
+const route = useRoute();
 const setting = getSetting();
 const ldisabled = ref(true);
 const rdisabled = ref(true);
@@ -19,6 +21,10 @@ onMounted(() => {
     else if (!rdisabled.value) rdisabled.value = true;
   };
 });
+
+watch(route, async () => {
+  document.querySelector("title").innerText = `${blogApp} - 博客园`;
+});
 </script>
 
 <template>
@@ -28,12 +34,13 @@ onMounted(() => {
     <div
       id="l-lstrip"
       v-show="!setting.cabinet.left.pin"
-      class="fixed left-0 top-47.5vh w-5px h-5vh rd-2 cursor-pointer opacity-70 l-strip-bg"></div>
+      class="fixed z-2 left-0 top-47.5vh w-5px h-5vh rd-2 cursor-pointer opacity-70 l-strip-bg"></div>
     <Suspense>
       <LeftCabinet :disabled="ldisabled" />
     </Suspense>
+    <Progress />
   </div>
-  <div id="l-content" class="z-1">
+  <div id="l-content" class="z-1 l-transition">
     <div id="l-nail"></div>
     <div :class="{ 'l-box-bg py-2 px-4': !setting.card.open }">
       <div id="l-main">
@@ -62,7 +69,7 @@ onMounted(() => {
     <div
       id="l-rstrip"
       v-show="!setting.cabinet.right.pin"
-      class="fixed right-0 top-47.5vh w-5px h-5vh rd-2 cursor-pointer opacity-70 l-strip-bg"></div>
+      class="fixed z-2 right-0 top-47.5vh w-5px h-5vh rd-2 cursor-pointer opacity-70 l-strip-bg"></div>
     <RightCabinet :disabled="rdisabled" />
     <ToolKits />
   </div>
@@ -78,6 +85,18 @@ onMounted(() => {
 @include mb() {
   #l-content {
     width: 100%;
+  }
+}
+
+.l-transition {
+  animation: transition-animation 1s ease-in;
+
+  @keyframes transition-animation {
+    @for $index from 0 to 10 {
+      #{$index * 10%} {
+        opacity: calc(math.div($index, 10));
+      }
+    }
   }
 }
 </style>

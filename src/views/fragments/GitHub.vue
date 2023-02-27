@@ -9,8 +9,8 @@ const setting = getSetting();
   <a
     id="l-github"
     class="fixed top-0 w-15 h-15 border-0 z-1"
-    :style="{ transform: setting.githubPostion === 'right' ? 'rotate(90deg)' : 'rotate(0deg)' }"
-    :class="{ 'left-0': setting.githubPostion === 'left', 'right-0': setting.githubPostion === 'right' }"
+    :style="{ transform: setting.other.github.position === 'right' ? 'rotate(90deg)' : 'rotate(0deg)' }"
+    :class="{ 'left-0': setting.other.github.position === 'left', 'right-0': setting.other.github.position === 'right' }"
     :href="__LITE_CONFIG__.github"
     target="_blank">
     <svg viewBox="0 0 250 250" style="color: #fff">

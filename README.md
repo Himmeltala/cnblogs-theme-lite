@@ -3,7 +3,7 @@
 本人已部署在自己的博客，浏览：[Lite 博客](https://www.cnblogs.com/Himmelbleu/#/)。
 [GitHub](https://github.com/Himmelbleu/cnblogs-theme-lite) 或 [Gitee](https://gitee.com/Himmelbleu/cnblogs-theme-lite)，请点个 :star:star 哟~。
 
-Lite 基于 Vue3 + Vite 开发，SPA 应用可以减少整页加载，实现局部刷新。打开博客园的随笔详细页、标签页等，都是整页重新加载，比较影响体验。
+一款高自定义的博客主题——Lite 基于 Vue3 + Vite 开发。SPA 应用实现局部刷新，比起原皮肤加载速度更快。
 
 主题提供了，背景设置、卡片样式、背景图片、内边距、外边距、字体颜色、字体大小、主题颜色等大量设置。右键随便哪个区域都可以呼出设置面板，每一个区域的设置面板都不一样，也可以统一在右下角的工具箱中打开设置。设置好了之后可以导出设置以作备份。
 

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
 import { getTagColl } from "@/apis/remote-api";
-import { closeLoader, getSetting, nav } from "@/utils/common";
+import { endLoading, startLoading, getSetting, nav } from "@/utils/common";
+
+startLoading();
 
 const route = useRoute();
 const router = useRouter();
@@ -12,12 +14,13 @@ const setting = getSetting();
 
 document.querySelector("title").innerText = `${hint.value} - ${blogApp} - 博客园`;
 
-closeLoader();
+endLoading();
 
 watch(route, async () => {
   const data = await getTagColl(String(route.params.tag));
   hint.value = data.text;
   tagList.value = data.array;
+  document.querySelector("title").innerText = `${hint.value} - ${blogApp} - 博客园`;
 });
 </script>
 
@@ -34,7 +37,12 @@ watch(route, async () => {
           <div class="l-sec-size mb-5 mt-4">{{ hint }}</div>
         </template>
       </el-page-header>
-      <Card v-for="(item, index) in tagList" :key="index" line :padding="setting.listing.padding" :margin="setting.listing.margin">
+      <Card
+        line
+        v-for="(item, index) in tagList"
+        :key="index"
+        :padding="setting.pages.tagColl.padding"
+        :margin="setting.pages.tagColl.margin">
         <div class="l-sec-size">
           <router-link class="hover" :to="'/p/' + item.id">
             {{ item.title }}
@@ -47,9 +55,9 @@ watch(route, async () => {
         <ArticleSynopsis class="mt-4" :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
       </Card>
     </div>
-    <template #title>列表项盒子模型设置</template>
+    <template #title>标签页列表盒子模型设置</template>
     <template #content>
-      <BoxSetting :padding="setting.listing.padding" :margin="setting.listing.margin" />
+      <BoxSetting :padding="setting.pages.tagColl.padding" :margin="setting.pages.tagColl.margin" />
     </template>
   </ContextMenu>
 </template>
