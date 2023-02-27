@@ -15,7 +15,9 @@ const hint = ref(cates.label);
 
 document.querySelector("title").innerText = `${hint.value} - ${blogApp} - 博客园`;
 
-endLoading();
+onMounted(() => {
+  endLoading();
+});
 
 async function nexpr(e: any) {
   startLoading();

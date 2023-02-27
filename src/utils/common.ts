@@ -24,10 +24,8 @@ export function startLoading() {
 export function endLoading() {
   $(".light-loading, .dark-loading").fadeOut();
   $("#l-content").addClass("l-transition");
-  setTimeout(() => {
-    $("#l-progress > .l-pro__track").removeClass("track-active").addClass("track-static");
-    $("#l-progress > .l-pro__track > .l-pro__bar").removeClass("bar-active").addClass("bar-static");
-  }, 750);
+  $("#l-progress > .l-pro__track").removeClass("track-active").addClass("track-static");
+  $("#l-progress > .l-pro__track > .l-pro__bar").removeClass("bar-active").addClass("bar-static");
 }
 
 /**

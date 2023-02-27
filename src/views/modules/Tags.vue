@@ -10,7 +10,9 @@ const setting = getSetting();
 
 document.querySelector("title").innerText = `标签 - ${blogApp} - 博客园`;
 
-endLoading();
+onMounted(() => {
+  endLoading();
+})
 </script>
 
 <template>

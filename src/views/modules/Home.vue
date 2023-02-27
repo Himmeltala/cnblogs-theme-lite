@@ -9,7 +9,9 @@ const data = ref((await getArticleList(1, false)).array);
 const pages = (await getArticleList(1, true)).pages;
 const count = ref(pages[pages.length - 1]);
 
-endLoading();
+onMounted(() => {
+  endLoading();
+});
 
 async function next(e: any) {
   startLoading();

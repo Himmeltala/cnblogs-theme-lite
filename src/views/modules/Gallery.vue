@@ -10,7 +10,9 @@ const imgUrl = getGalleryImg();
 
 document.querySelector("title").innerText = `相册 - ${blogApp} - 博客园`;
 
-endLoading();
+onMounted(() => {
+  endLoading();
+});
 </script>
 
 <template>

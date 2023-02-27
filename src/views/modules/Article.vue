@@ -21,7 +21,9 @@ if (!(article.value.content && article.value.text)) isLocked.value = true;
 
 document.querySelector("title").innerText = `${article.value.text} - ${blogApp} - 博客园`;
 
-endLoading();
+onMounted(() => {
+  endLoading();
+});
 
 async function submit() {
   const data = await getIsUnlock(password.value, postId + "");

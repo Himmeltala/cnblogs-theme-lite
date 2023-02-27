@@ -14,7 +14,9 @@ const setting = getSetting();
 
 document.querySelector("title").innerText = `${hint.value} - ${blogApp} - 博客园`;
 
-endLoading();
+onMounted(() => {
+  endLoading();
+});
 
 watch(route, async () => {
   const data = await getTagColl(String(route.params.tag));

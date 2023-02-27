@@ -1,15 +1,14 @@
 # 主题说明
 
-本人已部署在自己的博客，浏览：[Lite 博客](https://www.cnblogs.com/Himmelbleu/#/)。
-[GitHub](https://github.com/Himmelbleu/cnblogs-theme-lite) 或 [Gitee](https://gitee.com/Himmelbleu/cnblogs-theme-lite)，请点个 :star:star 哟~。
+这是一款高自定义的博客园主题 Lite，快速预览 [Himmelbleu 的 Lite 主题博客](https://www.cnblogs.com/Himmelbleu/#/)。
 
-一款高自定义的博客主题——Lite 基于 Vue3 + Vite 开发。SPA 应用实现局部刷新，比起原皮肤加载速度更快。
+支持博主：[GitHub](https://github.com/Himmelbleu/cnblogs-theme-lite) 或 [Gitee](https://gitee.com/Himmelbleu/cnblogs-theme-lite)，点个 :star:star 哟~。
 
-主题提供了，背景设置、卡片样式、背景图片、内边距、外边距、字体颜色、字体大小、主题颜色等大量设置。右键随便哪个区域都可以呼出设置面板，每一个区域的设置面板都不一样，也可以统一在右下角的工具箱中打开设置。设置好了之后可以导出设置以作备份。
+Lite 基于 Vue3 + Vite 建立在博客园之上的一款博客主题。SPA 应用实现局部刷新，比起原皮肤加载速度更快。
+
+主题几乎所有地方都可以配置：背景设置、卡片样式、盒子模型、字体相关等。右键随便任何一个区域都可以呼出设置面板，每个区域的设置面板都不一样，设置好了之后可以导出设置以作备份。
 
 # 部署说明
-
-部署非常简单，你只需要在：博客园管理-设置下的 “首页 HTML 代码”和“页脚 HTML 代码”配置即可：
 
 首页 HTML 代码：
 
@@ -304,7 +303,7 @@ npm build
 
 ## 目录说明
 
-components 下面的是组件，目前数量很少，组件在本项目的定义是：通用、可配置。[重新思考 Vue 组件的定义](https://www.cnblogs.com/Enziandom/#/p/17115133)：
+components 下面的是组件，目前数量很少，组件在本项目的定义是：通用、可配置。[重新思考 Vue 组件的定义](https://www.cnblogs.com/Himmelbleu/#/p/17115133)：
 
 1. adapters：views 下渲染列表，其内容在其他视图中也重复使用。adapters 与 components 的区别是 adapters 不需要考虑“通用、可配置”。
 2. fragments：views 下有许多业务要处理，但业务与业务之间并不是相关的，所以需要把 views 中一块业务拆分成一个组件，fragments 有自己的逻辑（请求、函数等）和视图。fragments 与该 views 有很大关系。
