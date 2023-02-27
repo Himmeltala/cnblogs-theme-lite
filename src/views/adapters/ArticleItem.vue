@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 import { CustType } from "@/types/data-type";
-import { nav } from "@/utils/router-helper";
-import { getSetting } from "@/utils/common";
+import { getSetting, nav } from "@/utils/common";
 
 const router = useRouter();
 const setting = getSetting();

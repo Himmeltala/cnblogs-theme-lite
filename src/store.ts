@@ -12,9 +12,9 @@ export const useCatalogStore = defineStore("catalogStore", () => {
 });
 
 export const useAnchorStore = defineStore("anchorStore", () => {
-  let _anchor = ref(0);
+  let _anchor = ref();
 
-  function setAnchor(anchor: number) {
+  function setAnchor(anchor: string) {
     _anchor.value = anchor;
   }
 

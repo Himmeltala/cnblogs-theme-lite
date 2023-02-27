@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { nav } from "@/utils/common";
 import { isLogin } from "@/lite.config";
-import { nav } from "@/utils/router-helper";
-import { getCommentCount, getCommentList } from "@/utils/remote-api";
 import { useAnchorStore } from "@/store";
+import { getCommentCount, getCommentList } from "@/apis/remote-api";
 
 const props = defineProps({
   postId: { type: String, required: true }
@@ -20,7 +20,7 @@ watch(level, () => {
     block: "center",
     inline: "nearest"
   });
-  anchor.value = 0;
+  anchor.value = "";
 });
 
 async function paginationChange() {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useCatalogStore } from "@/store";
-import { __LITE_CONFIG__ } from "@/lite.config";
 import { getSetting } from "@/utils/common";
+import { __LITE_CONFIG__ } from "@/lite.config";
 
 const props = defineProps({
   disabled: {

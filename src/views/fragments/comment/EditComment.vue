@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 import { openImageUploadWindow } from "@/utils/common";
-import { updateComment, getComment, getCommentCount, getCommentList } from "@/utils/remote-api";
+import { updateComment, getComment, getCommentCount, getCommentList } from "@/apis/remote-api";
 
 const props = defineProps({
   comment: {

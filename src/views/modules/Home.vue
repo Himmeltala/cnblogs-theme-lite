@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getArticleList } from "@/utils/remote-api";
+import { getArticleList } from "@/apis/remote-api";
 import { getSetting, closeLoader } from "@/utils/common";
 
 const setting = getSetting();

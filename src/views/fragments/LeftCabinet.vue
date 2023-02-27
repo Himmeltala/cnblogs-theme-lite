@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { getSetting } from "@/utils/common";
-import { nav } from "@/utils/router-helper";
-import * as LocalApi from "@/utils/local-api";
-import * as RemoteApi from "@/utils/remote-api";
+import * as LocalApi from "@/apis/local-api";
+import * as RemoteApi from "@/apis/remote-api";
+import { getSetting, nav } from "@/utils/common";
 import { __LITE_CONFIG__, blogApp, isFollow, isOwner } from "@/lite.config";
 
 const props = defineProps({

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { pcDevice } from "@/lite.config";
-import { nav } from "@/utils/router-helper";
-import { getSetting } from "@/utils/common";
+import { getSetting, nav } from "@/utils/common";
 
 const setting = getSetting();
 const router = useRouter();

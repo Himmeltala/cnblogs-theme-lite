@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
 import { closeLoader } from "@/utils/common";
-import { getGalleryImg } from "@/utils/local-api";
+import { getGalleryImg } from "@/apis/local-api";
 
 const router = useRouter();
 const imgUrl = getGalleryImg();

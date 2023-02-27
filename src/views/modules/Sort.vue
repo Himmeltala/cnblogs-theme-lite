@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
-import { nav } from "@/utils/router-helper";
-import { closeLoader } from "@/utils/common";
-import { getSorts } from "@/utils/remote-api";
+import { getSorts } from "@/apis/remote-api";
+import { closeLoader, nav } from "@/utils/common";
 
 const route = useRoute();
 const router = useRouter();

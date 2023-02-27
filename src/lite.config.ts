@@ -1,6 +1,6 @@
 import $ from "jquery";
-import { preLog, refactorObjectProperties, settingTempl } from "@/utils/common";
 import { CustType } from "@/types/data-type";
+import { preLog, refactorObjProps, getSetting, getSettingTemp } from "@/utils/common";
 
 export let __LITE_CONFIG__: CustType.ILite;
 export let blogId = 0;
@@ -24,8 +24,8 @@ export function initLiteVars() {
  * 初始化自定义博客设置
  */
 function initSetting() {
-  const setting: CustType.ISetting = JSON.parse(localStorage.getItem(`l-${blogApp}-setting`));
-  localStorage.setItem(`l-${blogApp}-setting`, JSON.stringify(refactorObjectProperties(setting, settingTempl)));
+  const setting: CustType.ISetting = getSetting().value;
+  localStorage.setItem(`l-${blogApp}-setting`, JSON.stringify(refactorObjProps(setting, getSettingTemp())));
 
   $("html").attr("class", setting.theme.mode);
   $("html").css({
@@ -76,7 +76,5 @@ export function useLite(dev: Function, pro: Function) {
   $("head").append(`<link rel="shortcut icon" href="${__LITE_CONFIG__.icon}">`);
   preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
   preLog("v1.4.7", "Powered By Himmelbleu using Vue3 & Vite.");
-  console.warn(
-    "[Lite Warn] 控制台报错或停留在 Loading 屏: 1. 清除浏览器缓存; 2. 打开F12，选择“应用程序”-“存储”-“本地存储”-“博客网址”，右键清除"
-  );
+  console.log("[Lite Warn] 控制台报错或停留在 Loading 屏: 1. 清除浏览器缓存; 2. 右键清除 “应用程序-存储-本地存储”");
 }

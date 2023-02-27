@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
 import { closeLoader } from "@/utils/common";
-import { getTags } from "@/utils/remote-api";
+import { getTags } from "@/apis/remote-api";
 
 const tags = await getTags();
 

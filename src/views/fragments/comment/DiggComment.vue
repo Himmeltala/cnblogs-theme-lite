@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PropType } from "vue";
-import { voteComment } from "@/utils/remote-api";
+import { voteComment } from "@/apis/remote-api";
 
 const props = defineProps({
   comment: {

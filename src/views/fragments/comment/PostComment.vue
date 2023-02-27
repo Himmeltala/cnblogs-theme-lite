@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { isLogin } from "@/lite.config";
-import { openImageUploadWindow } from "@/utils/common";
 import { BlogType } from "@/types/data-type";
-import { setComment, getCommentCount, getCommentList } from "@/utils/remote-api";
+import { openImageUploadWindow } from "@/utils/common";
+import { setComment, getCommentCount, getCommentList } from "@/apis/remote-api";
 
 const props = defineProps({
   postId: { type: String, required: true }

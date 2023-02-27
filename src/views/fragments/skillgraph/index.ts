@@ -176,7 +176,7 @@ export function calcSize(sideWidthVw: number) {
   return (sideWidthVw / 100) * window.innerWidth;
 }
 
-export function createRadar(vw: number, color: string, config: any) {
+export function useSkillGraph(vw: number, color: string, config: any) {
   if (config) {
     fillColor = color;
     strokeColor = config.strokeColor || "#a7a7a7";

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { UploadInstance, UploadProps, UploadRawFile } from "element-plus";
 import { genFileId } from "element-plus";
-import { getSetting, refactorObjectProperties, settingTempl } from "@/utils/common";
+import type { UploadInstance, UploadProps, UploadRawFile } from "element-plus";
+import { getSetting, refactorObjProps, getSettingTemp } from "@/utils/common";
 
 const upload = ref<UploadInstance>();
 const setting = getSetting();
@@ -19,7 +19,7 @@ function exportJson() {
 }
 
 function confirm() {
-  setting.value = refactorObjectProperties(JSON.parse(result.value), settingTempl);
+  setting.value = refactorObjProps(JSON.parse(result.value), getSettingTemp());
   dialog.value = !dialog.value;
   ElMessage({ message: "导入成功！", type: "success" });
 }
@@ -43,7 +43,7 @@ const importJson: UploadProps["onChange"] = async file => {
 };
 
 function reset() {
-  setting.value = settingTempl;
+  setting.value = getSettingTemp();
   ElMessage({ message: "成功恢复默认设置！", type: "success" });
   resetDialog.value = !resetDialog.value;
 }

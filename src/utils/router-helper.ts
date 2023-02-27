@@ -31,12 +31,11 @@ const routeReg = {
  * 从评论链接点击进入时，获取其携带的评论锚点位置
  * @param URL 从评论点击过来的链接
  */
-function storeAnchor(URL: string) {
+function setCommentAnchor(URL: string) {
   try {
     const anchor = URL.match(/#\/\d+/g)[0].split("#/")[1];
     if (anchor) {
-      const { setAnchor } = useAnchorStore();
-      setAnchor(parseInt(anchor));
+      useAnchorStore().setAnchor(anchor);
     }
   } catch (e) {}
 }
@@ -58,7 +57,7 @@ export function redirect(next: any): () => void {
 
   if (routeReg.Article.test(URL)) {
     const postId = URL.match(routeReg.Article)[0].split("/")[2].split(".")[0];
-    storeAnchor(URL);
+    setCommentAnchor(URL);
     nextParam = {
       name: RouteName.Article,
       params: { id: postId }
@@ -93,17 +92,4 @@ export function redirect(next: any): () => void {
 
 function push() {
   window.history.pushState("", "", `${window.location.protocol}//${window.location.host}/${blogApp}/#/`);
-}
-
-/**
- * 导航，传入 path 导航 Vue Router 路由组件；传入普通链接进行跳转；传入 back 对上级进行回跳。
- * @param params path：路径、router：导航路由组件时传递
- */
-export function nav(params: { path: string; router?: Router }) {
-  if (params.path === "back") {
-    params.router.go(-1);
-  } else {
-    if (params.router) params.router.push(params.path);
-    else window.open(params.path, "_blank");
-  }
 }

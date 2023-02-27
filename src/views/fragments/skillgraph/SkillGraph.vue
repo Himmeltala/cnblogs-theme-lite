@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createRadar } from "./index";
+import { useSkillGraph } from "./index";
 import { getSetting } from "@/utils/common";
 import { __LITE_CONFIG__ } from "@/lite.config";
 
@@ -7,13 +7,13 @@ const setting = getSetting();
 
 watch(setting, (val, old) => {
   if (val.theme.color != old.theme.color) {
-    createRadar(110, setting.value.theme.color, __LITE_CONFIG__.graph);
+    useSkillGraph(110, setting.value.theme.color, __LITE_CONFIG__.graph);
   }
 });
 
 onMounted(() => {
   if (__LITE_CONFIG__.graph) {
-    createRadar(110, setting.value.theme.color, __LITE_CONFIG__.graph);
+    useSkillGraph(110, setting.value.theme.color, __LITE_CONFIG__.graph);
   }
 });
 </script>

@@ -7,6 +7,7 @@
  */
 
 import $ from "jquery";
+import { Router } from "vue-router";
 import { useStorage } from "@vueuse/core";
 import { CustType } from "@/types/data-type";
 import { __LITE_CONFIG__, blogApp } from "@/lite.config";
@@ -110,54 +111,56 @@ export function replaceText(source: string, regExps: RegExp[], replacement?: str
 /**
  * Lite 主题设置模板对象
  */
-export const settingTempl: CustType.ISetting = {
-  theme: { mode: "dark", color: "#409eff" },
-  openToolKits: true,
-  githubPostion: "left",
-  openPager: false,
-  font: {
-    size: { level1: 1.3, level2: 1.2, level3: 1.1, level4: 1, level5: 0.9, level6: 0.8 },
-    light: { color: { level1: "#393939", level2: "#4e4e4e", level3: "#707070" } },
-    dark: { color: { level1: "#a7a7a7", level2: "#8d9095", level3: "#878787" } }
-  },
-  content: { width: 50, padding: { left: 0, right: 0, top: 0, bottom: 0 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
-  listing: { padding: { left: 1, right: 1, top: 0, bottom: 1.5 }, margin: { left: 0, right: 0, top: 0, bottom: 1 } },
-  article: { padding: { left: 1, right: 1, top: 1, bottom: 1 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
-  cabinet: {
-    position: { left: 0, right: 0, break: false },
-    left: { pin: false, padding: { left: 1, right: 1, top: 0, bottom: 0 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
-    right: { pin: false, padding: { left: 1, right: 1, top: 0, bottom: 0 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
-    toggles: {
-      我的技术栈: { open: true, show: true },
-      博客信息: { open: true, show: true },
-      常用链接: { open: true, show: true },
-      博客数据: { open: true, show: true },
-      推荐书籍: { open: true, show: true }
+export function getSettingTemp(): CustType.ISetting {
+  return {
+    theme: { mode: "dark", color: "#409eff" },
+    openToolKits: true,
+    githubPostion: "left",
+    openPager: false,
+    font: {
+      size: { level1: 1.3, level2: 1.2, level3: 1.1, level4: 1, level5: 0.9, level6: 0.8 },
+      light: { color: { level1: "#393939", level2: "#4e4e4e", level3: "#707070" } },
+      dark: { color: { level1: "#a7a7a7", level2: "#8d9095", level3: "#878787" } }
     },
-    width: 17.5,
-    remote: true
-  },
-  background: { open: false, filter: 6, src: "" },
-  card: {
-    color: "rgba(31, 31, 31, 1)",
-    open: false,
-    radius: 10,
-    padding: { left: 1, right: 1, top: 1, bottom: 1 },
-    margin: { left: 0, right: 1, top: 0, bottom: 1 }
-  }
-};
+    content: { width: 50, padding: { left: 0, right: 0, top: 0, bottom: 0 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
+    listing: { padding: { left: 1, right: 1, top: 0, bottom: 1.5 }, margin: { left: 0, right: 0, top: 0, bottom: 1 } },
+    article: { padding: { left: 1, right: 1, top: 1, bottom: 1 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
+    cabinet: {
+      position: { left: 0, right: 0, break: false },
+      left: { pin: false, padding: { left: 1, right: 1, top: 0, bottom: 0 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
+      right: { pin: false, padding: { left: 1, right: 1, top: 0, bottom: 0 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
+      toggles: {
+        我的技术栈: { open: true, show: true },
+        博客信息: { open: true, show: true },
+        常用链接: { open: true, show: true },
+        博客数据: { open: true, show: true },
+        推荐书籍: { open: true, show: true }
+      },
+      width: 17.5,
+      remote: true
+    },
+    background: { open: false, filter: 6, src: "" },
+    card: {
+      color: "rgba(31, 31, 31, 1)",
+      open: false,
+      radius: 10,
+      padding: { left: 1, right: 1, top: 1, bottom: 1 },
+      margin: { left: 0, right: 1, top: 0, bottom: 1 }
+    }
+  };
+}
 
 /**
  * 对一个对象的字段进行裁剪或添加
  *
  * @param source 要被裁剪或添加字段的对象
- * @param objectTemplate 一个对象，根据该模板（对象）对 source 进行裁剪或添加字段
+ * @param template 一个对象，根据该模板（对象）对 source 进行裁剪或添加字段
  * @returns
  */
-export function refactorObjectProperties(source: any, objectTemplate: any) {
-  if (!source) source = objectTemplate;
+export function refactorObjProps(source: any, template: any) {
+  if (!source) source = template;
   const sourceKeys = Object.keys(source);
-  const templateKeys = Object.keys(objectTemplate);
+  const templateKeys = Object.keys(template);
 
   if (sourceKeys.length !== templateKeys.length) {
     if (sourceKeys.length > templateKeys.length) {
@@ -168,29 +171,47 @@ export function refactorObjectProperties(source: any, objectTemplate: any) {
     } else if (sourceKeys.length < templateKeys.length) {
       templateKeys.forEach(templateKey => {
         const nonentity = sourceKeys.find(sourceKey => templateKey === sourceKey);
-        if (!nonentity) source[templateKey] = objectTemplate[templateKey];
+        if (!nonentity) source[templateKey] = template[templateKey];
         else {
-          if (typeof objectTemplate[templateKey] === "object") {
-            refactorObjectProperties(source[templateKey], objectTemplate[templateKey]);
+          if (typeof template[templateKey] === "object") {
+            refactorObjProps(source[templateKey], template[templateKey]);
           }
         }
       });
     }
   } else {
     templateKeys.forEach(templateKey => {
-      if (typeof objectTemplate[templateKey] === "object") {
+      if (typeof template[templateKey] === "object") {
         if (typeof source[templateKey] !== "object" || !source[templateKey]) {
-          source[templateKey] = objectTemplate[templateKey];
+          source[templateKey] = template[templateKey];
         }
-        refactorObjectProperties(source[templateKey], objectTemplate[templateKey]);
-      } else if (typeof objectTemplate[templateKey] !== "object") {
-        if (typeof source[templateKey] === "object") source[templateKey] = objectTemplate[templateKey];
+        refactorObjProps(source[templateKey], template[templateKey]);
+      } else if (typeof template[templateKey] !== "object") {
+        if (typeof source[templateKey] === "object") source[templateKey] = template[templateKey];
       }
     });
   }
   return source;
 }
 
+/**
+ * 获取本地博客设置数据
+ *
+ * @returns 博客设置
+ */
 export function getSetting() {
   return useStorage<CustType.ISetting>(`l-${blogApp}-setting`, {});
+}
+
+/**
+ * 导航，传入 path 导航 Vue Router 路由组件；传入普通链接进行跳转；传入 back 对上级进行回跳。
+ * @param params path：路径、router：导航路由组件时传递
+ */
+export function nav(params: { path: string; router?: Router }) {
+  if (params.path === "back") {
+    params.router.go(-1);
+  } else {
+    if (params.router) params.router.push(params.path);
+    else window.open(params.path, "_blank");
+  }
 }
