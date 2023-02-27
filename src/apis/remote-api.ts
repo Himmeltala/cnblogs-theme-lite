@@ -143,12 +143,12 @@ export async function replayComment(comment: BlogType.IBlogComment): Promise<Blo
 /**
  * 获取随笔的评论列表
  *
- * @param id 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
+ * @param postId 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
  * @param page 1 页最多有 50 条评论
  * @param anchorId 当进入的是一个回复评论时，需要传递该参数，默认可以不传递
  */
-export async function getCommentList(id: number | string, page: number, anchorId?: number) {
-  let url = `/ajax/GetComments.aspx?postId=${id}&pageIndex=${page}`;
+export async function getCommentList(postId: string, page: number, anchorId?: number) {
+  let url = `/ajax/GetComments.aspx?postId=${postId}&pageIndex=${page}`;
   if (anchorId) url += `&anchorCommentId=${anchorId}&isDesc=false`;
   const { data } = await sendAwaitGet(url);
   return Parser.parseCommentList(data);

@@ -31,11 +31,7 @@ async function submit() {
     article.value = await getLockedArticle(password.value, postId);
     isLocked.value = false;
   }
-  ElMessage({
-    message: data ? "密码输入正确！" : "密码错误！",
-    grouping: true,
-    type: data ? "success" : "error"
-  });
+  ElMessage({ message: data ? "密码输入正确！" : "密码错误！", grouping: true, type: data ? "success" : "error" });
 }
 
 async function vote(voteType: BlogType.VoteType) {
@@ -44,11 +40,7 @@ async function vote(voteType: BlogType.VoteType) {
     if (data.isSuccess)
       if (voteType == "Bury") viewpoint.value.buryCount = viewpoint.value.buryCount + 1;
       else viewpoint.value.diggCount = viewpoint.value.diggCount + 1;
-    ElMessage({
-      message: data.message,
-      grouping: true,
-      type: data.isSuccess ? "success" : "error"
-    });
+    ElMessage({ message: data.message, grouping: true, type: data.isSuccess ? "success" : "error" });
   }
 }
 </script>

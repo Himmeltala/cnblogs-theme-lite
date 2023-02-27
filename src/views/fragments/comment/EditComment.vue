@@ -31,7 +31,7 @@ function uploadImage(el: string) {
 async function before() {
   htmlContent = props.comment.content;
   content.value = await getComment({ commentId: props.comment.commentId });
-  props.comment.isEditingUpdate = !props.comment.isEditingUpdate;
+  props.comment.isEditing = !props.comment.isEditing;
 }
 
 async function finish() {
@@ -42,7 +42,7 @@ async function finish() {
 
   if (response.isSuccess) {
     content.value = "";
-    props.comment.isEditingReplay = !props.comment.isEditingReplay;
+    props.comment.isRepling = !props.comment.isRepling;
     emits("onFinish", {
       count: await getCommentCount(props.postId),
       comments: await getCommentList(props.postId, 0)
@@ -55,13 +55,13 @@ async function finish() {
 
 function cancel() {
   props.comment.content = htmlContent;
-  props.comment.isEditingUpdate = !props.comment.isEditingUpdate;
+  props.comment.isEditing = !props.comment.isEditing;
 }
 </script>
 
 <template>
   <div class="l-comment__editor">
-    <div class="float-right w-100%" v-show="comment.isEditingUpdate">
+    <div class="float-right w-100%" v-show="comment.isEditing">
       <div class="mb-2 f-c-e">
         <el-tooltip effect="dark" content="插入图片" placement="top-start">
           <span class="hover" @click="uploadImage('upload-img-' + index)">
@@ -74,18 +74,18 @@ function cancel() {
       </div>
     </div>
     <div
-      v-show="!comment.isEditingReplay"
+      v-show="!comment.isRepling"
       class="float-right f-c-e l-fiv-size l-sec-color"
-      :class="{ 're-item': !comment.isEditingUpdate, 'w-100%': comment.isEditingUpdate }">
-      <div v-show="!comment.isEditingUpdate" class="hover f-c-e" @click="before">
+      :class="{ 're-item': !comment.isEditing, 'w-100%': comment.isEditing }">
+      <div v-show="!comment.isEditing" class="hover f-c-e" @click="before">
         <i-ep-edit-pen class="mr-1" />
         <span>编辑</span>
       </div>
-      <div v-show="comment.isEditingUpdate" class="hover f-c-e mr-4" @click="finish">
+      <div v-show="comment.isEditing" class="hover f-c-e mr-4" @click="finish">
         <i-ep-circle-check class="mr-1" />
         <span>完成编辑</span>
       </div>
-      <div class="hover" v-if="comment.isEditingUpdate">
+      <div class="hover" v-if="comment.isEditing">
         <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" title="确定取消编辑该评论？" @confirm="cancel">
           <template #reference>
             <div class="hover f-c-e">

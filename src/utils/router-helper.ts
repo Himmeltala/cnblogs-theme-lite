@@ -6,7 +6,6 @@
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */
 
-import { Router } from "vue-router";
 import { blogApp } from "@/lite.config";
 import { useAnchorStore } from "@/store";
 

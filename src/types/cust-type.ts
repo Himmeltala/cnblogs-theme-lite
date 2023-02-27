@@ -27,11 +27,11 @@ export interface IArticle {
 
 export interface IComment {
   // 是否正在编辑
-  isEditingUpdate?: boolean;
+  isEditing?: boolean;
   // 是否正在回复
-  isEditingReplay?: boolean;
+  isRepling?: boolean;
   // 评论 ID
-  commentId?: number;
+  commentId?: string;
   // 个人主页地址
   space?: string;
   // 楼层
@@ -47,7 +47,7 @@ export interface IComment {
   // 头像地址
   avatar?: string;
   // 随笔 ID
-  postId?: number;
+  postId?: string;
   // 评论内容
   content?: string;
   // 回复评论 ID

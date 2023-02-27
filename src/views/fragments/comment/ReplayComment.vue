@@ -30,7 +30,7 @@ function uploadImage(el: string) {
 
 function before() {
   htmlContent = props.comment.content;
-  props.comment.isEditingReplay = !props.comment.isEditingReplay;
+  props.comment.isRepling = !props.comment.isRepling;
 
   emits("onBefore");
 }
@@ -44,7 +44,7 @@ async function finish() {
 
   if (response.isSuccess) {
     content.value = "";
-    props.comment.isEditingReplay = !props.comment.isEditingReplay;
+    props.comment.isRepling = !props.comment.isRepling;
     emits("onFinish", {
       count: await getCommentCount(props.postId),
       comments: await getCommentList(props.postId, 0)
@@ -57,7 +57,7 @@ async function finish() {
 
 function cancel() {
   props.comment.content = htmlContent;
-  props.comment.isEditingReplay = !props.comment.isEditingReplay;
+  props.comment.isRepling = !props.comment.isRepling;
 
   emits("onCancel");
 }
@@ -65,7 +65,7 @@ function cancel() {
 
 <template>
   <div class="l-comment__replay">
-    <div class="float-right w-100%" v-show="comment.isEditingReplay">
+    <div class="float-right w-100%" v-show="comment.isRepling">
       <div class="mb-2 f-c-e">
         <el-tooltip content="插入图片" placement="top-start">
           <span class="hover" @click="uploadImage('upload-img-' + index)">
@@ -78,18 +78,18 @@ function cancel() {
       </div>
     </div>
     <div
-      v-show="!comment.isEditingUpdate"
+      v-show="!comment.isEditing"
       class="float-right f-c-e l-fiv-size l-sec-color"
-      :class="{ 'ed-item': !comment.isEditingReplay, ' w-100%': comment.isEditingReplay }">
-      <div v-show="!comment.isEditingReplay" class="hover f-c-e" @click="before">
+      :class="{ 'ed-item': !comment.isRepling, ' w-100%': comment.isRepling }">
+      <div v-show="!comment.isRepling" class="hover f-c-e" @click="before">
         <i-ep-chat-round class="mr-1" />
         <span>回复</span>
       </div>
-      <div v-show="comment.isEditingReplay" class="hover f-c-e mr-4" @click="finish">
+      <div v-show="comment.isRepling" class="hover f-c-e mr-4" @click="finish">
         <i-ep-check class="mr-1" />
         <span>完成回复</span>
       </div>
-      <div v-show="comment.isEditingReplay" class="hover f-c-e" @click="cancel">
+      <div v-show="comment.isRepling" class="hover f-c-e" @click="cancel">
         <i-ep-close class="mr-1" />
         <span>取消回复</span>
       </div>

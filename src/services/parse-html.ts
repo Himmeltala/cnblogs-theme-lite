@@ -111,9 +111,9 @@ export function parseCommentList(strDOM: any): Array<CustType.IComment> {
     .map((i, elem) => {
       let anchor = $(elem).find(".layer").attr("href")!.split("#")[1];
       comments[i] = {
-        isEditingUpdate: false,
-        isEditingReplay: false,
-        commentId: parseInt(anchor),
+        isEditing: false,
+        isRepling: false,
+        commentId: anchor,
         space: $(elem).find(`#a_comment_author_${anchor}`).attr("href"),
         author: $(elem).find(`#a_comment_author_${anchor}`).text(),
         layer: $(elem).find(".layer").text(),

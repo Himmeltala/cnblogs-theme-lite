@@ -8,7 +8,7 @@ const props = defineProps({
   postId: { type: String, required: true }
 });
 
-const level = ref(null);
+const level = ref();
 const { anchor } = storeToRefs(useAnchorStore());
 const count = ref(await getCommentCount(props.postId));
 const index = ref(count.value);
@@ -20,7 +20,6 @@ watch(level, () => {
     block: "center",
     inline: "nearest"
   });
-  anchor.value = "";
 });
 
 async function paginationChange() {
@@ -56,11 +55,9 @@ function onEdFinish(response: any) {
               {{ item.author }}
             </div>
             <div class="l-comment__data l-fiv-size l-sec-color mt-2 f-c-c">
-              <div :id="'level-' + item.commentId" class="mr-2">
-                <span v-if="anchor === item.commentId" ref="level">{{ item.layer }}</span>
-                <span v-else>{{ item.layer }}</span>
-              </div>
-              <div>{{ item.date }}</div>
+              <span :id="'level-' + item.commentId" class="mr-2 ref" v-if="anchor == item.commentId" ref="level">{{ item.layer }} </span>
+              <span :id="'level-' + item.commentId" class="mr-2" v-else>{{ item.layer }}</span>
+              {{ item.date }}
             </div>
           </div>
         </div>
@@ -68,7 +65,7 @@ function onEdFinish(response: any) {
           <textarea class="z--1 opacity-0 absolute top-0 left-0" :id="'upload-img-' + index" />
           <div class="l-comment__content" v-html="item.content" v-hljs />
         </div>
-        <div class="l-comment__more float-right f-c-e" v-show="!item.isEditingUpdate && !item.isEditingReplay">
+        <div class="l-comment__more float-right f-c-e" v-show="!item.isEditing && !item.isRepling">
           <el-dropdown>
             <span class="hover">
               <i-ep-more class="l-fiv-size l-sec-color" />
