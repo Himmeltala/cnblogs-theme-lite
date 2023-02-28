@@ -19,8 +19,8 @@ export function getCabinetColumn() {
 /**
  * 获取侧边栏的博主信息。直接调用解析函数解析 home 节点下的侧边栏。
  */
-export function getAuthor() {
-  return Parser.parseAuthor($("#home").find("#blog-news").html());
+export function getAuthorData() {
+  return Parser.parseAuthorData($("#home").find("#blog-news").html());
 }
 
 /**

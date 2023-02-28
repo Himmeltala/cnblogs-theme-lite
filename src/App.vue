@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getSetting } from "@/utils/common";
-import { blogApp } from "@/lite.config";
+import { blogApp, pcDevice } from "@/lite.config";
 
 const route = useRoute();
 const setting = getSetting();
@@ -42,7 +42,7 @@ watch(route, async () => {
   </div>
   <div id="l-content" class="z-1 l-transition">
     <div id="l-nail"></div>
-    <div :class="{ 'l-box-bg py-2 px-4': !setting.card.open }">
+    <div :class="{ 'l-box-bg': !setting.card.open, 'py-2 px-4': !pcDevice }">
       <div id="l-main">
         <RouterView v-slot="{ Component }">
           <template v-if="Component">
@@ -55,17 +55,10 @@ watch(route, async () => {
         </RouterView>
       </div>
     </div>
-    <div class="l-copyright f-c-c my-2 l-six-size l-sec-color h-4">
-      Created By
-      <a class="hover mx-1" href="https://github.com/Himmelbleu/cnblogs-theme-lite" target="__blank"> Himmelbleu, </a>
-      powered by
-      <a class="hover mx-1" href="https://v3.cn.vuejs.org/" target="__blank">Vue3</a>
-      on
-      <a class="hover mx-1" href="https://vitejs.cn/vite3-cn/" target="__blank">Vite.</a>
-    </div>
+    <Copyright />
   </div>
   <div id="l-right">
-    <div id="l-matte" class="fixed top-0 left-0 z-1 opacity-50 l-matee-bg" :class="{ 'w-100% h-100vh': !rdisabled || !ldisabled }"></div>
+    <div id="l-matte" class="fixed top-0 left-0 z-3 opacity-50 l-matee-bg" :class="{ 'w-100% h-100vh': !rdisabled || !ldisabled }"></div>
     <div
       id="l-rstrip"
       v-show="!setting.cabinet.right.pin"
@@ -89,12 +82,12 @@ watch(route, async () => {
 }
 
 .l-transition {
-  animation: transition-animation 1s ease-in;
+  animation: transition-animation 0.5s ease-in;
 
   @keyframes transition-animation {
     @for $index from 0 to 10 {
       #{$index * 10%} {
-        opacity: calc(math.div($index, 10));
+        opacity: math.div($index, 10);
       }
     }
   }

@@ -45,8 +45,8 @@ const fixed = computed(() => {
   <ContextMenu
     id="l-rcabinet"
     :style="{ right: right }"
-    class="z-1 fixed top-0 right-0"
-    :class="{ 'show-rcabinet z-2': block, 'hidden-rcabinet': hidden, 'fixed-rcabinet': fixed }"
+    class="fixed top-0 right-0"
+    :class="{ 'show-rcabinet z-4': block, 'hidden-rcabinet': hidden, 'fixed-rcabinet': fixed }"
     style="width: var(--cabinet-width)">
     <Card
       class="noscroll l-fiv-size h-100vh ofw-auto"

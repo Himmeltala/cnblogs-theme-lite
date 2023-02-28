@@ -12,29 +12,23 @@ const props = defineProps({
 });
 
 const setting = getSetting();
-let toplist: any;
-let columnData: any;
-let authorData: any;
-let masterData: any;
+let authorData = ref(await RemoteApi.getAuthorData());
+let masterData = ref(await RemoteApi.getMasterData());
+let toplistData = ref(await RemoteApi.getCabinetTopList());
+let columnData = ref(await RemoteApi.getCabinetColumn());
 
-if (setting.value.cabinet.remote) {
-  authorData = await RemoteApi.getAuthor();
-  masterData = await RemoteApi.getMasterData();
-  toplist = await RemoteApi.getCabinetTopList();
-  columnData = await RemoteApi.getCabinetColumn();
-} else {
-  authorData = LocalApi.getAuthor();
-  masterData = LocalApi.getMasterData();
-  toplist = LocalApi.getCabinetTopList();
-  columnData = LocalApi.getCabinetColumn();
+if (!setting.value.cabinet.remote) {
+  authorData.value = LocalApi.getAuthorData();
+  masterData.value = LocalApi.getMasterData();
+  toplistData.value = LocalApi.getCabinetTopList();
+  columnData.value = LocalApi.getCabinetColumn();
 }
 
-const blogRank = LocalApi.getCabinetRankList();
 const cabinet = __LITE_CONFIG__.cabinet;
 const router = useRouter();
 const searchVal = ref();
-const tabName = ref("随笔");
-const active = ref("1");
+const active1 = ref("1");
+const active2 = ref("1");
 
 function search() {
   window.open(`https://zzk.cnblogs.com/s?w=blog:${blogApp}%${searchVal.value}`, "__blank");
@@ -70,9 +64,9 @@ const fixed = computed(() => {
 <template>
   <ContextMenu
     id="l-lcabinet"
-    class="z-1 fixed top-0 left-0"
+    class="fixed top-0 left-0"
     :style="{ left: left }"
-    :class="{ 'show-lcabinet z-2': block, 'hidden-lcabinet': hidden, 'fixed-lcabinet': fixed }"
+    :class="{ 'show-lcabinet z-4': block, 'hidden-lcabinet': hidden, 'fixed-lcabinet': fixed }"
     style="width: var(--cabinet-width)">
     <Card
       class="l-fiv-size"
@@ -121,7 +115,7 @@ const fixed = computed(() => {
           </div>
           <el-tooltip effect="dark" placement="bottom">
             <template #content>
-              <span class="mr-3" v-for="(item, index) in blogRank" :key="index"> {{ item.text }} - {{ item.digg }} </span>
+              <span class="mr-3" v-for="(item, index) in columnData.rankings" :key="index"> {{ item.text }}</span>
             </template>
             <div class="mb-3">
               <span class="hover mr-3" v-for="(item, index) in masterData" :key="index"> {{ item.text }} - {{ item.digg }} </span>
@@ -133,36 +127,80 @@ const fixed = computed(() => {
             </template>
           </el-input>
         </ExpandableBox>
-        <ExpandableBox text="博客数据">
+        <ExpandableBox text="博客数据" disabled>
           <template #icon>
             <i-ep-collection />
           </template>
-          <el-tabs stretch type="card" v-model="tabName">
-            <el-tab-pane label="随笔" name="随笔">
+          <el-collapse v-model="active1" accordion>
+            <el-collapse-item title="随笔分类" v-if="columnData.essaySort.length">
               <div
-                class="mb-3 hover"
-                v-for="(item, index) in columnData.sorts"
+                class="mb-1 hover"
+                v-for="(item, index) in columnData.essaySort"
                 :key="index"
                 @click="nav({ path: '/sort/' + item.id, router })">
                 {{ item.text }}
               </div>
-            </el-tab-pane>
-            <el-tab-pane label="标签" name="标签">
+            </el-collapse-item>
+            <el-collapse-item title="随笔档案" v-if="columnData.essayArchive.length">
               <div
-                class="mb-3 hover"
-                v-for="(item, index) in columnData.tags"
-                @click="nav({ path: '/label/' + item.id, router })"
-                :key="index">
+                class="mb-1 hover"
+                v-for="(item, index) in columnData.essayArchive"
+                :key="index"
+                @click="nav({ path: '/sort/' + item.id, router })">
+                <!-- @click="nav({ path: '/sort/' + item.id, router })"> -->
                 {{ item.text }}
               </div>
-              <div class="mb-3 hover" @click="nav({ path: '/labels', router })">更多...</div>
-            </el-tab-pane>
-            <el-tab-pane label="阅读排行榜" name="阅读排行榜">
-              <div class="mb-3 hover" v-for="(item, index) in toplist" :key="index" @click="nav({ path: '/p/' + item.id, router })">
+            </el-collapse-item>
+            <el-collapse-item title="标签分类" v-if="columnData.tagList.length">
+              <div
+                class="mb-1 hover"
+                v-for="(item, index) in columnData.tagList"
+                :key="index"
+                @click="nav({ path: '/sort/tag/' + item.id, router })">
                 {{ item.text }}
               </div>
-            </el-tab-pane>
-          </el-tabs>
+              <div>
+                <router-link to="/tags">更多...</router-link>
+              </div>
+            </el-collapse-item>
+            <el-collapse-item title="文章分类" v-if="columnData.articleSort.length">
+              <div
+                class="mb-1 hover"
+                v-for="(item, index) in columnData.articleSort"
+                :key="index"
+                @click="nav({ path: '/sort/' + item.id, router })">
+                {{ item.text }}
+              </div>
+            </el-collapse-item>
+            <el-collapse-item title="文章档案" v-if="columnData.articleArchive.length">
+              <div
+                class="mb-1 hover"
+                v-for="(item, index) in columnData.articleArchive"
+                :key="index"
+                @click="nav({ path: '/sort/' + item.id, router })">
+                <!-- @click="nav({ path: '/sort/' + item.id, router })"> -->
+                {{ item.text }}
+              </div>
+            </el-collapse-item>
+            <el-collapse-item title="最新随笔" v-if="columnData.latestEssayList.length">
+              <div
+                class="mb-4 hover"
+                v-for="(item, index) in columnData.latestEssayList"
+                :key="index"
+                @click="nav({ path: '/p/' + item.id, router })">
+                {{ item.text }}
+              </div>
+            </el-collapse-item>
+            <el-collapse-item title="最新评论" v-if="columnData.latestComments.length">
+              <div class="mb-4" v-for="(item, index) in columnData.latestComments" :key="index">
+                <div class="hover" @click="nav({ path: '/p/' + item.id, router })">{{ item.title }}</div>
+                <div class="pl-4">{{ item.content }}</div>
+                <div class="f-c-e">
+                  <a :href="'https://www.cnblogs.com/' + item.author" target="_blank">@{{ item.author }}</a>
+                </div>
+              </div>
+            </el-collapse-item>
+          </el-collapse>
         </ExpandableBox>
       </div>
       <div class="noscroll ofw-auto h-4vh l-thr-color f-c wce-nowrap">
@@ -190,7 +228,7 @@ const fixed = computed(() => {
     </Card>
     <template #title> 左陈列柜设置 </template>
     <template #content>
-      <el-collapse v-model="active" accordion>
+      <el-collapse v-model="active2" accordion>
         <el-collapse-item title="统一设置">
           <div class="ml-4">
             <CabinetSetting />

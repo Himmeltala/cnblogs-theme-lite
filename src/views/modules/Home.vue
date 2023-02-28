@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { getArticleList } from "@/apis/remote-api";
+import { getEssayList } from "@/apis/remote-api";
 import { getSetting, startLoading, endLoading } from "@/utils/common";
 
 startLoading();
 
 const setting = getSetting();
-const data = ref((await getArticleList(1, false)).array);
-const pages = (await getArticleList(1, true)).pages;
-const count = ref(pages[pages.length - 1]);
+const listing = ref(await getEssayList(1, false));
 
 onMounted(() => {
   endLoading();
@@ -15,19 +13,19 @@ onMounted(() => {
 
 async function next(e: any) {
   startLoading();
-  data.value = (await getArticleList(e.currentIndex, false)).array;
+  listing.value = await getEssayList(e.currentIndex, false);
   endLoading();
 }
 
 async function prev(e: any) {
   startLoading();
-  data.value = (await getArticleList(e.currentIndex, false)).array;
+  listing.value = await getEssayList(e.currentIndex, false);
   endLoading();
 }
 
 async function nexpr(e: any) {
   startLoading();
-  data.value = (await getArticleList(e.currentIndex, false)).array;
+  listing.value = await getEssayList(e.currentIndex, false);
   endLoading();
 }
 </script>
@@ -35,9 +33,13 @@ async function nexpr(e: any) {
 <template>
   <ContextMenu>
     <div id="l-home" class="min-height">
-      <Pagination @prev="prev" @next="next" @nexpr="nexpr" :page-count="count" :disabled="setting.other.pagation.pin">
+      <Pagination @prev="prev" @next="next" @nexpr="nexpr" :page-count="listing.page" :disabled="setting.other.pagation.pin">
         <template #content>
-          <ArticleItem :padding="setting.pages.sort.padding" :margin="setting.pages.sort.margin" v-if="data" :data="data" />
+          <EssayItem
+            v-if="listing.data.length > 0"
+            :padding="setting.pages.sort.padding"
+            :margin="setting.pages.sort.margin"
+            :data="listing.data" />
         </template>
       </Pagination>
     </div>

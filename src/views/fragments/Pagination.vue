@@ -45,17 +45,17 @@ function nexprChange(elIndex: number) {
 
 <template>
   <div class="l-pagination relative">
-    <div class="l-pagination__sorter hover left z-1 f-c-c rd-l-4" @click="prevChange" v-show="disabled">
+    <div v-if="pageCount" class="l-pagination__sorter hover left z-1 f-c-c rd-l-4" @click="prevChange" v-show="disabled">
       <i-ep-arrow-left-bold />
     </div>
     <div class="l-pagination__content">
       <slot name="content" />
     </div>
-    <div class="l-pagination__sorter hover right z-1 f-c-c rd-l-4" @click="nextChange" v-show="disabled">
+    <div v-if="pageCount" class="l-pagination__sorter hover right z-1 f-c-c rd-l-4" @click="nextChange" v-show="disabled">
       <i-ep-arrow-right-bold />
     </div>
     <div class="l-pagination__bottom f-c-e my-4" :class="{ 'l-box-bg': !setting.card.open }">
-      <Card>
+      <Card v-if="pageCount">
         <el-pagination layout="pager, next" :page-count="pageCount" v-model:current-page="index" @current-change="nexprChange" />
       </Card>
     </div>
@@ -80,11 +80,11 @@ function nexprChange(elIndex: number) {
   }
 
   .l-pagination__sorter.left {
-    left: calc(calc(calc(100vw - var(--content-width)) / 2) - 2.2rem);
+    left: calc(calc(calc(100vw - var(--content-width)) / 2) - 2.6rem);
   }
 
   .l-pagination__sorter.right {
-    right: calc(calc(calc(100vw - var(--content-width)) / 2) - 2.2rem);
+    right: calc(calc(calc(100vw - var(--content-width)) / 2) - 2.6rem);
   }
 }
 </style>

@@ -8,9 +8,9 @@ const routes = [
     component: () => import("./views/modules/Home.vue")
   },
   {
-    name: RouteName.Article,
+    name: RouteName.Essay,
     path: "/p/:id",
-    component: () => import("./views/modules/Article.vue")
+    component: () => import("./views/modules/Essay.vue")
   },
   {
     name: RouteName.Sort,
@@ -18,13 +18,13 @@ const routes = [
     component: () => import("./views/modules/Sort.vue")
   },
   {
-    name: RouteName.TAGCOLL,
-    path: "/label/:tag",
-    component: () => import("./views/modules/TagColl.vue")
+    name: RouteName.TAGSORT,
+    path: "/sort/tag/:tag",
+    component: () => import("./views/modules/TagSort.vue")
   },
   {
     name: RouteName.TAGS,
-    path: "/labels",
+    path: "/tags",
     component: () => import("./views/modules/Tags.vue")
   },
   {

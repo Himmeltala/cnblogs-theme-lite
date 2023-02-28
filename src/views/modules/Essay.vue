@@ -2,18 +2,18 @@
 import { BlogType } from "@/types/data-type";
 import { isOwner, blogApp } from "@/lite.config";
 import { endLoading, startLoading, getSetting, nav } from "@/utils/common";
-import { getLockedArticle, getIsUnlock, getArticle, getArticleProps, getPrevNext, getArticleVote, voteArticle } from "@/apis/remote-api";
+import { getLockedArticle, getIsUnlock, getEssay, getEssayProps, getPrevNext, getEssayViewPoint, voteEssay } from "@/apis/remote-api";
 
 startLoading();
 
 const route = useRoute();
 const router = useRouter();
 const postId = `${route.params.id}`;
-const article = ref(await getArticle(postId));
+const article = ref(await getEssay(postId));
 const isLocked = ref(false);
-const props = await getArticleProps(postId);
+const props = await getEssayProps(postId);
 const prevNext = await getPrevNext(postId);
-const viewpoint = ref(await getArticleVote(postId));
+const viewpoint = ref(await getEssayViewPoint(postId));
 const password = ref("");
 const setting = getSetting();
 
@@ -35,7 +35,7 @@ async function submit() {
 }
 
 async function vote(voteType: BlogType.VoteType) {
-  const data = await voteArticle({ postId, isAbandoned: false, voteType });
+  const data = await voteEssay({ postId, isAbandoned: false, voteType });
   if (data) {
     if (data.isSuccess)
       if (voteType == "Bury") viewpoint.value.buryCount = viewpoint.value.buryCount + 1;
@@ -95,7 +95,7 @@ async function vote(voteType: BlogType.VoteType) {
               <span>标签：</span>
             </div>
             <div v-for="(item, index) in props.tags" class="l-fiv-size" :class="{ 'mr-2': index !== props.tags.length - 1 }" :key="index">
-              <LTag line="dotted" hover round @click="nav({ path: '/label/' + item.text, router })">
+              <LTag line="dotted" hover round @click="nav({ path: '/sort/tag/' + item.text, router })">
                 {{ item.text }}
               </LTag>
             </div>

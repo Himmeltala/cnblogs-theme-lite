@@ -10,18 +10,18 @@ import { blogApp } from "@/lite.config";
 import { useAnchorStore } from "@/store";
 
 export enum RouteName {
-  Article = "article",
+  Essay = "article",
   HOME = "home",
   Sort = "sort",
-  TAGCOLL = "label",
+  TAGSORT = "label",
   TAGS = "tags",
   GALLERY = "gallery"
 }
 
 const routeReg = {
-  Article: /\/p\/\d+.html/g,
+  Essays: /\/p\/\d+.html/g,
   Sort: /\/category\/\d+/g,
-  TAGCOLL: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
+  TAGSORT: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
   Tags: /\d/g,
   GALLERY: /\/gallery\/image/g
 };
@@ -54,11 +54,11 @@ export function redirect(next: any): () => void {
   let nextParam: any;
   const URL = window.location.href;
 
-  if (routeReg.Article.test(URL)) {
-    const postId = URL.match(routeReg.Article)[0].split("/")[2].split(".")[0];
+  if (routeReg.Essays.test(URL)) {
+    const postId = URL.match(routeReg.Essays)[0].split("/")[2].split(".")[0];
     setCommentAnchor(URL);
     nextParam = {
-      name: RouteName.Article,
+      name: RouteName.Essay,
       params: { id: postId }
     };
   } else if (routeReg.Sort.test(URL)) {
@@ -67,10 +67,10 @@ export function redirect(next: any): () => void {
       name: RouteName.Sort,
       params: { id: sortId }
     };
-  } else if (routeReg.TAGCOLL.test(URL)) {
-    const tag = decodeURI(URL).match(routeReg.TAGCOLL)![0].split("/")[2];
+  } else if (routeReg.TAGSORT.test(URL)) {
+    const tag = decodeURI(URL).match(routeReg.TAGSORT)![0].split("/")[2];
     nextParam = {
-      name: RouteName.TAGCOLL,
+      name: RouteName.TAGSORT,
       params: { tag }
     };
   } else if (routeReg.GALLERY.test(URL)) {

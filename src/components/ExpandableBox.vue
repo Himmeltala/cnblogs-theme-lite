@@ -7,6 +7,10 @@ const props = defineProps({
   text: {
     type: String,
     required: true
+  },
+  disabled: {
+    type: Boolean,
+    required: false
   }
 });
 
@@ -24,10 +28,12 @@ const content = ref();
 onMounted(() => {
   const height = $(content.value).height();
 
-  if (!setting.value.cabinet.toggles[record]?.open) {
-    content.value.style.height = `${0}px`;
-  } else {
-    content.value.style.height = `${height}px`;
+  if (!props.disabled) {
+    if (!setting.value.cabinet.toggles[record]?.open) {
+      content.value.style.height = `${0}px`;
+    } else {
+      content.value.style.height = `${height}px`;
+    }
   }
 
   toggle = () => {
@@ -71,6 +77,7 @@ onMounted(() => {
         {{ text }}
       </div>
       <div
+        v-if="!disabled"
         @click="toggle"
         class="f-c-c opacity-70 hover"
         :class="{ 'arrow-up': !setting.cabinet.toggles[record]?.open, 'arrow-down': setting.cabinet.toggles[record]?.open }">

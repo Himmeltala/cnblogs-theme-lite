@@ -54,19 +54,19 @@ async function sendAwaitPost(url: string, data: any): Promise<any> {
  * @param page 页数，可以是 0，也可以是 1，都代表第一页。
  * @param isCalc 是否计算页数，由于第一页没有显示页数，只有第二页才有，所以为了不多次重复计算页数，该变量用于控制。
  */
-export async function getArticleList(page: number, isCalc: boolean) {
+export async function getEssayList(page: number, isCalc: boolean) {
   const { data } = await sendAwaitGet(`/default.html?page=${page}`);
-  return Parser.parseArticleList(data, isCalc);
+  return Parser.parseEssayList(data, isCalc);
 }
 
 /**
  * 获取随笔
  *
- * @param postId 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
+ * @param id 随笔 ID。从首页跳转到随笔页面之后，通过 vue-outer 获取 postId
  */
-export async function getArticle(postId: string) {
-  const { data } = await sendAwaitGet(`/p/${postId}.html`);
-  return Parser.parseArticle(postId, data);
+export async function getEssay(id: string) {
+  const { data } = await sendAwaitGet(`/p/${id}.html`);
+  return Parser.parseEssay(id, data);
 }
 
 /**
@@ -154,15 +154,21 @@ export async function getCommentList(postId: string, page: number, anchorId?: nu
   return Parser.parseCommentList(data);
 }
 
+// ----------------------------------------------------------------
+
 /**
  * 获取随笔的标签和分类
  *
  * @param postId 进入随笔页面之后，从 vue-router 参数中获取
  */
-export async function getArticleProps(postId: string) {
+export async function getEssayProps(postId: string) {
   const { data } = await sendAwaitGet(`/ajax/CategoriesTags.aspx?blogId=${blogId}&postId=${postId}`);
-  return Parser.parseArticleProps(data);
+  return Parser.parseEssayProps(data);
 }
+
+// ----------------------------------------------------------------
+
+// ----------------------------------------------------------------
 
 /**
  * 获取随笔的上下篇
@@ -174,25 +180,31 @@ export async function getPrevNext(id: string) {
   return Parser.parsePrevNext(data);
 }
 
+// ----------------------------------------------------------------
+
 /**
  * 点赞或反对该随笔
  *
  * @param entity 随笔实体。必须包含：isAbandoned、postId、voteType 三个字段。
  */
-export async function voteArticle(entity: BlogType.IBlogArticle): Promise<BlogType.AjaxType> {
+export async function voteEssay(entity: BlogType.IBlogArticle): Promise<BlogType.AjaxType> {
   const { data } = await sendAwaitPost(`/ajax/vote/blogpost`, entity);
   return data;
 }
+
+// ----------------------------------------------------------------
 
 /**
  * 获取随笔点赞和反对的数据
  *
  * @param postId 传递一个数组，数组第一个就是 postId 的值
  */
-export async function getArticleVote(postId: string): Promise<BlogType.BlogArticleVote> {
+export async function getEssayViewPoint(postId: string): Promise<BlogType.BlogArticleVote> {
   const { data } = await sendAwaitPost(`/ajax/GetPostStat`, [postId]);
   return data[0];
 }
+
+// ----------------------------------------------------------------
 
 /**
  * 获取分类列表
@@ -201,9 +213,9 @@ export async function getArticleVote(postId: string): Promise<BlogType.BlogArtic
  * @param calcPage 是否计算页数？参考 getEssayList 函数对其详细的售卖
  * @param page 页数
  */
-export async function getSorts(id: any, calcPage: boolean, page: any) {
+export async function getSort(id: string, calcPage: boolean, page: any) {
   const { data } = await sendAwaitGet(`/category/${id}.html?page=${page}`);
-  return Parser.parseSorts(data, calcPage);
+  return Parser.parseSort(data, calcPage);
 }
 
 /**
@@ -211,13 +223,15 @@ export async function getSorts(id: any, calcPage: boolean, page: any) {
  *
  * @param tag 标签名称
  */
-export async function getTagColl(tag: string) {
+export async function getTagSort(tag: string) {
   const { data } = await sendAwaitGet(`/tag/${tag}`);
-  return Parser.parseTagColl(data);
+  return Parser.parseTagSort(data);
 }
 
+// ----------------------侧边栏数据----------------------
+
 /**
- * 获取侧边栏分类列表、标签列表，... 列表
+ * 获取侧边栏随笔分类、随笔档案、文章分类、文章档案、最新评论等数据
  */
 export async function getCabinetColumn() {
   const { data } = await sendAwaitGet(`/ajax/sidecolumn.aspx`);
@@ -228,13 +242,13 @@ export async function getCabinetColumn() {
  * 获取侧边栏的博主信息
  *
  */
-export async function getAuthor() {
+export async function getAuthorData() {
   const { data } = await sendAwaitGet(`/ajax/news.aspx`);
-  return Parser.parseAuthor(data);
+  return Parser.parseAuthorData(data);
 }
 
 /**
- * 获取博主主人的排行榜、积分、阅读等数据
+ * 获取博主的阅读量、文章数、评论数、随笔数
  */
 export async function getMasterData() {
   const { data } = await sendAwaitGet(`/ajax/blogStats`);
@@ -242,12 +256,14 @@ export async function getMasterData() {
 }
 
 /**
- * 获取侧边栏阅读排行榜列表
+ * 获取侧边栏阅读排行榜、评论排行榜、推荐排行榜列表
  */
 export async function getCabinetTopList() {
   const { data } = await sendAwaitGet(`/ajax/TopLists.aspx`);
   return Parser.parseCabinetTopList(data);
 }
+
+// ----------------------侧边栏数据----------------------
 
 /**
  * 获取所有标签列表
@@ -302,5 +318,13 @@ export async function getLockedArticle(password: string, postId: string) {
   const formData = new FormData();
   formData.append("Password", password);
   const { data } = await sendAwaitPost(`/protected/p/${postId}.html`, formData);
-  return Parser.parseArticle(postId, data);
+  return Parser.parseEssay(postId, data);
+}
+
+/**
+ * 获取分类下的子分类
+ */
+export async function getSortChild(id: string) {
+  const { data } = await sendAwaitGet(`/ajax/TreeCategoryList.aspx?parentId=${id}&categoryType=1`);
+  return Parser.parseSortChild(data);
 }

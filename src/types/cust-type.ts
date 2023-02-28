@@ -1,4 +1,7 @@
-export interface IArticle {
+/**
+ * 随笔/文章
+ */
+export interface IEssay {
   // 随笔 ID
   id?: string;
   // 随笔标题
@@ -25,6 +28,9 @@ export interface IArticle {
   isTop?: boolean;
 }
 
+/**
+ * 评论
+ */
 export interface IComment {
   // 是否正在编辑
   isEditing?: boolean;
@@ -56,9 +62,12 @@ export interface IComment {
   pageIndex?: number;
 }
 
-export interface ITagColl {
-  text: string;
-  array: Array<{ id: string; title: string; href: string; date: string; view: string; comm: string; digg: string }>;
+/**
+ * 标签集合
+ */
+export interface ITagSort {
+  hint: string;
+  data: Array<{ id: string; title: string; href: string; date: string; view: string; comm: string; digg: string }>;
 }
 
 export interface ILite {
@@ -99,17 +108,17 @@ export interface ITag {
 }
 
 /**
- * 随笔列表，返回列表的页数、列表数组。
+ * 随笔列表
  */
-export interface IArticleList {
-  pages: number[];
-  array: Array<IArticle>;
+export interface IEssayList {
+  page: number;
+  data: Array<IEssay>;
 }
 
 /**
  * 随笔的分类和标签数组
  */
-export interface IArticleProps {
+export interface IEssayProps {
   tags: { text: string }[];
   sorts: { href: string; text: string }[];
 }
@@ -117,24 +126,34 @@ export interface IArticleProps {
 /**
  * 随笔分类列表，返回页数、分类名、列表数组
  */
-export interface ISorts {
-  pages: number[];
-  label: string;
-  array: Array<IArticle>;
+export interface ISort {
+  desc: string;
+  page: number;
+  hint: string;
+  data: Array<IEssay>;
+}
+
+/**
+ * 分类子分类
+ */
+export interface ISortChild {
+  id: string;
+  text: string;
 }
 
 /**
  * 侧边栏标签和分类数组
  */
 export interface ICabinetColumn {
-  sorts: {
-    id: string;
-    text: string;
-  }[];
-  tags: {
-    id: string;
-    text: string;
-  }[];
+  essaySort: { id: string; text: string }[];
+  essayArchive: { id: string; text: string }[];
+  articleSort: { id: string; text: string }[];
+  articleArchive: { id: string; text: string }[];
+  latestEssayList: { id: string; text: string }[];
+  latestComments: { id: string; title: string; content: string; author: string }[];
+  rankings: { text: string }[];
+  tagList: { id: string; text: string }[];
+  albumn: { id: string; text: string }[];
 }
 
 /**

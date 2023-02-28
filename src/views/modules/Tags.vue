@@ -12,7 +12,7 @@ document.querySelector("title").innerText = `标签 - ${blogApp} - 博客园`;
 
 onMounted(() => {
   endLoading();
-})
+});
 </script>
 
 <template>
@@ -21,7 +21,7 @@ onMounted(() => {
       <div id="l-tags" class="min-height">
         <LTag round hover line="dotted" class="item mb-4" v-for="(item, index) in tags" :key="index">
           <div class="f-c-c w-100% h-100%">
-            <router-link :to="'/label/' + item.text"> {{ item.text }} ({{ item.count }}) </router-link>
+            <router-link :to="'/sort/tag/' + item.text"> {{ item.text }} ({{ item.count }}) </router-link>
           </div>
         </LTag>
       </div>

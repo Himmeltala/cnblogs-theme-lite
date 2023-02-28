@@ -5,10 +5,10 @@ const setting = getSetting();
 
 onMounted(() => {
   document.getElementById("l-background__img").setAttribute("src", setting.value.background.src);
+});
 
-  watch(setting, () => {
-    document.getElementById("l-background__img").setAttribute("src", setting.value.background.src);
-  });
+watch(setting, () => {
+  document.getElementById("l-background__img").setAttribute("src", setting.value.background.src);
 });
 </script>
 
