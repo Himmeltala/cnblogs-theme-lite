@@ -20,7 +20,7 @@ export enum name {
   markSort = "markSort",
   marks = "marks",
   albumn = "albumn",
-  gallery = "gallery"
+  albumnItem = "albunItem"
 }
 
 const regexp = {
@@ -33,7 +33,7 @@ const regexp = {
   markSort: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
   marks: /\d/g,
   albumn: /albumn/g,
-  gallery: /\/gallery\/image/g
+  albumnItem: /\/gallery\/image\/\d+/g
 };
 
 /**
@@ -78,14 +78,18 @@ export function redirect(next: any): () => void {
       params: { id: sortId }
     };
   } else if (regexp.markSort.test(URL)) {
-    const tag = decodeURI(URL).match(regexp.markSort)![0].split("/")[2];
+    const tag = decodeURI(URL).match(regexp.markSort)[0].split("/")[2];
     nextParam = {
       name: name.markSort,
       params: { tag }
     };
-  } else if (regexp.gallery.test(URL)) {
+  } else if (regexp.albumnItem.test(URL)) {
+    const id = URL.match(regexp.albumnItem)[0].split("/")[3];
+    console.log(id);
+
     nextParam = {
-      name: name.gallery
+      name: name.albumnItem,
+      params: { id }
     };
   }
 

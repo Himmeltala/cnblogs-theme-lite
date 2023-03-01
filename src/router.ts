@@ -53,9 +53,9 @@ const routes = [
     component: () => import("./views/modules/Albumn.vue")
   },
   {
-    name: name.gallery,
-    path: "/gallery",
-    component: () => import("./views/modules/Gallery.vue")
+    name: name.albumnItem,
+    path: "/album/item/:id",
+    component: () => import("./views/modules/AlbumnItem.vue")
   }
 ];
 

@@ -63,13 +63,18 @@ watch(route, async () => {
               </template>
             </el-page-header>
             <div class="l-sort__desc mb-4 l-fiv-size l-sec-color">
-              {{ sort.desc }}
+              <span v-if="sort.desc2">
+                {{ sort.desc2 }}
+              </span>
+              <span v-else>
+                {{ sort.desc }}
+              </span>
             </div>
             <div class="l-sort__child mb-4" v-if="child.length > 0">
               <el-collapse>
                 <el-collapse-item title="子分类">
                   <div class="hover" v-for="(item, index) in child" :key="index" :class="{ 'mb-1 ': index != child.length - 1 }">
-                    <router-link :to="'/mark/sort/' + item.id">{{ item.text }}</router-link>
+                    <router-link :to="'/essay/sort/' + item.id">{{ item.text }}</router-link>
                   </div>
                 </el-collapse-item>
               </el-collapse>

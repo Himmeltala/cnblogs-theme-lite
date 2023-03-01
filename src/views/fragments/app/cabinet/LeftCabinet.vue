@@ -84,7 +84,7 @@ const fixed = computed(() => {
               </template>
             </el-tooltip>
           </div>
-          <div class="f-c-c mb-5" v-if="!isOwner">
+          <div class="f-c-c mb-4" v-if="!isOwner">
             <el-popconfirm @confirm="unfollow" confirm-button-text="确定" cancel-button-text="取消" title="确定取消关注？">
               <template #reference>
                 <el-button v-if="isFollow" type="danger" text bg> -取消关注 </el-button>
@@ -92,7 +92,7 @@ const fixed = computed(() => {
             </el-popconfirm>
             <el-button @click="follow" v-if="!isFollow" type="primary" text bg> +关注博主 </el-button>
           </div>
-          <div class="hover mb-3" v-for="(item, index) in authorData" :key="index" @click="nav({ path: item.href })">
+          <div class="hover mb-4" v-for="(item, index) in authorData" :key="index" @click="nav({ path: item.href })">
             <div class="f-c-s" v-if="index === 0">
               <i-ep-user-filled class="mr-2" />
               昵称：{{ item.text }}
@@ -110,7 +110,7 @@ const fixed = computed(() => {
               关注：{{ item.text }}
             </div>
           </div>
-          <div class="mb-3">
+          <div class="mb-4">
             <span class="mr-3" v-for="(item, index) in masterData" :key="index"> {{ item.text }} - {{ item.digg }} </span>
           </div>
           <el-input clearable @keyup.enter="search" v-model="searchVal">

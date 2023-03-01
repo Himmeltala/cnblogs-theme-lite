@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Albumn: typeof import('./src/views/modules/Albumn.vue')['default']
+    AlbumnItem: typeof import('./src/views/modules/AlbumnItem.vue')['default']
     Article: typeof import('./src/views/modules/Article.vue')['default']
     ArticleArchive: typeof import('./src/views/modules/ArticleArchive.vue')['default']
     ArticleSort: typeof import('./src/views/modules/ArticleSort.vue')['default']
@@ -55,7 +56,6 @@ declare module '@vue/runtime-core' {
     EssaySort: typeof import('./src/views/modules/EssaySort.vue')['default']
     EssaySynopsis: typeof import('./src/views/adapters/EssaySynopsis.vue')['default']
     ExpandableBox: typeof import('./src/components/ExpandableBox.vue')['default']
-    Gallery: typeof import('./src/views/modules/Gallery.vue')['default']
     GitHub: typeof import('./src/views/fragments/app/GitHub.vue')['default']
     Home: typeof import('./src/views/modules/Home.vue')['default']
     IEpAim: typeof import('~icons/ep/aim')['default']

@@ -333,3 +333,21 @@ export async function getSortChild(id: string) {
   const { data } = await sendAwaitGet(`/ajax/TreeCategoryList.aspx?parentId=${id}&categoryType=1`);
   return Parser.parseSortChild(data);
 }
+
+/**
+ * 获取相册照片
+ *
+ * @param id 相册照片 ID
+ */
+export async function getAlbumnItem(id: string) {
+  const { data } = await sendAwaitGet(`/gallery/image/${id}.html`);
+  return $(data).find("#ViewPicture1_OriginalImage").attr("href");
+}
+
+/**
+ * 获取相册下的所有照片
+ */
+export async function getAlbumn(id: string) {
+  const { data } = await sendAwaitGet(`/gallery/${id}.html`);
+  return Parser.parseAlbumn(data);
+}

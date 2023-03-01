@@ -107,7 +107,7 @@ const active = ref("1");
       </div>
     </el-collapse-item>
     <el-collapse-item title="我的相册">
-      <div :class="{ 'mb-4': index != columnData.albumn.length - 1 }" v-for="(item, index) in columnData.albumn" :key="index">
+      <div :class="{ 'mb-2': index != columnData.albumn.length - 1 }" v-for="(item, index) in columnData.albumn" :key="index">
         <router-link class="hover" :to="'/albumn/' + item.id">{{ item.text }}</router-link>
       </div>
     </el-collapse-item>

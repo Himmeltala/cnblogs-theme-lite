@@ -25,6 +25,6 @@ export function getCabinetTopList() {
   return Parser.parseCabinetTopList($("#home").find("#sidebar_topviewedposts").html());
 }
 
-export function getGalleryImg(): string {
+export function getAlbumnImg(): string {
   return $("#ViewPicture1_OriginalImage").attr("href");
 }

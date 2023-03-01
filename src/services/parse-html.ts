@@ -235,6 +235,7 @@ export function parseEssaySort(dom: any): CustType.IEssaySort {
 
   return {
     desc: $(dom).find(".entrylistTitle .category-crumb-item").attr("title"),
+    desc2: $(dom).find(".entrylistDescription")?.text() || "",
     data: list,
     page: getMaxPage($(dom).find("#mainContent .pager")[0]),
     hint: $(dom).find(".entrylistTitle").text() || ""
@@ -447,25 +448,26 @@ export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
 /**
  * 解析侧边栏博主主人基本的昵称、粉丝数、园龄等数据
  *
- * @param strDOM 真实 DOM
+ * @param dom 真实 DOM
  */
-export function parseAuthorData(strDOM: string): Array<CustType.IAuthor> {
-  const array: Array<CustType.IAuthor> = [];
-  const a = $(parseDom(strDOM)).find("#profile_block > a");
-  $(a).each((i, e) => {
-    array.push({ text: $(e).text().trim(), href: $(e).attr("href")! });
-  });
-  return array;
+export function parseAuthorData(dom: string): Array<CustType.IAuthor> {
+  const data: Array<CustType.IAuthor> = [];
+  $(parseDom(dom))
+    .find("#profile_block > a")
+    .each((i, e) => {
+      data.push({ text: $(e).text().trim(), href: $(e).attr("href")! });
+    });
+  return data;
 }
 
 /**
  * 解析博主主人的随笔、文章、评论、阅读等数据
  *
- * @param strDOM 真实 DOM
+ * @param dom 真实 DOM
  */
-export function parseMasterData(strDOM: string): Array<CustType.IMasterData> {
-  const array: Array<CustType.IMasterData> = [];
-  $(parseDom(strDOM))
+export function parseMasterData(dom: string): Array<CustType.IMasterData> {
+  const data: CustType.IMasterData[] = [];
+  $(parseDom(dom))
     .find("span")
     .each((i, d) => {
       if ($(d).attr("id")) {
@@ -473,20 +475,20 @@ export function parseMasterData(strDOM: string): Array<CustType.IMasterData> {
         const text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
         let digg = t.match(/\d+/g)[0];
         if (i === 3) digg = parseUnit(digg);
-        array.push({ text, digg });
+        data.push({ text, digg });
       }
     });
-  return array;
+  return data;
 }
 
 /**
  * 解析侧边栏博客排行信息。
  *
- * @param strDOM 真实 DOM
+ * @param dom 真实 DOM
  */
-export function parseCabinetRankList(strDOM: string): CustType.ICabinetRankList[] {
+export function parseCabinetRankList(dom: string): CustType.ICabinetRankList[] {
   const array: Array<CustType.ICabinetRankList> = [];
-  $(parseDom(strDOM))
+  $(parseDom(dom))
     .find("li")
     .each((i, d) => {
       const t = $(d).text().trim();
@@ -500,14 +502,14 @@ export function parseCabinetRankList(strDOM: string): CustType.ICabinetRankList[
 /**
  * 解析博客阅读排行榜
  *
- * @param strDOM 真实 DOM
+ * @param dom 真实 DOM
  */
-export function parseCabinetTopList(strDOM: string): CustType.ICabinetTopList[] {
-  const array: Array<CustType.ICabinetTopList> = [];
-  $(parseDom(strDOM))
+export function parseCabinetTopList(dom: string): CustType.ICabinetTopList[] {
+  const data: CustType.ICabinetTopList[] = [];
+  $(parseDom(dom))
     .find("#TopViewPostsBlock ul > li > a")
     .each((i, e) => {
-      array.push({
+      data.push({
         id: $(e)
           .attr("href")
           ?.match(/\/p\/\d+/g)![0]
@@ -515,11 +517,11 @@ export function parseCabinetTopList(strDOM: string): CustType.ICabinetTopList[] 
         text: replaceText($(e).text().trim(), [/\n+/g])
       });
     });
-  return array;
+  return data;
 }
 
 export function parseMarks(realDOM: any): Array<CustType.ITag> {
-  const array: Array<CustType.ITag> = [];
+  const data: CustType.ITag[] = [];
   $(realDOM)
     .find("#MyTag1_dtTagList")
     .find("td")
@@ -527,9 +529,9 @@ export function parseMarks(realDOM: any): Array<CustType.ITag> {
       const count = parseInt($(el).attr("data-use-count"));
       const href = $(el).find("a").attr("href");
       const text = $(el).find("a").text();
-      array.push({ count, href, text });
+      data.push({ count, href, text });
     });
-  return array;
+  return data;
 }
 
 /**
@@ -548,14 +550,38 @@ export function parseIsUnLock(realDOM: any): boolean {
 }
 
 export function parseSortChild(dom: any): CustType.IEssaySortChild[] {
-  const result: any[] = [];
+  const data: CustType.IEssaySortChild[] = [];
   $(dom)
     .find("li")
     .each((i, el) => {
-      result.push({
+      data.push({
         id: $(el).attr("data-category-id"),
         text: $(el).find(".tree-categories-item-title-right").text()
       });
     });
-  return result;
+  return data;
+}
+
+export function parseAlbumn(dom: any) {
+  const data: CustType.AlbumnItem[] = [];
+
+  $(dom)
+    .find(".divPhoto")
+    .each((i, e) => {
+      const id = $(e)
+        .find("a")
+        .attr("href")
+        .match(/\/gallery\/image\/\d+/g)[0]
+        .split("/")[3];
+      data.push({
+        id,
+        src: $(e).find("img").attr("src")
+      });
+    });
+
+  return {
+    title: $(dom).find(".thumbTitle").text(),
+    desc: $(dom).find(".thumbDescription").text(),
+    data
+  };
 }

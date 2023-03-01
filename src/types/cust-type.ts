@@ -129,6 +129,8 @@ export interface IEssayProps {
 export interface IEssaySort {
   // 分类描述
   desc: string;
+  // 子分类描述
+  desc2?: string;
   // 分类页数
   page: number;
   // 分类名称、提示
@@ -258,4 +260,9 @@ export interface IBox {
   right?: number;
   top?: number;
   bottom?: number;
+}
+
+export interface AlbumnItem {
+  id: string;
+  src: string;
 }
