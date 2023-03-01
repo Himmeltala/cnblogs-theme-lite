@@ -2,13 +2,11 @@
 
 这是一款高自定义的博客园主题 Lite，快速预览 [Himmelbleu 的 Lite 主题博客](https://www.cnblogs.com/Himmelbleu/#/)。
 
-支持博主：[GitHub](https://github.com/Himmelbleu/cnblogs-theme-lite) 或 [Gitee](https://gitee.com/Himmelbleu/cnblogs-theme-lite)，点个 :star:star 哟~。
-
-Lite 基于 Vue3 + Vite 建立在博客园之上的一款博客主题。SPA 应用实现局部刷新，比起原皮肤加载速度更快。
-
 主题几乎所有地方都可以配置：背景设置、卡片样式、盒子模型、字体相关等。右键随便任何一个区域都可以呼出设置面板，每个区域的设置面板都不一样，设置好了之后可以导出设置以作备份。
 
 # 部署说明
+
+部署之前，确保博客皮肤是“Custom”，且禁用 CSS 默认样式。
 
 首页 HTML 代码：
 
@@ -24,12 +22,6 @@ Lite 基于 Vue3 + Vite 建立在博客园之上的一款博客主题。SPA 应�
 <link rel="stylesheet" href="https://blog-static.cnblogs.com/files/blogs/666252/index.css" />
 <!-- lite loading style -->
 <style>
-  @media screen and (max-width: 1000px) {
-    #sakana-widget {
-      display: none;
-    }
-  }
-
   #home {
     display: none !important;
   }
@@ -163,29 +155,16 @@ Lite 基于 Vue3 + Vite 建立在博客园之上的一款博客主题。SPA 应�
   window.__LITE_CONFIG__ = {};
 </script>
 <script type="module" src="https://blog-static.cnblogs.com/files/blogs/666252/index.js"></script>
-<!-- run lite -->
-<!-- 如果访问外网速度本身就很快，建议使用下面的代码。访问速度慢建议删除该 script 标签。 -->
-<script>
-  window.onload = () => {
-    window.__LITE_CONFIG__.onLoaded();
-  };
-</script>
 ```
 
 在你的博客园后台“选项”中，勾选“启用数学公式支持”和“数学公式渲染引擎”（选择 MathJax3），否则数学公式不生效。
 
 # 部署问题
 
-## 速度很慢
+1. 长时间停在 loading；
+2. 控制台报错过多；
 
-博客园会带有一个国外的请求，所以会比较慢，这不是主题的问题。如果遇到长时间停止在 loading 屏幕：
-
-1. 清除缓存；
-2. 改用部署说明中的启动方式。
-
-## 控制台报错
-
-如果遇到控制台报错，因为一些配置存储在 localStorage 中，可能是因为博主更新了，需要你手动清除 localStorage。
+解决：多刷新几次 / 清除浏览器缓存。
 
 # 配置说明
 
@@ -243,11 +222,6 @@ window.__LITE_CONFIG__ = {
     layer: 5, // 多少层
     lineWidth: 1,
     textSize: 12,
-    // 以下四个字段可以不填
-    fillColor: "#409eff",
-    strokeColor: "#A7A7A7",
-    lineColor: "#A7A7A7",
-    textColor: "#A7A7A7",
     comment: [
       // 数据，长度必须和 sides 保持一致
       { title: "CSS", star: 4 },
@@ -300,15 +274,3 @@ npm build
 二次开发需要把 build 之后的 index.css、index.js 上传到博客园后台“文件”。并获取这两个文件的链接，以替换部署说明中标签的引入链接。
 
 建议多使用 UnoCSS，开发时请把 `.env.development` 中两个字段修改成你自己的，否则获取的数据是我本人博客上的，博客 ID 和博客 App 都可以 F12 查看你博客找到，搜索`currentBlogId` 和`currentBlogApp`。
-
-## 目录说明
-
-components 下面的是组件，目前数量很少，组件在本项目的定义是：通用、可配置。[重新思考 Vue 组件的定义](https://www.cnblogs.com/Himmelbleu/#/p/17115133)：
-
-1. adapters：views 下渲染列表，其内容在其他视图中也重复使用。adapters 与 components 的区别是 adapters 不需要考虑“通用、可配置”。
-2. fragments：views 下有许多业务要处理，但业务与业务之间并不是相关的，所以需要把 views 中一块业务拆分成一个组件，fragments 有自己的逻辑（请求、函数等）和视图。fragments 与该 views 有很大关系。
-3. modules：路由组件，即注册到 vue-router 项里面的组件。
-
-# 其他问题
-
-如果有 Issues 请在仓库中提出，或者博客园私信本人。

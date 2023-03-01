@@ -21,10 +21,16 @@ const active = ref("1");
 <template>
   <div class="mb-4" v-for="(item, index) in columnData.rankings" :key="index">{{ item.text }}</div>
   <el-collapse v-model="active" accordion>
-    <el-collapse-item title="随笔分类" v-if="columnData.essaySort.length">
+    <el-collapse-item v-if="columnData.essaySort.length">
+      <template #title>
+        <div class="f-c-c">
+          <i-ep-files class="mr-2" />
+          随笔分类
+        </div>
+      </template>
       <div
-        :class="{ 'mb-1': index != columnData.essaySort.length - 1 }"
         class="hover"
+        :class="{ 'mb-1': index != columnData.essaySort.length - 1 }"
         v-for="(item, index) in columnData.essaySort"
         :key="index">
         <router-link :to="'/essay/sort/' + item.id">
@@ -32,7 +38,13 @@ const active = ref("1");
         </router-link>
       </div>
     </el-collapse-item>
-    <el-collapse-item title="随笔档案" v-if="columnData.essayArchive.length">
+    <el-collapse-item v-if="columnData.essayArchive.length">
+      <template #title>
+        <div class="f-c-c">
+          <i-ep-collection class="mr-2" />
+          随笔档案
+        </div>
+      </template>
       <div
         class="hover"
         :class="{ 'mb-1': index != columnData.essayArchive.length - 1 }"
@@ -43,7 +55,13 @@ const active = ref("1");
         </router-link>
       </div>
     </el-collapse-item>
-    <el-collapse-item title="文章分类" v-if="columnData.articleSort.length">
+    <el-collapse-item v-if="columnData.articleSort.length">
+      <template #title>
+        <div class="f-c-c">
+          <i-ep-folder-opened class="mr-2" />
+          文章分类
+        </div>
+      </template>
       <div
         class="hover"
         :class="{ 'mb-1': index != columnData.articleSort.length - 1 }"
@@ -55,6 +73,12 @@ const active = ref("1");
       </div>
     </el-collapse-item>
     <el-collapse-item title="文章档案" v-if="columnData.articleArchive.length">
+      <template #title>
+        <div class="f-c-c">
+          <i-ep-management class="mr-2" />
+          文章档案
+        </div>
+      </template>
       <div
         class="hover"
         :class="{ 'mb-1': index != columnData.articleArchive.length - 1 }"
@@ -66,6 +90,12 @@ const active = ref("1");
       </div>
     </el-collapse-item>
     <el-collapse-item title="标签分类" v-if="columnData.tagList.length">
+      <template #title>
+        <div class="f-c-c">
+          <i-ep-price-tag class="mr-2" />
+          标签分类
+        </div>
+      </template>
       <div
         class="hover"
         :class="{ 'mb-1': index != columnData.tagList.length - 1 }"
@@ -80,6 +110,12 @@ const active = ref("1");
       </div>
     </el-collapse-item>
     <el-collapse-item title="最新随笔" v-if="columnData.latestEssayList.length">
+      <template #title>
+        <div class="f-c-c">
+          <i-ep-document-remove class="mr-2" />
+          最新随笔
+        </div>
+      </template>
       <div
         class="hover"
         :class="{ 'mb-4': index != columnData.latestEssayList.length - 1 }"
@@ -91,6 +127,12 @@ const active = ref("1");
       </div>
     </el-collapse-item>
     <el-collapse-item title="最新评论" v-if="columnData.latestComments.length">
+      <template #title>
+        <div class="f-c-c">
+          <i-ep-comment class="mr-2" />
+          最新评论
+        </div>
+      </template>
       <div
         :class="{ 'mb-4': index != columnData.latestComments.length - 1 }"
         v-for="(item, index) in columnData.latestComments"
@@ -107,6 +149,12 @@ const active = ref("1");
       </div>
     </el-collapse-item>
     <el-collapse-item title="我的相册">
+      <template #title>
+        <div class="f-c-c">
+          <i-ep-picture class="mr-2" />
+          我的相册
+        </div>
+      </template>
       <div :class="{ 'mb-2': index != columnData.albumn.length - 1 }" v-for="(item, index) in columnData.albumn" :key="index">
         <router-link class="hover" :to="'/albumn/' + item.id">{{ item.text }}</router-link>
       </div>

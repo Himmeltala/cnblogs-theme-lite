@@ -121,7 +121,7 @@ const fixed = computed(() => {
         </ExpandableBox>
         <ExpandableBox text="博客数据" disabled>
           <template #icon>
-            <i-ep-collection />
+            <i-ep-box />
           </template>
           <BlogData :is-remote="setting.cabinet.remote" />
         </ExpandableBox>

@@ -398,7 +398,7 @@ export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
         text: $(e).text()
       });
     },
-    /archive\/([0-9]+\/[0-9]+)/
+    /archives\/([0-9]+\/[0-9]+)/
   );
 
   let count = 1;
