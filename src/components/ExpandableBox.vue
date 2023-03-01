@@ -14,9 +14,9 @@ const props = defineProps({
   }
 });
 
-const record = `${props.text}`;
-if (!setting.value.cabinet.toggles[record]) {
-  setting.value.cabinet.toggles[record] = {
+const title = `${props.text}`;
+if (!setting.value.cabinet.toggles[title]) {
+  setting.value.cabinet.toggles[title] = {
     open: true,
     show: true
   };
@@ -29,7 +29,7 @@ onMounted(() => {
   const height = $(content.value).height();
 
   if (!props.disabled) {
-    if (!setting.value.cabinet.toggles[record]?.open) {
+    if (!setting.value.cabinet.toggles[title]?.open) {
       content.value.style.height = `${0}px`;
     } else {
       content.value.style.height = `${height}px`;
@@ -38,7 +38,7 @@ onMounted(() => {
 
   toggle = () => {
     let counter = 9;
-    if (setting.value.cabinet.toggles[record]?.open) {
+    if (setting.value.cabinet.toggles[title]?.open) {
       let cHeight = height;
       const interval = setInterval(() => {
         cHeight -= height / 10;
@@ -46,7 +46,7 @@ onMounted(() => {
         counter--;
         if (counter == 0) {
           content.value.style.height = `${0}px`;
-          setting.value.cabinet.toggles[record].open = !setting.value.cabinet.toggles[record].open;
+          setting.value.cabinet.toggles[title].open = !setting.value.cabinet.toggles[title].open;
           clearInterval(interval);
         }
       }, 10);
@@ -58,7 +58,7 @@ onMounted(() => {
         counter--;
         if (counter == 0) {
           content.value.style.height = `${height}px`;
-          setting.value.cabinet.toggles[record].open = !setting.value.cabinet.toggles[record].open;
+          setting.value.cabinet.toggles[title].open = !setting.value.cabinet.toggles[title].open;
           clearInterval(interval);
         }
       }, 10);
@@ -68,7 +68,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="l-expandable l-thr-color" v-show="setting.cabinet.toggles[record]?.show">
+  <div class="l-expandable l-thr-color" v-show="setting.cabinet.toggles[title]?.show">
     <div class="l-expandable__title f-c-b my-5 l-sec-size pl-1.5 rd-1">
       <div class="f-c-s">
         <div class="f-c-c mr-1">
@@ -80,7 +80,7 @@ onMounted(() => {
         v-if="!disabled"
         @click="toggle"
         class="f-c-c opacity-70 hover"
-        :class="{ 'arrow-up': !setting.cabinet.toggles[record]?.open, 'arrow-down': setting.cabinet.toggles[record]?.open }">
+        :class="{ 'arrow-up': !setting.cabinet.toggles[title]?.open, 'arrow-down': setting.cabinet.toggles[title]?.open }">
         <div class="arrow">
           <i-ep-arrow-down />
         </div>

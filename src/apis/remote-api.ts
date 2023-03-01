@@ -54,9 +54,9 @@ async function sendAwaitPost(url: string, data: any): Promise<any> {
  * @param page 页数，可以是 0，也可以是 1，都代表第一页。
  * @param isCalc 是否计算页数，由于第一页没有显示页数，只有第二页才有，所以为了不多次重复计算页数，该变量用于控制。
  */
-export async function getEssayList(page: number, isCalc: boolean) {
+export async function getEssayList(page: number) {
   const { data } = await sendAwaitGet(`/default.html?page=${page}`);
-  return Parser.parseEssayList(data, isCalc);
+  return Parser.parseEssayList(data);
 }
 
 /**
@@ -213,9 +213,9 @@ export async function getEssayViewPoint(postId: string): Promise<BlogType.BlogAr
  * @param calcPage 是否计算页数？参考 getEssayList 函数对其详细的售卖
  * @param page 页数
  */
-export async function getSort(id: string, calcPage: boolean, page: any) {
+export async function getEssaySort(id: string, page: any) {
   const { data } = await sendAwaitGet(`/category/${id}.html?page=${page}`);
-  return Parser.parseSort(data, calcPage);
+  return Parser.parseEssaySort(data);
 }
 
 /**
@@ -223,9 +223,9 @@ export async function getSort(id: string, calcPage: boolean, page: any) {
  *
  * @param tag 标签名称
  */
-export async function getTagSort(tag: string) {
+export async function getMarkSort(tag: string) {
   const { data } = await sendAwaitGet(`/tag/${tag}`);
-  return Parser.parseTagSort(data);
+  return Parser.parseMarkSort(data);
 }
 
 // ----------------------侧边栏数据----------------------
@@ -268,9 +268,9 @@ export async function getCabinetTopList() {
 /**
  * 获取所有标签列表
  */
-export async function getTags() {
+export async function getMarks() {
   const { data } = await sendAwaitGet(`/tag`);
-  return Parser.parseTags(data);
+  return Parser.parseMarks(data);
 }
 
 /**
@@ -311,14 +311,14 @@ export async function getIsUnlock(password: string, id: string) {
  * 获取上锁的博文内容，普通的 API 无法获取
  *
  * @param password 博文阅读密码
- * @param postId 博文 ID
+ * @param id 博文 ID
  * @returns 输入密码正确时返回这个博文内容
  */
-export async function getLockedArticle(password: string, postId: string) {
+export async function getLockedEssay(password: string, id: string) {
   const formData = new FormData();
   formData.append("Password", password);
-  const { data } = await sendAwaitPost(`/protected/p/${postId}.html`, formData);
-  return Parser.parseEssay(postId, data);
+  const { data } = await sendAwaitPost(`/protected/p/${id}.html`, formData);
+  return Parser.parseEssay(id, data);
 }
 
 /**

@@ -126,17 +126,21 @@ export interface IEssayProps {
 /**
  * 随笔分类列表，返回页数、分类名、列表数组
  */
-export interface ISort {
+export interface IEssaySort {
+  // 分类描述
   desc: string;
+  // 分类页数
   page: number;
+  // 分类名称、提示
   hint: string;
+  // 随笔列表
   data: Array<IEssay>;
 }
 
 /**
  * 分类子分类
  */
-export interface ISortChild {
+export interface IEssaySortChild {
   id: string;
   text: string;
 }

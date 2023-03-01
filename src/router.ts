@@ -1,34 +1,59 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { redirect, RouteName } from "@/utils/router-helper";
+import { redirect, name } from "@/utils/router-helper";
 
 const routes = [
   {
-    name: RouteName.HOME,
+    name: name.home,
     path: "/",
     component: () => import("./views/modules/Home.vue")
   },
   {
-    name: RouteName.Essay,
+    name: name.essay,
     path: "/p/:id",
     component: () => import("./views/modules/Essay.vue")
   },
   {
-    name: RouteName.Sort,
-    path: "/sort/:id",
-    component: () => import("./views/modules/Sort.vue")
+    name: name.essaySort,
+    path: "/essay/sort/:id",
+    component: () => import("./views/modules/EssaySort.vue")
   },
   {
-    name: RouteName.TAGSORT,
-    path: "/sort/tag/:tag",
-    component: () => import("./views/modules/TagSort.vue")
+    name: name.essayArchive,
+    path: "/essay/archive/:date",
+    component: () => import("./views/modules/EssayArchive.vue")
   },
   {
-    name: RouteName.TAGS,
-    path: "/tags",
-    component: () => import("./views/modules/Tags.vue")
+    name: name.article,
+    path: "/article/:id",
+    component: () => import("./views/modules/Article.vue")
   },
   {
-    name: RouteName.GALLERY,
+    name: name.articleSort,
+    path: "/article/sort/:id",
+    component: () => import("./views/modules/ArticleSort.vue")
+  },
+  {
+    name: name.articleArchive,
+    path: "/article/archive/:date",
+    component: () => import("./views/modules/ArticleArchive.vue")
+  },
+  {
+    name: name.markSort,
+    path: "/mark/sort/:tag",
+    component: () => import("./views/modules/MarkSort.vue")
+  },
+  {
+    name: name.marks,
+    path: "/marks",
+    component: () => import("./views/modules/Marks.vue")
+  },
+  {
+    name: name.albumn,
+    path: "/albumn/:id",
+    component: () => import("./views/modules/Albumn.vue")
+  },
+  {
+    name: name.gallery,
     path: "/gallery",
     component: () => import("./views/modules/Gallery.vue")
   }

@@ -5,7 +5,7 @@ import { getSetting, startLoading, endLoading } from "@/utils/common";
 startLoading();
 
 const setting = getSetting();
-const listing = ref(await getEssayList(1, false));
+const listing = ref(await getEssayList(1));
 
 onMounted(() => {
   endLoading();
@@ -13,19 +13,19 @@ onMounted(() => {
 
 async function next(e: any) {
   startLoading();
-  listing.value = await getEssayList(e.currentIndex, false);
+  listing.value = await getEssayList(e.currentIndex);
   endLoading();
 }
 
 async function prev(e: any) {
   startLoading();
-  listing.value = await getEssayList(e.currentIndex, false);
+  listing.value = await getEssayList(e.currentIndex);
   endLoading();
 }
 
 async function nexpr(e: any) {
   startLoading();
-  listing.value = await getEssayList(e.currentIndex, false);
+  listing.value = await getEssayList(e.currentIndex);
   endLoading();
 }
 </script>

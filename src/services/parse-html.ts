@@ -41,7 +41,7 @@ function getMaxPage(dom: any): number {
  * @param calc 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
  * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
  */
-export function parseEssayList(realDOM: any, calc: boolean): CustType.IEssayList {
+export function parseEssayList(realDOM: any): CustType.IEssayList {
   const id = $(realDOM).find(".postTitle2");
   const head = $(realDOM).find(".postTitle");
   const desc = $(realDOM).find(".c_b_p_desc");
@@ -205,38 +205,37 @@ export function parsePrevNext(strDOM: any): CustType.IPrevNext {
  * @param dom 真实 DOM
  * @param calc 是否计算页数
  */
-export function parseSort(dom: any, calc: boolean): CustType.ISort {
-  const listing = $(dom).find(".entrylistItem");
+export function parseEssaySort(dom: any): CustType.IEssaySort {
+  const _dom = $(dom).find(".entrylistItem");
 
-  let id = $(listing).find(".entrylistItemTitle");
-  let title = $(listing).find(".entrylistItemTitle > span");
-  let describe = $(listing).find(".c_b_p_desc");
-  let record = $(listing).find(".entrylistItemPostDesc").text();
-  let date = record.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
-  let view = record.match(/阅读\([0-9]+\)/g);
-  let comm = record.match(/评论\([0-9]+\)/g);
-  let digg = record.match(/推荐\([0-9]+\)/g);
+  const id = $(_dom).find(".entrylistItemTitle");
+  const title = $(_dom).find(".entrylistItemTitle > span");
+  const desc = $(_dom).find(".c_b_p_desc");
+  const postDesc = $(_dom).find(".entrylistItemPostDesc").text();
+  const date = postDesc.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
+  const view = postDesc.match(/阅读\([0-9]+\)/g);
+  const comm = postDesc.match(/评论\([0-9]+\)/g);
+  const digg = postDesc.match(/推荐\([0-9]+\)/g);
 
-  let array: Array<CustType.IEssay> = [];
-  $(listing).each((i, e) => {
-    let surface = $(e).find(".c_b_p_desc > .desc_img").attr("src");
-    array.push({
+  const list: Array<CustType.IEssay> = [];
+  $(_dom).each((i, e) => {
+    list.push({
       id: $(id[i])
-        .attr("href")!
-        .match(/[0-9]+/g)![0],
+        .attr("href")
+        .match(/[0-9]+/g)[0],
       text: $(title[i]).text(),
-      desc: $(describe[i]).text(),
+      desc: $(desc[i]).text(),
       date: date![i],
       view: view![i],
       comm: comm![i],
       digg: digg![i],
-      surface: surface ? surface : ""
+      surface: $(e).find(".c_b_p_desc > .desc_img").attr("src") || ""
     });
   });
 
   return {
     desc: $(dom).find(".entrylistTitle .category-crumb-item").attr("title"),
-    data: array,
+    data: list,
     page: getMaxPage($(dom).find("#mainContent .pager")[0]),
     hint: $(dom).find(".entrylistTitle").text() || ""
   };
@@ -247,7 +246,7 @@ export function parseSort(dom: any, calc: boolean): CustType.ISort {
  *
  * @param dom 真实 DOM
  */
-export function parseTagSort(dom: any): CustType.ITagSort {
+export function parseMarkSort(dom: any): CustType.ITagSort {
   const title = $(dom).find(".PostList > .postTitl2 > a");
   const describe = $(dom).find(".PostList > .postDesc2");
   const tagTitle = $(dom).find(".PostListTitle").text().trim();
@@ -277,11 +276,19 @@ export function parseTagSort(dom: any): CustType.ITagSort {
   };
 }
 
-function columnMatched(el: any, regexp: RegExp, success: Function) {
-  const matched = $(el)?.attr("href")?.match(regexp);
-  if (matched) {
-    success(matched);
-  }
+function fillColumn(dom: any, selector: string, success: (e: any, matched?: any) => void, regexp?: RegExp) {
+  $(dom)
+    .find(selector)
+    .each((i, e) => {
+      if (regexp) {
+        const matched = $(e)?.attr("href")?.match(regexp);
+        if (matched) {
+          success(e, matched);
+        }
+      } else {
+        success(e);
+      }
+    });
 }
 
 /**
@@ -302,90 +309,96 @@ export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
     albumn: []
   };
 
-  $(_dom)
-    .find("#sidebar_recentposts ul li > a")
-    .each((i, e) => {
-      columnMatched(e, /[0-9]+/g, (matched: any) => {
-        column.latestEssayList.push({
-          id: matched[0],
-          text: $(e).text()
-        });
-      });
-    });
-
-  $(_dom)
-    .find("#sidebar_toptags ul li > a")
-    .each((i, e) => {
-      columnMatched(e, /tag\/(.[^\/]+)/, (matched: any) => {
-        column.tagList.push({
-          id: matched[1],
-          text: $(e).text()
-        });
-      });
-    });
-
-  $(_dom)
-    .find("#sidebar_scorerank ul li")
-    .each((i, e) => {
-      column.rankings.push({
+  fillColumn(
+    _dom,
+    "#sidebar_recentposts ul li > a",
+    (e, matched) => {
+      column.latestEssayList.push({
+        id: matched[0],
         text: $(e).text()
       });
-    });
+    },
+    /[0-9]+/g
+  );
 
-  $(_dom)
-    .find("#sidebar_postcategory ul li > a")
-    .each((i, e) => {
-      columnMatched(e, /[0-9]+/g, (matched: any) => {
-        column.essaySort.push({
-          id: matched[0],
-          text: $(e).text()
-        });
+  fillColumn(
+    _dom,
+    "#sidebar_toptags ul li > a",
+    (e, matched) => {
+      column.tagList.push({
+        id: matched[1],
+        text: $(e).text()
       });
-    });
+    },
+    /tag\/(.[^\/]+)/
+  );
 
-  $(_dom)
-    .find("#sidebar_postarchive ul li > a")
-    .each((i, e) => {
-      columnMatched(e, /archive\/([0-9]+\/[0-9]+)/, (matched: any) => {
-        column.essayArchive.push({
-          id: matched[1],
-          text: $(e).text()
-        });
-      });
+  fillColumn(_dom, "#sidebar_scorerank ul li", e => {
+    column.rankings.push({
+      text: $(e).text()
     });
+  });
 
-  $(_dom)
-    .find("#sidebar_imagecategory ul li > a")
-    .each((i, e) => {
-      columnMatched(e, /gallery\/([0-9]+)/, (matched: any) => {
-        column.albumn.push({
-          id: matched[1],
-          text: $(e).text()
-        });
+  fillColumn(
+    _dom,
+    "#sidebar_postcategory ul li > a",
+    (e, matched) => {
+      column.essaySort.push({
+        id: matched[0],
+        text: $(e).text()
       });
-    });
+    },
+    /[0-9]+/g
+  );
 
-  $(_dom)
-    .find("#sidebar_articlecategory ul li > a")
-    .each((i, e) => {
-      columnMatched(e, /[0-9]+/g, (matched: any) => {
-        column.articleSort.push({
-          id: matched[0],
-          text: $(e).text()
-        });
+  fillColumn(
+    _dom,
+    "#sidebar_postarchive ul li > a",
+    (e, matched) => {
+      const dateSplit = matched[1].split("/");
+      column.essayArchive.push({
+        id: `${dateSplit[0]}-${dateSplit[1]}`,
+        text: $(e).text()
       });
-    });
+    },
+    /archive\/([0-9]+\/[0-9]+)/
+  );
 
-  $(_dom)
-    .find("#sidebar_articlearchive ul li > a")
-    .each((i, e) => {
-      columnMatched(e, /archive\/([0-9]+\/[0-9]+)/, (matched: any) => {
-        column.articleArchive.push({
-          id: matched[1],
-          text: $(e).text()
-        });
+  fillColumn(
+    _dom,
+    "#sidebar_imagecategory ul li > a",
+    (e, matched) => {
+      column.albumn.push({
+        id: matched[1],
+        text: $(e).text()
       });
-    });
+    },
+    /gallery\/([0-9]+)/
+  );
+
+  fillColumn(
+    _dom,
+    "#sidebar_articlecategory ul li > a",
+    (e, matched) => {
+      column.articleSort.push({
+        id: matched[0],
+        text: $(e).text()
+      });
+    },
+    /[0-9]+/g
+  );
+
+  fillColumn(
+    _dom,
+    "#sidebar_articlearchive ul li > a",
+    (e, matched) => {
+      column.articleArchive.push({
+        id: matched[1],
+        text: $(e).text()
+      });
+    },
+    /archive\/([0-9]+\/[0-9]+)/
+  );
 
   let count = 1;
   let boundary = false;
@@ -505,7 +518,7 @@ export function parseCabinetTopList(strDOM: string): CustType.ICabinetTopList[] 
   return array;
 }
 
-export function parseTags(realDOM: any): Array<CustType.ITag> {
+export function parseMarks(realDOM: any): Array<CustType.ITag> {
   const array: Array<CustType.ITag> = [];
   $(realDOM)
     .find("#MyTag1_dtTagList")
@@ -534,7 +547,7 @@ export function parseIsUnLock(realDOM: any): boolean {
   }
 }
 
-export function parseSortChild(dom: any): CustType.ISortChild[] {
+export function parseSortChild(dom: any): CustType.IEssaySortChild[] {
   const result: any[] = [];
   $(dom)
     .find("li")

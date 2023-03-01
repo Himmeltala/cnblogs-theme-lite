@@ -9,21 +9,31 @@
 import { blogApp } from "@/lite.config";
 import { useAnchorStore } from "@/store";
 
-export enum RouteName {
-  Essay = "article",
-  HOME = "home",
-  Sort = "sort",
-  TAGSORT = "label",
-  TAGS = "tags",
-  GALLERY = "gallery"
+export enum name {
+  home = "home",
+  essay = "essay",
+  essayArchive = "essayArchive",
+  essaySort = "essaySort",
+  article = "article",
+  articleSort = "articleSort",
+  articleArchive = "articleArchive",
+  markSort = "markSort",
+  marks = "marks",
+  albumn = "albumn",
+  gallery = "gallery"
 }
 
-const routeReg = {
-  Essays: /\/p\/\d+.html/g,
-  Sort: /\/category\/\d+/g,
-  TAGSORT: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
-  Tags: /\d/g,
-  GALLERY: /\/gallery\/image/g
+const regexp = {
+  essay: /\/p\/\d+.html/g,
+  essaySort: /\/category\/\d+/g,
+  essayArchive: /e/g,
+  article: /article/g,
+  articleSort: /sort/g,
+  articleArchive: /archive/g,
+  markSort: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
+  marks: /\d/g,
+  albumn: /albumn/g,
+  gallery: /\/gallery\/image/g
 };
 
 /**
@@ -54,33 +64,33 @@ export function redirect(next: any): () => void {
   let nextParam: any;
   const URL = window.location.href;
 
-  if (routeReg.Essays.test(URL)) {
-    const postId = URL.match(routeReg.Essays)[0].split("/")[2].split(".")[0];
+  if (regexp.essay.test(URL)) {
+    const postId = URL.match(regexp.essay)[0].split("/")[2].split(".")[0];
     setCommentAnchor(URL);
     nextParam = {
-      name: RouteName.Essay,
+      name: name.essay,
       params: { id: postId }
     };
-  } else if (routeReg.Sort.test(URL)) {
-    const sortId = URL.match(routeReg.Sort)[0].split("/")[2].split(",")[0];
+  } else if (regexp.essaySort.test(URL)) {
+    const sortId = URL.match(regexp.essaySort)[0].split("/")[2].split(",")[0];
     nextParam = {
-      name: RouteName.Sort,
+      name: name.essaySort,
       params: { id: sortId }
     };
-  } else if (routeReg.TAGSORT.test(URL)) {
-    const tag = decodeURI(URL).match(routeReg.TAGSORT)![0].split("/")[2];
+  } else if (regexp.markSort.test(URL)) {
+    const tag = decodeURI(URL).match(regexp.markSort)![0].split("/")[2];
     nextParam = {
-      name: RouteName.TAGSORT,
+      name: name.markSort,
       params: { tag }
     };
-  } else if (routeReg.GALLERY.test(URL)) {
+  } else if (regexp.gallery.test(URL)) {
     nextParam = {
-      name: RouteName.GALLERY
+      name: name.gallery
     };
   }
 
-  return () => {
-    if (nextParam) {
+  return function () {
+    if (nextParam && Object.keys(nextParam).length > 0) {
       push();
       next(nextParam);
     } else {

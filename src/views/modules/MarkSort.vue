@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
-import { getTagSort } from "@/apis/remote-api";
+import { getMarkSort } from "@/apis/remote-api";
 import { endLoading, startLoading, getSetting, nav } from "@/utils/common";
 
 startLoading();
 
 const route = useRoute();
 const router = useRouter();
-const sort = ref(await getTagSort(`${route.params.tag}`));
+const sort = ref(await getMarkSort(`${route.params.tag}`));
 const setting = getSetting();
 
 document.querySelector("title").innerText = `${sort.value.hint} - ${blogApp} - 博客园`;
@@ -18,12 +18,10 @@ onMounted(() => {
 
 watch(route, async () => {
   startLoading();
-  sort.value = await getTagSort(`${route.params.tag}`);
+  sort.value = await getMarkSort(`${route.params.tag}`);
   document.querySelector("title").innerText = `${sort.value.hint} - ${blogApp} - 博客园`;
   endLoading();
 });
-
-onUpdated(() => {});
 </script>
 
 <template>

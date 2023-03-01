@@ -2,7 +2,7 @@
 import { BlogType } from "@/types/data-type";
 import { isOwner, blogApp } from "@/lite.config";
 import { endLoading, startLoading, getSetting, nav } from "@/utils/common";
-import { getLockedArticle, getIsUnlock, getEssay, getEssayProps, getPrevNext, getEssayViewPoint, voteEssay } from "@/apis/remote-api";
+import { getLockedEssay, getIsUnlock, getEssay, getEssayProps, getPrevNext, getEssayViewPoint, voteEssay } from "@/apis/remote-api";
 
 startLoading();
 
@@ -28,7 +28,7 @@ onMounted(() => {
 async function submit() {
   const data = await getIsUnlock(password.value, postId + "");
   if (data) {
-    article.value = await getLockedArticle(password.value, postId);
+    article.value = await getLockedEssay(password.value, postId);
     isLocked.value = false;
   }
   ElMessage({ message: data ? "密码输入正确！" : "密码错误！", grouping: true, type: data ? "success" : "error" });
@@ -84,7 +84,7 @@ async function vote(voteType: BlogType.VoteType) {
               <span>分类：</span>
             </div>
             <div v-for="(item, index) in props.sorts" class="l-fiv-size" :class="{ 'mr-2': index !== props.sorts.length - 1 }" :key="index">
-              <LTag line="dotted" hover round @click="nav({ path: '/sort/' + item.href, router })">
+              <LTag line="dotted" hover round @click="nav({ path: '/essay/sort/' + item.href, router })">
                 {{ item.text }}
               </LTag>
             </div>
@@ -95,7 +95,7 @@ async function vote(voteType: BlogType.VoteType) {
               <span>标签：</span>
             </div>
             <div v-for="(item, index) in props.tags" class="l-fiv-size" :class="{ 'mr-2': index !== props.tags.length - 1 }" :key="index">
-              <LTag line="dotted" hover round @click="nav({ path: '/sort/tag/' + item.text, router })">
+              <LTag line="dotted" hover round @click="nav({ path: '/mark/sort/' + item.text, router })">
                 {{ item.text }}
               </LTag>
             </div>

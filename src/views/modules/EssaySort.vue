@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
-import { getSort, getSortChild } from "@/apis/remote-api";
+import { getEssaySort, getSortChild } from "@/apis/remote-api";
 import { endLoading, startLoading, nav, getSetting } from "@/utils/common";
 
 startLoading();
@@ -9,7 +9,7 @@ const route = useRoute();
 const router = useRouter();
 const setting = getSetting();
 const child = ref(await getSortChild(`${route.params.id}`));
-const sort = ref(await getSort(`${route.params.id}`, true, 1));
+const sort = ref(await getEssaySort(`${route.params.id}`, 1));
 
 document.querySelector("title").innerText = `${sort.value.hint} - ${blogApp} - 博客园`;
 
@@ -19,26 +19,26 @@ onMounted(() => {
 
 async function nexpr(e: any) {
   startLoading();
-  sort.value = await getSort(`${route.params.id}`, true, e.currentIndex);
+  sort.value = await getEssaySort(`${route.params.id}`, e.currentIndex);
   endLoading();
 }
 
 async function next(e: any) {
   startLoading();
-  sort.value = await getSort(`${route.params.id}`, true, e.currentIndex);
+  sort.value = await getEssaySort(`${route.params.id}`, e.currentIndex);
   endLoading();
 }
 
 async function prev(e: any) {
   startLoading();
-  sort.value = await getSort(`${route.params.id}`, true, e.currentIndex);
+  sort.value = await getEssaySort(`${route.params.id}`, e.currentIndex);
   endLoading();
 }
 
 watch(route, async () => {
   startLoading();
-  sort.value = await getSort(`${route.params.id}`, true, 1);
   child.value = await getSortChild(`${route.params.id}`);
+  sort.value = await getEssaySort(`${route.params.id}`, 1);
   endLoading();
   document.querySelector("title").innerText = `${sort.value.hint} - ${blogApp} - 博客园`;
 });
@@ -67,7 +67,7 @@ watch(route, async () => {
               <el-collapse>
                 <el-collapse-item title="子分类">
                   <div class="hover" v-for="(item, index) in child" :key="index" :class="{ 'mb-1 ': index != child.length - 1 }">
-                    <router-link :to="'/sort/' + item.id">{{ item.text }}</router-link>
+                    <router-link :to="'/mark/sort/' + item.id">{{ item.text }}</router-link>
                   </div>
                 </el-collapse-item>
               </el-collapse>

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
-import { getTags } from "@/apis/remote-api";
+import { getMarks } from "@/apis/remote-api";
 import { endLoading, startLoading, getSetting } from "@/utils/common";
 
 startLoading();
 
-const tags = await getTags();
+const tags = await getMarks();
 const setting = getSetting();
 
 document.querySelector("title").innerText = `标签 - ${blogApp} - 博客园`;
@@ -21,7 +21,7 @@ onMounted(() => {
       <div id="l-tags" class="min-height">
         <LTag round hover line="dotted" class="item mb-4" v-for="(item, index) in tags" :key="index">
           <div class="f-c-c w-100% h-100%">
-            <router-link :to="'/sort/tag/' + item.text"> {{ item.text }} ({{ item.count }}) </router-link>
+            <router-link :to="'/mark/sort/' + item.text"> {{ item.text }} ({{ item.count }}) </router-link>
           </div>
         </LTag>
       </div>
