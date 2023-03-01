@@ -176,7 +176,7 @@ export function parseEssayProps(strDOM: any): CustType.IEssayProps {
  *
  * @param strDOM 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parsePrevNext(strDOM: any): CustType.IPrevNext {
+export function parseEssayPrevNext(strDOM: any): CustType.IPrevNext {
   const prevNext: CustType.IPrevNext = { prev: {}, next: {} };
 
   $(parseDom(strDOM))

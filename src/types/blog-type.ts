@@ -14,7 +14,7 @@ interface IBlog {
 /**
  * 博客园评论实体，区别于上面定义的评论实体，这个实体是根据博客园的数据库字段而来
  */
-export interface IBlogComment extends IBlog {
+export interface IComment extends IBlog {
   // 评论 ID
   commentId?: string;
   // 评论内容
@@ -30,12 +30,12 @@ export interface IBlogComment extends IBlog {
 /**
  * 获取随笔，返回的博客园接口的字段
  */
-export interface IBlogArticle extends IBlog {}
+export interface IEssay extends IBlog {}
 
 /**
  * 随笔投票，博客园接口需要的正确字段
  */
-export interface BlogArticleVote {
+export interface IEssayViewPoint {
   // 反对数量
   buryCount: number;
   // 点赞数量

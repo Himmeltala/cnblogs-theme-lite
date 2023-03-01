@@ -23,7 +23,9 @@ onMounted(() => {
 });
 
 watch(route, async () => {
-  document.querySelector("title").innerText = `${blogApp} - 博客园`;
+  if (route.name === "home") {
+    document.querySelector("title").innerText = `${blogApp} - 博客园`;
+  }
 });
 </script>
 

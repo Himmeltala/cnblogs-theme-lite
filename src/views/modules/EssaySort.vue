@@ -36,11 +36,13 @@ async function prev(e: any) {
 }
 
 watch(route, async () => {
-  startLoading();
-  child.value = await getSortChild(`${route.params.id}`);
-  sort.value = await getEssaySort(`${route.params.id}`, 1);
-  endLoading();
-  document.querySelector("title").innerText = `${sort.value.hint} - ${blogApp} - 博客园`;
+  if (route.name === "essaySort") {
+    startLoading();
+    child.value = await getSortChild(`${route.params.id}`);
+    sort.value = await getEssaySort(`${route.params.id}`, 1);
+    document.querySelector("title").innerText = `${sort.value.hint} - ${blogApp} - 博客园`;
+    endLoading();
+  }
 });
 </script>
 

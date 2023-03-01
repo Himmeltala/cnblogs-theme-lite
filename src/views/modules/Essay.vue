@@ -2,18 +2,18 @@
 import { BlogType } from "@/types/data-type";
 import { isOwner, blogApp } from "@/lite.config";
 import { endLoading, startLoading, getSetting, nav } from "@/utils/common";
-import { getLockedEssay, getIsUnlock, getEssay, getEssayProps, getPrevNext, getEssayViewPoint, voteEssay } from "@/apis/remote-api";
+import { getLockedEssay, getIsUnlock, getEssay, getEssayProps, getEssayPrevNext, getEssayViewPoint, voteEssay } from "@/apis/remote-api";
 
 startLoading();
 
 const route = useRoute();
 const router = useRouter();
-const postId = `${route.params.id}`;
-const article = ref(await getEssay(postId));
+const postId = ref(`${route.params.id}`);
+const article = ref(await getEssay(postId.value));
 const isLocked = ref(false);
-const props = await getEssayProps(postId);
-const prevNext = await getPrevNext(postId);
-const viewpoint = ref(await getEssayViewPoint(postId));
+const props = ref(await getEssayProps(postId.value));
+const prevNext = ref(await getEssayPrevNext(postId.value));
+const viewpoint = ref(await getEssayViewPoint(postId.value));
 const password = ref("");
 const setting = getSetting();
 
@@ -28,14 +28,14 @@ onMounted(() => {
 async function submit() {
   const data = await getIsUnlock(password.value, postId + "");
   if (data) {
-    article.value = await getLockedEssay(password.value, postId);
+    article.value = await getLockedEssay(password.value, postId.value);
     isLocked.value = false;
   }
   ElMessage({ message: data ? "密码输入正确！" : "密码错误！", grouping: true, type: data ? "success" : "error" });
 }
 
 async function vote(voteType: BlogType.VoteType) {
-  const data = await voteEssay({ postId, isAbandoned: false, voteType });
+  const data = await voteEssay({ postId: postId.value, isAbandoned: false, voteType });
   if (data) {
     if (data.isSuccess)
       if (voteType == "Bury") viewpoint.value.buryCount = viewpoint.value.buryCount + 1;
@@ -43,6 +43,23 @@ async function vote(voteType: BlogType.VoteType) {
     ElMessage({ message: data.message, grouping: true, type: data.isSuccess ? "success" : "error" });
   }
 }
+
+watch(route, async () => {
+  if (route.name === "essay") {
+    startLoading();
+    postId.value = `${route.params.id}`;
+    article.value = await getEssay(postId.value);
+    props.value = await getEssayProps(postId.value);
+    prevNext.value = await getEssayPrevNext(postId.value);
+    viewpoint.value = await getEssayViewPoint(postId.value);
+    isLocked.value = false;
+
+    if (!(article.value.content && article.value.text)) isLocked.value = true;
+    document.querySelector("title").innerText = `${article.value.text} - ${blogApp} - 博客园`;
+
+    endLoading();
+  }
+});
 </script>
 
 <template>
