@@ -18,7 +18,7 @@ const colors = [
   "hsla(209, 100%, 56%, 0.73)",
   "#c7158577"
 ];
-const active = ref("1");
+const collapseActive = ref("1");
 const mode = ref(inspectMode());
 
 function inspectMode() {
@@ -84,7 +84,7 @@ watch(setting, val => {
     <span><span v-show="setting.background.open">开启</span><span v-show="!setting.background.open">关闭</span>背景图片</span>
     <el-switch v-model="setting.background.open" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
   </div>
-  <el-collapse v-model="active" accordion>
+  <el-collapse v-model="collapseActive" accordion>
     <el-collapse-item title="字体大小设置">
       <div class="mb-4">
         <span class="mr-2">一级字体大小</span>

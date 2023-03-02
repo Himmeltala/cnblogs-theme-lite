@@ -5,26 +5,24 @@ const setting = getSetting();
 const menu = ref<HTMLElement>();
 const head = ref<HTMLElement>();
 const panel = ref<HTMLElement>();
-const milliseconds = new Date().getMilliseconds();
+const seconds = new Date().getMilliseconds();
 const { x, y } = useDraggable(head);
 
-let close = () => {};
+function close() {
+  panel.value.style.display = "none";
+}
 
 onMounted(() => {
   menu.value.onmouseup = e => {
     if (e.button == 2) {
-      const container = document.querySelector("#l-menu-container");
-      const preId = container.getAttribute("pre-menu-id");
-      preId && (document.getElementById(`l-menu__panel__${preId}`).style.display = "none");
-      container.setAttribute("pre-menu-id", `${milliseconds}`);
+      const box = document.querySelector("#l-menu-container");
+      const id = box.getAttribute("pre-menu-id");
+      id && (document.getElementById(`l-menu__panel__${id}`).style.display = "none");
+      box.setAttribute("pre-menu-id", `${seconds}`);
       panel.value.style.left = `${e.clientX}px`;
       panel.value.style.top = `${e.clientY}px`;
       panel.value.style.display = "block";
     }
-  };
-
-  close = () => {
-    panel.value.style.display = "none";
   };
 });
 </script>
@@ -35,7 +33,7 @@ onMounted(() => {
     <Teleport to="#l-menu-container">
       <div
         ref="panel"
-        :id="'l-menu__panel__' + milliseconds"
+        :id="'l-menu__panel__' + seconds"
         :class="{ 'l-box-bg': !setting.card.open }"
         :style="{ left: x + 'px', top: y + 'px' }"
         class="z-99 fixed hidden">

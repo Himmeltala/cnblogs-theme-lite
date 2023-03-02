@@ -7,28 +7,28 @@ startLoading();
 
 const route = useRoute();
 const router = useRouter();
-const date = route.params.date;
+const archiveDate = route.params.date;
 const setting = getSetting();
 
-const archive = ref(await getEssayArchive(`${date}`));
+const archive = ref(await getEssayArchive(`${archiveDate}`));
 
 document.querySelector("title").innerText = `${archive.value.hint} - ${blogApp} - 博客园`;
 
 async function nexpr(e: any) {
   startLoading();
-  archive.value = await getEssayArchive(`${date}`);
+  archive.value = await getEssayArchive(`${archiveDate}`);
   endLoading();
 }
 
 async function next(e: any) {
   startLoading();
-  archive.value = await getEssayArchive(`${date}`);
+  archive.value = await getEssayArchive(`${archiveDate}`);
   endLoading();
 }
 
 async function prev(e: any) {
   startLoading();
-  archive.value = await getEssayArchive(`${date}`);
+  archive.value = await getEssayArchive(`${archiveDate}`);
   endLoading();
 }
 

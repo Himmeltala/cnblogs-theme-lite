@@ -5,9 +5,9 @@ import { getSetting, refactorObjProps, getSettingTemp } from "@/utils/common";
 
 const upload = ref<UploadInstance>();
 const setting = getSetting();
-const dialog = ref(false);
+const uploadDialog = ref(false);
 const resetDialog = ref(false);
-const result = ref();
+const readerResult = ref();
 
 function exportJson() {
   const blob = new Blob([JSON.stringify(setting.value, null, 2)], { type: "text/json" });
@@ -19,8 +19,8 @@ function exportJson() {
 }
 
 function confirm() {
-  setting.value = refactorObjProps(JSON.parse(result.value), getSettingTemp());
-  dialog.value = !dialog.value;
+  setting.value = refactorObjProps(JSON.parse(readerResult.value), getSettingTemp());
+  uploadDialog.value = !uploadDialog.value;
   ElMessage({ message: "导入成功！", type: "success" });
 }
 
@@ -36,8 +36,8 @@ const importJson: UploadProps["onChange"] = async file => {
     const reader = new FileReader();
     reader.readAsText(file.raw);
     reader.onload = () => {
-      dialog.value = !dialog.value;
-      result.value = reader.result;
+      uploadDialog.value = !uploadDialog.value;
+      readerResult.value = reader.result;
     };
   }
 };
@@ -57,11 +57,11 @@ function reset() {
   <el-upload drag ref="upload" :limit="1" :auto-upload="false" :on-change="importJson" :on-exceed="exceed">
     点击导入 (可拖拽上传)
   </el-upload>
-  <el-dialog draggable align-center v-model="dialog" width="20rem" title="操作提示">
+  <el-dialog draggable align-center v-model="uploadDialog" width="20rem" title="操作提示">
     <div class="mb-10">该操作会覆盖之前的设置，是否继续执行本次操作？</div>
     <div class="f-c-c">
       <el-button size="small" type="primary" @click="confirm">确定</el-button>
-      <el-button size="small" @click="dialog = !dialog">取消</el-button>
+      <el-button size="small" @click="uploadDialog = !uploadDialog">取消</el-button>
     </div>
   </el-dialog>
   <el-dialog draggable align-center v-model="resetDialog" width="20rem" title="操作提示">

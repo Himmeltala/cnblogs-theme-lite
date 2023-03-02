@@ -9,6 +9,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Albumn: typeof import('./src/views/modules/Albumn.vue')['default']
     AlbumnItem: typeof import('./src/views/modules/AlbumnItem.vue')['default']
+    AnswerComment: typeof import('./src/views/fragments/comment/AnswerComment.vue')['default']
     Article: typeof import('./src/views/modules/Article.vue')['default']
     ArticleArchive: typeof import('./src/views/modules/ArticleArchive.vue')['default']
     ArticleSort: typeof import('./src/views/modules/ArticleSort.vue')['default']
@@ -112,7 +113,6 @@ declare module '@vue/runtime-core' {
     Pagination: typeof import('./src/views/fragments/Pagination.vue')['default']
     PostComment: typeof import('./src/views/fragments/comment/PostComment.vue')['default']
     Progress: typeof import('./src/views/fragments/app/Progress.vue')['default']
-    ReplayComment: typeof import('./src/views/fragments/comment/ReplayComment.vue')['default']
     RightCabinet: typeof import('./src/views/fragments/app/cabinet/RightCabinet.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

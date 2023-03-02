@@ -7,10 +7,10 @@ startLoading();
 
 const route = useRoute();
 const router = useRouter();
-const sort = ref(await getEssayListByMark(`${route.params.tag}`));
+const markSort = ref(await getEssayListByMark(`${route.params.tag}`));
 const setting = getSetting();
 
-document.querySelector("title").innerText = `${sort.value.hint} - ${blogApp} - 博客园`;
+document.querySelector("title").innerText = `${markSort.value.hint} - ${blogApp} - 博客园`;
 
 onMounted(() => {
   endLoading();
@@ -19,8 +19,8 @@ onMounted(() => {
 watch(route, async () => {
   if (route.name === "markSort") {
     startLoading();
-    sort.value = await getEssayListByMark(`${route.params.tag}`);
-    document.querySelector("title").innerText = `${sort.value.hint} - ${blogApp} - 博客园`;
+    markSort.value = await getEssayListByMark(`${route.params.tag}`);
+    document.querySelector("title").innerText = `${markSort.value.hint} - ${blogApp} - 博客园`;
     endLoading();
   }
 });
@@ -36,12 +36,12 @@ watch(route, async () => {
           </div>
         </template>
         <template #content>
-          <div class="l-sec-size mb-5 mt-4">{{ sort.hint }}</div>
+          <div class="l-sec-size mb-5 mt-4">{{ markSort.hint }}</div>
         </template>
       </el-page-header>
       <Card
         line
-        v-for="(item, index) in sort.data"
+        v-for="(item, index) in markSort.data"
         :key="index"
         :padding="setting.pages.tagColl.padding"
         :margin="setting.pages.tagColl.margin">

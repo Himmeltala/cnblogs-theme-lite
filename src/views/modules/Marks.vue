@@ -5,7 +5,7 @@ import { endLoading, startLoading, getSetting } from "@/utils/common";
 
 startLoading();
 
-const tags = await getMarks();
+const marks = await getMarks();
 const setting = getSetting();
 
 document.querySelector("title").innerText = `标签 - ${blogApp} - 博客园`;
@@ -19,7 +19,7 @@ onMounted(() => {
   <ContextMenu>
     <Card border :padding="setting.pages.tags.padding" :margin="setting.pages.tags.margin">
       <div id="l-tags" class="min-height">
-        <LTag round hover line="dotted" class="item mb-4" v-for="(item, index) in tags" :key="index">
+        <LTag round hover line="dotted" class="item mb-4" v-for="(item, index) in marks" :key="index">
           <div class="f-c-c w-100% h-100%">
             <router-link :to="'/mark/sort/' + item.text"> {{ item.text }} ({{ item.count }}) </router-link>
           </div>

@@ -2,16 +2,14 @@
 import { getSetting } from "@/utils/common";
 
 const setting = getSetting();
-const active = ref("1");
+const collapseActive = ref("1");
 const disabled = ref(inspect());
 
 function inspect() {
   if (setting.value.cabinet.left.pin || setting.value.cabinet.right.pin) {
     setting.value.content.width = 50;
     return false;
-  } else {
-    return true;
-  }
+  } else return true;
 }
 
 watch(setting, val => {
@@ -22,7 +20,7 @@ watch(setting, val => {
 </script>
 
 <template>
-  <el-collapse v-model="active" accordion>
+  <el-collapse v-model="collapseActive" accordion>
     <el-collapse-item title="位置设置">
       <div class="mb-4">
         <span>

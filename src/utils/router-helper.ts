@@ -23,6 +23,8 @@ export enum name {
   albumnItem = "albunItem"
 }
 
+export type routePath = "/p/";
+
 const regexp = {
   essay: /\/p\/\d+.html/g,
   essaySort: /\/category\/\d+/g,
@@ -85,8 +87,6 @@ export function redirect(next: any): () => void {
     };
   } else if (regexp.albumnItem.test(URL)) {
     const id = URL.match(regexp.albumnItem)[0].split("/")[3];
-    console.log(id);
-
     nextParam = {
       name: name.albumnItem,
       params: { id }

@@ -11,6 +11,7 @@ import { Router } from "vue-router";
 import { useStorage } from "@vueuse/core";
 import { CustType } from "@/types/data-type";
 import { __LITE_CONFIG__, blogApp } from "@/lite.config";
+import { name } from "./router-helper";
 
 export function startLoading() {
   $("#l-content").removeClass("l-transition");
@@ -122,237 +123,68 @@ export function replaceText(source: string, regExps: RegExp[], replacement?: str
  */
 export function getSettingTemp(): CustType.ISetting {
   return {
-    theme: {
-      mode: "dark",
-      color: "#409eff"
-    },
-    toolkits: {
-      pin: true
-    },
+    theme: { mode: "dark", color: "#409eff" },
+    toolkits: { pin: true },
     pages: {
       home: {
-        padding: {
-          left: 1,
-          right: 1,
-          top: 0,
-          bottom: 1.5
-        },
-        margin: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 1
-        }
+        padding: { left: 1, right: 1, top: 0, bottom: 1.5 },
+        margin: { left: 0, right: 0, top: 0, bottom: 1 }
       },
       article: {
-        code: {
-          light: {
-            color: "#fafafa"
-          },
-          dark: {
-            color: "#1f1f1f"
-          }
-        },
-        padding: {
-          left: 1,
-          right: 1,
-          top: 0.5,
-          bottom: 1
-        },
-        margin: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0
-        }
+        code: { light: { color: "#fafafa" }, dark: { color: "#1f1f1f" } },
+        padding: { left: 1, right: 1, top: 0.5, bottom: 1 },
+        margin: { left: 0, right: 0, top: 0, bottom: 0 }
       },
       tags: {
-        padding: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0
-        },
-        margin: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0
-        }
+        padding: { left: 0, right: 0, top: 0, bottom: 0 },
+        margin: { left: 0, right: 0, top: 0, bottom: 0 }
       },
       tagColl: {
-        padding: {
-          left: 0,
-          right: 0,
-          top: 0.5,
-          bottom: 1.5
-        },
-        margin: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0
-        }
+        padding: { left: 0, right: 0, top: 0.5, bottom: 1.5 },
+        margin: { left: 0, right: 0, top: 0, bottom: 0 }
       },
       gallery: {
-        padding: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0
-        },
-        margin: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0
-        }
+        padding: { left: 0, right: 0, top: 0, bottom: 0 },
+        margin: { left: 0, right: 0, top: 0, bottom: 0 }
       },
       sort: {
-        padding: {
-          left: 1,
-          right: 1,
-          top: 0.5,
-          bottom: 1
-        },
-        margin: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 1
-        }
+        padding: { left: 1, right: 1, top: 0.5, bottom: 1 },
+        margin: { left: 0, right: 0, top: 0, bottom: 1 }
       }
     },
     font: {
-      size: {
-        level1: 1.3,
-        level2: 1.2,
-        level3: 1.1,
-        level4: 1,
-        level5: 0.9,
-        level6: 0.8
-      },
-      light: {
-        color: {
-          level1: "#393939",
-          level2: "#4e4e4e",
-          level3: "#707070"
-        }
-      },
-      dark: {
-        color: {
-          level1: "#a7a7a7",
-          level2: "#8d9095",
-          level3: "#878787"
-        }
-      }
+      size: { level1: 1.3, level2: 1.2, level3: 1.1, level4: 1, level5: 0.9, level6: 0.8 },
+      light: { color: { level1: "#393939", level2: "#4e4e4e", level3: "#707070" } },
+      dark: { color: { level1: "#a7a7a7", level2: "#8d9095", level3: "#878787" } }
     },
     content: {
       width: 50,
-      padding: {
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0
-      },
-      margin: {
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0
-      }
+      padding: { left: 0, right: 0, top: 0, bottom: 0 },
+      margin: { left: 0, right: 0, top: 0, bottom: 0 }
     },
     cabinet: {
-      position: {
-        left: 0,
-        right: 0,
-        break: false
-      },
-      left: {
-        pin: false,
-        padding: {
-          left: 1,
-          right: 1,
-          top: 0,
-          bottom: 0
-        },
-        margin: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0
-        }
-      },
-      right: {
-        pin: false,
-        padding: {
-          left: 1,
-          right: 1,
-          top: 0,
-          bottom: 0
-        },
-        margin: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0
-        }
-      },
+      position: { left: 0, right: 0, break: false },
+      left: { pin: false, padding: { left: 1, right: 1, top: 0, bottom: 0 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
+      right: { pin: false, padding: { left: 1, right: 1, top: 0, bottom: 0 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
       toggles: {
-        我的技术栈: {
-          open: true,
-          show: true
-        },
-        博客信息: {
-          open: true,
-          show: true
-        },
-        常用链接: {
-          open: true,
-          show: true
-        },
-        博客数据: {
-          open: true,
-          show: true
-        },
-        推荐书籍: {
-          open: true,
-          show: true
-        }
+        我的技术栈: { open: true, show: true },
+        博客信息: { open: true, show: true },
+        常用链接: { open: true, show: true },
+        博客数据: { open: true, show: true },
+        推荐书籍: { open: true, show: true }
       },
       width: 17.5,
       remote: true
     },
-    background: {
-      open: false,
-      filter: 6,
-      src: ""
-    },
+    background: { open: false, filter: 6, src: "" },
     card: {
       color: "rgba(31, 31, 31, 1)",
       open: false,
       radius: 10,
-      padding: {
-        left: 1,
-        right: 1,
-        top: 1,
-        bottom: 1
-      },
-      margin: {
-        left: 0,
-        right: 1,
-        top: 0,
-        bottom: 1
-      }
+      padding: { left: 1, right: 1, top: 1, bottom: 1 },
+      margin: { left: 0, right: 1, top: 0, bottom: 1 }
     },
-    other: {
-      github: {
-        position: "left"
-      },
-      pagation: {
-        pin: true
-      }
-    }
+    other: { github: { position: "left" }, pagation: { pin: true } }
   };
 }
 
@@ -361,7 +193,6 @@ export function getSettingTemp(): CustType.ISetting {
  *
  * @param source 要被裁剪或添加字段的对象
  * @param template 一个对象，根据该模板（对象）对 source 进行裁剪或添加字段
- * @returns
  */
 export function refactorObjProps(source: any, template: any) {
   if (!source) source = template;

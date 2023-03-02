@@ -22,11 +22,49 @@ if (!setting.value.cabinet.toggles[title]) {
   };
 }
 
-let toggle: any;
 const content = ref();
+const height = ref();
+
+function toggleOpen() {
+  let counter = 9;
+  let cHeight = height.value;
+  const interval = setInterval(() => {
+    cHeight -= height.value / 10;
+    content.value.style.height = `${cHeight}px`;
+    counter--;
+    if (counter == 0) {
+      content.value.style.height = `${0}px`;
+      setting.value.cabinet.toggles[title].open = !setting.value.cabinet.toggles[title].open;
+      clearInterval(interval);
+    }
+  }, 10);
+}
+
+function toggleClose() {
+  let counter = 9;
+  let cHeight = 0;
+  const interval = setInterval(() => {
+    cHeight += height.value / 10;
+    content.value.style.height = `${cHeight}px`;
+    counter--;
+    if (counter == 0) {
+      content.value.style.height = `${height}px`;
+      setting.value.cabinet.toggles[title].open = !setting.value.cabinet.toggles[title].open;
+      clearInterval(interval);
+    }
+  }, 10);
+}
+
+function toggle() {
+  if (setting.value.cabinet.toggles[title]?.open) {
+    toggleOpen();
+  } else {
+    toggleClose();
+  }
+}
 
 onMounted(() => {
-  const height = $(content.value).height();
+  height.value = $(content.value).height();
 
   if (!props.disabled) {
     if (!setting.value.cabinet.toggles[title]?.open) {
@@ -35,35 +73,6 @@ onMounted(() => {
       content.value.style.height = `${height}px`;
     }
   }
-
-  toggle = () => {
-    let counter = 9;
-    if (setting.value.cabinet.toggles[title]?.open) {
-      let cHeight = height;
-      const interval = setInterval(() => {
-        cHeight -= height / 10;
-        content.value.style.height = `${cHeight}px`;
-        counter--;
-        if (counter == 0) {
-          content.value.style.height = `${0}px`;
-          setting.value.cabinet.toggles[title].open = !setting.value.cabinet.toggles[title].open;
-          clearInterval(interval);
-        }
-      }, 10);
-    } else {
-      let cHeight = 0;
-      const interval = setInterval(() => {
-        cHeight += height / 10;
-        content.value.style.height = `${cHeight}px`;
-        counter--;
-        if (counter == 0) {
-          content.value.style.height = `${height}px`;
-          setting.value.cabinet.toggles[title].open = !setting.value.cabinet.toggles[title].open;
-          clearInterval(interval);
-        }
-      }, 10);
-    }
-  };
 });
 </script>
 

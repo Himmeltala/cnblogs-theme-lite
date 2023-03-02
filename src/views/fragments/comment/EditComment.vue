@@ -17,6 +17,7 @@ const props = defineProps({
     required: true
   }
 });
+
 const emits = defineEmits(["onBefore", "onFinish", "onCancel"]);
 
 let htmlContent = "";
@@ -35,18 +36,12 @@ async function before() {
 }
 
 async function finish() {
-  const response = await updateComment({
-    body: content.value,
-    commentId: props.comment.commentId
-  });
+  const response = await updateComment({ body: content.value, commentId: props.comment.commentId });
 
   if (response.isSuccess) {
     content.value = "";
-    props.comment.isRepling = !props.comment.isRepling;
-    emits("onFinish", {
-      count: await getCommentCount(props.postId),
-      comments: await getCommentList(props.postId, 0)
-    });
+    props.comment.isAnsling = !props.comment.isAnsling;
+    emits("onFinish", { count: await getCommentCount(props.postId), comments: await getCommentList(props.postId, 0) });
     ElMessage({ message: "修改评论成功！", grouping: true, type: "success" });
   } else {
     ElMessage({ message: "这不是你的评论，没有权限编辑！", grouping: true, type: "error" });
@@ -74,7 +69,7 @@ function cancel() {
       </div>
     </div>
     <div
-      v-show="!comment.isRepling"
+      v-show="!comment.isAnsling"
       class="float-right f-c-e l-fiv-size l-sec-color"
       :class="{ 're-item': !comment.isEditing, 'w-100%': comment.isEditing }">
       <div v-show="!comment.isEditing" class="hover f-c-e" @click="before">

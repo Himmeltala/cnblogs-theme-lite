@@ -14,7 +14,7 @@ const setting = getSetting();
 const route = useRoute();
 const anchors = ref();
 const store = useCatalogStore();
-const active = ref("1");
+const collapseActive = ref("1");
 
 store.$onAction(({ store, args }) => {
   anchors.value = args[0];
@@ -96,7 +96,7 @@ const fixed = computed(() => {
     </Card>
     <template #title> 右陈列柜设置 </template>
     <template #content>
-      <el-collapse v-model="active" accordion>
+      <el-collapse v-model="collapseActive" accordion>
         <el-collapse-item title="统一设置">
           <div class="ml-4">
             <CabinetSetting />

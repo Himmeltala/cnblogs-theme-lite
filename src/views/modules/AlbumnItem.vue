@@ -17,7 +17,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="l-albumn-item" class="f-c-c min-height">
+  <div id="l-albumn-item" class="min-height">
     <el-page-header :icon="null" @back="nav({ path: 'back', router })">
       <template #title>
         <div class="f-c-c">
@@ -28,12 +28,14 @@ onMounted(() => {
         <div class="l-sec-size mb-5 mt-4">我的照片</div>
       </template>
     </el-page-header>
-    <el-image class="albumn-item" :src="imgUrl" :preview-src-list="[imgUrl]" />
-    <el-result v-if="!imgUrl" icon="error" title="图片加载失败" sub-title="图片可能从相册移除">
-      <template #extra>
-        <el-button @click="router.push('/')" type="primary">返回首页</el-button>
-      </template>
-    </el-result>
+    <div class="f-c-c">
+      <el-image class="albumn-item" :src="imgUrl" :preview-src-list="[imgUrl]" />
+      <el-result v-if="!imgUrl" icon="error" title="图片加载失败" sub-title="图片可能从相册移除">
+        <template #extra>
+          <el-button @click="router.push('/')" type="primary">返回首页</el-button>
+        </template>
+      </el-result>
+    </div>
   </div>
 </template>
 

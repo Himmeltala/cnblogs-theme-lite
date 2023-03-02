@@ -65,7 +65,7 @@ function onEdFinish(response: any) {
           <textarea class="z--1 opacity-0 absolute top-0 left-0" :id="'upload-img-' + index" />
           <div class="l-comment__content" v-html="item.content" v-hljs />
         </div>
-        <div class="l-comment__more float-right f-c-e" v-show="!item.isEditing && !item.isRepling">
+        <div class="l-comment__more float-right f-c-e" v-show="!item.isEditing && !item.isAnsling">
           <el-dropdown>
             <span class="hover">
               <i-ep-more class="l-fiv-size l-sec-color" />
@@ -86,7 +86,7 @@ function onEdFinish(response: any) {
           </el-dropdown>
         </div>
         <EditComment @on-finish="onEdFinish" :post-id="postId" :index="index" :comment="item" />
-        <ReplayComment @on-finish="onReFinish" :post-id="postId" :index="index" :comment="item" />
+        <AnswerComment @on-finish="onReFinish" :post-id="postId" :index="index" :comment="item" />
       </div>
       <div class="mt-10 f-c-e" v-if="!comments?.length">
         <el-pagination

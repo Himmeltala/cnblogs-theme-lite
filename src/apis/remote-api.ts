@@ -240,7 +240,7 @@ export async function voteComment(comment: BlogType.IComment): Promise<BlogType.
  *
  * @param comment 博客园原有的评论实体，需要 body、parentCommentId、postId。parentCommentId 就是回复的那一条的 ID。
  */
-export async function replayComment(comment: BlogType.IComment): Promise<BlogType.AjaxType> {
+export async function answerComment(comment: BlogType.IComment): Promise<BlogType.AjaxType> {
   const { data } = await sendAwaitPost(`/ajax/PostComment/Add.aspx`, comment);
   return data;
 }

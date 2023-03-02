@@ -4,21 +4,21 @@ import { blogApp, pcDevice } from "@/lite.config";
 
 const route = useRoute();
 const setting = getSetting();
-const ldisabled = ref(true);
-const rdisabled = ref(true);
+const leftDisabled = ref(true);
+const rightDisabled = ref(true);
 
 onMounted(() => {
   document.getElementById("l-lstrip").onclick = () => {
-    ldisabled.value = !ldisabled.value;
+    leftDisabled.value = !leftDisabled.value;
   };
 
   document.getElementById("l-rstrip").onclick = () => {
-    rdisabled.value = !rdisabled.value;
+    rightDisabled.value = !rightDisabled.value;
   };
 
   document.getElementById("l-matte").onclick = () => {
-    if (!ldisabled.value) ldisabled.value = true;
-    else if (!rdisabled.value) rdisabled.value = true;
+    if (!leftDisabled.value) leftDisabled.value = true;
+    else if (!rightDisabled.value) rightDisabled.value = true;
   };
 });
 
@@ -38,7 +38,7 @@ watch(route, async () => {
       v-show="!setting.cabinet.left.pin"
       class="fixed z-2 left-0 top-47.5vh w-5px h-5vh rd-2 cursor-pointer opacity-70 l-strip-bg"></div>
     <Suspense>
-      <LeftCabinet :disabled="ldisabled" />
+      <LeftCabinet :disabled="leftDisabled" />
     </Suspense>
     <Progress />
   </div>
@@ -60,12 +60,15 @@ watch(route, async () => {
     <Copyright />
   </div>
   <div id="l-right">
-    <div id="l-matte" class="fixed top-0 left-0 z-3 opacity-50 l-matee-bg" :class="{ 'w-100% h-100vh': !rdisabled || !ldisabled }"></div>
+    <div
+      id="l-matte"
+      class="fixed top-0 left-0 z-3 opacity-50 l-matee-bg"
+      :class="{ 'w-100% h-100vh': !rightDisabled || !leftDisabled }"></div>
     <div
       id="l-rstrip"
       v-show="!setting.cabinet.right.pin"
       class="fixed z-2 right-0 top-47.5vh w-5px h-5vh rd-2 cursor-pointer opacity-70 l-strip-bg"></div>
-    <RightCabinet :disabled="rdisabled" />
+    <RightCabinet :disabled="rightDisabled" />
     <ToolKits />
   </div>
 </template>

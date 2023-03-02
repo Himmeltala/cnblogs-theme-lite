@@ -23,16 +23,12 @@ async function diggComment() {
   if (data.isSuccess) {
     props.comment.digg = props.comment.digg! + 1;
   }
-  ElMessage({
-    message: data.message,
-    grouping: true,
-    type: data.isSuccess ? "success" : "error"
-  });
+  ElMessage({ message: data.message, grouping: true, type: data.isSuccess ? "success" : "error" });
 }
 </script>
 
 <template>
-  <div v-show="!comment.isEditing && !comment.isRepling" class="l-comment__digg hover l-fiv-size l-sec-color" @click="diggComment">
+  <div v-show="!comment.isEditing && !comment.isAnsling" class="l-comment__digg hover l-fiv-size l-sec-color" @click="diggComment">
     <i-ep-caret-top class="mr-1" />
     <span>{{ comment.digg }}</span>
   </div>

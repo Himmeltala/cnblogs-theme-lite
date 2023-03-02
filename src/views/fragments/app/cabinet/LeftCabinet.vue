@@ -25,7 +25,7 @@ if (!setting.value.cabinet.remote) {
 const cabinet = __LITE_CONFIG__.cabinet;
 const router = useRouter();
 const searchVal = ref();
-const active2 = ref("1");
+const collapseActive = ref("1");
 
 function search() {
   window.open(`https://zzk.cnblogs.com/s?w=blog:${blogApp}%${searchVal.value}`, "__blank");
@@ -151,7 +151,7 @@ const fixed = computed(() => {
     </Card>
     <template #title> 左陈列柜设置 </template>
     <template #content>
-      <el-collapse v-model="active2" accordion>
+      <el-collapse v-model="collapseActive" accordion>
         <el-collapse-item title="统一设置">
           <div class="ml-4">
             <CabinetSetting />

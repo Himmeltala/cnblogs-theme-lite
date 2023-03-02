@@ -13,8 +13,8 @@ const article = ref(await getEssay(postId.value));
 const isLocked = ref(false);
 const props = ref(await getEssayProps(postId.value));
 const prevNext = ref(await getEssayPrevNext(postId.value));
-const viewpoint = ref(await getEssayViewPoint(postId.value));
-const password = ref("");
+const viewPoint = ref(await getEssayViewPoint(postId.value));
+const pwd = ref("");
 const setting = getSetting();
 
 if (!(article.value.content && article.value.text)) isLocked.value = true;
@@ -26,9 +26,9 @@ onMounted(() => {
 });
 
 async function submit() {
-  const data = await getIsUnlock(password.value, postId + "");
+  const data = await getIsUnlock(pwd.value, postId + "");
   if (data) {
-    article.value = await getLockedEssay(password.value, postId.value);
+    article.value = await getLockedEssay(pwd.value, postId.value);
     isLocked.value = false;
   }
   ElMessage({ message: data ? "密码输入正确！" : "密码错误！", grouping: true, type: data ? "success" : "error" });
@@ -38,8 +38,8 @@ async function vote(voteType: BlogType.VoteType) {
   const data = await voteEssay({ postId: postId.value, isAbandoned: false, voteType });
   if (data) {
     if (data.isSuccess)
-      if (voteType == "Bury") viewpoint.value.buryCount = viewpoint.value.buryCount + 1;
-      else viewpoint.value.diggCount = viewpoint.value.diggCount + 1;
+      if (voteType == "Bury") viewPoint.value.buryCount = viewPoint.value.buryCount + 1;
+      else viewPoint.value.diggCount = viewPoint.value.diggCount + 1;
     ElMessage({ message: data.message, grouping: true, type: data.isSuccess ? "success" : "error" });
   }
 }
@@ -51,7 +51,7 @@ watch(route, async () => {
     article.value = await getEssay(postId.value);
     props.value = await getEssayProps(postId.value);
     prevNext.value = await getEssayPrevNext(postId.value);
-    viewpoint.value = await getEssayViewPoint(postId.value);
+    viewPoint.value = await getEssayViewPoint(postId.value);
     isLocked.value = false;
 
     if (!(article.value.content && article.value.text)) isLocked.value = true;
@@ -147,7 +147,7 @@ watch(route, async () => {
         <div class="l-article__viewpoint my-10 f-c-e">
           <div class="mr-5">
             <el-button plain @click="vote('Digg')">
-              点赞 {{ viewpoint.diggCount }}
+              点赞 {{ viewPoint.diggCount }}
               <template #icon>
                 <i-ep-caret-top />
               </template>
@@ -155,7 +155,7 @@ watch(route, async () => {
           </div>
           <div>
             <el-button plain @click="vote('Bury')">
-              反对 {{ viewpoint.buryCount }}
+              反对 {{ viewPoint.buryCount }}
               <template #icon>
                 <i-ep-caret-bottom />
               </template>
@@ -167,7 +167,7 @@ watch(route, async () => {
       <template v-else class="modal fixed w-100vw h-100vh top-0 left-0 l-box-bg f-c-c z-9999">
         <el-form>
           <el-form-item label="密码：">
-            <el-input show-password type="password" v-model="password" placeholder="输入博文阅读密码" />
+            <el-input show-password type="password" v-model="pwd" placeholder="输入博文阅读密码" />
           </el-form-item>
           <el-form-item>
             <el-button size="small" type="primary" @click="submit">确定</el-button>

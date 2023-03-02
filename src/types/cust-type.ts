@@ -35,7 +35,7 @@ export interface IComment {
   // 是否正在编辑
   isEditing?: boolean;
   // 是否正在回复
-  isRepling?: boolean;
+  isAnsling?: boolean;
   // 评论 ID
   commentId?: string;
   // 个人主页地址

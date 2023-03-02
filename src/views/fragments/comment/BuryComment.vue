@@ -23,16 +23,12 @@ async function buryComment() {
   if (data.isSuccess) {
     props.comment.bury = props.comment.bury! + 1;
   }
-  ElMessage({
-    message: data.message,
-    grouping: true,
-    type: data.isSuccess ? "success" : "error"
-  });
+  ElMessage({ message: data.message, grouping: true, type: data.isSuccess ? "success" : "error" });
 }
 </script>
 
 <template>
-  <div v-show="!comment.isEditing && !comment.isRepling" class="l-comment__bury hover l-six-size l-sec-color" @click="buryComment">
+  <div v-show="!comment.isEditing && !comment.isAnsling" class="l-comment__bury hover l-six-size l-sec-color" @click="buryComment">
     <i-ep-caret-bottom class="mr-1" />
     <span>{{ comment.bury }}</span>
   </div>
