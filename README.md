@@ -15,8 +15,6 @@
 <script>
   $("head > link").remove();
   $("#top_nav").remove();
-  $("#footer").remove();
-  $(".clear").remove();
 </script>
 <!-- lite style -->
 <link rel="stylesheet" href="https://blog-static.cnblogs.com/files/blogs/666252/index.css" />

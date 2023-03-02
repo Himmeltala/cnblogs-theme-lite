@@ -18,9 +18,11 @@ onMounted(() => {
 
 watch(route, async () => {
   if (route.name === "albumn") {
+    startLoading();
     albumn.value = await getAlbumn(`${route.params.id}`);
     srcList.value = albumn.value.data.map(i => i.src);
     document.querySelector("title").innerText = `相册 - ${blogApp} - 博客园`;
+    endLoading();
   }
 });
 </script>

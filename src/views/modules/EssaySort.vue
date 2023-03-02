@@ -49,7 +49,7 @@ watch(route, async () => {
 <template>
   <ContextMenu>
     <div id="l-sort" class="min-height">
-      <Pagination @nexpr="nexpr" @next="next" @prev="prev" :page-count="sort.page" :disabled="setting.other.pagation.pin">
+      <Pagination @nexpr="nexpr" @next="next" @prev="prev" :count="sort.page" :disabled="setting.other.pagation.pin">
         <template #content>
           <Card :padding="setting.pages.sort.padding" :margin="setting.pages.sort.margin">
             <el-page-header :icon="null" @back="nav({ path: 'back', router })">
@@ -70,14 +70,11 @@ watch(route, async () => {
                 {{ sort.desc }}
               </span>
             </div>
-            <div class="l-sort__child mb-4" v-if="child.length > 0">
-              <el-collapse>
-                <el-collapse-item title="子分类">
-                  <div class="hover" v-for="(item, index) in child" :key="index" :class="{ 'mb-1 ': index != child.length - 1 }">
-                    <router-link :to="'/essay/sort/' + item.id">{{ item.text }}</router-link>
-                  </div>
-                </el-collapse-item>
-              </el-collapse>
+            <div class="l-sort__child mb-4 l-four-size l-sec-color" v-if="child.length > 0">
+              <div class="hover f-c-s" v-for="(item, index) in child" :key="index" :class="{ 'mb-2': index != child.length - 1 }">
+                <span class="mr-2">●</span>
+                <router-link :to="'/essay/sort/' + item.id">{{ item.text }}</router-link>
+              </div>
             </div>
           </Card>
           <EssayItem

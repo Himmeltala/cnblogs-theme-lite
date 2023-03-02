@@ -76,5 +76,4 @@ export function useLite(dev: Function, pro: Function) {
   $("head").append(`<link rel="shortcut icon" href="${__LITE_CONFIG__.icon}">`);
   preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
   preLog("v1.4.7", "Powered By Himmelbleu using Vue3 & Vite.");
-  console.log("[Lite Warn] 控制台报错或停留在 Loading 屏: 1. 清除浏览器缓存; 2. 右键清除 “应用程序-存储-本地存储”");
 }

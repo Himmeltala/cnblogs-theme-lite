@@ -49,7 +49,7 @@ watch(route, async () => {
 <template>
   <ContextMenu>
     <div id="l-archive" class="min-height">
-      <Pagination @nexpr="nexpr" @next="next" @prev="prev" :page-count="archive.page" :disabled="setting.other.pagation.pin">
+      <Pagination @nexpr="nexpr" @next="next" @prev="prev" :count="archive.page" :disabled="setting.other.pagation.pin">
         <template #content>
           <Card :padding="setting.pages.sort.padding" :margin="setting.pages.sort.margin">
             <el-page-header :icon="null" @back="nav({ path: 'back', router })">

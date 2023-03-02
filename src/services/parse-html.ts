@@ -11,13 +11,12 @@ import { CustType } from "@/types/data-type";
 import { replaceText, parseUnit } from "@/utils/common";
 
 /**
- * 由于一些问题，有时候请求过来的 DOM 不是真实的 DOM，所以不能被 JQ 解析，必须先调用该函数进行转换
+ * 把字符串转换为 DOM
  *
- * @param strDOM 被解析成 DOM 树的对象
- * @returns 返回一个真实的 DOM 树
+ * @param dom 字符串
  */
-export function parseDom(strDOM: any) {
-  return new DOMParser().parseFromString(strDOM, "text/html");
+export function parseDOM(dom: any) {
+  return new DOMParser().parseFromString(dom, "text/html");
 }
 
 /**
@@ -27,36 +26,30 @@ function getMaxPage(dom: any): number {
   const reg = $(dom)
     .text()
     .match(/[1-9]+/g);
-  if (reg) {
-    return reg.map(i => parseInt(i)).pop();
-  } else {
-    return 0;
-  }
+  if (reg) return reg.map(i => parseInt(i)).pop();
+  else return 0;
 }
 
 /**
  * 解析随笔列表页面
- *
- * @param realDOM 不知道什么原因，该接口获取到传递下来的 DOM 是能够被 jQuery 解析的，所以不需要调用 parseStrToDom 函数。
- * @param calc 是否继续计算随笔列表页数，一般第一次调用该 API 时设置 true，目的是获取随笔列表的页数情况，再换页之后继续调用该
- * API 时不推荐再开启，设置为 false，避免破坏翻页时分页组件的 total 值。
  */
-export function parseEssayList(realDOM: any): CustType.IEssayList {
-  const id = $(realDOM).find(".postTitle2");
-  const head = $(realDOM).find(".postTitle");
-  const desc = $(realDOM).find(".c_b_p_desc");
-  const data = $(realDOM).find(".postDesc").text();
-  const date = data.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
-  const view = data.match(/阅读\([0-9]+\)/g);
-  const comm = data.match(/评论\([0-9]+\)/g);
-  const digg = data.match(/推荐\([0-9]+\)/g);
-  const array: Array<CustType.IEssay> = [];
+export function parseEssayList(dom: any): CustType.IEssayList {
+  const id = $(dom).find(".postTitle2");
+  const head = $(dom).find(".postTitle");
+  const desc = $(dom).find(".c_b_p_desc");
+  const notes = $(dom).find(".postDesc").text();
+  const date = notes.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
+  const view = notes.match(/阅读\([0-9]+\)/g);
+  const comm = notes.match(/评论\([0-9]+\)/g);
+  const digg = notes.match(/推荐\([0-9]+\)/g);
+
+  const data: CustType.IEssay[] = [];
 
   $(desc).each((i, e) => {
-    array.push({
+    data.push({
       id: $(id[i])
-        .attr("href")!
-        .match(/[0-9]+/g)![0],
+        .attr("href")
+        .match(/[0-9]+/g)[0],
       text: replaceText($(head[i]).text().trim(), [/\[置顶\]/g]),
       desc: replaceText($(desc[i]).text(), [/阅读全文/g]),
       date: date![i],
@@ -70,60 +63,50 @@ export function parseEssayList(realDOM: any): CustType.IEssayList {
     });
   });
 
-  return {
-    page: getMaxPage($(realDOM).find("#homepage_top_pager > .pager")),
-    data: array
-  };
+  return { page: getMaxPage($(dom).find("#homepage_top_pager > .pager")), data };
 }
 
 /**
  * 解析随笔详细页面
- *
- * @param postId 随笔 ID
- * @param realDOM 请求响应消息
  */
-export function parseEssay(postId: string, realDOM: any): CustType.IEssay {
+export function parseEssay(id: string, dom: any): CustType.IEssay {
   return {
-    id: postId,
-    text: $(realDOM).find(".postTitle > a > span").text(),
-    content: $(realDOM).find("#cnblogs_post_body").html(),
-    date: $(realDOM).find("#post-date").text(),
-    view: $(realDOM).find("#post_view_count").text(),
-    comm: $(realDOM).find("#post_comment_count").text(),
-    isLocked: $(realDOM).find(`img[title="密码保护"]`).attr("title") ? true : false
+    id,
+    text: $(dom).find(".postTitle > a > span").text(),
+    content: $(dom).find("#cnblogs_post_body").html(),
+    date: $(dom).find("#post-date").text(),
+    view: $(dom).find("#post_view_count").text(),
+    comm: $(dom).find("#post_comment_count").text(),
+    isLocked: $(dom).find(`img[title="密码保护"]`).attr("title") ? true : false
   };
 }
 
 /**
  * 解析随笔详细页面的评论列表
- *
- * \(/)[a-zA-Z\d\u4e00-\u9fa5_-]{1,}(/)\g
- *
- * @param strDOM 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parseCommentList(strDOM: any): Array<CustType.IComment> {
-  let comments: Array<CustType.IComment> = [];
+export function parseCommentList(dom: any): Array<CustType.IComment> {
+  const data: CustType.IComment[] = [];
 
-  $(parseDom(strDOM))
+  $(parseDOM(dom))
     .find(".feedbackItem")
     .map((i, elem) => {
-      let anchor = $(elem).find(".layer").attr("href")!.split("#")[1];
-      comments[i] = {
+      const anchorId = $(elem).find(".layer").attr("href")!.split("#")[1];
+      data[i] = {
         isEditing: false,
         isRepling: false,
-        commentId: anchor,
-        space: $(elem).find(`#a_comment_author_${anchor}`).attr("href"),
-        author: $(elem).find(`#a_comment_author_${anchor}`).text(),
+        commentId: anchorId,
+        space: $(elem).find(`#a_comment_author_${anchorId}`).attr("href"),
+        author: $(elem).find(`#a_comment_author_${anchorId}`).text(),
         layer: $(elem).find(".layer").text(),
         date: $(elem).find(".comment_date").text(),
-        content: $(elem).find(`#comment_body_${anchor}`).html(),
+        content: $(elem).find(`#comment_body_${anchorId}`).html(),
         digg: $(elem).find(".comment_digg").text().trim(),
         bury: $(elem).find(".comment_burry").text().trim(),
-        avatar: $(elem).find(`#comment_${anchor}_avatar`).text().trim()
+        avatar: $(elem).find(`#comment_${anchorId}_avatar`).text().trim()
       };
     });
 
-  return comments;
+  return data;
 }
 
 /**
@@ -140,70 +123,63 @@ export function parseCommentPages(json: any): number {
 
 /**
  * 解析随笔详细页面中的属性：标签、分类
- *
- * @param strDOM 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parseEssayProps(strDOM: any): CustType.IEssayProps {
-  const array = <CustType.IEssayProps>{ tags: [], sorts: [] };
-  const dom = parseDom(strDOM);
+export function parseEssayProps(dom: any): CustType.IEssayProps {
+  const data = <CustType.IEssayProps>{ tags: [], sorts: [] };
+  const _dom = parseDOM(dom);
 
-  $(dom)
+  $(_dom)
     .find("#BlogPostCategory > a")
     .map((i, d) => {
-      array.sorts[i] = {
+      data.sorts.push({
         href: $(d)
-          .attr("href")!
-          .match(/\/category\/\d+/g)![0]
+          .attr("href")
+          .match(/\/category\/\d+/g)[0]
           .split("/")[2]
           .split(",")[0],
         text: $(d).text()
-      };
+      });
     });
 
-  $(dom)
+  $(_dom)
     .find("#EntryTag > a")
     .map((i, d) => {
-      array.tags[i] = {
+      data.tags.push({
         text: $(d).text()
-      };
+      });
     });
 
-  return array;
+  return data;
 }
 
 /**
  * 解析上下篇随笔
- *
- * @param strDOM 同样的也需要先调用 dom 函数转换成 DOM 树
  */
-export function parseEssayPrevNext(strDOM: any): CustType.IPrevNext {
-  const prevNext: CustType.IPrevNext = { prev: {}, next: {} };
+export function parseEssayPrevNext(dom: any): CustType.IPrevNext {
+  const data: CustType.IPrevNext = { prev: {}, next: {} };
 
-  $(parseDom(strDOM))
+  $(parseDOM(dom))
     .find("a")
     .each((i, e) => {
-      let prefix = $(e).text().trim();
+      const prefix = $(e).text().trim();
       if (prefix == "«") {
-        prevNext["prev"] = {
+        data["prev"] = {
           text: $(e).next("a").text(),
           href: $(e).next("a").attr("href")
         };
       } else if (prefix == "»") {
-        prevNext["next"] = {
+        data["next"] = {
           text: $(e).next("a").text(),
           href: $(e).next("a").attr("href")
         };
       }
     });
 
-  return prevNext;
+  return data;
 }
 
 /**
  * 解析分类列表页面
- *
- * @param dom 真实 DOM
- * @param calc 是否计算页数
  */
 export function parseEssaySort(dom: any): CustType.IEssaySort {
   const _dom = $(dom).find(".entrylistItem");
@@ -211,15 +187,16 @@ export function parseEssaySort(dom: any): CustType.IEssaySort {
   const id = $(_dom).find(".entrylistItemTitle");
   const title = $(_dom).find(".entrylistItemTitle > span");
   const desc = $(_dom).find(".c_b_p_desc");
-  const postDesc = $(_dom).find(".entrylistItemPostDesc").text();
-  const date = postDesc.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
-  const view = postDesc.match(/阅读\([0-9]+\)/g);
-  const comm = postDesc.match(/评论\([0-9]+\)/g);
-  const digg = postDesc.match(/推荐\([0-9]+\)/g);
+  const notes = $(_dom).find(".entrylistItemPostDesc").text();
+  const date = notes.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
+  const view = notes.match(/阅读\([0-9]+\)/g);
+  const comm = notes.match(/评论\([0-9]+\)/g);
+  const digg = notes.match(/推荐\([0-9]+\)/g);
 
-  const list: Array<CustType.IEssay> = [];
+  const data: CustType.IEssay[] = [];
+
   $(_dom).each((i, e) => {
-    list.push({
+    data.push({
       id: $(id[i])
         .attr("href")
         .match(/[0-9]+/g)[0],
@@ -236,7 +213,7 @@ export function parseEssaySort(dom: any): CustType.IEssaySort {
   return {
     desc: $(dom).find(".entrylistTitle .category-crumb-item").attr("title"),
     desc2: $(dom).find(".entrylistDescription")?.text() || "",
-    data: list,
+    data,
     page: getMaxPage($(dom).find("#mainContent .pager")[0]),
     hint: $(dom).find(".entrylistTitle").text() || ""
   };
@@ -244,51 +221,40 @@ export function parseEssaySort(dom: any): CustType.IEssaySort {
 
 /**
  * 解析标签页下的随笔列表
- *
- * @param dom 真实 DOM
  */
-export function parseMarkSort(dom: any): CustType.ITagSort {
+export function parseMarkSort(dom: any): CustType.IMarkSort {
   const title = $(dom).find(".PostList > .postTitl2 > a");
-  const describe = $(dom).find(".PostList > .postDesc2");
-  const tagTitle = $(dom).find(".PostListTitle").text().trim();
-  const array: any = [];
+  const desc = $(dom).find(".PostList > .postDesc2");
+  const hint = $(dom).find(".PostListTitle").text().trim();
+  const data: any = [];
 
   $(title).each((i, e) => {
-    array[i] = {
-      id: parseInt(
-        $(e)
-          .attr("href")!
-          .match(/[0-9]+/g)![0]
-      ),
+    data.push({
+      id: $(e)
+        .attr("href")
+        .match(/[0-9]+/g)[0],
       title: $(e).text().trim(),
       href: $(e).attr("href"),
-      date: $(describe[i])
+      date: $(desc[i])
         .text()
         .match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g)![0],
-      view: $(describe[i]).find(".post-view-count").text().split(":")[1],
-      comm: $(describe[i]).find(".post-comment-count").text().split(":")[1],
-      digg: $(describe[i]).find(".post-digg-count").text().split(":")[1]
-    };
+      view: $(desc[i]).find(".post-view-count").text().split(":")[1],
+      comm: $(desc[i]).find(".post-comment-count").text().split(":")[1],
+      digg: $(desc[i]).find(".post-digg-count").text().split(":")[1]
+    });
   });
 
-  return {
-    data: array,
-    hint: tagTitle
-  };
+  return { data, hint };
 }
 
-function fillColumn(dom: any, selector: string, success: (e: any, matched?: any) => void, regexp?: RegExp) {
+function loadColumn(dom: any, selector: string, success: (e: any, matched?: any) => void, regexp?: RegExp) {
   $(dom)
     .find(selector)
     .each((i, e) => {
       if (regexp) {
         const matched = $(e)?.attr("href")?.match(regexp);
-        if (matched) {
-          success(e, matched);
-        }
-      } else {
-        success(e);
-      }
+        if (matched) success(e, matched);
+      } else success(e);
     });
 }
 
@@ -296,9 +262,9 @@ function fillColumn(dom: any, selector: string, success: (e: any, matched?: any)
  * 解析侧边栏分类列表、标签列表，... 列表
  */
 export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
-  const _dom = parseDom(dom);
+  const _dom = parseDOM(dom);
 
-  const column: CustType.ICabinetColumn = {
+  const data: CustType.ICabinetColumn = {
     essaySort: [],
     essayArchive: [],
     articleArchive: [],
@@ -310,11 +276,11 @@ export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
     albumn: []
   };
 
-  fillColumn(
+  loadColumn(
     _dom,
     "#sidebar_recentposts ul li > a",
     (e, matched) => {
-      column.latestEssayList.push({
+      data.latestEssayList.push({
         id: matched[0],
         text: $(e).text()
       });
@@ -322,11 +288,11 @@ export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
     /[0-9]+/g
   );
 
-  fillColumn(
+  loadColumn(
     _dom,
     "#sidebar_toptags ul li > a",
     (e, matched) => {
-      column.tagList.push({
+      data.tagList.push({
         id: matched[1],
         text: $(e).text()
       });
@@ -334,17 +300,17 @@ export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
     /tag\/(.[^\/]+)/
   );
 
-  fillColumn(_dom, "#sidebar_scorerank ul li", e => {
-    column.rankings.push({
+  loadColumn(_dom, "#sidebar_scorerank ul li", e => {
+    data.rankings.push({
       text: $(e).text()
     });
   });
 
-  fillColumn(
+  loadColumn(
     _dom,
     "#sidebar_postcategory ul li > a",
     (e, matched) => {
-      column.essaySort.push({
+      data.essaySort.push({
         id: matched[0],
         text: $(e).text()
       });
@@ -352,24 +318,24 @@ export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
     /[0-9]+/g
   );
 
-  fillColumn(
+  loadColumn(
     _dom,
     "#sidebar_postarchive ul li > a",
     (e, matched) => {
-      const dateSplit = matched[1].split("/");
-      column.essayArchive.push({
-        id: `${dateSplit[0]}-${dateSplit[1]}`,
+      const date = matched[1].split("/");
+      data.essayArchive.push({
+        id: `${date[0]}-${date[1]}`,
         text: $(e).text()
       });
     },
     /archive\/([0-9]+\/[0-9]+)/
   );
 
-  fillColumn(
+  loadColumn(
     _dom,
     "#sidebar_imagecategory ul li > a",
     (e, matched) => {
-      column.albumn.push({
+      data.albumn.push({
         id: matched[1],
         text: $(e).text()
       });
@@ -377,11 +343,11 @@ export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
     /gallery\/([0-9]+)/
   );
 
-  fillColumn(
+  loadColumn(
     _dom,
     "#sidebar_articlecategory ul li > a",
     (e, matched) => {
-      column.articleSort.push({
+      data.articleSort.push({
         id: matched[0],
         text: $(e).text()
       });
@@ -389,12 +355,13 @@ export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
     /[0-9]+/g
   );
 
-  fillColumn(
+  loadColumn(
     _dom,
     "#sidebar_articlearchive ul li > a",
     (e, matched) => {
-      column.articleArchive.push({
-        id: matched[1],
+      const date = matched[1].split("/");
+      data.articleArchive.push({
+        id: `${date[0]}-${date[1]}`,
         text: $(e).text()
       });
     },
@@ -402,20 +369,15 @@ export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
   );
 
   let count = 1;
-  let boundary = false;
-  let comment = {
-    id: "",
-    title: "",
-    content: "",
-    author: ""
-  };
+  let bounds = false;
+  let comment = { id: "", title: "", content: "", author: "" };
 
   $(_dom)
     .find("#sidebar_recentcomments ul li")
     .each((i, e) => {
-      if (boundary) boundary = false;
+      if (bounds) bounds = false;
 
-      if (!boundary) {
+      if (!bounds) {
         if ($(e).attr("class") === "recent_comment_title") {
           comment.title = $(e).find("a").text();
           comment.id = $(e)
@@ -430,29 +392,22 @@ export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
       }
 
       if (count % 3 == 0) {
-        boundary = true;
-        column.latestComments.push(comment);
-        comment = {
-          id: "",
-          title: "",
-          content: "",
-          author: ""
-        };
+        bounds = true;
+        data.latestComments.push(comment);
+        comment = { id: "", title: "", content: "", author: "" };
       }
       count++;
     });
 
-  return column;
+  return data;
 }
 
 /**
  * 解析侧边栏博主主人基本的昵称、粉丝数、园龄等数据
- *
- * @param dom 真实 DOM
  */
 export function parseAuthorData(dom: string): Array<CustType.IAuthor> {
-  const data: Array<CustType.IAuthor> = [];
-  $(parseDom(dom))
+  const data: CustType.IAuthor[] = [];
+  $(parseDOM(dom))
     .find("#profile_block > a")
     .each((i, e) => {
       data.push({ text: $(e).text().trim(), href: $(e).attr("href")! });
@@ -467,7 +422,7 @@ export function parseAuthorData(dom: string): Array<CustType.IAuthor> {
  */
 export function parseMasterData(dom: string): Array<CustType.IMasterData> {
   const data: CustType.IMasterData[] = [];
-  $(parseDom(dom))
+  $(parseDOM(dom))
     .find("span")
     .each((i, d) => {
       if ($(d).attr("id")) {
@@ -487,16 +442,16 @@ export function parseMasterData(dom: string): Array<CustType.IMasterData> {
  * @param dom 真实 DOM
  */
 export function parseCabinetRankList(dom: string): CustType.ICabinetRankList[] {
-  const array: Array<CustType.ICabinetRankList> = [];
-  $(parseDom(dom))
+  const data: CustType.ICabinetRankList[] = [];
+  $(parseDOM(dom))
     .find("li")
     .each((i, d) => {
       const t = $(d).text().trim();
       const text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
       const digg = t.match(/\d+/g)[0];
-      array.push({ text, digg });
+      data.push({ text, digg });
     });
-  return array;
+  return data;
 }
 
 /**
@@ -506,7 +461,7 @@ export function parseCabinetRankList(dom: string): CustType.ICabinetRankList[] {
  */
 export function parseCabinetTopList(dom: string): CustType.ICabinetTopList[] {
   const data: CustType.ICabinetTopList[] = [];
-  $(parseDom(dom))
+  $(parseDOM(dom))
     .find("#TopViewPostsBlock ul > li > a")
     .each((i, e) => {
       data.push({
@@ -520,15 +475,15 @@ export function parseCabinetTopList(dom: string): CustType.ICabinetTopList[] {
   return data;
 }
 
-export function parseMarks(realDOM: any): Array<CustType.ITag> {
-  const data: CustType.ITag[] = [];
+export function parseMarks(realDOM: any): Array<CustType.IMark> {
+  const data: CustType.IMark[] = [];
   $(realDOM)
     .find("#MyTag1_dtTagList")
     .find("td")
-    .each(function (i, el) {
-      const count = parseInt($(el).attr("data-use-count"));
-      const href = $(el).find("a").attr("href");
-      const text = $(el).find("a").text();
+    .each((i, e) => {
+      const count = parseInt($(e).attr("data-use-count"));
+      const href = $(e).find("a").attr("href");
+      const text = $(e).find("a").text();
       data.push({ count, href, text });
     });
   return data;
@@ -537,11 +492,10 @@ export function parseMarks(realDOM: any): Array<CustType.ITag> {
 /**
  * 解析输入密码之后返回的 DOM，查找是否有错误密码提示
  *
- * @param realDOM 真实 DOM
  * @returns 输入密码正确返回 true
  */
-export function parseIsUnLock(realDOM: any): boolean {
-  const isError = $(realDOM).find(".field-validation-error")?.text();
+export function parseIsUnLock(dom: any): boolean {
+  const isError = $(dom).find(".field-validation-error")?.text();
   if (isError && isError === "密码错误") {
     return false;
   } else if (!isError) {

@@ -33,7 +33,7 @@ async function nexpr(e: any) {
 <template>
   <ContextMenu>
     <div id="l-home" class="min-height">
-      <Pagination @prev="prev" @next="next" @nexpr="nexpr" :page-count="listing.page" :disabled="setting.other.pagation.pin">
+      <Pagination @prev="prev" @next="next" @nexpr="nexpr" :count="listing.page" :disabled="setting.other.pagation.pin">
         <template #content>
           <EssayItem
             v-if="listing.data.length > 0"

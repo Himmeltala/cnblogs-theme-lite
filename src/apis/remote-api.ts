@@ -165,8 +165,8 @@ export async function getLockedEssay(pwd: string, id: string) {
  * @param date 日期
  */
 export async function getEssayArchive(date: string) {
-  const dateSplit = date.split("-");
-  const { data } = await sendAwaitGet(`/archive/${dateSplit[0]}/${dateSplit[1]}.html}`);
+  const split = date.split("-");
+  const { data } = await sendAwaitGet(`/archive/${split[0]}/${split[1]}.html}`);
   return Parser.parseEssaySort(data);
 }
 

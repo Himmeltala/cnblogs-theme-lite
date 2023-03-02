@@ -65,7 +65,7 @@ export interface IComment {
 /**
  * 标签集合
  */
-export interface ITagSort {
+export interface IMarkSort {
   hint: string;
   data: Array<{ id: string; title: string; href: string; date: string; view: string; comm: string; digg: string }>;
 }
@@ -101,7 +101,7 @@ export interface ILite {
   books?: { href?: string; text: string; img: string; author: string; rate: number }[];
 }
 
-export interface ITag {
+export interface IMark {
   count: number;
   href: string;
   text: string;
