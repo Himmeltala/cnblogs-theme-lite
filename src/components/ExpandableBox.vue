@@ -25,7 +25,7 @@ if (!setting.value.cabinet.toggles[title]) {
 const content = ref();
 const height = ref();
 
-function toggleOpen() {
+function toggleClose() {
   let counter = 9;
   let cHeight = height.value;
   const interval = setInterval(() => {
@@ -40,7 +40,7 @@ function toggleOpen() {
   }, 10);
 }
 
-function toggleClose() {
+function toggleOpen() {
   let counter = 9;
   let cHeight = 0;
   const interval = setInterval(() => {
@@ -48,7 +48,7 @@ function toggleClose() {
     content.value.style.height = `${cHeight}px`;
     counter--;
     if (counter == 0) {
-      content.value.style.height = `${height}px`;
+      content.value.style.height = `${height.value}px`;
       setting.value.cabinet.toggles[title].open = !setting.value.cabinet.toggles[title].open;
       clearInterval(interval);
     }
@@ -57,9 +57,9 @@ function toggleClose() {
 
 function toggle() {
   if (setting.value.cabinet.toggles[title]?.open) {
-    toggleOpen();
-  } else {
     toggleClose();
+  } else {
+    toggleOpen();
   }
 }
 
@@ -70,7 +70,7 @@ onMounted(() => {
     if (!setting.value.cabinet.toggles[title]?.open) {
       content.value.style.height = `${0}px`;
     } else {
-      content.value.style.height = `${height}px`;
+      content.value.style.height = `${height.value}px`;
     }
   }
 });
