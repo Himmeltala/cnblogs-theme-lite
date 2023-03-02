@@ -18,7 +18,7 @@
 
   .l-pro__bar.bar-active {
     animation: active-animation 3s infinite ease-in-out;
-    width: 2vw;
+    width: 3rem;
   }
 
   .l-pro__track.track-active {
@@ -28,15 +28,15 @@
   @keyframes active-animation {
     @for $index from 0 to 10 {
       #{$index * 10%} {
-        width: 2vw + $index * 0.1vw;
+        width: 3rem + $index * 0.2rem;
       }
     }
   }
 
   @keyframes track-active-animation {
-    @for $index from 0 to 50 {
-      #{$index * 2%} {
-        left: $index * 2vw;
+    @for $index from 0 to 25 {
+      #{$index * 4%} {
+        left: $index * 4vw;
       }
     }
   }
