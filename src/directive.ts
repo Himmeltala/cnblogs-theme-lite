@@ -3,6 +3,54 @@ import hljs from "highlight.js";
 import { useCatalogStore } from "@/store";
 import { __LITE_CONFIG__ } from "@/lite.config";
 
+function toggleCodeBlock(ele: JQuery<HTMLElement>) {
+  const height = ele.height();
+
+  if (height >= 380) {
+    ele.height(380);
+    const $click = $(`<div class="close-code-modal l-fiv-size l-thr-color hover">展开</div>`);
+    const $modal = $(`<div class="hight-code-modal f-c-c rd-2"></div>`);
+    $modal.prepend($click);
+
+    $click.on("click", () => {
+      let counter = 9;
+      let cHeight = 0;
+
+      const interval = setInterval(() => {
+        cHeight += height / 10;
+        ele.height(cHeight);
+        counter--;
+        if (counter == 0) {
+          ele.height(height);
+          ele.removeClass("hight-code-modal");
+          $modal.css({ display: "none" });
+          clearInterval(interval);
+        }
+      }, 10);
+    });
+
+    ele.parent().prepend($modal);
+  }
+}
+
+function codeClipboard(ele: JQuery<HTMLElement>) {
+  const clipboard = $(`<span class="clipboard hover mr-2">复制</span>`);
+
+  clipboard.on("click", () => {
+    const text = ele.text();
+    navigator.clipboard.writeText(text).then(
+      function () {
+        ElMessage({ message: "复制成功！", type: "success", grouping: true });
+      },
+      function () {
+        ElMessage({ message: "没有权限！", type: "error", grouping: true });
+      }
+    );
+  });
+
+  ele.parent().find(".code-block").prepend(clipboard);
+}
+
 /**
  * 注册自定义指令
  *
@@ -25,36 +73,12 @@ export function useDirective(Vue: any) {
             .split(",")[0]
             .split("-")[1]
             .toUpperCase();
-          $ele.parent().prepend(`<span class="cblock">${lang}</span>`);
           hljs.highlightElement(ele);
 
-          const height = $ele.height();
+          $ele.parent().prepend(`<div class="code-block l-six-size l-thr-color">${lang}</div>`);
 
-          if (height >= 380) {
-            $ele.addClass("hight-code");
-            const $click = $(`<div class="l-fiv-size l-thr-color hover">展开</div>`);
-            const $modal = $(`<div class="hight-code-modal f-c-c rd-2"></div>`);
-            $modal.prepend($click);
-
-            $click.on("click", () => {
-              let counter = 9;
-              let cHeight = 0;
-
-              const interval = setInterval(() => {
-                cHeight += height / 10;
-                $ele.height(cHeight);
-                counter--;
-                if (counter == 0) {
-                  $ele.height(height);
-                  clearInterval(interval);
-                  $ele.removeClass("hight-code hight-code-modal");
-                  $modal.addClass("remove-hight-code-modal");
-                }
-              }, 10);
-            });
-
-            $ele.parent().prepend($modal);
-          }
+          toggleCodeBlock($ele);
+          codeClipboard($ele);
         });
     }
   });

@@ -196,17 +196,10 @@ pre {
   --at-apply: rd-2;
   position: relative;
 
-  .cblock {
+  .code-block {
     position: absolute;
-    font-size: var(--l-fiv-size);
-    color: #767676;
-    padding: 4px;
-    right: 0;
-    top: 0;
-  }
-
-  .hight-code {
-    height: 380px;
+    top: 0.2rem;
+    right: 0.2rem;
   }
 
   .hight-code-modal {
@@ -216,10 +209,6 @@ pre {
     bottom: 0;
     left: 0;
     background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, var(--l-code-hidden) 100%);
-  }
-
-  .remove-hight-code-modal {
-    display: none;
   }
 }
 
