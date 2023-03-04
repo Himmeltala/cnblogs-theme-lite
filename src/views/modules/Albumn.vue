@@ -41,9 +41,7 @@ watch(route, async () => {
     </el-page-header>
     <div class="mb-4 l-fiv-size l-sec-color">{{ albumn.desc }}</div>
     <div class="f-c-c flex-wrap">
-      <div class="albumn-item p-2" v-for="(item, index) in albumn.data" :key="index">
-        <el-image class="albumn-item w-50 h-50" :src="item.src" :preview-src-list="srcList" />
-      </div>
+      <el-image class="albumn-item w-50 h-50" :src="srcList[0]" :preview-src-list="srcList" />
       <el-result v-if="!albumn.data.length" icon="error" title="相册加载失败" sub-title="相册可能被移除">
         <template #extra>
           <el-button @click="router.push('/')" type="primary">返回首页</el-button>

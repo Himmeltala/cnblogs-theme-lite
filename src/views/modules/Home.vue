@@ -7,10 +7,6 @@ startLoading();
 const setting = getSetting();
 const listing = ref(await getEssayList(1));
 
-onMounted(() => {
-  endLoading();
-});
-
 async function next(e: any) {
   startLoading();
   listing.value = await getEssayList(e.currentIndex);
@@ -28,6 +24,10 @@ async function nexpr(e: any) {
   listing.value = await getEssayList(e.currentIndex);
   endLoading();
 }
+
+onMounted(() => {
+  endLoading();
+});
 </script>
 
 <template>

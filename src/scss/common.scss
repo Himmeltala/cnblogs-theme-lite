@@ -43,6 +43,10 @@
   min-height: calc(100vh - 3rem);
 }
 
+.noselect {
+  user-select: none;
+}
+
 .clearfix:after {
   content: "";
   height: 0;

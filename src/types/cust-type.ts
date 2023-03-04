@@ -174,8 +174,18 @@ export interface ICabinetRankList {
  * 侧边栏阅读排行榜
  */
 export interface ICabinetTopList {
-  id: string;
-  text: string;
+  topView: {
+    id?: string;
+    text?: string;
+  }[];
+  topComments: {
+    id?: string;
+    text?: string;
+  }[];
+  topDigg: {
+    id?: string;
+    text?: string;
+  }[];
 }
 
 /**

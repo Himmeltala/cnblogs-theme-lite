@@ -459,19 +459,51 @@ export function parseCabinetRankList(dom: string): CustType.ICabinetRankList[] {
  *
  * @param dom 真实 DOM
  */
-export function parseCabinetTopList(dom: string): CustType.ICabinetTopList[] {
-  const data: CustType.ICabinetTopList[] = [];
-  $(parseDOM(dom))
-    .find("#TopViewPostsBlock ul > li > a")
+export function parseCabinetTopList(dom: string): CustType.ICabinetTopList {
+  const data: CustType.ICabinetTopList = {
+    topView: [],
+    topComments: [],
+    topDigg: []
+  };
+
+  const _dom = parseDOM(dom);
+
+  $(_dom)
+    .find("#TopFeedbackPostsBlock ul > li > a")
     .each((i, e) => {
-      data.push({
+      data.topComments.push({
         id: $(e)
           .attr("href")
-          ?.match(/\/p\/\d+/g)![0]
+          ?.match(/\/p\/\d+/g)[0]
           .split("/")[2],
-        text: replaceText($(e).text().trim(), [/\n+/g])
+        text: $(e).text()
       });
     });
+
+  $(_dom)
+    .find("#TopViewPostsBlock ul > li > a")
+    .each((i, e) => {
+      data.topView.push({
+        id: $(e)
+          .attr("href")
+          ?.match(/\/p\/\d+/g)[0]
+          .split("/")[2],
+        text: $(e).text()
+      });
+    });
+
+  $(_dom)
+    .find("#TopDiggPostsBlock ul > li > a")
+    .each((i, e) => {
+      data.topDigg.push({
+        id: $(e)
+          .attr("href")
+          ?.match(/\/p\/\d+/g)[0]
+          .split("/")[2],
+        text: $(e).text()
+      });
+    });
+
   return data;
 }
 

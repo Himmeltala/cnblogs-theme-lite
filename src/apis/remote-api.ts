@@ -296,16 +296,6 @@ export async function getCabinetTopList() {
   return Parser.parseCabinetTopList(data);
 }
 
-// ------------end----------陈列柜------------end------------------
-
-/**
- * 获取所有标签列表
- */
-export async function getMarks() {
-  const { data } = await sendAwaitGet(`/tag`);
-  return Parser.parseMarks(data);
-}
-
 /**
  * 关注博主
  */
@@ -324,6 +314,16 @@ export async function unfollow() {
     blogUserGuid: userGuid
   });
   return data === "取消成功" ?? false;
+}
+
+// ------------end----------陈列柜------------end------------------
+
+/**
+ * 获取所有标签列表
+ */
+export async function getMarks() {
+  const { data } = await sendAwaitGet(`/tag`);
+  return Parser.parseMarks(data);
 }
 
 /**

@@ -119,6 +119,7 @@ watch(route, async () => {
           </div>
         </div>
         <div class="l-article__content mt-8 l-thr-size" v-html="article.content" v-hljs v-catalog v-mathjax></div>
+        <Highslide />
         <div class="divider"></div>
         <div class="l-article__bdesc l-sec-color f-c-e l-fiv-size">
           <div class="f-c-c mr-4">
@@ -279,6 +280,10 @@ pre {
     p {
       line-height: 1.7;
       margin: 0.7rem 0 !important;
+    }
+
+    img {
+      cursor: pointer;
     }
 
     ol,

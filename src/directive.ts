@@ -3,7 +3,7 @@ import hljs from "highlight.js";
 import { useCatalogStore } from "@/store";
 import { __LITE_CONFIG__ } from "@/lite.config";
 
-function toggleCodeBlock(ele: JQuery<HTMLElement>) {
+function useCodeFolder(ele: JQuery<HTMLElement>) {
   const height = ele.height();
 
   if (height >= 380) {
@@ -33,7 +33,7 @@ function toggleCodeBlock(ele: JQuery<HTMLElement>) {
   }
 }
 
-function codeClipboard(ele: JQuery<HTMLElement>) {
+function useCodeClipboard(ele: JQuery<HTMLElement>) {
   const clipboard = $(`<span class="clipboard hover mr-2">复制</span>`);
 
   clipboard.on("click", () => {
@@ -51,6 +51,37 @@ function codeClipboard(ele: JQuery<HTMLElement>) {
   ele.parent().find(".code-block").prepend(clipboard);
 }
 
+function setHighslide(ele: JQuery<HTMLElement>, deltaY: number) {
+  const height = ele.height();
+  const width = ele.width();
+
+  if (deltaY < 0) {
+    return { width: width + width * 0.2, height: height + height * 0.2 };
+  } else {
+    return { width: width - width * 0.2, height: height - height * 0.2 };
+  }
+}
+
+function useHighslide(ele: JQuery<HTMLElement>) {
+  const image = $(".l-highslide .l-highslide__img");
+
+  ele.on("click", function (e) {
+    $(".l-highslide").removeClass("noactive").addClass("active");
+    $("body").css({ overflow: "hidden" });
+    image.attr("src", ele.attr("src"));
+    image.css({
+      width: ele.width() * 0.5,
+      height: ele.height() * 0.5
+    });
+  });
+
+  image.on("mousewheel", function (e) {
+    // @ts-ignore
+    const { width, height } = setHighslide(image, e.originalEvent.deltaY);
+    image.css({ width, height });
+  });
+}
+
 /**
  * 注册自定义指令
  *
@@ -62,6 +93,12 @@ export function useDirective(Vue: any) {
    */
   Vue.directive("hljs", {
     mounted(el: any) {
+      $(el)
+        .find("img")
+        .each((index, ele) => {
+          useHighslide($(ele));
+        });
+
       $(el)
         .find("pre code")
         .each((index, ele) => {
@@ -77,8 +114,8 @@ export function useDirective(Vue: any) {
 
           $ele.parent().prepend(`<div class="code-block l-six-size l-thr-color">${lang}</div>`);
 
-          toggleCodeBlock($ele);
-          codeClipboard($ele);
+          useCodeFolder($ele);
+          useCodeClipboard($ele);
         });
     }
   });

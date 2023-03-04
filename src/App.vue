@@ -60,10 +60,7 @@ watch(route, async () => {
     <Copyright />
   </div>
   <div id="l-right">
-    <div
-      id="l-matte"
-      class="fixed top-0 left-0 z-3 opacity-50 l-matee-bg"
-      :class="{ 'w-100% h-100vh': !rightDisabled || !leftDisabled }"></div>
+    <div id="l-matte" class="fixed top-0 left-0 z-3 l-matee-bg" :class="{ 'w-100% h-100vh': !rightDisabled || !leftDisabled }"></div>
     <div
       id="l-rstrip"
       v-show="!setting.cabinet.right.pin"
