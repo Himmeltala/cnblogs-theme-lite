@@ -101,7 +101,7 @@ watch(route, async () => {
               <span>分类：</span>
             </div>
             <div v-for="(item, index) in props.sorts" class="l-fiv-size" :class="{ 'mr-2': index !== props.sorts.length - 1 }" :key="index">
-              <LTag line="dotted" hover round @click="nav({ path: '/essay/sort/' + item.href, router })">
+              <LTag line="dotted" hover round @click="nav({ path: '/p/sort/' + item.href, router })">
                 {{ item.text }}
               </LTag>
             </div>
@@ -186,7 +186,7 @@ watch(route, async () => {
 
 <style lang="scss">
 code {
-  --at-apply: rd-2;
+  --uno: rd-2;
   background: var(--l-code-bg);
   color: var(--el-color-danger-light-3);
   padding: 0.15rem 0.4rem;
@@ -194,7 +194,7 @@ code {
 }
 
 pre {
-  --at-apply: rd-2;
+  --uno: rd-2;
   position: relative;
 
   .code-block {
@@ -249,7 +249,7 @@ pre {
     }
 
     blockquote {
-      --at-apply: rd-1;
+      --uno: rd-1;
       color: var(--l-sec-color);
       background: var(--l-precode-bg);
       margin: 0;

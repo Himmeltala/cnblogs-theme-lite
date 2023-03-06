@@ -10,7 +10,7 @@ import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import Unocss from "unocss/vite";
 import { presetAttributify, presetUno } from "unocss";
 import { rules, shortcuts } from "./unocss.config";
-import transformerDirective from "@unocss/transformer-directives";
+import transformerDirectives from "@unocss/transformer-directives";
 
 export default defineConfig(({ command, mode }) => {
   const { VITE_BLOG_APP } = loadEnv(mode, "./");
@@ -21,7 +21,7 @@ export default defineConfig(({ command, mode }) => {
         rules,
         shortcuts,
         transformers: [
-          transformerDirective({
+          transformerDirectives({
             applyVariable: ["--at-apply", "--uno-apply", "--uno"]
           })
         ],

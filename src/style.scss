@@ -36,12 +36,12 @@ body {
 }
 
 #app {
-  --at-apply: f-c-c;
+  --uno: f-c-c;
 }
 
 img {
   max-width: 100%;
-  --at-apply: rd-2;
+  --uno: rd-2;
   object-fit: cover;
 }
 
@@ -184,7 +184,7 @@ html[class="light"] {
   }
 
   span {
-    --at-apply: l-for-size;
+    --uno: l-for-size;
     line-height: 1.6;
     letter-spacing: 1.2px;
     font-family: #{"Hack", var(--font-family)};

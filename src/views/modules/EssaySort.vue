@@ -73,7 +73,7 @@ watch(route, async () => {
             <div class="l-sort__child mb-4 l-four-size l-sec-color" v-if="child.length > 0">
               <div class="hover f-c-s" v-for="(item, index) in child" :key="index" :class="{ 'mb-2': index != child.length - 1 }">
                 <span class="mr-2">●</span>
-                <router-link :to="'/essay/sort/' + item.id">{{ item.text }}</router-link>
+                <router-link :to="'/p/sort/' + item.id">{{ item.text }}</router-link>
               </div>
             </div>
           </Card>

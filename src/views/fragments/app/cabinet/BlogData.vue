@@ -32,7 +32,7 @@ const active = ref("1");
           随笔分类
         </template>
         <div class="hover" :class="{ 'mb-1': index != data.essaySort.length - 1 }" v-for="(item, index) in data.essaySort" :key="index">
-          <router-link :to="'/essay/sort/' + item.id">
+          <router-link :to="'/p/sort/' + item.id">
             {{ item.text }}
           </router-link>
         </div>
@@ -47,7 +47,7 @@ const active = ref("1");
           :class="{ 'mb-1': index != data.essayArchive.length - 1 }"
           v-for="(item, index) in data.essayArchive"
           :key="index">
-          <router-link :to="'/essay/archive/' + item.id">
+          <router-link :to="'/p/archive/' + item.id">
             {{ item.text }}
           </router-link>
         </div>

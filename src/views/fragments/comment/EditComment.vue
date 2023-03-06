@@ -97,13 +97,13 @@ function cancel() {
 <style scoped lang="scss">
 @include pc() {
   .re-item {
-    --at-apply: w-8%;
+    --uno: w-8%;
   }
 }
 
 @include mb() {
   .re-item {
-    --at-apply: w-18%;
+    --uno: w-18%;
   }
 }
 </style>

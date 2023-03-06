@@ -61,21 +61,21 @@ defineProps({
 <style scoped lang="scss">
 @include pc() {
   .cover {
-    --at-apply: w-26%;
+    --uno: w-26%;
   }
 
   .has-cover {
-    --at-apply: w-72%;
+    --uno: w-72%;
   }
 }
 
 @include mb() {
   .cover {
-    --at-apply: w-38%;
+    --uno: w-38%;
   }
 
   .has-cover {
-    --at-apply: w-60%;
+    --uno: w-60%;
   }
 }
 </style>

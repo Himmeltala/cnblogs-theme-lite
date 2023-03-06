@@ -46,13 +46,13 @@
 }
 
 .textarea {
-  --at-apply: mb-5 rd-2;
+  --uno: mb-5 rd-2;
   border: 1px solid var(--el-border-color-darker);
   background-color: transparent;
   @include hover($border-color: all, $font-color: false);
 
   textarea {
-    --at-apply: rd-2 p-2 l-fiv-size;
+    --uno: rd-2 p-2 l-fiv-size;
     background-color: transparent;
     width: 100%;
     height: 15rem;

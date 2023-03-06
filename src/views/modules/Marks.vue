@@ -42,7 +42,7 @@ onMounted(() => {
       flex: 1 1 20%;
 
       &:not(:nth-child(4n)) {
-        --at-apply: mr-3;
+        --uno: mr-3;
       }
     }
   }
@@ -52,7 +52,7 @@ onMounted(() => {
       flex: 1 1 40%;
 
       &:nth-child(odd) {
-        --at-apply: mr-3;
+        --uno: mr-3;
       }
     }
   }

@@ -10,10 +10,11 @@ import { blogApp } from "@/lite.config";
 import { useAnchorStore } from "@/store";
 
 export enum name {
-  home = "home",
+  index = "index",
   essay = "essay",
-  essayArchive = "essayArchive",
+  essayList = "essayList",
   essaySort = "essaySort",
+  essayArchive = "essayArchive",
   article = "article",
   articleSort = "articleSort",
   articleArchive = "articleArchive",
@@ -26,7 +27,7 @@ export enum name {
 export type routePath = "/p/";
 
 const regexp = {
-  essay: /\/p\/\d+.html/g,
+  essayList: /\/p\/\d+.html/g,
   essaySort: /\/category\/\d+/g,
   essayArchive: /e/g,
   article: /article/g,
@@ -66,8 +67,8 @@ export function redirect(next: any): () => void {
   let nextParam: any;
   const URL = window.location.href;
 
-  if (regexp.essay.test(URL)) {
-    const postId = URL.match(regexp.essay)[0].split("/")[2].split(".")[0];
+  if (regexp.essayList.test(URL)) {
+    const postId = URL.match(regexp.essayList)[0].split("/")[2].split(".")[0];
     setCommentAnchor(URL);
     nextParam = {
       name: name.essay,

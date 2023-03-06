@@ -75,13 +75,21 @@ export interface ILite {
   github?: string;
   // 网站 icon
   icon?: string;
-  // 主题配置项
-  theme?: {};
   // 侧边栏配置项
   cabinet?: { avatar?: string; signature?: string; navs?: { href: string; text?: string; svg?: string; img?: string }[] };
   // 目录配置项
-  catalog?: {
-    level?: boolean;
+  catalog?: { level?: boolean };
+  // 兴趣标签
+  index?: {
+    hobbies?: string[];
+    contact?: {
+      qq?: string;
+      wechat?: string;
+      email?: string;
+    };
+    brief?: string;
+    future?: string;
+    photos?: string[];
   };
   // 技能栈配置项
   graph?: {

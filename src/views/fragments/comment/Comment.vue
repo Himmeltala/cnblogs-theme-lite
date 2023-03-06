@@ -116,13 +116,13 @@ function onEdFinish(response: any) {
 <style scoped lang="scss">
 @include pc() {
   .l-comment__more {
-    --at-apply: w-5%;
+    --uno: w-5%;
   }
 }
 
 @include mb() {
   .l-comment__more {
-    --at-apply: w-10%;
+    --uno: w-10%;
   }
 }
 </style>

@@ -3,9 +3,9 @@ import { redirect, name } from "@/utils/router-helper";
 
 const routes = [
   {
-    name: name.home,
+    name: name.index,
     path: "/",
-    component: () => import("./views/modules/Home.vue")
+    component: () => import("./views/modules/Index.vue")
   },
   {
     name: name.essay,
@@ -13,13 +13,18 @@ const routes = [
     component: () => import("./views/modules/Essay.vue")
   },
   {
+    name: name.essayList,
+    path: "/p/list",
+    component: () => import("./views/modules/EssayList.vue")
+  },
+  {
     name: name.essaySort,
-    path: "/essay/sort/:id",
+    path: "/p/sort/:id",
     component: () => import("./views/modules/EssaySort.vue")
   },
   {
     name: name.essayArchive,
-    path: "/essay/archive/:date",
+    path: "/p/archive/:date",
     component: () => import("./views/modules/EssayArchive.vue")
   },
   {

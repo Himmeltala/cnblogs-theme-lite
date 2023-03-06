@@ -68,7 +68,47 @@ export function useLite(dev: Function, pro: Function) {
     blogId = import.meta.env.VITE_BLOG_ID;
     blogApp = import.meta.env.VITE_BLOG_APP;
     baseAPI = "/api";
-    __LITE_CONFIG__ = {};
+    __LITE_CONFIG__ = {
+      graph: {
+        alpha: 0.85,
+        sides: 5,
+        layer: 5,
+        lineWidth: 1,
+        textSize: 0.8,
+        data: [
+          { title: "CSS", star: 4 },
+          { title: "Vue", star: 4 },
+          { title: "Java", star: 3 },
+          { title: "JS", star: 4 },
+          { title: "TS", star: 3 }
+        ]
+      },
+      cabinet: {
+        signature: "Time tick away, dream faded away!"
+      },
+      index: {
+        hobbies: ["Web 前端", "二次元", "简约", "拖延症", "吸猫", "拖延症", "吸猫", "拖延症", "吸猫"],
+        contact: {
+          qq: "1282957580",
+          wechat: "Himmelbleu",
+          email: "zhengrenfu@outlook.com"
+        },
+        brief: "",
+        future: "抽到水神！",
+        photos: [
+          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+        ]
+      }
+    };
     initSetting();
     dev();
   }
