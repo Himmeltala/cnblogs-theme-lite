@@ -86,15 +86,22 @@ export function useLite(dev: Function, pro: Function) {
       cabinet: {
         signature: "Time tick away, dream faded away!"
       },
-      index: {
-        hobbies: ["Web 前端", "二次元", "简约", "拖延症", "吸猫", "拖延症", "吸猫", "拖延症", "吸猫"],
-        contact: {
-          qq: "1282957580",
-          wechat: "Himmelbleu",
-          email: "zhengrenfu@outlook.com"
-        },
-        brief: "",
-        future: "抽到水神！",
+      nameplate: {
+        tags: ["Web 前端", "二次元", "简约", "拖延症", "吸猫", "拖延症", "吸猫", "拖延症", "吸猫"],
+        connection: [
+          {
+            name: "Email",
+            text: "zhengrenfu@outllok.com",
+            img: "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2281365/o_230306161009_wechat.png"
+          },
+          {
+            name: "WeChat",
+            text: "Himmelbleu",
+            img: "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2281365/o_230306161002_outlook.png"
+          }
+        ],
+        intro: "",
+        gossip: "抽到水神！",
         photos: [
           "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
           "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",

@@ -63,7 +63,7 @@ function toggle() {
   }
 }
 
-onMounted(() => {
+function initHeight(msg?: string) {
   height.value = $(content.value).height();
 
   if (!props.disabled) {
@@ -73,6 +73,10 @@ onMounted(() => {
       content.value.style.height = `${height.value}px`;
     }
   }
+}
+
+onMounted(() => {
+  initHeight();
 });
 </script>
 

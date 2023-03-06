@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { getCabinetColumn as localApi } from "@/apis/local-api";
-import { getCabinetColumn as remoteApi } from "@/apis/remote-api";
+import { getCabinetColumn } from "@/apis/remote-api";
 
-const props = defineProps({
+defineProps({
   isRemote: {
     type: Boolean,
     default: true
@@ -11,13 +10,9 @@ const props = defineProps({
 
 const data = ref();
 
-remoteApi().then(res => {
+getCabinetColumn().then(res => {
   data.value = res;
 });
-
-if (!props.isRemote) {
-  data.value = localApi();
-}
 
 const active = ref("1");
 </script>

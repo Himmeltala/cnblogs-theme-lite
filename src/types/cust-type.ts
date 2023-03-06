@@ -79,16 +79,17 @@ export interface ILite {
   cabinet?: { avatar?: string; signature?: string; navs?: { href: string; text?: string; svg?: string; img?: string }[] };
   // 目录配置项
   catalog?: { level?: boolean };
-  // 兴趣标签
-  index?: {
-    hobbies?: string[];
-    contact?: {
-      qq?: string;
-      wechat?: string;
-      email?: string;
-    };
-    brief?: string;
-    future?: string;
+  // 铭牌
+  nameplate?: {
+    tags?: string[];
+    connection?: {
+      name: string;
+      text: string;
+      svg?: string;
+      img?: string;
+    }[];
+    intro?: string;
+    gossip?: string;
     photos?: string[];
   };
   // 技能栈配置项

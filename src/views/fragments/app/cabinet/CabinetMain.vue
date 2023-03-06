@@ -1,14 +1,21 @@
 <script setup lang="ts">
+import { useBaseAuthorData } from "@/store";
 import { getSetting, nav } from "@/utils/common";
+import { follow, unfollow } from "@/apis/remote-api";
 import { __LITE_CONFIG__, blogApp, isFollow, isOwner } from "@/lite.config";
-import { follow, unfollow, getAuthorData, getMasterData } from "@/apis/remote-api";
 
 const cabinet = __LITE_CONFIG__.cabinet;
+const authorStore = useBaseAuthorData();
 const setting = getSetting();
 const searchVal = ref();
-const authorData = ref(await getAuthorData());
-const masterData = ref(await getMasterData());
+const authorData = ref();
+const masterData = ref();
 const tabActiveName = ref("first");
+
+authorStore.$onAction(({ store, args }) => {
+  authorData.value = args[0].author;
+  masterData.value = args[0].master;
+}, true);
 
 function search() {
   window.open(`https://zzk.cnblogs.com/s?w=blog:${blogApp}%${searchVal.value}`, "__blank");
@@ -27,7 +34,7 @@ async function unsubscribe() {
 
 <template>
   <div class="noscroll ofw-auto h-96vh">
-    <ExpandableBox text="博客信息">
+    <ExpandableBox text="博客信息" disabled>
       <template #icon>
         <i-ep-house />
       </template>
@@ -48,31 +55,27 @@ async function unsubscribe() {
         </el-popconfirm>
         <el-button @click="subscribe" v-if="!isFollow" type="primary" text bg> +关注博主 </el-button>
       </div>
-      <template v-if="authorData">
-        <div class="hover mb-4" v-for="(item, index) in authorData" :key="index" @click="nav({ path: item.href })">
-          <div class="f-c-s" v-if="index === 0">
-            <i-ep-user-filled class="mr-2" />
-            昵称：{{ item.text }}
-          </div>
-          <div class="f-c-s" v-else-if="index === 1">
-            <i-ep-clock class="mr-2" />
-            园龄：{{ item.text }}
-          </div>
-          <div class="f-c-s" v-else-if="index === 2">
-            <i-ep-star-filled class="mr-2" />
-            粉丝：{{ item.text }}
-          </div>
-          <div class="f-c-s" v-else>
-            <i-ep-bell-filled class="mr-2" />
-            关注：{{ item.text }}
-          </div>
+      <div class="hover mb-4" v-if="authorData" v-for="(item, index) in authorData" :key="index" @click="nav({ path: item.href })">
+        <div class="f-c-s" v-if="index === 0">
+          <i-ep-user-filled class="mr-2" />
+          昵称：{{ item.text }}
         </div>
-      </template>
-      <template v-if="masterData">
-        <div class="mb-4">
-          <span class="mr-3" v-for="(item, index) in masterData" :key="index"> {{ item.text }} - {{ item.digg }} </span>
+        <div class="f-c-s" v-else-if="index === 1">
+          <i-ep-clock class="mr-2" />
+          园龄：{{ item.text }}
         </div>
-      </template>
+        <div class="f-c-s" v-else-if="index === 2">
+          <i-ep-star-filled class="mr-2" />
+          粉丝：{{ item.text }}
+        </div>
+        <div class="f-c-s" v-else>
+          <i-ep-bell-filled class="mr-2" />
+          关注：{{ item.text }}
+        </div>
+      </div>
+      <div class="mb-4">
+        <span class="mr-3" v-if="masterData" v-for="(item, index) in masterData" :key="index"> {{ item.text }} - {{ item.digg }} </span>
+      </div>
       <el-input clearable @keyup.enter="search" v-model="searchVal">
         <template #prefix>
           <i-ep-search />

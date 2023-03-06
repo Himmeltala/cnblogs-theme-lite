@@ -1,8 +1,17 @@
 <script setup lang="ts">
 import { startLoading, endLoading, nav } from "@/utils/common";
-import { blogApp, __LITE_CONFIG__ } from "@/lite.config";
+import { blogApp, __LITE_CONFIG__, pcDevice } from "@/lite.config";
+import { getAuthorData, getMasterData } from "@/apis/remote-api";
+import { useBaseAuthorData } from "@/store";
 
 startLoading();
+
+const { setAuthorData } = useBaseAuthorData();
+
+const author = await getAuthorData();
+const master = await getMasterData();
+
+setAuthorData({ author, master });
 
 const router = useRouter();
 
@@ -17,134 +26,60 @@ onMounted(() => {
       <div class="mb-6 f-s-c">
         <div class="w-40%">
           <div class="font-bold mb-2">{{ blogApp }} 的博客</div>
-          <img class="w-20 h-20 rd-50" :src="__LITE_CONFIG__.cabinet.avatar" />
+          <div v-if="!pcDevice">
+            <img class="mb-4 w-25 h-25 rd-50" :src="__LITE_CONFIG__.cabinet.avatar" />
+            <div class="l-fiv-size">
+              <div class="mb-1">圆龄：{{ author[1].text }}</div>
+              <div class="mb-1">粉丝：{{ author[2].text }}</div>
+              <div class="mb-1">关注：{{ author[3].text }}</div>
+              <div class="mb-1">随笔：{{ master[0].digg }}</div>
+              <div class="mb-1">阅读：{{ master[3].digg }}</div>
+            </div>
+          </div>
+          <div v-else class="f-c-s">
+            <img class="mr-10 w-25 h-25 rd-50" :src="__LITE_CONFIG__.cabinet.avatar" />
+            <div class="l-fiv-size">
+              <div class="mb-1">圆龄：{{ author[1].text }}</div>
+              <div class="mb-1">粉丝：{{ author[2].text }}</div>
+              <div class="mb-1">关注：{{ author[3].text }}</div>
+              <div class="mb-1">随笔：{{ master[0].digg }}</div>
+              <div class="mb-1">阅读：{{ master[3].digg }}</div>
+            </div>
+          </div>
         </div>
         <div class="w-60%">
           <div class="mb-2 font-bold">个人简介</div>
-          <div class="l-fiv-size">{{ __LITE_CONFIG__.index.brief }}</div>
+          <div class="l-fiv-size" v-html="__LITE_CONFIG__.nameplate.intro"></div>
         </div>
       </div>
       <div class="mb-6">
         <div class="mb-2 font-bold">个人签名</div>
-        <div class="l-fiv-size">{{ __LITE_CONFIG__.cabinet.signature }}</div>
+        <div class="l-fiv-size" v-html="__LITE_CONFIG__.cabinet.signature"></div>
       </div>
-      <div class="f-s-b mb-6">
+      <div v-if="pcDevice" class="f-s-b mb-6">
         <div class="w-50%">
           <div class="mb-2">
-            <div class="mb-4 font-bold">兴趣标签</div>
+            <div class="mb-4 font-bold">个人标签</div>
             <div class="hobbies f-c-s flex-wrap">
-              <LTag class="mr-2 mb-4" hover round v-for="(item, index) in __LITE_CONFIG__.index.hobbies" :key="index">{{ item }}</LTag>
+              <LTag class="mr-2 mb-4" hover round v-for="(item, index) in __LITE_CONFIG__.nameplate.tags" :key="index">{{ item }}</LTag>
             </div>
           </div>
           <div class="mb-6">
             <div class="mb-2 font-bold">联系方式</div>
             <div class="f-s-s">
-              <div class="mr-2" v-for="(value, key, index) in __LITE_CONFIG__.index.contact" :key="index">
-                <template v-if="key == 'qq'">
-                  <el-tooltip :content="value">
-                    <svg class="hover" viewBox="0 0 1024 1024" width="18" height="18">
-                      <path
-                        d="M511.037 986.94c-85.502 0-163.986-26.686-214.517-66.544-25.66 7.149-58.486 18.655-79.202 32.921-17.725 12.202-15.516 24.647-12.32 29.67 14.027 22.069 240.622 14.092 306.04 7.219v-3.265z"
-                        fill="#FAAD08"
-                        p-id="4528"></path>
-                      <path
-                        d="M495.627 986.94c85.501 0 163.986-26.686 214.518-66.544 25.66 7.149 58.485 18.655 79.203 32.921 17.724 12.202 15.512 24.647 12.32 29.67-14.027 22.069-240.623 14.092-306.042 7.219v-3.265z"
-                        fill="#FAAD08"
-                        p-id="4529"></path>
-                      <path
-                        d="M496.137 472.026c140.73-0.935 253.514-27.502 291.73-37.696 9.11-2.432 13.984-6.789 13.984-6.789 0.032-1.25 0.578-22.348 0.578-33.232 0-183.287-88.695-367.458-306.812-367.47C277.5 26.851 188.8 211.021 188.8 394.31c0 10.884 0.55 31.982 0.583 33.232 0 0 3.965 4.076 11.231 6.048 35.283 9.579 150.19 37.482 294.485 38.437h1.037zM883.501 626.967c-8.66-27.825-20.484-60.273-32.455-91.434 0 0-6.886-0.848-10.366 0.158-107.424 31.152-237.624 51.006-336.845 49.808h-1.026c-98.664 1.186-227.982-18.44-335.044-49.288-4.09-1.176-12.168-0.677-12.168-0.677-11.97 31.16-23.793 63.608-32.453 91.433-41.3 132.679-27.92 187.587-17.731 188.818 21.862 2.638 85.099-99.88 85.099-99.88 0 104.17 94.212 264.125 309.947 265.596a765.877 765.877 0 0 1 5.725 0c215.738-1.471 309.947-161.424 309.947-265.595 0 0 63.236 102.519 85.102 99.88 10.186-1.231 23.566-56.14-17.732-188.819"
-                        p-id="4530"></path>
-                      <path
-                        d="M429.208 303.911c-29.76 1.323-55.195-32.113-56.79-74.62-1.618-42.535 21.183-78.087 50.95-79.417 29.732-1.305 55.149 32.116 56.765 74.64 1.629 42.535-21.177 78.08-50.925 79.397m220.448-74.62c-1.593 42.507-27.03 75.941-56.79 74.62-29.746-1.32-52.553-36.862-50.924-79.397 1.614-42.526 27.03-75.948 56.764-74.639 29.77 1.33 52.57 36.881 50.951 79.417"
-                        fill="#FFFFFF"
-                        p-id="4531"></path>
-                      <path
-                        d="M695.405 359.069c-7.81-18.783-86.466-39.709-183.843-39.709h-1.045c-97.376 0-176.033 20.926-183.842 39.709a6.66 6.66 0 0 0-0.57 2.672c0 1.353 0.418 2.575 1.072 3.612 6.58 10.416 93.924 61.885 183.341 61.885h1.045c89.416 0 176.758-51.466 183.34-61.883a6.775 6.775 0 0 0 1.069-3.622 6.66 6.66 0 0 0-0.567-2.664"
-                        fill="#FAAD08"
-                        p-id="4532"></path>
-                      <path
-                        d="M464.674 239.335c1.344 16.946-7.87 32-20.55 33.645-12.701 1.647-24.074-10.755-25.426-27.71-1.326-16.954 7.873-32.008 20.534-33.64 12.722-1.652 24.114 10.76 25.442 27.705m77.97 8.464c2.702-4.392 21.149-27.488 59.328-19.078 10.028 2.208 14.667 5.457 15.646 6.737 1.445 1.888 1.84 4.576 0.375 8.196-2.903 7.174-8.894 6.979-12.217 5.575-2.144-0.907-28.736-16.948-53.232 6.99-1.685 1.648-4.7 2.212-7.558 0.258-2.856-1.956-4.038-5.923-2.342-8.678"
-                        p-id="4533"></path>
-                      <path
-                        d="M503.821 589.328h-1.031c-67.806 0.802-150.022-8.004-229.638-23.381-6.817 38.68-10.934 87.294-7.399 145.275 8.928 146.543 97.728 238.652 234.793 239.996h5.57c137.065-1.344 225.865-93.453 234.796-239.996 3.535-57.986-0.584-106.6-7.403-145.283-79.631 15.385-161.861 24.196-229.688 23.389"
-                        fill="#FFFFFF"
-                        p-id="4534"></path>
-                      <path
-                        d="M310.693 581.35v146.633s69.287 13.552 138.7 4.17V596.897c-43.974-2.413-91.4-7.79-138.7-15.546"
-                        fill="#EB1C26"
-                        p-id="4535"></path>
-                      <path
-                        d="M806.504 427.238s-130.112 43.08-302.66 44.309h-1.025c-172.264-1.224-302.217-44.161-302.66-44.309L156.58 541.321c108.998 34.464 244.093 56.677 346.238 55.387l1.024-0.002c102.152 1.297 237.226-20.917 346.24-55.385l-43.579-114.083z"
-                        fill="#EB1C26"
-                        p-id="4536"></path>
-                    </svg>
-                  </el-tooltip>
-                </template>
-                <template v-if="key == 'wechat'">
-                  <el-tooltip :content="value">
-                    <svg class="hover" width="18" height="18" viewBox="0 0 1024 1024">
-                      <path
-                        d="M683.058 364.695c11 0 22 1.016 32.943 1.976C686.564 230.064 538.896 128 370.681 128c-188.104 0.66-342.237 127.793-342.237 289.226 0 93.068 51.379 169.827 136.725 229.256L130.72 748.43l119.796-59.368c42.918 8.395 77.37 16.79 119.742 16.79 11 0 21.46-0.48 31.914-1.442a259.168 259.168 0 0 1-10.455-71.358c0.485-148.002 128.744-268.297 291.403-268.297l-0.06-0.06z m-184.113-91.992c25.99 0 42.913 16.79 42.913 42.575 0 25.188-16.923 42.579-42.913 42.579-25.45 0-51.38-16.85-51.38-42.58 0-25.784 25.93-42.574 51.38-42.574z m-239.544 85.154c-25.384 0-51.374-16.85-51.374-42.58 0-25.784 25.99-42.574 51.374-42.574 25.45 0 42.918 16.79 42.918 42.575 0 25.188-16.924 42.579-42.918 42.579z m736.155 271.655c0-135.647-136.725-246.527-290.983-246.527-162.655 0-290.918 110.88-290.918 246.527 0 136.128 128.263 246.587 290.918 246.587 33.972 0 68.423-8.395 102.818-16.85l93.809 50.973-25.93-84.677c68.907-51.93 120.286-119.815 120.286-196.033z m-385.275-42.58c-16.923 0-34.452-16.79-34.452-34.179 0-16.79 17.529-34.18 34.452-34.18 25.99 0 42.918 16.85 42.918 34.18 0 17.39-16.928 34.18-42.918 34.18z m188.165 0c-16.984 0-33.972-16.79-33.972-34.179 0-16.79 16.927-34.18 33.972-34.18 25.93 0 42.913 16.85 42.913 34.18 0 17.39-16.983 34.18-42.913 34.18z"
-                        fill="#09BB07"></path>
-                    </svg>
-                  </el-tooltip>
-                </template>
-                <template v-if="key == 'email'">
-                  <el-tooltip :content="value">
-                    <svg class="hover" viewBox="0 0 1024 1024" width="18" height="18">
-                      <path
-                        d="M896 42.666667H341.333333c-25.6 0-42.666667 17.066667-42.666666 42.666666v42.666667l341.333333 106.666667L938.666667 128V85.333333c0-25.6-17.066667-42.666667-42.666667-42.666666z"
-                        fill="#0364B8"
-                        p-id="11549"></path>
-                      <path
-                        d="M1024 507.733333c0-8.533333-4.266667-17.066667-12.8-21.333333l-366.933333-209.066667s-4.266667 0-4.266667-4.266666c-8.533333-4.266667-12.8-4.266667-21.333333-4.266667s-17.066667 0-21.333334 4.266667c0 0-4.266667 0-4.266666 4.266666l-366.933334 209.066667c-8.533333 4.266667-12.8 12.8-12.8 21.333333s4.266667 17.066667 12.8 21.333334l366.933334 209.066666s4.266667 0 4.266666 4.266667c8.533333 4.266667 12.8 4.266667 21.333334 4.266667s17.066667 0 21.333333-4.266667c0 0 4.266667 0 4.266667-4.266667l366.933333-209.066666c8.533333-4.266667 12.8-12.8 12.8-21.333334z"
-                        fill="#0A2767"
-                        p-id="11550"></path>
-                      <path
-                        d="M640 128H298.666667v298.666667l341.333333 341.333333h298.666667v-341.333333z"
-                        fill="#28A8EA"
-                        p-id="11551"></path>
-                      <path d="M1006.933333 972.8L226.133333 529.066667" fill="#35B8F1" p-id="11552"></path>
-                      <path d="M640 128h298.666667v298.666667h-298.666667z" fill="#50D9FF" p-id="11553"></path>
-                      <path d="M298.666667 426.666667h341.333333v426.666666H298.666667z" fill="#0078D4" p-id="11554"></path>
-                      <path
-                        d="M618.666667 832l-392.533334-302.933333 21.333334-38.4s362.666667 209.066667 366.933333 209.066666h8.533333c4.266667-4.266667 362.666667-204.8 362.666667-204.8l21.333333 38.4-388.266666 298.666667z"
-                        fill="#0A2767"
-                        opacity=".5"
-                        p-id="11555"></path>
-                      <path
-                        d="M593.066667 738.133333zM1011.2 529.066667l-362.666667 209.066666-8.533333 4.266667c-8.533333 4.266667-12.8 4.266667-21.333333 4.266667s-17.066667-4.266667-21.333334-4.266667l119.466667 166.4 290.133333 68.266667c12.8-8.533333 17.066667-21.333333 17.066667-34.133334V507.733333c0 8.533333-4.266667 17.066667-12.8 21.333334z"
-                        fill="#1490DF"
-                        p-id="11556"></path>
-                      <path
-                        d="M1024 938.666667l-362.666667-209.066667-12.8 8.533333-8.533333 4.266667c-8.533333 4.266667-12.8 4.266667-21.333333 4.266667s-12.8-4.266667-17.066667-4.266667l170.666667 153.6 238.933333 76.8c4.266667-8.533333 12.8-21.333333 12.8-34.133333z"
-                        opacity=".1"
-                        p-id="11557"></path>
-                      <path
-                        d="M593.066667 738.133333L298.666667 563.2l-72.533334-34.133333c-8.533333-4.266667-12.8-12.8-12.8-21.333334V938.666667c0 25.6 21.333333 42.666667 42.666667 42.666666h716.8c12.8 0 21.333333 0 34.133333-8.533333l-413.866666-234.666667z"
-                        fill="#28A8EA"
-                        p-id="11558"></path>
-                      <path
-                        d="M580.266667 853.333333c29.866667 0 59.733333-29.866667 59.733333-59.733333V307.2c0-29.866667-21.333333-51.2-51.2-51.2H298.666667v192l-72.533334 42.666667c-8.533333 4.266667-12.8 8.533333-12.8 17.066666V853.333333h366.933334z"
-                        opacity=".5"
-                        p-id="11559"></path>
-                      <path
-                        d="M546.133333 810.666667H51.2C21.333333 810.666667 0 789.333333 0 759.466667V264.533333C0 234.666667 21.333333 213.333333 51.2 213.333333h499.2c25.6 0 46.933333 21.333333 46.933333 51.2v499.2c0 25.6-21.333333 46.933333-51.2 46.933334z"
-                        fill="#0078D4"
-                        p-id="11560"></path>
-                      <path
-                        d="M157.866667 426.666667c12.8-25.6 29.866667-46.933333 55.466666-64 25.6-12.8 55.466667-21.333333 89.6-21.333334 29.866667 0 59.733333 8.533333 81.066667 21.333334 25.6 12.8 42.666667 34.133333 55.466667 59.733333 12.8 25.6 17.066667 55.466667 17.066666 85.333333 0 34.133333-8.533333 64-21.333333 89.6-8.533333 29.866667-29.866667 51.2-51.2 64-25.6 12.8-55.466667 21.333333-85.333333 21.333334-34.133333 0-59.733333-8.533333-85.333334-21.333334-25.6-12.8-42.666667-34.133333-55.466666-59.733333-12.8-25.6-21.333333-55.466667-21.333334-85.333333 0-34.133333 8.533333-64 21.333334-89.6z m59.733333 145.066666c8.533333 17.066667 17.066667 29.866667 29.866667 42.666667 12.8 8.533333 29.866667 12.8 51.2 12.8s38.4-4.266667 51.2-17.066667c12.8-8.533333 25.6-25.6 29.866666-42.666666 8.533333-12.8 12.8-34.133333 12.8-55.466667s-4.266667-38.4-8.533333-55.466667-17.066667-29.866667-29.866667-42.666666c-17.066667-12.8-34.133333-17.066667-55.466666-17.066667s-38.4 4.266667-51.2 17.066667c-12.8 8.533333-25.6 25.6-34.133334 42.666666-4.266667 12.8-8.533333 34.133333-8.533333 55.466667s4.266667 42.666667 12.8 59.733333z"
-                        fill="#FFFFFF"
-                        p-id="11561"></path>
-                    </svg>
-                  </el-tooltip>
-                </template>
+              <div class="mr-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.connection" :key="index">
+                <el-tooltip :content="item.name + ': ' + item.text">
+                  <svg v-if="item.svg" class="w-6 h-6" viewBox="0 0 1024 1024" v-html="item.svg"></svg>
+                  <template v-else>
+                    <img class="rd-50 w-6 h-6" alt="FAILED" :src="item.img" />
+                  </template>
+                </el-tooltip>
               </div>
             </div>
           </div>
           <div>
-            <div class="mb-2 font-bold">未来展望</div>
-            <div class="l-fiv-size">{{ __LITE_CONFIG__.index.future }}</div>
+            <div class="mb-2 font-bold">闲言碎语</div>
+            <div class="l-fiv-size" v-html="__LITE_CONFIG__.nameplate.gossip"></div>
           </div>
         </div>
         <div class="w-48%">
@@ -155,14 +90,56 @@ onMounted(() => {
           <div>
             <div class="mb-4 font-bold">我的相册</div>
             <div class="f-s-b flex-wrap">
-              <div v-for="(item, i) in __LITE_CONFIG__.index.photos" :key="i" style="width: 30%; height: 30%">
-                <el-image v-if="i < 3" :src="item" :preview-src-list="__LITE_CONFIG__.index.photos" />
+              <div v-for="(item, i) in __LITE_CONFIG__.nameplate.photos" :key="i" style="width: 30%; height: 30%">
+                <el-image v-if="i < 3" :src="item" :preview-src-list="__LITE_CONFIG__.nameplate.photos" />
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div>
+      <div v-else>
+        <div class="mb-6">
+          <div class="mb-4 font-bold">个人标签</div>
+          <div class="hobbies f-c-s flex-wrap">
+            <LTag class="mr-2 mb-4" hover round v-for="(item, index) in __LITE_CONFIG__.nameplate.tags" :key="index">{{ item }}</LTag>
+          </div>
+        </div>
+        <div class="mb-6">
+          <div class="mb-2 font-bold">联系方式</div>
+          <div class="f-s-s">
+            <div class="mr-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.connection" :key="index">
+              <el-tooltip :content="item.name + ': ' + item.text">
+                <svg v-if="item.svg" class="w-6 h-6" viewBox="0 0 1024 1024" v-html="item.svg"></svg>
+                <template v-else>
+                  <img class="rd-50 w-6 h-6" alt="FAILED" :src="item.img" />
+                </template>
+              </el-tooltip>
+            </div>
+          </div>
+        </div>
+        <div class="mb-6">
+          <el-button type="primary" @click="nav({ router, path: '/p/list' })">Get Started</el-button>
+          <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
+          <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
+        </div>
+        <div class="mb-6">
+          <div class="mb-2 font-bold">闲言碎语</div>
+          <div class="l-fiv-size" v-html="__LITE_CONFIG__.nameplate.gossip"></div>
+        </div>
+        <div class="mb-6">
+          <div class="font-bold">个人技能</div>
+          <SkillGraph />
+        </div>
+        <div class="mb-6">
+          <div class="mb-4 font-bold">我的相册</div>
+          <div class="f-s-b flex-wrap">
+            <div v-for="(item, i) in __LITE_CONFIG__.nameplate.photos" :key="i" style="width: 30%; height: 30%">
+              <el-image v-if="i < 3" :src="item" :preview-src-list="__LITE_CONFIG__.nameplate.photos" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="pcDevice">
         <el-button type="primary" @click="nav({ router, path: '/p/list' })">Get Started</el-button>
         <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
         <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
