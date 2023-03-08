@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getSetting } from "@/utils/common";
+import { getSetting, nav } from "@/utils/common";
 import { __LITE_CONFIG__ } from "@/lite.config";
 
 const props = defineProps({
@@ -9,8 +9,9 @@ const props = defineProps({
   }
 });
 
+const router = useRouter();
 const setting = getSetting();
-const collapseActive = ref("1");
+const collActive = ref("1");
 
 const left = computed(() => {
   return setting.value.cabinet.left.pin && setting.value.cabinet.position.break ? setting.value.cabinet.position.left + "vw" : 0;
@@ -42,11 +43,32 @@ const fixed = computed(() => {
       :padding="setting.cabinet.left.padding"
       :margin="setting.cabinet.left.margin">
       <CabinetMain />
-      <CabinetNav />
+      <div class="noscroll ofw-auto h-4vh l-thr-color f-c wce-nowrap">
+        <div class="hover mr-4" @click="nav({ path: 'https://www.cnblogs.com' })">博客园</div>
+        <div class="hover mr-4" @click="nav({ path: '/', router })">首页</div>
+        <div
+          v-if="__LITE_CONFIG__.cabinet?.navs"
+          v-for="(item, index) in __LITE_CONFIG__.cabinet.navs"
+          :key="index"
+          :class="{ 'mr-4': index !== __LITE_CONFIG__.cabinet.navs.length - 1 }"
+          class="hover f-c-c">
+          <div v-if="item.text" @click="nav({ path: item.href })">{{ item.text }}</div>
+          <div class="f-c-c w-6 h-6" v-else>
+            <svg
+              v-if="(item.svg || item.img) && item.svg"
+              @click="nav({ path: item.href })"
+              class="w-6 h-6"
+              fill="var(--l-thr-color)"
+              viewBox="0 0 1024 1024"
+              v-html="item.svg"></svg>
+            <img v-else class="rd-50 w-6 h-6" alt="FAILED" @click="nav({ path: item.href })" :src="item.img" />
+          </div>
+        </div>
+      </div>
     </Card>
     <template #title> 左陈列柜设置 </template>
     <template #content>
-      <el-collapse v-model="collapseActive" accordion>
+      <el-collapse v-model="collActive" accordion>
         <el-collapse-item title="统一设置">
           <div class="ml-4">
             <CabinetSetting />

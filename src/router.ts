@@ -3,64 +3,49 @@ import { redirect, name } from "@/utils/router-helper";
 
 const routes = [
   {
-    name: name.index,
+    name: name.Index,
     path: "/",
-    component: () => import("./views/modules/Index.vue")
+    component: () => import("@/views/Index.vue")
   },
   {
-    name: name.essay,
+    name: name.Writing,
     path: "/p/:id",
-    component: () => import("./views/modules/Essay.vue")
+    component: () => import("@/views/Writing.vue")
   },
   {
-    name: name.essayList,
-    path: "/p/list",
-    component: () => import("./views/modules/EssayList.vue")
+    name: name.Home,
+    path: "/home",
+    component: () => import("@/views/Home.vue")
   },
   {
-    name: name.essaySort,
-    path: "/p/sort/:id",
-    component: () => import("./views/modules/EssaySort.vue")
+    name: name.MarkSort,
+    path: "/mark/:tag",
+    component: () => import("@/views/MarkSort.vue")
   },
   {
-    name: name.essayArchive,
-    path: "/p/archive/:date",
-    component: () => import("./views/modules/EssayArchive.vue")
+    name: name.Sort,
+    path: "/sort/:mode/:id",
+    component: () => import("@/views/Sort.vue")
   },
   {
-    name: name.article,
-    path: "/article/:id",
-    component: () => import("./views/modules/Article.vue")
+    name: name.Archive,
+    path: "/archive/:mode/:date",
+    component: () => import("@/views/Archive.vue")
   },
   {
-    name: name.articleSort,
-    path: "/article/sort/:id",
-    component: () => import("./views/modules/ArticleSort.vue")
-  },
-  {
-    name: name.articleArchive,
-    path: "/article/archive/:date",
-    component: () => import("./views/modules/ArticleArchive.vue")
-  },
-  {
-    name: name.markSort,
-    path: "/mark/sort/:tag",
-    component: () => import("./views/modules/MarkSort.vue")
-  },
-  {
-    name: name.marks,
+    name: name.MarkList,
     path: "/marks",
-    component: () => import("./views/modules/Marks.vue")
+    component: () => import("@/views/MarkList.vue")
   },
   {
-    name: name.albumn,
+    name: name.Albumn,
     path: "/albumn/:id",
-    component: () => import("./views/modules/Albumn.vue")
+    component: () => import("@/views/Albumn.vue")
   },
   {
-    name: name.albumnItem,
+    name: name.AlbumnItem,
     path: "/album/item/:id",
-    component: () => import("./views/modules/AlbumnItem.vue")
+    component: () => import("@/views/AlbumnItem.vue")
   }
 ];
 

@@ -16,7 +16,7 @@ const anchors = ref();
 const store = useCatalogStore();
 const collapseActive = ref("1");
 
-store.$onAction(({ store, args }) => {
+store.$onAction(({ args }) => {
   anchors.value = args[0];
 }, true);
 

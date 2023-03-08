@@ -11,8 +11,10 @@ import { Router } from "vue-router";
 import { useStorage } from "@vueuse/core";
 import { CustType } from "@/types/data-type";
 import { __LITE_CONFIG__, blogApp } from "@/lite.config";
-import { name } from "./router-helper";
 
+/**
+ * 开启 loading 屏
+ */
 export function startLoading() {
   $("#l-content").removeClass("l-transition");
   $("#l-progress > .l-pro__track").removeClass("track-static").addClass("track-active");
@@ -130,7 +132,7 @@ export function getSettingTemp(): CustType.ISetting {
         padding: { left: 1, right: 1, top: 0, bottom: 1.5 },
         margin: { left: 0, right: 0, top: 0, bottom: 1 }
       },
-      article: {
+      writing: {
         code: { light: { color: "#fafafa" }, dark: { color: "#1f1f1f" } },
         padding: { left: 1, right: 1, top: 0.5, bottom: 1 },
         margin: { left: 0, right: 0, top: 0, bottom: 0 }

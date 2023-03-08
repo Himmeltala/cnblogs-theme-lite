@@ -1,7 +1,7 @@
 /**
  * 随笔/文章
  */
-export interface IEssay {
+export interface IWriting {
   // 随笔 ID
   id?: string;
   // 随笔标题
@@ -63,13 +63,111 @@ export interface IComment {
 }
 
 /**
- * 标签集合
+ * 标签
  */
-export interface IMarkSort {
-  hint: string;
-  data: Array<{ id: string; title: string; href: string; date: string; view: string; comm: string; digg: string }>;
+export interface IMark {
+  count: number;
+  href: string;
+  text: string;
 }
 
+/**
+ * 随笔列表
+ */
+export interface IWritingList {
+  page?: number;
+  data?: IWriting[];
+}
+
+/**
+ * 随笔列表，用于分类或标签区分的随笔列表
+ */
+export interface IWritingList2 extends IWritingList {
+  // 分类描述
+  desc?: string;
+  // 子分类描述
+  desc2?: string;
+  // 分类名称、提示
+  hint?: string;
+}
+
+/**
+ * 随笔的分类和标签数组
+ */
+export interface IWritingProps {
+  tags: { text: string }[];
+  sorts: { href: string; text: string }[];
+}
+
+/**
+ * 分类子分类
+ */
+export interface IWritingSortChild {
+  id: string;
+  text: string;
+}
+
+/**
+ * 侧边栏标签和分类数组
+ */
+export interface ICabinetColumn {
+  essaySort: { id: string; text: string }[];
+  essayArchive: { id: string; text: string }[];
+  articleSort: { id: string; text: string }[];
+  articleArchive: { id: string; text: string }[];
+  latestEssayList: { id: string; text: string }[];
+  latestComments: { id: string; title: string; content: string; author: string }[];
+  rankings: { text: string }[];
+  tagList: { id: string; text: string }[];
+  albumn: { id: string; text: string }[];
+}
+
+/**
+ * 第一种：
+ * 随笔数量、文章数量、评论数量、阅读数量
+ *
+ * 第二种：
+ * 粉丝、昵称、关注、园龄
+ *
+ * 第三种：
+ * 随笔上一篇或下一篇随笔数据类型
+ */
+export interface ICabinetItemData {
+  // id
+  id?: string;
+  // 文本描述
+  text?: string;
+  // 数量
+  digg?: string;
+  // 链接
+  href?: string;
+}
+
+/**
+ * 侧边栏阅读排行榜
+ */
+export interface ICabinetTopList {
+  topView: ICabinetItemData[];
+  topComments: ICabinetItemData[];
+  topDigg: ICabinetItemData[];
+}
+
+/**
+ * 上一篇或下一篇随笔
+ */
+export interface IPrevNext {
+  prev: ICabinetItemData;
+  next: ICabinetItemData;
+}
+
+export interface AlbumnItem {
+  id: string;
+  src: string;
+}
+
+/**
+ * 博客配置项
+ */
 export interface ILite {
   // github
   github?: string;
@@ -82,12 +180,9 @@ export interface ILite {
   // 铭牌
   nameplate?: {
     tags?: string[];
-    connection?: {
-      name: string;
-      text: string;
-      svg?: string;
-      img?: string;
-    }[];
+    connection?: { name: string; text: string; svg?: string; img?: string }[];
+    warehouse?: { url: string; text: string }[];
+    experience?: { text: string; date: string }[];
     intro?: string;
     gossip?: string;
     photos?: string[];
@@ -110,116 +205,13 @@ export interface ILite {
   books?: { href?: string; text: string; img: string; author: string; rate: number }[];
 }
 
-export interface IMark {
-  count: number;
-  href: string;
-  text: string;
-}
-
-/**
- * 随笔列表
- */
-export interface IEssayList {
-  page: number;
-  data: Array<IEssay>;
-}
-
-/**
- * 随笔的分类和标签数组
- */
-export interface IEssayProps {
-  tags: { text: string }[];
-  sorts: { href: string; text: string }[];
-}
-
-/**
- * 随笔分类列表，返回页数、分类名、列表数组
- */
-export interface IEssaySort {
-  // 分类描述
-  desc: string;
-  // 子分类描述
-  desc2?: string;
-  // 分类页数
-  page: number;
-  // 分类名称、提示
-  hint: string;
-  // 随笔列表
-  data: Array<IEssay>;
-}
-
-/**
- * 分类子分类
- */
-export interface IEssaySortChild {
-  id: string;
-  text: string;
-}
-
-/**
- * 侧边栏标签和分类数组
- */
-export interface ICabinetColumn {
-  essaySort: { id: string; text: string }[];
-  essayArchive: { id: string; text: string }[];
-  articleSort: { id: string; text: string }[];
-  articleArchive: { id: string; text: string }[];
-  latestEssayList: { id: string; text: string }[];
-  latestComments: { id: string; title: string; content: string; author: string }[];
-  rankings: { text: string }[];
-  tagList: { id: string; text: string }[];
-  albumn: { id: string; text: string }[];
-}
-
-/**
- * 侧边栏博主排行榜、积分
- */
-export interface ICabinetRankList {
-  text: string;
-  digg: string;
-}
-
-/**
- * 侧边栏阅读排行榜
- */
-export interface ICabinetTopList {
-  topView: {
-    id?: string;
-    text?: string;
-  }[];
-  topComments: {
-    id?: string;
-    text?: string;
-  }[];
-  topDigg: {
-    id?: string;
-    text?: string;
-  }[];
-}
-
-/**
- * 博主信息，粉丝、昵称、关注、园龄，每一个都有对应的 a 链接，text 是文本信息
- */
-export interface IAuthor {
-  text: string;
-  href: string;
-}
-
-/**
- * 侧边栏博客信息，随笔数量、文章数量、评论数量、阅读数量
- */
-export interface IMasterData extends ICabinetRankList {}
-
-/**
- * 随笔上一篇或下一篇随笔数据类型
- */
-type PrevNextType = { text?: string; href?: string };
-export interface IPrevNext {
-  prev: PrevNextType;
-  next: PrevNextType;
-}
-
 type ToggleType = Record<string, { open: boolean; show: boolean }>;
+export interface IBox {
+  left?: number;
+  right?: number;
+  top?: number;
+  bottom?: number;
+}
 
 /**
  * Lite 主题设置数据类型
@@ -240,7 +232,7 @@ export interface ISetting {
   // pages
   pages?: {
     home?: { padding?: IBox; margin?: IBox };
-    article?: { padding?: IBox; margin?: IBox; code?: { light?: { color?: string }; dark?: { color?: string } } };
+    writing?: { padding?: IBox; margin?: IBox; code?: { light?: { color?: string }; dark?: { color?: string } } };
     gallery?: { padding?: IBox; margin?: IBox };
     sort?: { padding?: IBox; margin?: IBox };
     tags?: { padding?: IBox; margin?: IBox };
@@ -272,16 +264,4 @@ export interface ISetting {
       pin?: boolean;
     };
   };
-}
-
-export interface IBox {
-  left?: number;
-  right?: number;
-  top?: number;
-  bottom?: number;
-}
-
-export interface AlbumnItem {
-  id: string;
-  src: string;
 }

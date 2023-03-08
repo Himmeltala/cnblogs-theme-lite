@@ -10,33 +10,33 @@ import { blogApp } from "@/lite.config";
 import { useAnchorStore } from "@/store";
 
 export enum name {
-  index = "index",
-  essay = "essay",
-  essayList = "essayList",
-  essaySort = "essaySort",
-  essayArchive = "essayArchive",
-  article = "article",
-  articleSort = "articleSort",
-  articleArchive = "articleArchive",
-  markSort = "markSort",
-  marks = "marks",
-  albumn = "albumn",
-  albumnItem = "albunItem"
+  // 铭牌
+  Index = "Index",
+  // 文章或随笔
+  Writing = "Writing",
+  // 分类
+  Sort = "Sort",
+  // 档案
+  Archive = "Archive",
+  // 随笔列表，即首页
+  Home = "Home",
+  // 标签随笔列表
+  MarkSort = "MarkSort",
+  // 标签列表
+  MarkList = "MarkList",
+  // 相册
+  Albumn = "Albumn",
+  // 相册项
+  AlbumnItem = "AlbunItem"
 }
 
 export type routePath = "/p/";
 
 const regexp = {
-  essayList: /\/p\/\d+.html/g,
-  essaySort: /\/category\/\d+/g,
-  essayArchive: /e/g,
-  article: /article/g,
-  articleSort: /sort/g,
-  articleArchive: /archive/g,
-  markSort: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
-  marks: /\d/g,
-  albumn: /albumn/g,
-  albumnItem: /\/gallery\/image\/\d+/g
+  EssayList: /\/p\/\d+.html/g,
+  EssaySort: /\/category\/\d+/g,
+  EssayMark: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
+  AlbumnItem: /\/gallery\/image\/\d+/g
 };
 
 /**
@@ -67,29 +67,29 @@ export function redirect(next: any): () => void {
   let nextParam: any;
   const URL = window.location.href;
 
-  if (regexp.essayList.test(URL)) {
-    const postId = URL.match(regexp.essayList)[0].split("/")[2].split(".")[0];
+  if (regexp.EssayList.test(URL)) {
+    const postId = URL.match(regexp.EssayList)[0].split("/")[2].split(".")[0];
     setCommentAnchor(URL);
     nextParam = {
-      name: name.essay,
+      name: name.Writing,
       params: { id: postId }
     };
-  } else if (regexp.essaySort.test(URL)) {
-    const sortId = URL.match(regexp.essaySort)[0].split("/")[2].split(",")[0];
+  } else if (regexp.EssaySort.test(URL)) {
+    const sortId = URL.match(regexp.EssaySort)[0].split("/")[2].split(",")[0];
     nextParam = {
-      name: name.essaySort,
+      name: name.Sort,
       params: { id: sortId }
     };
-  } else if (regexp.markSort.test(URL)) {
-    const tag = decodeURI(URL).match(regexp.markSort)[0].split("/")[2];
+  } else if (regexp.EssayMark.test(URL)) {
+    const tag = decodeURI(URL).match(regexp.EssayMark)[0].split("/")[2];
     nextParam = {
-      name: name.markSort,
+      name: name.MarkSort,
       params: { tag }
     };
-  } else if (regexp.albumnItem.test(URL)) {
-    const id = URL.match(regexp.albumnItem)[0].split("/")[3];
+  } else if (regexp.AlbumnItem.test(URL)) {
+    const id = URL.match(regexp.AlbumnItem)[0].split("/")[3];
     nextParam = {
-      name: name.albumnItem,
+      name: name.AlbumnItem,
       params: { id }
     };
   }

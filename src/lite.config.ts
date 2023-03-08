@@ -87,7 +87,7 @@ export function useLite(dev: Function, pro: Function) {
         signature: "Time tick away, dream faded away!"
       },
       nameplate: {
-        tags: ["Web 前端", "二次元", "简约", "拖延症", "吸猫", "拖延症", "吸猫", "拖延症", "吸猫"],
+        tags: ["Web 前端", "二次元", "简约", "拖延症", "吸猫"],
         connection: [
           {
             name: "Email",
@@ -101,18 +101,13 @@ export function useLite(dev: Function, pro: Function) {
           }
         ],
         intro: "",
+        warehouse: [{ text: "cnblogs-theme-lite", url: "http://www.gitee.com/cnblogs-theme-lite" }],
+        experience: [{ text: "基于 Vue3 的回收平台", date: "22.03.10" }],
         gossip: "抽到水神！",
         photos: [
-          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-          "https://img2.baidu.com/it/u=637209785,3577103344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+          "https://img2.baidu.com/it/u=803568479,1965819057&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=281",
+          "https://img0.baidu.com/it/u=1473451850,1789625368&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800",
+          "https://img2.baidu.com/it/u=4148750470,234532345&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=834"
         ]
       }
     };
@@ -122,5 +117,5 @@ export function useLite(dev: Function, pro: Function) {
 
   $("head").append(`<link rel="shortcut icon" href="${__LITE_CONFIG__.icon}">`);
   preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
-  preLog("v1.4.7", "Powered By Himmelbleu using Vue3 & Vite.");
+  preLog("v1.4.8", "Powered By Himmelbleu using Vue3 & Vite.");
 }

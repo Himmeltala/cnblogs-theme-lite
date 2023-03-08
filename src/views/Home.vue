@@ -35,7 +35,7 @@ onMounted(() => {
     <div id="l-home" class="min-height">
       <Pagination @prev="prev" @next="next" @nexpr="nexpr" :count="listing.page" :disabled="setting.other.pagation.pin">
         <template #content>
-          <EssayItem
+          <WritingItem
             v-if="listing.data.length > 0"
             :padding="setting.pages.sort.padding"
             :margin="setting.pages.sort.margin"
@@ -43,7 +43,7 @@ onMounted(() => {
         </template>
       </Pagination>
     </div>
-    <template #title>首页列表盒子模型设置</template>
+    <template #title>列表盒子模型</template>
     <template #content>
       <BoxSetting :padding="setting.pages.home.padding" :margin="setting.pages.home.margin" />
     </template>

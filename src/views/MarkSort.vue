@@ -1,26 +1,26 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
-import { getEssayListByMark } from "@/apis/remote-api";
+import { getWritingMark } from "@/apis/remote-api";
 import { endLoading, startLoading, getSetting, nav } from "@/utils/common";
 
 startLoading();
 
 const route = useRoute();
 const router = useRouter();
-const markSort = ref(await getEssayListByMark(`${route.params.tag}`));
+const listing = ref(await getWritingMark(`${route.params.tag}`));
 const setting = getSetting();
 
-document.querySelector("title").innerText = `${markSort.value.hint} - ${blogApp} - 博客园`;
+document.querySelector("title").innerText = `${listing.value.hint} - ${blogApp} - 博客园`;
 
 onMounted(() => {
   endLoading();
 });
 
 watch(route, async () => {
-  if (route.name === "markSort") {
+  if (route.name === "MarkSort") {
     startLoading();
-    markSort.value = await getEssayListByMark(`${route.params.tag}`);
-    document.querySelector("title").innerText = `${markSort.value.hint} - ${blogApp} - 博客园`;
+    listing.value = await getWritingMark(`${route.params.tag}`);
+    document.querySelector("title").innerText = `${listing.value.hint} - ${blogApp} - 博客园`;
     endLoading();
   }
 });
@@ -36,28 +36,28 @@ watch(route, async () => {
           </div>
         </template>
         <template #content>
-          <div class="l-sec-size mb-5 mt-4">{{ markSort.hint }}</div>
+          <div class="l-sec-size mb-5 mt-4">{{ listing.hint }}</div>
         </template>
       </el-page-header>
       <Card
         line
-        v-for="(item, index) in markSort.data"
+        v-for="(item, index) in listing.data"
         :key="index"
         :padding="setting.pages.tagColl.padding"
         :margin="setting.pages.tagColl.margin">
         <div class="l-sec-size">
           <router-link class="hover" :to="'/p/' + item.id">
-            {{ item.title }}
+            {{ item.text }}
           </router-link>
         </div>
         <div class="f-c-s l-fiv-size mt-4">
           <i-ep-caret-right />
           <router-link class="hover ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id"> 阅读全文 </router-link>
         </div>
-        <EssaySynopsis class="mt-4" :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
+        <WritingSynopsis class="mt-4" :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
       </Card>
     </div>
-    <template #title>标签页列表盒子模型设置</template>
+    <template #title>列表盒子模型</template>
     <template #content>
       <BoxSetting :padding="setting.pages.tagColl.padding" :margin="setting.pages.tagColl.margin" />
     </template>

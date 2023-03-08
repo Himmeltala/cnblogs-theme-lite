@@ -1,47 +1,47 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
-import { getEssaySort, getSortChild } from "@/apis/remote-api";
+import { getWritingSort, getWritingSortChild } from "@/apis/remote-api";
 import { endLoading, startLoading, nav, getSetting } from "@/utils/common";
-
-startLoading();
 
 const route = useRoute();
 const router = useRouter();
+const id = ref(route.params.id);
+const mode = ref(route.params.mode);
 const setting = getSetting();
-const child = ref(await getSortChild(`${route.params.id}`));
-const sort = ref(await getEssaySort(`${route.params.id}`, 1));
+const child = ref();
+const sort = ref();
 
-document.querySelector("title").innerText = `${sort.value.hint} - ${blogApp} - 博客园`;
-
-onMounted(() => {
+async function fetchData(index?: number) {
+  startLoading();
+  sort.value = await getWritingSort(`${id.value}`, index || 1);
+  if (mode.value === "a") {
+    child.value = await getWritingSortChild(`${id.value}`, "2");
+  } else if (mode.value === "p") {
+    child.value = await getWritingSortChild(`${id.value}`);
+  }
+  document.querySelector("title").innerText = `${sort.value.hint} - ${blogApp} - 博客园`;
   endLoading();
-});
+}
+
+await fetchData();
 
 async function nexpr(e: any) {
-  startLoading();
-  sort.value = await getEssaySort(`${route.params.id}`, e.currentIndex);
-  endLoading();
+  await fetchData(e.currentIndex);
 }
 
 async function next(e: any) {
-  startLoading();
-  sort.value = await getEssaySort(`${route.params.id}`, e.currentIndex);
-  endLoading();
+  await fetchData(e.currentIndex);
 }
 
 async function prev(e: any) {
-  startLoading();
-  sort.value = await getEssaySort(`${route.params.id}`, e.currentIndex);
-  endLoading();
+  await fetchData(e.currentIndex);
 }
 
 watch(route, async () => {
-  if (route.name === "essaySort") {
-    startLoading();
-    child.value = await getSortChild(`${route.params.id}`);
-    sort.value = await getEssaySort(`${route.params.id}`, 1);
-    document.querySelector("title").innerText = `${sort.value.hint} - ${blogApp} - 博客园`;
-    endLoading();
+  if (route.name === "Sort") {
+    id.value = route.params.id;
+    mode.value = route.params.mode;
+    await fetchData();
   }
 });
 </script>
@@ -73,19 +73,15 @@ watch(route, async () => {
             <div class="l-sort__child mb-4 l-four-size l-sec-color" v-if="child.length > 0">
               <div class="hover f-c-s" v-for="(item, index) in child" :key="index" :class="{ 'mb-2': index != child.length - 1 }">
                 <span class="mr-2">●</span>
-                <router-link :to="'/p/sort/' + item.id">{{ item.text }}</router-link>
+                <router-link :to="'/sort/p/' + item.id">{{ item.text }}</router-link>
               </div>
             </div>
           </Card>
-          <EssayItem
-            v-if="sort.data.length > 0"
-            :padding="setting.pages.sort.padding"
-            :margin="setting.pages.sort.margin"
-            :data="sort.data" />
+          <WritingItem :padding="setting.pages.sort.padding" :margin="setting.pages.sort.margin" :data="sort.data" />
         </template>
       </Pagination>
     </div>
-    <template #title>分类页盒子模型设置</template>
+    <template #title>分类盒子模型</template>
     <template #content>
       <BoxSetting :padding="setting.pages.sort.padding" :margin="setting.pages.sort.margin" />
     </template>

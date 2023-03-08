@@ -39,10 +39,10 @@ function useCodeClipboard(ele: JQuery<HTMLElement>) {
   clipboard.on("click", () => {
     const text = ele.text();
     navigator.clipboard.writeText(text).then(
-      function () {
+      () => {
         ElMessage({ message: "复制成功！", type: "success", grouping: true });
       },
-      function () {
+      () => {
         ElMessage({ message: "没有权限！", type: "error", grouping: true });
       }
     );
@@ -51,34 +51,14 @@ function useCodeClipboard(ele: JQuery<HTMLElement>) {
   ele.parent().find(".code-block").prepend(clipboard);
 }
 
-function setHighslide(ele: JQuery<HTMLElement>, deltaY: number) {
-  const height = ele.height();
-  const width = ele.width();
-
-  if (deltaY < 0) {
-    return { width: width + width * 0.2, height: height + height * 0.2 };
-  } else {
-    return { width: width - width * 0.2, height: height - height * 0.2 };
-  }
-}
-
 function useHighslide(ele: JQuery<HTMLElement>) {
   const image = $(".l-highslide .l-highslide__img");
 
-  ele.on("click", function (e) {
+  ele.on("click", () => {
     $(".l-highslide").removeClass("noactive").addClass("active");
     $("body").css({ overflow: "hidden" });
     image.attr("src", ele.attr("src"));
-    image.css({
-      width: ele.width() * 0.5,
-      height: ele.height() * 0.5
-    });
-  });
-
-  image.on("mousewheel", function (e) {
-    // @ts-ignore
-    const { width, height } = setHighslide(image, e.originalEvent.deltaY);
-    image.css({ width, height });
+    image.css({ width: ele.width(), height: ele.height() });
   });
 }
 
@@ -124,7 +104,7 @@ export function useDirective(Vue: any) {
    * 对指定元素下的标签进行数学公式格式化
    */
   Vue.directive("mathjax", {
-    mounted(el: any) {
+    mounted() {
       // @ts-ignore
       const MathJax = window.MathJax;
       const nodes = document.querySelectorAll(".math");

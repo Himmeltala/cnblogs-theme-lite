@@ -5,7 +5,23 @@ import { pcDevice } from "@/lite.config";
 const highslide = ref<HTMLElement>();
 const image = ref<HTMLElement>();
 const angle = ref(0);
-const { x, y } = useDraggable(image);
+const x = ref(0);
+const y = ref(0);
+const width = ref(0);
+const height = ref(0);
+const transition = ref(false);
+
+useDraggable(image, {
+  onMove(position) {
+    x.value = position.x;
+    y.value = position.y;
+  },
+  onStart() {
+    transition.value = false;
+    width.value = $(image.value).width();
+    height.value = $(image.value).height();
+  }
+});
 
 function close() {
   $(highslide.value).removeClass("active").addClass("noactive");
@@ -15,31 +31,48 @@ function close() {
   y.value = 0;
 }
 
+function zoom() {
+  transition.value = true;
+  width.value = $(image.value).width();
+  height.value = $(image.value).height();
+}
+
 function zoomIn() {
-  const width = $(image.value).width();
-  const height = $(image.value).height();
-  $(image.value).css({
-    width: width + width * 0.5,
-    height: height + height * 0.5
-  });
+  zoom();
+  height.value += height.value * 0.15;
+  width.value += width.value * 0.15;
 }
 
 function zoomOut() {
-  const width = $(image.value).width();
-  const height = $(image.value).height();
-  $(image.value).css({
-    width: width - width * 0.5,
-    height: height - height * 0.5
-  });
+  zoom();
+  height.value -= height.value * 0.15;
+  width.value -= width.value * 0.15;
 }
 
-function rotate(direction: string) {
+function rotate(direction: "right" | "left") {
+  transition.value = true;
   if (direction === "left") {
     angle.value += 90;
   } else {
     angle.value -= 90;
   }
 }
+
+onMounted(() => {
+  image.value.addEventListener("mousewheel", e => {
+    transition.value = false;
+    width.value = $(image.value).width();
+    height.value = $(image.value).height();
+    // @ts-ignore
+    if (e.deltaY < 0) {
+      height.value += height.value * 0.15;
+      width.value += width.value * 0.15;
+    } else {
+      height.value -= height.value * 0.15;
+      width.value -= width.value * 0.15;
+    }
+  });
+});
 </script>
 
 <template>
@@ -50,19 +83,29 @@ function rotate(direction: string) {
           <img
             ref="image"
             draggable="false"
-            class="l-highslide__img noselect"
-            :class="{ fixed: x && y && pcDevice ? true : false }"
-            :style="{ transform: 'rotate(' + angle + 'deg)', left: x + 'px', top: y + 'px' }" />
+            style="max-width: initial"
+            class="l-highslide__img noselect cursor-move"
+            :class="{
+              fixed: x && y && pcDevice ? true : false,
+              transition: transition
+            }"
+            :style="{
+              transform: 'rotate(' + angle + 'deg)',
+              left: x + 'px',
+              top: y + 'px',
+              width: width + 'px',
+              height: height + 'px'
+            }" />
         </div>
         <div class="l-highslide__close f-c-c z-99 hover absolute top-2 right-2" @click="close">
           <i-ep-close />
         </div>
         <div class="z-99 f-c-c absolute bottom-4 left-0 w-100%">
           <div class="l-highslide__tool f-c-c">
-            <div v-if="!pcDevice" class="mr-4 f-c-c hover" @click="zoomIn">
+            <div class="mr-4 f-c-c hover" @click="zoomIn">
               <i-ep-zoom-in />
             </div>
-            <div v-if="!pcDevice" class="mr-4 f-c-c hover" @click="zoomOut">
+            <div class="mr-4 f-c-c hover" @click="zoomOut">
               <i-ep-zoom-out />
             </div>
             <div class="mr-4 f-c-c hover" @click="rotate('right')">
@@ -95,6 +138,15 @@ function rotate(direction: string) {
 
 .noactive {
   transform: scale(0, 0);
+}
+
+.transition {
+  transition: all 0.3s ease-in-out;
+}
+
+.highslide__img {
+  max-height: 100%;
+  max-width: 100%;
 }
 
 .l-highslide__close {

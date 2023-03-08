@@ -24,9 +24,9 @@ export const useAnchorStore = defineStore("anchorStore", () => {
 export const useBaseAuthorData = defineStore("baseAuthorData", () => {
   const _authorData = ref();
 
-  function setAuthorData(data: any) {
+  function setBaseAuthorData(data: any) {
     _authorData.value = data;
   }
 
-  return { authorData: _authorData, setAuthorData };
+  return { authorData: _authorData, setBaseAuthorData };
 });

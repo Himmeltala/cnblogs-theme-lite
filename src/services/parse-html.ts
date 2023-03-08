@@ -33,7 +33,7 @@ function getMaxPage(dom: any): number {
 /**
  * 解析随笔列表页面
  */
-export function parseEssayList(dom: any): CustType.IEssayList {
+export function parseEssayList(dom: any): CustType.IWritingList {
   const id = $(dom).find(".postTitle2");
   const head = $(dom).find(".postTitle");
   const desc = $(dom).find(".c_b_p_desc");
@@ -43,7 +43,7 @@ export function parseEssayList(dom: any): CustType.IEssayList {
   const comm = notes.match(/评论\([0-9]+\)/g);
   const digg = notes.match(/推荐\([0-9]+\)/g);
 
-  const data: CustType.IEssay[] = [];
+  const data: CustType.IWriting[] = [];
 
   $(desc).each((i, e) => {
     data.push({
@@ -69,7 +69,7 @@ export function parseEssayList(dom: any): CustType.IEssayList {
 /**
  * 解析随笔详细页面
  */
-export function parseEssay(id: string, dom: any): CustType.IEssay {
+export function parseWriting(id: string, dom: any): CustType.IWriting {
   return {
     id,
     text: $(dom).find(".postTitle > a > span").text(),
@@ -124,8 +124,8 @@ export function parseCommentPages(json: any): number {
 /**
  * 解析随笔详细页面中的属性：标签、分类
  */
-export function parseEssayProps(dom: any): CustType.IEssayProps {
-  const data = <CustType.IEssayProps>{ tags: [], sorts: [] };
+export function parseWritingProps(dom: any): CustType.IWritingProps {
+  const data = <CustType.IWritingProps>{ tags: [], sorts: [] };
   const _dom = parseDOM(dom);
 
   $(_dom)
@@ -179,13 +179,13 @@ export function parseEssayPrevNext(dom: any): CustType.IPrevNext {
 }
 
 /**
- * 解析分类列表页面
+ * 随笔列表，包含了描述、评论、点赞的随笔列表
  */
-export function parseEssaySort(dom: any): CustType.IEssaySort {
+export function parseWritingsFull(dom: any): CustType.IWritingList2 {
   const _dom = $(dom).find(".entrylistItem");
 
   const id = $(_dom).find(".entrylistItemTitle");
-  const title = $(_dom).find(".entrylistItemTitle > span");
+  const head = $(_dom).find(".entrylistItemTitle > span");
   const desc = $(_dom).find(".c_b_p_desc");
   const notes = $(_dom).find(".entrylistItemPostDesc").text();
   const date = notes.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
@@ -193,14 +193,14 @@ export function parseEssaySort(dom: any): CustType.IEssaySort {
   const comm = notes.match(/评论\([0-9]+\)/g);
   const digg = notes.match(/推荐\([0-9]+\)/g);
 
-  const data: CustType.IEssay[] = [];
+  const data: CustType.IWriting[] = [];
 
   $(_dom).each((i, e) => {
     data.push({
       id: $(id[i])
         .attr("href")
         .match(/[0-9]+/g)[0],
-      text: $(title[i]).text(),
+      text: $(head[i]).text(),
       desc: $(desc[i]).text(),
       date: date![i],
       view: view![i],
@@ -220,24 +220,23 @@ export function parseEssaySort(dom: any): CustType.IEssaySort {
 }
 
 /**
- * 解析标签页下的随笔列表
+ * 随笔列表，不包含随笔描述的随笔列表
  */
-export function parseMarkSort(dom: any): CustType.IMarkSort {
-  const title = $(dom).find(".PostList > .postTitl2 > a");
+export function parseWritingsSlice(dom: any): CustType.IWritingList2 {
+  const head = $(dom).find(".PostList > .postTitl2 > a");
   const desc = $(dom).find(".PostList > .postDesc2");
   const hint = $(dom).find(".PostListTitle").text().trim();
-  const data: any = [];
+  const data: CustType.IWriting[] = [];
 
-  $(title).each((i, e) => {
+  $(head).each((i, e) => {
     data.push({
       id: $(e)
         .attr("href")
         .match(/[0-9]+/g)[0],
-      title: $(e).text().trim(),
-      href: $(e).attr("href"),
+      text: $(e).text().trim(),
       date: $(desc[i])
         .text()
-        .match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g)![0],
+        .match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g)[0],
       view: $(desc[i]).find(".post-view-count").text().split(":")[1],
       comm: $(desc[i]).find(".post-comment-count").text().split(":")[1],
       digg: $(desc[i]).find(".post-digg-count").text().split(":")[1]
@@ -405,8 +404,8 @@ export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
 /**
  * 解析侧边栏博主主人基本的昵称、粉丝数、园龄等数据
  */
-export function parseAuthorData(dom: string): Array<CustType.IAuthor> {
-  const data: CustType.IAuthor[] = [];
+export function parseAuthorData(dom: string): CustType.ICabinetItemData[] {
+  const data: CustType.ICabinetItemData[] = [];
   $(parseDOM(dom))
     .find("#profile_block > a")
     .each((i, e) => {
@@ -420,8 +419,8 @@ export function parseAuthorData(dom: string): Array<CustType.IAuthor> {
  *
  * @param dom 真实 DOM
  */
-export function parseMasterData(dom: string): Array<CustType.IMasterData> {
-  const data: CustType.IMasterData[] = [];
+export function parseMasterData(dom: string): Array<CustType.ICabinetItemData> {
+  const data: CustType.ICabinetItemData[] = [];
   $(parseDOM(dom))
     .find("span")
     .each((i, d) => {
@@ -441,8 +440,8 @@ export function parseMasterData(dom: string): Array<CustType.IMasterData> {
  *
  * @param dom 真实 DOM
  */
-export function parseCabinetRankList(dom: string): CustType.ICabinetRankList[] {
-  const data: CustType.ICabinetRankList[] = [];
+export function parseCabinetRankList(dom: string): CustType.ICabinetItemData[] {
+  const data: CustType.ICabinetItemData[] = [];
   $(parseDOM(dom))
     .find("li")
     .each((i, d) => {
@@ -507,7 +506,7 @@ export function parseCabinetTopList(dom: string): CustType.ICabinetTopList {
   return data;
 }
 
-export function parseMarks(realDOM: any): Array<CustType.IMark> {
+export function parseMarkList(realDOM: any): CustType.IMark[] {
   const data: CustType.IMark[] = [];
   $(realDOM)
     .find("#MyTag1_dtTagList")
@@ -535,8 +534,8 @@ export function parseIsUnLock(dom: any): boolean {
   }
 }
 
-export function parseSortChild(dom: any): CustType.IEssaySortChild[] {
-  const data: CustType.IEssaySortChild[] = [];
+export function parseWritingSortChild(dom: any): CustType.IWritingSortChild[] {
+  const data: CustType.IWritingSortChild[] = [];
   $(dom)
     .find("li")
     .each((i, el) => {

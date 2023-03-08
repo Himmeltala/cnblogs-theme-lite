@@ -61,64 +61,80 @@ export async function getEssayList(page: number) {
 }
 
 /**
- * 获取随笔
- *
- * @param id 随笔 ID
+ * 获取随笔、文章
  */
-export async function getEssay(id: string) {
+export async function getWriting(id: string) {
   const { data } = await sendAwaitGet(`/p/${id}.html`);
-  return Parser.parseEssay(id, data);
+  return Parser.parseWriting(id, data);
 }
 
 /**
- * 获取随笔的标签和分类
- *
- * @param id 进入随笔页面之后，从 vue-router 参数中获取
+ * 获取随笔、文章的标签和分类
  */
-export async function getEssayProps(id: string) {
+export async function getWritingProps(id: string) {
   const { data } = await sendAwaitGet(`/ajax/CategoriesTags.aspx?blogId=${blogId}&postId=${id}`);
-  return Parser.parseEssayProps(data);
+  return Parser.parseWritingProps(data);
 }
 
 /**
- * 获取随笔的上下篇
- *
- * @param id 进入随笔页面之后，从 vue-router 参数中获取
+ * 获取随笔、文章的上下篇
  */
-export async function getEssayPrevNext(id: string) {
+export async function getWritingPrevNext(id: string) {
   const { data } = await sendAwaitGet(`/ajax/post/prevnext?postId=${id}`);
   return Parser.parseEssayPrevNext(data);
 }
 
 /**
- * 点赞或反对该随笔
+ * 点赞或反对该随笔、文章
  *
- * @param form 随笔实体。必须包含：isAbandoned、postId、voteType 三个字段。
+ * @param form 随笔、文章实体。必须包含：isAbandoned、postId、voteType 三个字段。
  */
-export async function voteEssay(form: BlogType.IEssay): Promise<BlogType.AjaxType> {
+export async function voteWriting(form: BlogType.IEssay): Promise<BlogType.AjaxType> {
   const { data } = await sendAwaitPost(`/ajax/vote/blogpost`, form);
   return data;
 }
 
 /**
- * 获取随笔点赞和反对的数据
+ * 获取随笔、文章的点赞和反对的数据
  *
  * @param id 传递一个数组，数组第一个就是 postId 的值
  */
-export async function getEssayViewPoint(id: string): Promise<BlogType.IEssayViewPoint> {
+export async function getWritingViewPoint(id: string): Promise<BlogType.IEssayViewPoint> {
   const { data } = await sendAwaitPost(`/ajax/GetPostStat`, [id]);
   return data[0];
 }
 
 /**
- * 获取分类列表
+ * 获取随笔分类、文章分类
  *
- * @param id 分类列表 id
+ * @param id 分类 id
  * @param page 页数
  */
-export async function getEssaySort(id: string, page: any) {
+export async function getWritingSort(id: string, page: any) {
   const { data } = await sendAwaitGet(`/category/${id}.html?page=${page}`);
-  return Parser.parseEssaySort(data);
+  return Parser.parseWritingsFull(data);
+}
+
+/**
+ * 获取分类下的子分类
+ * @param id 分类 ID
+ * @param type 分类类型，随笔的类型是1，文章的类型是2
+ */
+export async function getWritingSortChild(id: string, type?: string) {
+  const { data } = await sendAwaitGet(`/ajax/TreeCategoryList.aspx?parentId=${id}&categoryType=${type || "1"}`);
+  return Parser.parseWritingSortChild(data);
+}
+
+/**
+ * 获取随笔档案、文章档案
+ *
+ * @param date 日期
+ * @param type 文章的请求链接是 archives，随笔的请求链接是 archive
+ */
+export async function getWritingArchive(date: string, type: "article" | "essay") {
+  const split = date.split("-");
+  const { data } = await sendAwaitGet(`/${type == "article" ? "archives" : "archive"}/${split[0]}/${split[1]}.html}`);
+  return Parser.parseWritingsFull(data);
 }
 
 /**
@@ -126,9 +142,9 @@ export async function getEssaySort(id: string, page: any) {
  *
  * @param tag 标签
  */
-export async function getEssayListByMark(tag: string) {
+export async function getWritingMark(tag: string) {
   const { data } = await sendAwaitGet(`/tag/${tag}`);
-  return Parser.parseMarkSort(data);
+  return Parser.parseWritingsSlice(data);
 }
 
 /**
@@ -152,22 +168,11 @@ export async function getIsUnlock(pwd: string, id: string) {
  * @param id 博文 ID
  * @returns 输入密码正确时返回这个博文内容
  */
-export async function getLockedEssay(pwd: string, id: string) {
+export async function getLockedWriting(pwd: string, id: string) {
   const formData = new FormData();
   formData.append("Password", pwd);
   const { data } = await sendAwaitPost(`/protected/p/${id}.html`, formData);
-  return Parser.parseEssay(id, data);
-}
-
-/**
- * 获取随笔档案
- *
- * @param date 日期
- */
-export async function getEssayArchive(date: string) {
-  const split = date.split("-");
-  const { data } = await sendAwaitGet(`/archive/${split[0]}/${split[1]}.html}`);
-  return Parser.parseEssaySort(data);
+  return Parser.parseWriting(id, data);
 }
 
 // ------------end------------------随笔--------------end----------------
@@ -321,17 +326,9 @@ export async function unfollow() {
 /**
  * 获取所有标签列表
  */
-export async function getMarks() {
+export async function getMarkList() {
   const { data } = await sendAwaitGet(`/tag`);
-  return Parser.parseMarks(data);
-}
-
-/**
- * 获取分类下的子分类
- */
-export async function getSortChild(id: string) {
-  const { data } = await sendAwaitGet(`/ajax/TreeCategoryList.aspx?parentId=${id}&categoryType=1`);
-  return Parser.parseSortChild(data);
+  return Parser.parseMarkList(data);
 }
 
 /**

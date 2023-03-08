@@ -36,10 +36,10 @@ function setFontColor() {
 
   if (mode.value.name === "dark") {
     // @ts-ignore
-    mode.value.dom.style.setProperty("--l-code-bg", setting.value.pages.article.code.dark.color);
+    mode.value.dom.style.setProperty("--l-code-bg", setting.value.pages.writing.code.dark.color);
   } else if (mode.value.name === "light") {
     // @ts-ignore
-    mode.value.dom.style.setProperty("--l-code-bg", setting.value.pages.article.code.light.color);
+    mode.value.dom.style.setProperty("--l-code-bg", setting.value.pages.writing.code.light.color);
   }
 }
 
@@ -53,11 +53,11 @@ watch(setting, val => {
 <template>
   <div class="mb-4" v-show="mode.name === 'dark'">
     <span class="mr-2">设置黑夜代码块颜色</span>
-    <el-color-picker size="small" :predefine="colors" show-alpha v-model="setting.pages.article.code.dark.color" />
+    <el-color-picker size="small" :predefine="colors" show-alpha v-model="setting.pages.writing.code.dark.color" />
   </div>
   <div class="mb-4" v-show="mode.name === 'light'">
     <span class="mr-2">设置白天代码块颜色</span>
-    <el-color-picker size="small" :predefine="colors" show-alpha v-model="setting.pages.article.code.light.color" />
+    <el-color-picker size="small" :predefine="colors" show-alpha v-model="setting.pages.writing.code.light.color" />
   </div>
 </template>
 

@@ -7,7 +7,7 @@ const router = useRouter();
 
 defineProps({
   data: {
-    type: Array as PropType<CustType.IEssay[]>,
+    type: Array as PropType<CustType.IWriting[]>,
     required: true
   },
   margin: {
@@ -49,7 +49,7 @@ defineProps({
       <i-ep-caret-right />
       <router-link class="ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id"> 阅读全文 </router-link>
     </div>
-    <EssaySynopsis :align="'flex-end'" :data="{ date: item.date, comm: item.comm, digg: item.digg, view: item.view }" />
+    <WritingSynopsis :align="'flex-end'" :data="{ date: item.date, comm: item.comm, digg: item.digg, view: item.view }" />
     <div class="l-article-item__bottom" :class="{ 'mt-4': item.isTop || item.isOnlyMe || item.isLocked }">
       <LTag round plain v-if="item.isTop" class="mr-2">置顶随笔</LTag>
       <LTag round plain v-if="item.isOnlyMe" class="mr-2">仅自己可见</LTag>

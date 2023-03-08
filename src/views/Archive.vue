@@ -1,47 +1,47 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
-import { getEssayArchive } from "@/apis/remote-api";
+import { getWritingArchive } from "@/apis/remote-api";
 import { endLoading, startLoading, nav, getSetting } from "@/utils/common";
 
 startLoading();
 
 const route = useRoute();
 const router = useRouter();
-const archiveDate = route.params.date;
+const date = ref(route.params.date);
+const mode = ref(route.params.mode);
 const setting = getSetting();
+const archive = ref();
 
-const archive = ref(await getEssayArchive(`${archiveDate}`));
+async function fetchData() {
+  startLoading();
+  if (mode.value === "a") {
+    archive.value = await getWritingArchive(`${date.value}`, "article");
+  } else if (mode.value === "p") {
+    archive.value = await getWritingArchive(`${date.value}`, "essay");
+  }
+  document.querySelector("title").innerText = `${archive.value.hint} - ${blogApp} - 博客园`;
+  endLoading();
+}
 
-document.querySelector("title").innerText = `${archive.value.hint} - ${blogApp} - 博客园`;
+fetchData();
 
 async function nexpr(e: any) {
-  startLoading();
-  archive.value = await getEssayArchive(`${archiveDate}`);
-  endLoading();
+  fetchData();
 }
 
 async function next(e: any) {
-  startLoading();
-  archive.value = await getEssayArchive(`${archiveDate}`);
-  endLoading();
+  fetchData();
 }
 
 async function prev(e: any) {
-  startLoading();
-  archive.value = await getEssayArchive(`${archiveDate}`);
-  endLoading();
+  fetchData();
 }
 
-onMounted(() => {
-  endLoading();
-});
-
 watch(route, async () => {
-  if (route.name === "essayArchive") {
-    startLoading();
-    archive.value = await getEssayArchive(`${route.params.date}`);
-    document.querySelector("title").innerText = `${archive.value.hint} - ${blogApp} - 博客园`;
-    endLoading();
+  if (route.name === "Archive") {
+    mode.value = route.params.mode;
+    date.value = route.params.date;
+    fetchData();
   }
 });
 </script>
@@ -63,7 +63,7 @@ watch(route, async () => {
               </template>
             </el-page-header>
           </Card>
-          <EssayItem
+          <WritingItem
             v-if="archive.data.length > 0"
             :padding="setting.pages.sort.padding"
             :margin="setting.pages.sort.margin"
@@ -71,11 +71,9 @@ watch(route, async () => {
         </template>
       </Pagination>
     </div>
-    <template #title>随笔档案盒子模型设置</template>
+    <template #title>档案盒子模型</template>
     <template #content>
       <BoxSetting :padding="setting.pages.sort.padding" :margin="setting.pages.sort.margin" />
     </template>
   </ContextMenu>
 </template>
-
-<style scoped lang="scss"></style>
