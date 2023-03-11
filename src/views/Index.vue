@@ -47,7 +47,7 @@ onMounted(() => {
         <div class="w-60%">
           <div class="mb-6">
             <div class="mb-2 font-bold">个人简介</div>
-            <div class="l-fiv-size" v-html="__LITE_CONFIG__.nameplate.intro"></div>
+            <div class="l-for-size" v-html="__LITE_CONFIG__.nameplate.intro"></div>
           </div>
           <div>
             <div class="mb-2 font-bold">个人签名</div>
@@ -105,7 +105,7 @@ onMounted(() => {
           <div class="f-s-b">
             <div class="mb-6 w-50%">
               <div class="mb-4 font-bold">精选仓库</div>
-              <div class="l-fiv-size">
+              <div class="l-for-size">
                 <div class="hover mb-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.warehouse" :key="index">
                   <a :href="item.url" target="__blank">{{ item.text }}</a>
                 </div>
@@ -113,7 +113,7 @@ onMounted(() => {
             </div>
             <div class="mb-6 w-50%">
               <div class="mb-4 font-bold">项目经历</div>
-              <div class="hover mb-2 l-fiv-size" v-for="(item, index) in __LITE_CONFIG__.nameplate.experience" :key="index">
+              <div class="hover mb-2 l-for-size" v-for="(item, index) in __LITE_CONFIG__.nameplate.experience" :key="index">
                 <div class="mb-1">{{ item.date }}</div>
                 <div>
                   {{ item.text }}
@@ -153,7 +153,7 @@ onMounted(() => {
         <div class="f-s-b">
           <div class="mb-6 w-50%">
             <div class="mb-4 font-bold">精选仓库</div>
-            <div class="l-fiv-size">
+            <div class="l-for-size">
               <div class="hover mb-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.warehouse" :key="index">
                 <a :href="item.url" target="__blank">{{ item.text }}</a>
               </div>
@@ -161,7 +161,7 @@ onMounted(() => {
           </div>
           <div class="mb-6 w-50%">
             <div class="mb-4 font-bold">项目经历</div>
-            <div class="hover mb-2 l-fiv-size" v-for="(item, index) in __LITE_CONFIG__.nameplate.experience" :key="index">
+            <div class="hover mb-2 l-for-size" v-for="(item, index) in __LITE_CONFIG__.nameplate.experience" :key="index">
               <div class="mb-1">{{ item.date }}</div>
               <div>
                 {{ item.text }}
@@ -186,5 +186,3 @@ onMounted(() => {
     </div>
   </Card>
 </template>
-
-<style scoped lang="scss"></style>
