@@ -136,7 +136,7 @@ watch(route, async () => {
         </div>
         <div class="l-writing__content mt-8 l-thr-size" v-html="writing.content" v-hljs v-catalog v-mathjax></div>
         <Highslide />
-        <div class="divider"></div>
+        <div class="divider flex-col"></div>
         <div class="l-writing__bdesc l-sec-color f-c-e l-fiv-size">
           <div class="f-c-c mr-4">
             <i-ep-clock class="mr-1" />
@@ -269,7 +269,6 @@ pre {
     blockquote {
       --uno: rd-1;
       color: var(--l-sec-color);
-      background: var(--l-precode-bg);
       margin: 0;
       padding: {
         left: 0.5rem;

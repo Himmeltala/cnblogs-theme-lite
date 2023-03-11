@@ -60,6 +60,10 @@ function useHighslide(ele: JQuery<HTMLElement>) {
     image.attr("src", ele.attr("src"));
     image.css({ width: ele.width(), height: ele.height() });
   });
+
+  const eleParent = ele.parent("p");
+  eleParent.addClass("f-c-c flex-col");
+  eleParent.append(`<div class="l-sec-color l-fiv-size mt-2">${ele.attr("alt")}</div>`);
 }
 
 /**

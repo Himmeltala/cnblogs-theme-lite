@@ -62,17 +62,10 @@ watch(route, async () => {
                 <div class="l-sec-size mb-5 mt-4">{{ sort.hint }}</div>
               </template>
             </el-page-header>
-            <div class="l-sort__desc mb-4 l-fiv-size l-sec-color">
-              <span v-if="sort.desc2">
-                {{ sort.desc2 }}
-              </span>
-              <span v-else>
-                {{ sort.desc }}
-              </span>
-            </div>
-            <div class="l-sort__child mb-4 l-four-size l-sec-color" v-if="child.length > 0">
-              <div class="hover f-c-s" v-for="(item, index) in child" :key="index" :class="{ 'mb-2': index != child.length - 1 }">
-                <span class="mr-2">●</span>
+            <div class="l-sort__desc mb-4 l-for-size l-sec-color" v-html="sort.desc2 || sort.desc"></div>
+            <div class="l-sort__child mb-4 l-for-size" v-if="child.length > 0">
+              <div class="hover f-c-s" v-for="(item, index) in child" :key="index" :class="{ 'mb-4': index != child.length - 1 }">
+                <span class="mr-2">-</span>
                 <router-link :to="'/sort/p/' + item.id">{{ item.text }}</router-link>
               </div>
             </div>
