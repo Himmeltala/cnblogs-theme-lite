@@ -185,7 +185,7 @@ export interface ILite {
     experience?: { text: string; date: string }[];
     intro?: string;
     gossip?: string;
-    photos?: string[];
+    photo?: { disabled: boolean; src?: string[] };
   };
   // 技能栈配置项
   graph?: {

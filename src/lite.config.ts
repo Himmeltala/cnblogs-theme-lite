@@ -104,11 +104,13 @@ export function useLite(dev: Function, pro: Function) {
         warehouse: [{ text: "cnblogs-theme-lite", url: "http://www.gitee.com/cnblogs-theme-lite" }],
         experience: [{ text: "基于 Vue3 的回收平台", date: "22.03.10" }],
         gossip: "抽到水神！",
-        photos: [
-          "https://img2.baidu.com/it/u=803568479,1965819057&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=281",
-          "https://img0.baidu.com/it/u=1473451850,1789625368&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800",
-          "https://img2.baidu.com/it/u=4148750470,234532345&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=834"
-        ]
+        photo: {
+          disabled: true,
+          src: [
+            "https://img2.baidu.com/it/u=803568479,1965819057&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=281",
+            "https://img2.baidu.com/it/u=4148750470,234532345&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=834"
+          ]
+        }
       }
     };
     initSetting();

@@ -78,39 +78,20 @@ onMounted(() => {
             <div class="mb-2 font-bold">闲言碎语</div>
             <div class="l-fiv-size" v-html="__LITE_CONFIG__.nameplate.gossip"></div>
           </div>
-          <div class="mb-6">
+          <div class="mb-6" v-if="!__LITE_CONFIG__.nameplate.photo.disabled">
             <div class="mb-4 font-bold">精选图片</div>
-            <div class="f-s-b flex-wrap">
-              <div v-for="(item, i) in __LITE_CONFIG__.nameplate.photos" :key="i" :class="{ ' h-28': i < 3 }" style="width: 32%">
+            <div class="f-c-b flex-wrap">
+              <div v-for="(item, i) in __LITE_CONFIG__.nameplate.photo.src" :key="i" :class="{ ' h-28': i < 3 }" style="width: 32%">
                 <el-image
                   v-if="i < 3"
                   class="w-100% h-100%"
                   :initial-index="i"
                   :src="item"
-                  :preview-src-list="__LITE_CONFIG__.nameplate.photos" />
+                  :preview-src-list="__LITE_CONFIG__.nameplate.photo.src" />
               </div>
             </div>
           </div>
-          <div>
-            <el-button type="primary" @click="nav({ router, path: '/home' })">Get Started</el-button>
-            <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
-            <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
-          </div>
-        </div>
-        <div class="w-49%">
-          <div class="mb-6">
-            <div class="font-bold">我的技能</div>
-            <SkillGraph />
-          </div>
-          <div class="f-s-b">
-            <div class="mb-6 w-50%">
-              <div class="mb-4 font-bold">精选仓库</div>
-              <div class="l-for-size">
-                <div class="hover mb-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.warehouse" :key="index">
-                  <a :href="item.url" target="__blank">{{ item.text }}</a>
-                </div>
-              </div>
-            </div>
+          <div class="f-s-b" v-else>
             <div class="mb-6 w-50%">
               <div class="mb-4 font-bold">项目经历</div>
               <div class="hover mb-2 l-for-size" v-for="(item, index) in __LITE_CONFIG__.nameplate.experience" :key="index">
@@ -120,6 +101,49 @@ onMounted(() => {
                 </div>
               </div>
             </div>
+            <div class="mb-6 w-50%">
+              <div class="mb-4 font-bold">精选仓库</div>
+              <div class="l-for-size">
+                <div class="hover mb-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.warehouse" :key="index">
+                  <a :href="item.url" target="__blank">{{ item.text }}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-if="!__LITE_CONFIG__.nameplate.photo.disabled">
+            <el-button type="primary" @click="nav({ router, path: '/home' })">Get Started</el-button>
+            <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
+            <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
+          </div>
+        </div>
+        <div class="w-48%">
+          <div class="mb-6">
+            <div class="font-bold">我的技能</div>
+            <SkillGraph />
+          </div>
+          <div class="f-s-b" v-if="!__LITE_CONFIG__.nameplate.photo.disabled">
+            <div class="mb-6 w-50%">
+              <div class="mb-4 font-bold">项目经历</div>
+              <div class="hover mb-2 l-for-size" v-for="(item, index) in __LITE_CONFIG__.nameplate.experience" :key="index">
+                <div class="mb-1">{{ item.date }}</div>
+                <div>
+                  {{ item.text }}
+                </div>
+              </div>
+            </div>
+            <div class="mb-6 w-50%">
+              <div class="mb-4 font-bold">精选仓库</div>
+              <div class="l-for-size">
+                <div class="hover mb-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.warehouse" :key="index">
+                  <a :href="item.url" target="__blank">{{ item.text }}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-else>
+            <el-button type="primary" @click="nav({ router, path: '/home' })">Get Started</el-button>
+            <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
+            <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
           </div>
         </div>
       </div>
@@ -169,16 +193,16 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div class="mb-6">
+        <div class="mb-6" v-if="!__LITE_CONFIG__.nameplate.photo.disabled">
           <div class="mb-4 font-bold">精选图片</div>
           <div class="f-s-b flex-wrap noscroll ofw-auto">
-            <div v-for="(item, i) in __LITE_CONFIG__.nameplate.photos" :key="i" :class="{ ' h-28': i < 3 }" style="width: 32%">
+            <div v-for="(item, i) in __LITE_CONFIG__.nameplate.photo.src" :key="i" :class="{ ' h-28': i < 3 }" style="width: 32%">
               <el-image
                 v-if="i < 3"
                 class="w-100% h-100%"
                 :initial-index="i"
                 :src="item"
-                :preview-src-list="__LITE_CONFIG__.nameplate.photos" />
+                :preview-src-list="__LITE_CONFIG__.nameplate.photo.src" />
             </div>
           </div>
         </div>
