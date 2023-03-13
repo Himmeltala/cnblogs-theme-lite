@@ -34,7 +34,6 @@ defineProps({
     class="l-card"
     :style="{
       'background-color': setting.card?.open ? setting.card.color : 'initial',
-      'border-radius': setting.card?.open ? setting.card.radius + 'px' : 'initial',
       'margin-left': margin.left + 'rem',
       'margin-right': margin.right + 'rem',
       'margin-top': margin.top + 'rem',

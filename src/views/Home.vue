@@ -43,7 +43,7 @@ onMounted(() => {
         </template>
       </Pagination>
     </div>
-    <template #title>列表盒子模型</template>
+    <template #title>盒子模型设置</template>
     <template #content>
       <BoxSetting :padding="setting.pages.home.padding" :margin="setting.pages.home.margin" />
     </template>

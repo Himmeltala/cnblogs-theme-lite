@@ -129,28 +129,28 @@ export function getSettingTemp(): CustType.ISetting {
     toolkits: { pin: true },
     pages: {
       home: {
-        padding: { left: 1, right: 1, top: 0, bottom: 1.5 },
+        padding: { left: 1, right: 1, top: 1, bottom: 1 },
         margin: { left: 0, right: 0, top: 0, bottom: 1 }
       },
       writing: {
         code: { light: { color: "#fafafa" }, dark: { color: "#1f1f1f" } },
-        padding: { left: 1, right: 1, top: 0.5, bottom: 1 },
-        margin: { left: 0, right: 0, top: 0, bottom: 0 }
+        padding: { left: 1, right: 1, top: 1, bottom: 1 },
+        margin: { left: 0, right: 0, top: 0, bottom: 1 }
       },
-      tags: {
+      markList: {
         padding: { left: 0, right: 0, top: 0, bottom: 0 },
         margin: { left: 0, right: 0, top: 0, bottom: 0 }
       },
-      tagColl: {
-        padding: { left: 0, right: 0, top: 0.5, bottom: 1.5 },
-        margin: { left: 0, right: 0, top: 0, bottom: 0 }
+      markSort: {
+        padding: { left: 1, right: 1, top: 1, bottom: 1 },
+        margin: { left: 0, right: 0, top: 0, bottom: 1 }
       },
       gallery: {
-        padding: { left: 0, right: 0, top: 0, bottom: 0 },
+        padding: { left: 1, right: 1, top: 1, bottom: 1 },
         margin: { left: 0, right: 0, top: 0, bottom: 0 }
       },
       sort: {
-        padding: { left: 1, right: 1, top: 0.5, bottom: 1 },
+        padding: { left: 1, right: 1, top: 1, bottom: 1 },
         margin: { left: 0, right: 0, top: 0, bottom: 1 }
       }
     },

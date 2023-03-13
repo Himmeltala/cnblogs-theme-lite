@@ -71,7 +71,7 @@ watch(route, async () => {
         </template>
       </Pagination>
     </div>
-    <template #title>档案盒子模型</template>
+    <template #title>盒子模型设置</template>
     <template #content>
       <BoxSetting :padding="setting.pages.sort.padding" :margin="setting.pages.sort.margin" />
     </template>

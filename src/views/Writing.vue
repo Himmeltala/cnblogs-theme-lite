@@ -194,7 +194,7 @@ watch(route, async () => {
         </div>
       </template>
     </Card>
-    <template #title>随笔页样式设置</template>
+    <template #title>盒子模型设置</template>
     <template #content>
       <CodeStyleSetting />
       <BoxSetting :padding="setting.pages.writing.padding" :margin="setting.pages.writing.margin" />

@@ -17,7 +17,7 @@ onMounted(() => {
 
 <template>
   <ContextMenu>
-    <Card border :padding="setting.pages.tags.padding" :margin="setting.pages.tags.margin">
+    <Card border :padding="setting.pages.markList.padding" :margin="setting.pages.markList.margin">
       <div id="l-tags" class="min-height">
         <LTag round hover line="dotted" class="item mb-4" v-for="(item, index) in markList" :key="index">
           <div class="f-c-c w-100% h-100%">
@@ -26,9 +26,9 @@ onMounted(() => {
         </LTag>
       </div>
     </Card>
-    <template #title>标签集合页盒子模型设置</template>
+    <template #title>盒子模型设置</template>
     <template #content>
-      <BoxSetting :padding="setting.pages.tags.padding" :margin="setting.pages.tags.margin" />
+      <BoxSetting :padding="setting.pages.markList.padding" :margin="setting.pages.markList.margin" />
     </template>
   </ContextMenu>
 </template>

@@ -43,8 +43,8 @@ watch(route, async () => {
         line
         v-for="(item, index) in listing.data"
         :key="index"
-        :padding="setting.pages.tagColl.padding"
-        :margin="setting.pages.tagColl.margin">
+        :padding="setting.pages.markSort.padding"
+        :margin="setting.pages.markSort.margin">
         <div class="l-sec-size">
           <router-link class="hover" :to="'/p/' + item.id">
             {{ item.text }}
@@ -57,9 +57,9 @@ watch(route, async () => {
         <WritingSynopsis class="mt-4" :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
       </Card>
     </div>
-    <template #title>列表盒子模型</template>
+    <template #title>盒子模型设置</template>
     <template #content>
-      <BoxSetting :padding="setting.pages.tagColl.padding" :margin="setting.pages.tagColl.margin" />
+      <BoxSetting :padding="setting.pages.markSort.padding" :margin="setting.pages.markSort.margin" />
     </template>
   </ContextMenu>
 </template>

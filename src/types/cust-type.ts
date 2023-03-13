@@ -235,8 +235,8 @@ export interface ISetting {
     writing?: { padding?: IBox; margin?: IBox; code?: { light?: { color?: string }; dark?: { color?: string } } };
     gallery?: { padding?: IBox; margin?: IBox };
     sort?: { padding?: IBox; margin?: IBox };
-    tags?: { padding?: IBox; margin?: IBox };
-    tagColl?: { padding?: IBox; margin?: IBox };
+    markList?: { padding?: IBox; margin?: IBox };
+    markSort?: { padding?: IBox; margin?: IBox };
   };
   listing?: { padding?: IBox; margin?: IBox };
   article?: { padding?: IBox; margin?: IBox };
