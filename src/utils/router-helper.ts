@@ -27,7 +27,9 @@ export enum name {
   // 相册
   Albumn = "Albumn",
   // 相册项
-  AlbumnItem = "AlbunItem"
+  AlbumnItem = "AlbunItem",
+  // 博客日历
+  Calendar = "Calendar"
 }
 
 export type routePath = "/p/";

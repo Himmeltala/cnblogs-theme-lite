@@ -46,6 +46,11 @@ const routes = [
     name: name.AlbumnItem,
     path: "/album/item/:id",
     component: () => import("@/views/AlbumnItem.vue")
+  },
+  {
+    name: name.Calendar,
+    path: "/calendar",
+    component: () => import("@/views/Calendar.vue")
   }
 ];
 

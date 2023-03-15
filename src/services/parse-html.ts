@@ -182,6 +182,8 @@ export function parseEssayPrevNext(dom: any): CustType.IPrevNext {
  * 随笔列表，包含了描述、评论、点赞的随笔列表
  */
 export function parseWritingsFull(dom: any): CustType.IWritingList2 {
+  console.log(dom);
+
   const _dom = $(dom).find(".entrylistItem");
 
   const id = $(_dom).find(".entrylistItemTitle");
@@ -569,4 +571,17 @@ export function parseAlbumn(dom: any) {
     desc: $(dom).find(".thumbDescription").text(),
     data
   };
+}
+
+export function parseCalendar(dom: any): string[] {
+  const dates: string[] = [];
+  $(dom)
+    .find("a[href^='https']")
+    .each((i, el) => {
+      const date = $(el)
+        .attr("href")
+        .match(/\d+\/\d+\/\d+/g)[0];
+      dates.push(date);
+    });
+  return dates;
 }

@@ -348,3 +348,23 @@ export async function getAlbumn(id: string) {
   const { data } = await sendAwaitGet(`/gallery/${id}.html`);
   return Parser.parseAlbumn(data);
 }
+
+/**
+ * 获取月日历
+ *
+ * @param date 2023/02/15
+ */
+export async function getCalendar(date: string) {
+  const { data } = await sendAwaitGet(`/ajax/calendar.aspx?dateStr=${date}`);
+  return Parser.parseCalendar(data);
+}
+
+/**
+ * 获取一天之内的所有随笔、文章
+ *
+ * @param date 2023/02/28
+ */
+export async function getDayArchive(date: string) {
+  const { data } = await sendAwaitGet(`/archive/${date}.html`);
+  return Parser.parseWritingsFull(data);
+}
