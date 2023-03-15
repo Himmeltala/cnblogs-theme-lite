@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useCatalogStore } from "@/store";
 import { BlogType } from "@/types/data-type";
 import { isOwner, blogApp } from "@/lite.config";
 import { endLoading, startLoading, getSetting, nav } from "@/utils/common";
@@ -24,6 +25,13 @@ const writingProps = ref(await getWritingProps(postId.value));
 const viewPoint = ref(await getWritingViewPoint(postId.value));
 const isLock = ref(false);
 const pwd = ref("");
+const store = useCatalogStore();
+const anchors = ref();
+const movbox = ref();
+
+store.$onAction(({ args }) => {
+  anchors.value = args[0];
+}, true);
 
 if (!(writing.value.content && writing.value.text)) isLock.value = true;
 
@@ -31,6 +39,8 @@ document.querySelector("title").innerText = `${writing.value.text} - ${blogApp} 
 
 onMounted(() => {
   endLoading();
+
+  movbox.value.x = "calc(var(--content-width) * 1.55)";
 });
 
 async function submit() {
@@ -53,6 +63,8 @@ async function vote(voteType: BlogType.VoteType) {
 }
 
 watch(route, async () => {
+  if (route.name === "Home") anchors.value = [];
+
   if (route.name === "Writing") {
     startLoading();
     postId.value = `${route.params.id}`;
@@ -136,6 +148,15 @@ watch(route, async () => {
         </div>
         <div class="l-writing__content mt-8 l-thr-size" v-html="writing.content" v-hljs v-catalog v-mathjax></div>
         <Highslide />
+        <MovableBox v-show="anchors && anchors.length" ref="movbox" :disabled="false" :class="{ 'l-box-bg': !setting.card.open }">
+          <template #head>
+            <div class="headtip f-c-s">
+              <i-ep-location />
+              <div class="ml-2">随笔目录</div>
+            </div>
+          </template>
+          <div class="l-fiv-size mb-2" v-for="(item, index) in anchors" :key="index" v-html="item.content" v-cateve="item" />
+        </MovableBox>
         <div class="divider flex-col"></div>
         <div class="l-writing__bdesc l-sec-color f-c-e l-fiv-size">
           <div class="f-c-c mr-4">
@@ -267,7 +288,6 @@ pre {
     }
 
     blockquote {
-      --uno: rd-1;
       color: var(--l-sec-color);
       margin: 0;
       padding: {
@@ -276,6 +296,7 @@ pre {
         bottom: 0.1rem;
       }
       border: {
+        radius: 0.25rem;
         left: {
           width: 0.3rem;
           color: var(--l-theme-color);

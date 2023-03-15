@@ -51,7 +51,9 @@ async function unsubscribe() {
       </template>
       <div v-if="cabinet?.avatar" class="f-c-c mb-5">
         <el-tooltip effect="dark" placement="right">
-          <img class="h-25 w-25 cursor-pointer rd-50" alt="FAILED" :src="cabinet?.avatar" />
+          <router-link to="/">
+            <img class="h-25 w-25 cursor-pointer rd-50" alt="FAILED" :src="cabinet?.avatar" />
+          </router-link>
           <template #content>
             <div v-if="cabinet?.signature" v-html="cabinet.signature" />
             <div v-else>这个人很懒，什么也没有留下</div>

@@ -112,6 +112,7 @@ declare module '@vue/runtime-core' {
     ManageSetting: typeof import('./src/views/common/toolkits/ManageSetting.vue')['default']
     MarkList: typeof import('./src/views/MarkList.vue')['default']
     MarkSort: typeof import('./src/views/MarkSort.vue')['default']
+    MovableBox: typeof import('./src/components/MovableBox.vue')['default']
     OtherSetting: typeof import('./src/views/common/toolkits/OtherSetting.vue')['default']
     Pagination: typeof import('./src/components/Pagination.vue')['default']
     PostComment: typeof import('./src/views/common/comment/PostComment.vue')['default']

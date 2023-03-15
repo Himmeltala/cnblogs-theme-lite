@@ -43,16 +43,14 @@ onMounted(() => {
               </div>
             </div>
           </div>
-        </div>
-        <div class="w-60%">
-          <div class="mb-6">
-            <div class="mb-2 font-bold">个人简介</div>
-            <div class="l-for-size" v-html="__LITE_CONFIG__.nameplate.intro"></div>
-          </div>
           <div>
             <div class="mb-2 font-bold">个人签名</div>
             <div class="l-fiv-size hover" v-html="__LITE_CONFIG__.cabinet.signature"></div>
           </div>
+        </div>
+        <div class="w-60% mb-6">
+          <div class="mb-2 font-bold">个人简介</div>
+          <div class="l-for-size" v-html="__LITE_CONFIG__.nameplate.intro"></div>
         </div>
       </div>
       <div class="mb-6">

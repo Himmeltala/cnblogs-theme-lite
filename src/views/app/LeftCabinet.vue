@@ -45,7 +45,7 @@ const fixed = computed(() => {
       <CabinetMain />
       <div class="noscroll ofw-auto h-4vh l-thr-color f-c wce-nowrap">
         <div class="hover mr-4" @click="nav({ path: 'https://www.cnblogs.com' })">博客园</div>
-        <div class="hover mr-4" @click="nav({ path: '/', router })">首页</div>
+        <div class="hover mr-4" @click="nav({ path: '/home', router })">首页</div>
         <div
           v-if="__LITE_CONFIG__.cabinet?.navs"
           v-for="(item, index) in __LITE_CONFIG__.cabinet.navs"

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useCatalogStore } from "@/store";
 import { getSetting } from "@/utils/common";
 import { __LITE_CONFIG__ } from "@/lite.config";
 
@@ -11,18 +10,7 @@ const props = defineProps({
 });
 
 const setting = getSetting();
-const route = useRoute();
-const anchors = ref();
-const store = useCatalogStore();
 const collapseActive = ref("1");
-
-store.$onAction(({ args }) => {
-  anchors.value = args[0];
-}, true);
-
-watch(route, val => {
-  if (val.name === "home") anchors.value = [];
-});
 
 const right = computed(() => {
   return setting.value.cabinet.right.pin && setting.value.cabinet.position.break ? setting.value.cabinet.position.right + "vw" : 0;
@@ -53,12 +41,6 @@ const fixed = computed(() => {
       :class="{ 'l-box-bg px-2': !setting.card.open }"
       :padding="setting.cabinet.right.padding"
       :margin="setting.cabinet.right.margin">
-      <ExpandableBox text="随笔目录" v-if="anchors && anchors.length">
-        <template #icon>
-          <i-ep-location />
-        </template>
-        <div class="catalog mb-2" v-for="(item, index) in anchors" :key="index" v-html="item.content" v-cateve="item" />
-      </ExpandableBox>
       <ExpandableBox text="我的技术栈" v-if="__LITE_CONFIG__.graph">
         <template #icon>
           <i-ep-aim />

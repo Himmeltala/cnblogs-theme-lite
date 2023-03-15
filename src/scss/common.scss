@@ -5,6 +5,7 @@
  * @date 2023 年 1 月 15 日
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */
+@import "./mixins.scss";
 
 .hover {
   cursor: pointer !important;
@@ -43,6 +44,12 @@
   min-height: calc(100vh - 3rem);
 }
 
+.headtip {
+  padding-left: 0.4rem;
+  border-radius: 0.25rem;
+  border-left: 0.25rem solid var(--el-color-primary);
+}
+
 .noselect {
   user-select: none;
 }
@@ -53,4 +60,22 @@
   clear: both;
   display: block;
   visibility: hidden;
+}
+
+.textarea {
+  --uno: mb-5 rd-2;
+  border: 1px solid var(--el-border-color-darker);
+  background-color: transparent;
+  @include hover($border-color: all, $font-color: false);
+
+  textarea {
+    --uno: rd-2 p-2 l-fiv-size;
+    background-color: transparent;
+    width: 100%;
+    height: 15rem;
+    border: none;
+    outline: none;
+    color: var(--l-pri-color);
+    resize: none;
+  }
 }
