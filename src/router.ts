@@ -29,7 +29,7 @@ const routes = [
   },
   {
     name: name.Archive,
-    path: "/archive/:mode/:date",
+    path: "/archive/:mode/:date?",
     component: () => import("@/views/Archive.vue")
   },
   {

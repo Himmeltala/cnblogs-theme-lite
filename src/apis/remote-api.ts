@@ -51,13 +51,13 @@ async function sendAwaitPost(url: string, data: any): Promise<any> {
 // ------------start------------------随笔--------------start----------------
 
 /**
- * 获取随笔列表
+ * 获取首页随笔列表
  *
  * @param page 页数，可以是 0，也可以是 1，都代表第一页
  */
-export async function getEssayList(page: number) {
+export async function getHomeWritingList(page: number) {
   const { data } = await sendAwaitGet(`/default.html?page=${page}`);
-  return Parser.parseEssayList(data);
+  return Parser.parseWritingList(data);
 }
 
 /**
@@ -366,5 +366,5 @@ export async function getCalendar(date: string) {
  */
 export async function getDayArchive(date: string) {
   const { data } = await sendAwaitGet(`/archive/${date}.html`);
-  return Parser.parseWritingsFull(data);
+  return Parser.parseWritingList(data);
 }

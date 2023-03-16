@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { getCalendar, getDayArchive } from "@/apis/remote-api";
+import { getCalendar } from "@/apis/remote-api";
 import { startLoading, endLoading, nav } from "@/utils/common";
 
 startLoading();
 
 const router = useRouter();
 const date = new Date();
-const calendar = ref(await getCalendar(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDay()}`));
-const calendarVal = ref(date);
-const currMonth = ref(calendarVal.value.getMonth());
+const calendar = ref(await getCalendar(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`));
+const dateModel = ref(date);
+const currMonth = ref(dateModel.value.getMonth());
 
 const findDate = (data: any) =>
   computed(() => {
@@ -16,14 +16,11 @@ const findDate = (data: any) =>
     return !!calendar.value.find(el => el == date);
   });
 
-watch(calendarVal, async () => {
-  const newDate = `${calendarVal.value.getFullYear()}/${calendarVal.value.getMonth() + 1}/${calendarVal.value.getDay()}`;
-  if (calendarVal.value.getMonth() != currMonth.value) {
-    currMonth.value = calendarVal.value.getMonth();
-    calendar.value = await getCalendar(newDate);
+watch(dateModel, async () => {
+  if (dateModel.value.getMonth() != currMonth.value) {
+    currMonth.value = dateModel.value.getMonth();
+    calendar.value = await getCalendar(`${dateModel.value.getFullYear()}/${dateModel.value.getMonth() + 1}/${dateModel.value.getDate()}`);
   }
-  const res = await getDayArchive(newDate);
-  console.log(res);
 });
 
 onMounted(() => {
@@ -32,14 +29,24 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="l-calendar min-height">
-    <el-calendar v-model="calendarVal">
-      <!-- @click="nav({ path: '/', router })" -->
+  <div class="l-calendar min-height f-s-s flex-col">
+    <el-page-header class="mt-4" :icon="null" @back="nav({ path: 'back', router })">
+      <template #title>
+        <div class="f-c-c">
+          <i-ep-back />
+        </div>
+      </template>
+      <template #content>
+        <div class="l-sec-size">博客日历</div>
+      </template>
+    </el-page-header>
+    <el-calendar v-model="dateModel">
       <template #date-cell="{ data }">
-        <div class="w-100% h-100%" v-if="findDate(data).value">
+        <div class="w-100% h-100%" @click="nav({ path: '/archive/d/' + data.day, router })" v-if="findDate(data).value">
           <u>
             {{ data.day.split("-")[2] }}
           </u>
+          <div class="mt-2 l-sec-color l-six-size">点击查看</div>
         </div>
         <span v-else>{{ data.day.split("-")[2] }}</span>
       </template>

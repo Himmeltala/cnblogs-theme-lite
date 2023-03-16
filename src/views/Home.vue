@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { getEssayList } from "@/apis/remote-api";
+import { getHomeWritingList } from "@/apis/remote-api";
 import { getSetting, startLoading, endLoading } from "@/utils/common";
 
 startLoading();
 
 const setting = getSetting();
-const listing = ref(await getEssayList(1));
+const listing = ref(await getHomeWritingList(1));
 
 async function next(e: any) {
   startLoading();
-  listing.value = await getEssayList(e.currentIndex);
+  listing.value = await getHomeWritingList(e.currentIndex);
   endLoading();
 }
 
 async function prev(e: any) {
   startLoading();
-  listing.value = await getEssayList(e.currentIndex);
+  listing.value = await getHomeWritingList(e.currentIndex);
   endLoading();
 }
 
 async function nexpr(e: any) {
   startLoading();
-  listing.value = await getEssayList(e.currentIndex);
+  listing.value = await getHomeWritingList(e.currentIndex);
   endLoading();
 }
 

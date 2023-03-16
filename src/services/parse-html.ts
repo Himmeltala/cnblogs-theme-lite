@@ -31,9 +31,9 @@ function getMaxPage(dom: any): number {
 }
 
 /**
- * 解析随笔列表页面
+ * 只适用于获取首页随笔列表；日历随笔、文章列表。列表项包含描述、评论、点赞的随笔列表。
  */
-export function parseEssayList(dom: any): CustType.IWritingList {
+export function parseWritingList(dom: any): CustType.IWritingList {
   const id = $(dom).find(".postTitle2");
   const head = $(dom).find(".postTitle");
   const desc = $(dom).find(".c_b_p_desc");
@@ -52,18 +52,18 @@ export function parseEssayList(dom: any): CustType.IWritingList {
         .match(/[0-9]+/g)[0],
       text: replaceText($(head[i]).text().trim(), [/\[置顶\]/g]),
       desc: replaceText($(desc[i]).text(), [/阅读全文/g]),
-      date: date![i],
-      view: view![i],
-      comm: comm![i],
-      digg: digg![i],
-      surface: $(e).find(".desc_img").attr("src") || "",
+      date: date[i],
+      view: view[i],
+      comm: comm[i],
+      digg: digg[i],
+      surface: $(e).find(".desc_img").attr("src") ?? "",
       isLocked: !!$(id[i]).find(`img[title="密码保护"]`).attr("title"),
       isOnlyMe: !!$(id[i]).find(`img[title="仅自己可见"]`).attr("title"),
       isTop: $(head[i]).find(".pinned-post-mark").text() === "[置顶]"
     });
   });
 
-  return { page: getMaxPage($(dom).find("#homepage_top_pager > .pager")), data };
+  return { page: getMaxPage($(dom).find("#homepage_top_pager > .pager")), data, hint: $(dom).find(".dayTitle").text() + " 档案" ?? "" };
 }
 
 /**
@@ -179,50 +179,50 @@ export function parseEssayPrevNext(dom: any): CustType.IPrevNext {
 }
 
 /**
- * 随笔列表，包含了描述、评论、点赞的随笔列表
+ * 获取分类和档案的随笔、文章列表。列表项包含描述、评论、点赞的随笔列表。
+ *
+ * 只适用于获取分类、档案的随笔、文章列表。
  */
 export function parseWritingsFull(dom: any): CustType.IWritingList2 {
-  console.log(dom);
-
-  const _dom = $(dom).find(".entrylistItem");
-
-  const id = $(_dom).find(".entrylistItemTitle");
-  const head = $(_dom).find(".entrylistItemTitle > span");
-  const desc = $(_dom).find(".c_b_p_desc");
-  const notes = $(_dom).find(".entrylistItemPostDesc").text();
-  const date = notes.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
-  const view = notes.match(/阅读\([0-9]+\)/g);
-  const comm = notes.match(/评论\([0-9]+\)/g);
-  const digg = notes.match(/推荐\([0-9]+\)/g);
-
   const data: CustType.IWriting[] = [];
 
-  $(_dom).each((i, e) => {
-    data.push({
-      id: $(id[i])
-        .attr("href")
-        .match(/[0-9]+/g)[0],
-      text: $(head[i]).text(),
-      desc: $(desc[i]).text(),
-      date: date![i],
-      view: view![i],
-      comm: comm![i],
-      digg: digg![i],
-      surface: $(e).find(".c_b_p_desc > .desc_img").attr("src") || ""
+  const dateReg = /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g;
+  const viewReg = /阅读\([0-9]+\)/g;
+  const commReg = /评论\([0-9]+\)/g;
+  const diggReg = /推荐\([0-9]+\)/g;
+
+  $(dom)
+    .find(".entrylistItem")
+    .each((i, e) => {
+      const item = $(e).find(".entrylistItemPostDesc").text();
+      data.push({
+        id: $(e)
+          .find(".entrylistItemTitle")
+          .attr("href")
+          .match(/[0-9]+/g)[0],
+        text: $(e).find(".entrylistItemTitle > span").text(),
+        desc: $(e).find(".c_b_p_desc").text(),
+        date: item.match(dateReg)[0],
+        view: item.match(viewReg)[0],
+        comm: item.match(commReg)[0],
+        digg: item.match(diggReg)[0],
+        surface: $(e).find(".c_b_p_desc > .desc_img").attr("src") ?? ""
+      });
     });
-  });
 
   return {
     desc: $(dom).find(".entrylistTitle .category-crumb-item").attr("title"),
-    desc2: $(dom).find(".entrylistDescription")?.text() || "",
-    data,
+    desc2: $(dom).find(".entrylistDescription")?.text() ?? "",
     page: getMaxPage($(dom).find("#mainContent .pager")[0]),
-    hint: $(dom).find(".entrylistTitle").text() || ""
+    hint: $(dom).find(".entrylistTitle").text() ?? "",
+    data
   };
 }
 
 /**
- * 随笔列表，不包含随笔描述的随笔列表
+ * 获取随笔、文章列表。
+ *
+ * 只适用于获取以标签区别的随笔、文章列表。
  */
 export function parseWritingsSlice(dom: any): CustType.IWritingList2 {
   const head = $(dom).find(".PostList > .postTitl2 > a");

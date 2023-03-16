@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
-import { getWritingArchive } from "@/apis/remote-api";
+import { getWritingArchive, getDayArchive } from "@/apis/remote-api";
 import { endLoading, startLoading, nav, getSetting } from "@/utils/common";
 
 startLoading();
@@ -18,30 +18,32 @@ async function fetchData() {
     archive.value = await getWritingArchive(`${date.value}`, "article");
   } else if (mode.value === "p") {
     archive.value = await getWritingArchive(`${date.value}`, "essay");
+  } else if (mode.value === "d") {
+    archive.value = await getDayArchive(`${String(date.value).replaceAll("-", "/")}`);
   }
   document.querySelector("title").innerText = `${archive.value.hint} - ${blogApp} - 博客园`;
   endLoading();
 }
 
-fetchData();
+await fetchData();
 
 async function nexpr(e: any) {
-  fetchData();
+  await fetchData();
 }
 
 async function next(e: any) {
-  fetchData();
+  await fetchData();
 }
 
 async function prev(e: any) {
-  fetchData();
+  await fetchData();
 }
 
 watch(route, async () => {
   if (route.name === "Archive") {
     mode.value = route.params.mode;
     date.value = route.params.date;
-    fetchData();
+    await fetchData();
   }
 });
 </script>
@@ -51,7 +53,7 @@ watch(route, async () => {
     <div id="l-archive" class="min-height">
       <Pagination @nexpr="nexpr" @next="next" @prev="prev" :count="archive.page" :disabled="setting.other.pagation.pin">
         <template #content>
-          <Card :padding="setting.pages.sort.padding" :margin="setting.pages.sort.margin">
+          <Card>
             <el-page-header :icon="null" @back="nav({ path: 'back', router })">
               <template #title>
                 <div class="f-c-c">

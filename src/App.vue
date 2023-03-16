@@ -72,7 +72,7 @@ watch(route, async () => {
       <div id="l-main">
         <RouterView v-slot="{ Component }">
           <template v-if="Component">
-            <KeepAlive :include="['Home', 'MarkList', 'Index']">
+            <KeepAlive :include="['Home', 'MarkList', 'Index', 'Calendar']">
               <Suspense>
                 <component :is="Component" />
               </Suspense>

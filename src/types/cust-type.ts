@@ -75,7 +75,11 @@ export interface IMark {
  * 随笔列表
  */
 export interface IWritingList {
+  // 页数
   page?: number;
+  // 提示
+  hint?: string;
+  // 数据
   data?: IWriting[];
 }
 
@@ -87,8 +91,6 @@ export interface IWritingList2 extends IWritingList {
   desc?: string;
   // 子分类描述
   desc2?: string;
-  // 分类名称、提示
-  hint?: string;
 }
 
 /**

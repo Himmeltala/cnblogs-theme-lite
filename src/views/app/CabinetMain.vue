@@ -102,13 +102,13 @@ async function unsubscribe() {
       <el-tabs v-model="tabActive" stretch>
         <el-tab-pane label="博客常用项" name="first">
           <template v-if="columnData">
+            <div class="mb-2" v-for="(item, index) in columnData.rankings" :key="index">{{ item.text }}</div>
             <router-link to="/calendar">
-              <div class="mb-2 f-c-s hover">
+              <div class="my-4 f-c-s hover l-pri-color">
                 <i-ep-calendar class="mr-2" />
                 博客日历
               </div>
             </router-link>
-            <div class="mb-2" v-for="(item, index) in columnData.rankings" :key="index">{{ item.text }}</div>
             <el-collapse v-model="baseCollActive" accordion>
               <el-collapse-item v-if="columnData.essaySort.length">
                 <template #title>
