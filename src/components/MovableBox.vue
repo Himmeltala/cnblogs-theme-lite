@@ -6,7 +6,7 @@ defineProps({
   }
 });
 
-const head = ref<HTMLElement>();
+const head = ref();
 const { x, y } = useDraggable(head);
 
 defineExpose({
@@ -16,7 +16,7 @@ defineExpose({
 </script>
 
 <template>
-  <div :style="{ left: typeof x == 'number' ? x + 'px' : x, top: y + 'px' }" :class="{ hidden: disabled }" class="l-movbox z-99 fixed">
+  <div :style="{ left: x ? x + 'px' : '', top: y + 'px' }" :class="{ hidden: disabled }" class="l-movbox z-99 fixed">
     <Card>
       <div ref="head" class="mb-2 p-2 cursor-move">
         <slot name="head" />

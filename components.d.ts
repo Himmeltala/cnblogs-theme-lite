@@ -19,6 +19,7 @@ declare module '@vue/runtime-core' {
     CabinetSetting: typeof import('./src/views/common/toolkits/CabinetSetting.vue')['default']
     Calendar: typeof import('./src/views/Calendar.vue')['default']
     Card: typeof import('./src/components/Card.vue')['default']
+    Catalog: typeof import('./src/views/common/Catalog.vue')['default']
     CodeStyleSetting: typeof import('./src/views/common/toolkits/CodeStyleSetting.vue')['default']
     Comment: typeof import('./src/views/common/comment/Comment.vue')['default']
     ContextMenu: typeof import('./src/components/ContextMenu.vue')['default']

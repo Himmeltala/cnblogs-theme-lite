@@ -28,15 +28,15 @@ async function fetchData() {
 await fetchData();
 
 async function nexpr(e: any) {
-  await fetchData();
+  // await fetchData();
 }
 
 async function next(e: any) {
-  await fetchData();
+  // await fetchData();
 }
 
 async function prev(e: any) {
-  await fetchData();
+  // await fetchData();
 }
 
 watch(route, async () => {

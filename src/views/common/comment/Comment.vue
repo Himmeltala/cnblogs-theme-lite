@@ -11,15 +11,12 @@ const props = defineProps({
 const level = ref();
 const { anchor } = storeToRefs(useAnchorStore());
 const count = ref(await getCommentCount(props.postId));
-const index = ref(count.value);
+console.log(count.value);
+const index = ref(1);
 const comments = ref(await getCommentList(props.postId, index.value, anchor.value));
 
 watch(level, () => {
-  document.querySelector(`#level-${anchor.value}`).scrollIntoView({
-    behavior: "smooth",
-    block: "center",
-    inline: "nearest"
-  });
+  document.querySelector(`#level-${anchor.value}`).scrollIntoView();
 });
 
 async function paginationChange() {
@@ -67,9 +64,9 @@ function onEdFinish(response: any) {
         </div>
         <div class="l-comment__more float-right f-c-e" v-show="!item.isEditing && !item.isAnsling">
           <el-dropdown>
-            <span class="hover">
+            <div class="hover">
               <i-ep-more class="l-fiv-size l-sec-color" />
-            </span>
+            </div>
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item>
@@ -88,12 +85,8 @@ function onEdFinish(response: any) {
         <EditComment @on-finish="onEdFinish" :post-id="postId" :index="index" :comment="item" />
         <AnswerComment @on-finish="onReFinish" :post-id="postId" :index="index" :comment="item" />
       </div>
-      <div class="mt-10 f-c-e" v-if="!comments?.length">
-        <el-pagination
-          @current-change="paginationChange"
-          layout="prev, pager, next"
-          v-model:current-page="index"
-          v-model:page-count="count" />
+      <div class="mt-10 f-c-e" v-if="comments.length">
+        <el-pagination @current-change="paginationChange" layout="prev, pager, next" v-model:current-page="index" :page-count="count" />
       </div>
     </div>
     <el-empty v-else-if="isLogin && !comments?.length" description="来一条友善的评论吧~" />
@@ -109,6 +102,10 @@ function onEdFinish(response: any) {
     padding-bottom: 1px;
     border-bottom: 1px dotted var(--pri-text-color);
     @include hover($border-color: bottom);
+  }
+
+  img {
+    cursor: zoom-in;
   }
 }
 </style>
