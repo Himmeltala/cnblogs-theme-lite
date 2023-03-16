@@ -8,7 +8,11 @@ const active = ref("1");
 const dialog = ref(false);
 
 function moveToTopNail() {
-  document.querySelector("#l-nail").scrollIntoView();
+  document.querySelector("#l-top-nail").scrollIntoView();
+}
+
+function moveToBottomNail() {
+  document.querySelector("#l-bottom-nail").scrollIntoView();
 }
 
 function changeDayTime() {
@@ -29,9 +33,9 @@ function changeDayTime() {
       <Card
         :class="{ 'l-box-bg': !setting.card.open, 'show-0': setting.toolkits.pin, 'close-0': !setting.toolkits.pin }"
         class="back-home absolute hover left-0 rd-2"
-        @click="nav({ path: 'back', router })">
+        @click="nav({ path: '/home', router })">
         <div class="f-c-c w-8 h-8">
-          <i-ep-back />
+          <i-ep-house />
         </div>
       </Card>
       <Card
@@ -39,11 +43,19 @@ function changeDayTime() {
         class="back-top absolute hover left-0 rd-2"
         @click="moveToTopNail">
         <div class="f-c-c w-8 h-8">
-          <i-ep-position />
+          <i-ep-top />
         </div>
       </Card>
       <Card
         :class="{ 'l-box-bg': !setting.card.open, 'show-2': setting.toolkits.pin, 'close-2': !setting.toolkits.pin }"
+        class="back-top absolute hover left-0 rd-2"
+        @click="moveToBottomNail">
+        <div class="f-c-c w-8 h-8">
+          <i-ep-bottom />
+        </div>
+      </Card>
+      <Card
+        :class="{ 'l-box-bg': !setting.card.open, 'show-3': setting.toolkits.pin, 'close-3': !setting.toolkits.pin }"
         @click="changeDayTime"
         class="daytime absolute hover left-0 rd-2">
         <div class="f-c-c w-8 h-8">
@@ -56,7 +68,7 @@ function changeDayTime() {
         </div>
       </Card>
       <Card
-        :class="{ 'l-box-bg': !setting.card.open, 'show-3': setting.toolkits.pin, 'close-3': !setting.toolkits.pin }"
+        :class="{ 'l-box-bg': !setting.card.open, 'show-4': setting.toolkits.pin, 'close-4': !setting.toolkits.pin }"
         @click="dialog = !dialog"
         class="setting absolute hover left-0 rd-2">
         <div class="f-c-c w-8 h-8">
@@ -66,7 +78,7 @@ function changeDayTime() {
       <Card
         @click="setting.toolkits.pin = !setting.toolkits.pin"
         :class="{ 'l-box-bg': !setting.card.open, 'show-toolkits': setting.toolkits.pin, 'close-toolkits': !setting.toolkits.pin }"
-        class="kits-box absolute hover top-40 left-0 rd-2">
+        class="kits-box absolute hover top-50 left-0 rd-2">
         <div class="f-c-c w-8 h-8">
           <i-ep-arrow-right />
         </div>
@@ -113,9 +125,9 @@ function changeDayTime() {
 
 <style scoped lang="scss">
 $show-top: 0;
-$close-end: 10rem;
+$close-end: 12.5rem;
 
-@for $index from 0 to 4 {
+@for $index from 0 to 5 {
   @if $index != 0 {
     $show-top: $show-top + 2.5rem;
   }

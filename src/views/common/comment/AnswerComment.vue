@@ -8,7 +8,7 @@ const props = defineProps({
     type: Object as PropType<any>,
     required: true
   },
-  index: {
+  currPageIndex: {
     type: Number,
     required: true
   },
@@ -25,7 +25,7 @@ const content = ref("");
 
 function uploadImage(el: string) {
   openImageUploadWindow(el, (imgUrl: any) => {
-    content.value += `\n\n${imgUrl}\n\n`;
+    content.value += `\n${imgUrl}\n`;
   });
 }
 
@@ -46,10 +46,7 @@ async function finish() {
   if (response.isSuccess) {
     content.value = "";
     props.comment.isAnsling = !props.comment.isAnsling;
-    emits("onFinish", {
-      count: await getCommentCount(props.postId),
-      comments: await getCommentList(props.postId, 0)
-    });
+    emits("onFinish", { count: await getCommentCount(props.postId), comments: await getCommentList(props.postId, props.currPageIndex) });
     ElMessage({ message: "回复评论成功！", grouping: true, type: "success" });
   } else {
     ElMessage({ message: "回复评论失败！", grouping: true, type: "error" });
@@ -69,7 +66,7 @@ function cancel() {
     <div class="float-right w-100%" v-show="comment.isAnsling">
       <div class="mb-2 f-c-e">
         <el-tooltip content="插入图片" placement="top-start">
-          <span class="hover" @click="uploadImage('upload-img-' + index)">
+          <span class="hover" @click="uploadImage('upload-img-' + currPageIndex)">
             <i-ep-picture-rounded />
           </span>
         </el-tooltip>
@@ -78,11 +75,8 @@ function cancel() {
         <textarea v-model="content" placeholder="请回复一条友善的评论，支持 Markdown 语法" />
       </div>
     </div>
-    <div
-      v-show="!comment.isEditing"
-      class="float-right f-c-e l-fiv-size l-sec-color"
-      :class="{ 'ed-item': !comment.isAnsling, ' w-100%': comment.isAnsling }">
-      <div v-show="!comment.isAnsling" class="hover f-c-e" @click="before">
+    <div class="float-right f-c-e l-fiv-size l-sec-color" :class="{ 'ed-item': !comment.isAnsling, ' w-100%': comment.isAnsling }">
+      <div v-show="!comment.isAnsling && !comment.isEditing" class="hover f-c-e" @click="before">
         <i-ep-chat-round class="mr-1" />
         <span>回复</span>
       </div>

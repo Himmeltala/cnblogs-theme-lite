@@ -11,7 +11,7 @@ const props = defineProps({
     type: Object as PropType<any>,
     required: true
   },
-  index: {
+  itemIndex: {
     type: Number,
     required: true
   },
@@ -27,7 +27,7 @@ async function confirmDeleteComment() {
     parentId: props.postId
   });
   if (data) {
-    props.comments?.splice(props.index, 1);
+    props.comments?.splice(props.itemIndex, 1);
     ElMessage({ message: "删除评论成功！", grouping: true, type: "success" });
   } else {
     ElMessage({ message: "这不是你的评论，没有权限删除！", grouping: true, type: "error" });

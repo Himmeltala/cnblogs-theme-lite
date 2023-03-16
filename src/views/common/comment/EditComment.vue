@@ -8,7 +8,7 @@ const props = defineProps({
     type: Object as PropType<any>,
     required: true
   },
-  index: {
+  currPageIndex: {
     type: Number,
     required: true
   },
@@ -25,7 +25,7 @@ const content = ref("");
 
 function uploadImage(el: string) {
   openImageUploadWindow(el, (imgUrl: any) => {
-    content.value += `\n\n${imgUrl}\n\n`;
+    content.value += `\n${imgUrl}\n`;
   });
 }
 
@@ -40,8 +40,8 @@ async function finish() {
 
   if (response.isSuccess) {
     content.value = "";
-    props.comment.isAnsling = !props.comment.isAnsling;
-    emits("onFinish", { count: await getCommentCount(props.postId), comments: await getCommentList(props.postId, 0) });
+    props.comment.isEditing = !props.comment.isEditing;
+    emits("onFinish", { count: await getCommentCount(props.postId), comments: await getCommentList(props.postId, props.currPageIndex) });
     ElMessage({ message: "修改评论成功！", grouping: true, type: "success" });
   } else {
     ElMessage({ message: "这不是你的评论，没有权限编辑！", grouping: true, type: "error" });
@@ -59,7 +59,7 @@ function cancel() {
     <div class="float-right w-100%" v-show="comment.isEditing">
       <div class="mb-2 f-c-e">
         <el-tooltip effect="dark" content="插入图片" placement="top-start">
-          <span class="hover" @click="uploadImage('upload-img-' + index)">
+          <span class="hover" @click="uploadImage('upload-img-' + currPageIndex)">
             <i-ep-picture-rounded />
           </span>
         </el-tooltip>
@@ -68,11 +68,8 @@ function cancel() {
         <textarea v-model="content" placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
       </div>
     </div>
-    <div
-      v-show="!comment.isAnsling"
-      class="float-right f-c-e l-fiv-size l-sec-color"
-      :class="{ 're-item': !comment.isEditing, 'w-100%': comment.isEditing }">
-      <div v-show="!comment.isEditing" class="hover f-c-e" @click="before">
+    <div class="float-right f-c-e l-fiv-size l-sec-color" :class="{ 're-item': !comment.isEditing, 'w-100%': comment.isEditing }">
+      <div v-show="!comment.isEditing && !comment.isAnsling" class="hover f-c-e" @click="before">
         <i-ep-edit-pen class="mr-1" />
         <span>编辑</span>
       </div>
@@ -80,15 +77,9 @@ function cancel() {
         <i-ep-circle-check class="mr-1" />
         <span>完成编辑</span>
       </div>
-      <div class="hover" v-if="comment.isEditing">
-        <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" title="确定取消编辑该评论？" @confirm="cancel">
-          <template #reference>
-            <div class="hover f-c-e">
-              <i-ep-circle-close class="mr-1" />
-              <span>取消编辑</span>
-            </div>
-          </template>
-        </el-popconfirm>
+      <div v-show="comment.isEditing" class="hover f-c-e" @click="cancel">
+        <i-ep-circle-close class="mr-1" />
+        <span>取消编辑</span>
       </div>
     </div>
   </div>

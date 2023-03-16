@@ -10,32 +10,31 @@ const props = defineProps({
 
 const level = ref();
 const { anchor } = storeToRefs(useAnchorStore());
-const count = ref(await getCommentCount(props.postId));
-console.log(count.value);
-const index = ref(1);
-const comments = ref(await getCommentList(props.postId, index.value, anchor.value));
+const pageCount = ref(await getCommentCount(props.postId));
+const currPageIndex = ref(1);
+const comments = ref(await getCommentList(props.postId, currPageIndex.value, anchor.value));
 
 watch(level, () => {
   document.querySelector(`#level-${anchor.value}`).scrollIntoView();
 });
 
 async function paginationChange() {
-  comments.value = await getCommentList(props.postId, index.value);
+  comments.value = await getCommentList(props.postId, currPageIndex.value);
 }
 
 function onPost(response: any) {
   comments.value = response.comments;
-  count.value = response.count;
+  pageCount.value = response.count;
 }
 
 function onReFinish(response: any) {
   comments.value = response.comments;
-  count.value = response.count;
+  pageCount.value = response.count;
 }
 
 function onEdFinish(response: any) {
   comments.value = response.comments;
-  count.value = response.count;
+  pageCount.value = response.count;
 }
 </script>
 
@@ -64,8 +63,8 @@ function onEdFinish(response: any) {
         </div>
         <div class="l-comment__more float-right f-c-e" v-show="!item.isEditing && !item.isAnsling">
           <el-dropdown>
-            <div class="hover">
-              <i-ep-more class="l-fiv-size l-sec-color" />
+            <div class="f-c-c">
+              <i-ep-more class="hover l-fiv-size l-sec-color" />
             </div>
             <template #dropdown>
               <el-dropdown-menu>
@@ -76,17 +75,21 @@ function onEdFinish(response: any) {
                   <BuryComment :comment="item" :post-id="postId" />
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <DeleteComment :comment="item" :comments="comments" :post-id="postId" :index="index" />
+                  <DeleteComment :comment="item" :comments="comments" :post-id="postId" :item-index="index" />
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
         </div>
-        <EditComment @on-finish="onEdFinish" :post-id="postId" :index="index" :comment="item" />
-        <AnswerComment @on-finish="onReFinish" :post-id="postId" :index="index" :comment="item" />
+        <EditComment @on-finish="onEdFinish" :post-id="postId" :curr-page-index="currPageIndex" :comment="item" />
+        <AnswerComment @on-finish="onReFinish" :post-id="postId" :curr-page-index="currPageIndex" :comment="item" />
       </div>
-      <div class="mt-10 f-c-e" v-if="comments.length">
-        <el-pagination @current-change="paginationChange" layout="prev, pager, next" v-model:current-page="index" :page-count="count" />
+      <div class="mt-10 f-c-e" v-if="comments.length && pageCount > 1">
+        <el-pagination
+          @current-change="paginationChange"
+          layout="prev, pager, next"
+          v-model:current-page="currPageIndex"
+          :page-count="pageCount" />
       </div>
     </div>
     <el-empty v-else-if="isLogin && !comments?.length" description="来一条友善的评论吧~" />

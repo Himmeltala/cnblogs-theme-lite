@@ -67,7 +67,7 @@ watch(route, async () => {
     </div>
   </div>
   <div id="l-content" class="z-1 l-transition">
-    <div id="l-nail"></div>
+    <div id="l-top-nail"></div>
     <div :class="{ 'l-box-bg': !setting.card.open, 'py-2 px-4': !pcDevice }">
       <div id="l-main">
         <RouterView v-slot="{ Component }">
@@ -81,6 +81,7 @@ watch(route, async () => {
         </RouterView>
       </div>
     </div>
+    <div id="l-bottom-nail"></div>
     <div class="l-copyright f-c-c my-2 l-six-size l-sec-color h-8">
       <div class="l-copyright__content">
         <div class="f-c-c">
