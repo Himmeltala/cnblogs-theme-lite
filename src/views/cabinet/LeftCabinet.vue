@@ -80,7 +80,7 @@ const fixed = computed(() => {
       :class="{ 'l-box-bg px-2': !setting.card.open }"
       :padding="setting.cabinet.left.padding"
       :margin="setting.cabinet.left.margin">
-      <div class="noscroll ofw-auto h-96vh">
+      <div class="noscroll ofw-auto h-100vh">
         <ExpandableBox text="博客信息" disabled>
           <template #icon>
             <i-ep-house />
