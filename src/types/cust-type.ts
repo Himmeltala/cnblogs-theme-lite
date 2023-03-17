@@ -176,7 +176,7 @@ export interface ILite {
   // 网站 icon
   icon?: string;
   // 侧边栏配置项
-  cabinet?: { avatar?: string; signature?: string; navs?: { href: string; text?: string; svg?: string; img?: string }[] };
+  cabinet?: { avatar?: string; signature?: string };
   // 目录配置项
   catalog?: { level?: boolean };
   // 铭牌

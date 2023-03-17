@@ -24,7 +24,7 @@ onMounted(() => {
       <MovableBox ref="movbox" :disabled="disabled" :class="{ 'l-box-bg': !setting.card.open }">
         <template #head>
           <div class="f-c-b">
-            <div class="headtip">
+            <div class="headtip mr-4">
               <slot name="title" />
             </div>
             <div class="hover f-c-c" @click="disabled = !disabled">

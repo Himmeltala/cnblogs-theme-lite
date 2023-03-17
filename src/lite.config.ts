@@ -100,7 +100,7 @@ export function useLite(dev: Function, pro: Function) {
             img: "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2281365/o_230306161002_outlook.png"
           }
         ],
-        intro: "",
+        intro: "平时喜欢逛 B站，刷短视频、看 Vtuber（DD），如果有喜欢的电视剧就会狂刷。",
         warehouse: [{ text: "cnblogs-theme-lite", url: "http://www.gitee.com/cnblogs-theme-lite" }],
         experience: [{ text: "基于 Vue3 的回收平台", date: "22.03.10" }],
         gossip: "抽到水神！",

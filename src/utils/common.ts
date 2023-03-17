@@ -133,7 +133,7 @@ export function getSettingTemp(): CustType.ISetting {
         margin: { left: 0, right: 0, top: 0, bottom: 1 }
       },
       writing: {
-        code: { light: { color: "#fafafa" }, dark: { color: "#1f1f1f" } },
+        code: { light: { color: "#f1f1f1" }, dark: { color: "#1f1f1f" } },
         padding: { left: 1, right: 1, top: 1, bottom: 1 },
         margin: { left: 0, right: 0, top: 0, bottom: 1 }
       },
