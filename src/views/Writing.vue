@@ -212,6 +212,10 @@ code {
   margin: 0;
 }
 
+a > code {
+  color: var(--l-theme-color) !important;
+}
+
 pre {
   --uno: rd-2;
   position: relative;
@@ -268,6 +272,7 @@ pre {
     }
 
     blockquote {
+      background-color: var(--l-code-bg);
       color: var(--l-sec-color);
       margin: 0;
       padding: {
