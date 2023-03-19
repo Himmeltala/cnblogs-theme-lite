@@ -13,20 +13,9 @@ function useCodeFolder(ele: JQuery<HTMLElement>) {
     $modal.prepend($click);
 
     $click.on("click", () => {
-      let counter = 9;
-      let cHeight = 0;
-
-      const interval = setInterval(() => {
-        cHeight += height / 10;
-        ele.height(cHeight);
-        counter--;
-        if (counter == 0) {
-          ele.height(height);
-          ele.removeClass("hight-code-modal");
-          $modal.css({ display: "none" });
-          clearInterval(interval);
-        }
-      }, 10);
+      ele.height(height);
+      ele.removeClass("hight-code-modal");
+      $modal.css({ display: "none" });
     });
 
     ele.parent().prepend($modal);

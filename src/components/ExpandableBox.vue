@@ -26,33 +26,13 @@ const content = ref();
 const height = ref();
 
 function toggleClose() {
-  let counter = 9;
-  let cHeight = height.value;
-  const interval = setInterval(() => {
-    cHeight -= height.value / 10;
-    content.value.style.height = `${cHeight}px`;
-    counter--;
-    if (counter == 0) {
-      content.value.style.height = `${0}px`;
-      setting.value.cabinet.toggles[title].open = !setting.value.cabinet.toggles[title].open;
-      clearInterval(interval);
-    }
-  }, 10);
+  content.value.style.height = `${0}px`;
+  setting.value.cabinet.toggles[title].open = !setting.value.cabinet.toggles[title].open;
 }
 
 function toggleOpen() {
-  let counter = 9;
-  let cHeight = 0;
-  const interval = setInterval(() => {
-    cHeight += height.value / 10;
-    content.value.style.height = `${cHeight}px`;
-    counter--;
-    if (counter == 0) {
-      content.value.style.height = `${height.value}px`;
-      setting.value.cabinet.toggles[title].open = !setting.value.cabinet.toggles[title].open;
-      clearInterval(interval);
-    }
-  }, 10);
+  content.value.style.height = `${height.value}px`;
+  setting.value.cabinet.toggles[title].open = !setting.value.cabinet.toggles[title].open;
 }
 
 function toggle() {

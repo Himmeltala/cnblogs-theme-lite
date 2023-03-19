@@ -26,11 +26,17 @@ const isLock = ref(false);
 const pwd = ref("");
 
 if (!(writing.value.content && writing.value.text)) isLock.value = true;
-
 document.querySelector("title").innerText = `${writing.value.text} - ${blogApp} - 博客园`;
 
 onMounted(() => {
   endLoading();
+  const anchor = route.hash.match(/#.+/g);
+
+  if (anchor) {
+    setTimeout(() => {
+      document.querySelector(`#${anchor[0].replace("#", "")}`).scrollIntoView();
+    }, 500);
+  }
 });
 
 async function submit() {
@@ -55,6 +61,7 @@ async function vote(voteType: BlogType.VoteType) {
 watch(route, async () => {
   if (route.name === "Writing") {
     startLoading();
+    
     postId.value = `${route.params.id}`;
     writing.value = await getWriting(postId.value);
     writingProps.value = await getWritingProps(postId.value);
@@ -64,7 +71,6 @@ watch(route, async () => {
 
     if (!(writing.value.content && writing.value.text)) isLock.value = true;
     document.querySelector("title").innerText = `${writing.value.text} - ${blogApp} - 博客园`;
-
     endLoading();
   }
 });
