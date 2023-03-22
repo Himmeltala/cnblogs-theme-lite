@@ -38,7 +38,7 @@ watch(route, async () => {
         </div>
       </div>
     </template>
-    <div class="l-fiv-size mb-2" v-for="(item, index) in anchors" :key="index" v-html="item.content" v-cateve="item" />
+    <div class="l-fiv-size mb-2" v-for="item in anchors" v-html="item.content" v-cateve="item" />
   </MovableBox>
 </template>
 

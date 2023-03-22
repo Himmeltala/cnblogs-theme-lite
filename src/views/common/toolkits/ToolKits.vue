@@ -113,12 +113,6 @@ function changeDayTime() {
         </template>
         <ManageSetting />
       </el-collapse-item>
-      <el-collapse-item v-if="pcDevice">
-        <template #title>
-          <span class="l-for-size">隐藏设置</span>
-        </template>
-        <SecrecySetting />
-      </el-collapse-item>
     </el-collapse>
   </el-dialog>
 </template>

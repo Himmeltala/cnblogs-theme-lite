@@ -6,7 +6,7 @@ startLoading();
 
 const router = useRouter();
 const date = new Date();
-const calendar = ref(await getCalendar(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`));
+const calendar = shallowRef(await getCalendar(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`));
 const dateModel = ref(date);
 const currMonth = ref(dateModel.value.getMonth());
 

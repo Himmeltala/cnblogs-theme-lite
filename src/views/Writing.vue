@@ -18,9 +18,9 @@ const route = useRoute();
 const router = useRouter();
 const setting = getSetting();
 const postId = ref(`${route.params.id}`);
-const writing = ref(await getWriting(postId.value));
-const prevNext = ref(await getWritingPrevNext(postId.value));
-const writingProps = ref(await getWritingProps(postId.value));
+const writing = shallowRef(await getWriting(postId.value));
+const prevNext = shallowRef(await getWritingPrevNext(postId.value));
+const writingProps = shallowRef(await getWritingProps(postId.value));
 const viewPoint = ref(await getWritingViewPoint(postId.value));
 const isLock = ref(false);
 const pwd = ref("");
@@ -61,7 +61,7 @@ async function vote(voteType: BlogType.VoteType) {
 watch(route, async () => {
   if (route.name === "Writing") {
     startLoading();
-    
+
     postId.value = `${route.params.id}`;
     writing.value = await getWriting(postId.value);
     writingProps.value = await getWritingProps(postId.value);
@@ -117,8 +117,7 @@ watch(route, async () => {
             <div
               v-for="(item, index) in writingProps.sorts"
               class="l-fiv-size"
-              :class="{ 'mr-2': index !== writingProps.sorts.length - 1 }"
-              :key="index">
+              :class="{ 'mr-2': index !== writingProps.sorts.length - 1 }">
               <LTag line="dotted" hover round @click="nav({ path: '/sort/p/' + item.href, router })">
                 {{ item.text }}
               </LTag>
@@ -129,11 +128,7 @@ watch(route, async () => {
               <i-ep-price-tag class="mr-1" />
               <span>标签：</span>
             </div>
-            <div
-              v-for="(item, index) in writingProps.tags"
-              class="l-fiv-size"
-              :class="{ 'mr-2': index !== writingProps.tags.length - 1 }"
-              :key="index">
+            <div v-for="(item, index) in writingProps.tags" class="l-fiv-size" :class="{ 'mr-2': index !== writingProps.tags.length - 1 }">
               <LTag line="dotted" hover round @click="nav({ path: '/mark/' + item.text, router })">
                 {{ item.text }}
               </LTag>

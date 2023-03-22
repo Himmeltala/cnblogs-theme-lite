@@ -8,8 +8,8 @@ const router = useRouter();
 const id = ref(route.params.id);
 const mode = ref(route.params.mode);
 const setting = getSetting();
-const child = ref();
-const sort = ref();
+const child = shallowRef();
+const sort = shallowRef();
 
 async function fetchData(index?: number) {
   startLoading();
@@ -64,7 +64,7 @@ watch(route, async () => {
             </el-page-header>
             <div class="l-sort__desc mb-4 l-for-size l-sec-color" v-html="sort.desc2 || sort.desc"></div>
             <div class="l-sort__child l-fiv-size" v-if="child.length > 0">
-              <div class="hover f-c-s" v-for="(item, index) in child" :key="index" :class="{ 'mb-4': index != child.length - 1 }">
+              <div class="hover f-c-s" v-for="(item, index) in child" :class="{ 'mb-4': index != child.length - 1 }">
                 <span class="mr-2">-</span>
                 <router-link :to="'/sort/p/' + item.id">{{ item.text }}</router-link>
               </div>

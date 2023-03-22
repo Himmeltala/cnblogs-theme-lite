@@ -1,6 +1,6 @@
 import $ from "jquery";
 import { CustType } from "@/types/data-type";
-import { preLog, refactorObjProps, getSetting, getSettingTemp } from "@/utils/common";
+import { preLog, reloadObjProps, getSetting, getSettingTemp } from "@/utils/common";
 
 export let __LITE_CONFIG__: CustType.ILite;
 export let blogId = 0;
@@ -15,17 +15,23 @@ export const pcDevice = !/iPhone|iPad|iPod|Android|IEMobile/.test(navigator.user
 /**
  * 初始化博客重要变量，这些变量不能通过 head script 获取，在一些元素属性上。
  */
-export function initLiteVars() {
-  userGuid = $("#p_b_follow > a")?.attr("onclick")?.split("(")[1]?.split(")")[0]?.replaceAll("'", "") ?? "";
-  isFollow = $("#p_b_follow > a")?.text() === "-取消关注" ?? false;
+function getUserGuid() {
+  return $("#p_b_follow > a")?.attr("onclick")?.split("(")[1]?.split(")")[0]?.replaceAll("'", "") ?? "";
+}
+
+/**
+ * 初始化博客重要变量，这些变量不能通过 head script 获取，在一些元素属性上。
+ */
+function getIsFollow() {
+  return $("#p_b_follow > a")?.text() === "-取消关注" ?? false;
 }
 
 /**
  * 初始化自定义博客设置
  */
 function initSetting() {
-  const setting: CustType.ISetting = getSetting().value;
-  localStorage.setItem(`l-${blogApp}-setting`, JSON.stringify(refactorObjProps(setting, getSettingTemp())));
+  const setting = getSetting().value;
+  localStorage.setItem(`l-${blogApp}-setting`, JSON.stringify(reloadObjProps(setting, getSettingTemp())));
 
   $("html").attr("class", setting.theme.mode);
   $("html").css({
@@ -60,6 +66,8 @@ export function useLite(dev: Function, pro: Function) {
     // @ts-ignore
     isOwner = isBlogOwner;
     baseAPI = `https://www.cnblogs.com/${blogApp}`;
+    userGuid = getUserGuid();
+    isFollow = getIsFollow();
     // @ts-ignore
     __LITE_CONFIG__ = window["__LITE_CONFIG__"];
     initSetting();
@@ -69,20 +77,6 @@ export function useLite(dev: Function, pro: Function) {
     blogApp = import.meta.env.VITE_BLOG_APP;
     baseAPI = "/api";
     __LITE_CONFIG__ = {
-      graph: {
-        alpha: 0.85,
-        sides: 5,
-        layer: 5,
-        lineWidth: 1,
-        textSize: 0.8,
-        data: [
-          { title: "CSS", star: 4 },
-          { title: "Vue", star: 4 },
-          { title: "Java", star: 3 },
-          { title: "JS", star: 4 },
-          { title: "TS", star: 3 }
-        ]
-      },
       cabinet: {
         signature: "Time tick away, dream faded away!"
       },

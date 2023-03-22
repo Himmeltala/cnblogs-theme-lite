@@ -104,7 +104,7 @@ const fixed = computed(() => {
             </el-popconfirm>
             <el-button @click="subscribe" v-if="!isFollow" type="primary" text bg> +关注博主 </el-button>
           </div>
-          <div class="hover mb-4" v-if="authorData" v-for="(item, index) in authorData" :key="index" @click="nav({ path: item.href })">
+          <div class="hover mb-4" v-if="authorData" v-for="(item, index) in authorData" @click="nav({ path: item.href })">
             <div class="f-c-s" v-if="index === 0">
               <i-ep-user-filled class="mr-2" />
               昵称：{{ item.text }}
@@ -123,7 +123,7 @@ const fixed = computed(() => {
             </div>
           </div>
           <div class="mb-4">
-            <span class="mr-3" v-if="masterData" v-for="(item, index) in masterData" :key="index"> {{ item.text }} - {{ item.digg }} </span>
+            <span class="mr-3" v-if="masterData" v-for="item in masterData"> {{ item.text }} - {{ item.digg }} </span>
           </div>
           <el-input clearable @keyup.enter="search" v-model="searchVal">
             <template #prefix>
@@ -138,7 +138,7 @@ const fixed = computed(() => {
           <el-tabs v-model="tabActive" stretch>
             <el-tab-pane label="博客常用项" name="first">
               <template v-if="columnData">
-                <div class="mb-2" v-for="(item, index) in columnData.rankings" :key="index">{{ item.text }}</div>
+                <div class="mb-2" v-for="item in columnData.rankings">{{ item.text }}</div>
                 <router-link to="/calendar">
                   <div class="my-4 f-c-s hover l-pri-color">
                     <i-ep-calendar class="mr-2" />
@@ -154,8 +154,7 @@ const fixed = computed(() => {
                     <div
                       class="hover"
                       :class="{ 'mb-1': index != columnData.essaySort.length - 1 }"
-                      v-for="(item, index) in columnData.essaySort"
-                      :key="index">
+                      v-for="(item, index) in columnData.essaySort">
                       <router-link :to="'/sort/p/' + item.id">
                         {{ item.text }}
                       </router-link>
@@ -169,8 +168,7 @@ const fixed = computed(() => {
                     <div
                       class="hover"
                       :class="{ 'mb-1': index != columnData.essayArchive.length - 1 }"
-                      v-for="(item, index) in columnData.essayArchive"
-                      :key="index">
+                      v-for="(item, index) in columnData.essayArchive">
                       <router-link :to="'/archive/p/' + item.id">
                         {{ item.text }}
                       </router-link>
@@ -184,8 +182,7 @@ const fixed = computed(() => {
                     <div
                       class="hover"
                       :class="{ 'mb-1': index != columnData.articleSort.length - 1 }"
-                      v-for="(item, index) in columnData.articleSort"
-                      :key="index">
+                      v-for="(item, index) in columnData.articleSort">
                       <router-link :to="'/sort/a/' + item.id">
                         {{ item.text }}
                       </router-link>
@@ -199,8 +196,7 @@ const fixed = computed(() => {
                     <div
                       class="hover"
                       :class="{ 'mb-1': index != columnData.articleArchive.length - 1 }"
-                      v-for="(item, index) in columnData.articleArchive"
-                      :key="index">
+                      v-for="(item, index) in columnData.articleArchive">
                       <router-link :to="'/archive/a/' + item.id">
                         {{ item.text }}
                       </router-link>
@@ -214,8 +210,7 @@ const fixed = computed(() => {
                     <div
                       class="hover"
                       :class="{ 'mb-1': index != columnData.tagList.length - 1 }"
-                      v-for="(item, index) in columnData.tagList"
-                      :key="index">
+                      v-for="(item, index) in columnData.tagList">
                       <router-link :to="'/mark/' + item.id">
                         {{ item.text }}
                       </router-link>
@@ -232,8 +227,7 @@ const fixed = computed(() => {
                     <div
                       class="hover"
                       :class="{ 'mb-4': index != columnData.latestEssayList.length - 1 }"
-                      v-for="(item, index) in columnData.latestEssayList"
-                      :key="index">
+                      v-for="(item, index) in columnData.latestEssayList">
                       <router-link :to="'/p/' + item.id">
                         {{ item.text }}
                       </router-link>
@@ -246,8 +240,7 @@ const fixed = computed(() => {
                     </template>
                     <div
                       :class="{ 'mb-4': index != columnData.latestComments.length - 1 }"
-                      v-for="(item, index) in columnData.latestComments"
-                      :key="index">
+                      v-for="(item, index) in columnData.latestComments">
                       <div class="hover">
                         <router-link :to="'/p/' + item.id">
                           {{ item.title }}
@@ -279,7 +272,7 @@ const fixed = computed(() => {
                       <i-ep-chat-square class="mr-2" />
                       评论排行榜
                     </template>
-                    <div class="mb-2 hover" v-for="(item, index) in topListData.topComments">
+                    <div class="mb-2 hover" v-for="item in topListData.topComments">
                       <router-link :to="'/p/' + item.id">
                         {{ item.text }}
                       </router-link>
@@ -290,7 +283,7 @@ const fixed = computed(() => {
                       <i-ep-pointer class="mr-2" />
                       点赞排行榜
                     </template>
-                    <div class="mb-2 hover" v-for="(item, index) in topListData.topDigg">
+                    <div class="mb-2 hover" v-for="item in topListData.topDigg">
                       <router-link :to="'/p/' + item.id">
                         {{ item.text }}
                       </router-link>
@@ -301,7 +294,7 @@ const fixed = computed(() => {
                       <i-ep-view class="mr-2" />
                       阅读排行榜
                     </template>
-                    <div class="mb-2 hover" v-for="(item, index) in topListData.topView">
+                    <div class="mb-2 hover" v-for="item in topListData.topView">
                       <router-link :to="'/p/' + item.id">
                         {{ item.text }}
                       </router-link>

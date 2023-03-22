@@ -175,8 +175,7 @@ export function getSettingTemp(): CustType.ISetting {
         博客数据: { open: true, show: true },
         推荐书籍: { open: true, show: true }
       },
-      width: 17.5,
-      remote: true
+      width: 17.5
     },
     background: { open: false, filter: 6, src: "" },
     card: {
@@ -196,7 +195,7 @@ export function getSettingTemp(): CustType.ISetting {
  * @param source 要被裁剪或添加字段的对象
  * @param template 一个对象，根据该模板（对象）对 source 进行裁剪或添加字段
  */
-export function refactorObjProps(source: any, template: any) {
+export function reloadObjProps(source: any, template: any) {
   if (!source) source = template;
   const sourceKeys = Object.keys(source);
   const templateKeys = Object.keys(template);
@@ -213,7 +212,7 @@ export function refactorObjProps(source: any, template: any) {
         if (!nonentity) source[templateKey] = template[templateKey];
         else {
           if (typeof template[templateKey] === "object") {
-            refactorObjProps(source[templateKey], template[templateKey]);
+            reloadObjProps(source[templateKey], template[templateKey]);
           }
         }
       });
@@ -224,7 +223,7 @@ export function refactorObjProps(source: any, template: any) {
         if (typeof source[templateKey] !== "object" || !source[templateKey]) {
           source[templateKey] = template[templateKey];
         }
-        refactorObjProps(source[templateKey], template[templateKey]);
+        reloadObjProps(source[templateKey], template[templateKey]);
       } else if (typeof template[templateKey] !== "object") {
         if (typeof source[templateKey] === "object") source[templateKey] = template[templateKey];
       }

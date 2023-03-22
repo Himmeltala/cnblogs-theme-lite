@@ -7,7 +7,7 @@ startLoading();
 
 const route = useRoute();
 const router = useRouter();
-const imgUrl = ref(await getAlbumnItem(`${route.params.id}`));
+const imgUrl = shallowRef(await getAlbumnItem(`${route.params.id}`));
 
 document.querySelector("title").innerText = `相册照片 - ${blogApp} - 博客园`;
 

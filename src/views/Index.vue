@@ -6,8 +6,8 @@ import { blogApp, __LITE_CONFIG__, pcDevice } from "@/lite.config";
 startLoading();
 
 const store = useBaseAuthorData();
-const authorData = ref();
-const masterData = ref();
+const authorData = shallowRef();
+const masterData = shallowRef();
 
 store.$onAction(({ args }) => {
   authorData.value = args[0].author;
@@ -56,7 +56,7 @@ onMounted(() => {
       <div class="mb-6">
         <div class="mb-4 font-bold title">个人标签</div>
         <div class="hobbies f-c-s flex-wrap">
-          <LTag class="mr-2 mb-4" hover round v-for="(item, index) in __LITE_CONFIG__.nameplate.tags" :key="index">{{ item }}</LTag>
+          <LTag class="mr-2 mb-4" hover round v-for="(item, index) in __LITE_CONFIG__.nameplate.tags">{{ item }}</LTag>
         </div>
       </div>
       <div v-if="pcDevice" class="f-s-b mb-6">
@@ -64,7 +64,7 @@ onMounted(() => {
           <div class="mb-6">
             <div class="mb-2 font-bold title">联系方式</div>
             <div class="f-s-s">
-              <div class="mr-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.connection" :key="index">
+              <div class="mr-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.connection">
                 <el-tooltip :content="item.name + ': ' + item.text">
                   <svg v-if="item.svg" class="w-6 h-6 hover" viewBox="0 0 1024 1024" v-html="item.svg"></svg>
                   <img v-else class="rd-50 w-6 h-6 hover" alt="FAILED" :src="item.img" />
@@ -79,7 +79,7 @@ onMounted(() => {
           <div class="mb-6" v-if="!__LITE_CONFIG__.nameplate.photo.disabled">
             <div class="mb-4 font-bold title">精选图片</div>
             <div class="f-c-b flex-wrap">
-              <div v-for="(item, i) in __LITE_CONFIG__.nameplate.photo.src" :key="i" :class="{ ' h-28': i < 3 }" style="width: 32%">
+              <div v-for="(item, i) in __LITE_CONFIG__.nameplate.photo.src" :class="{ ' h-28': i < 3 }" style="width: 32%">
                 <el-image
                   v-if="i < 3"
                   class="w-100% h-100%"
@@ -92,7 +92,7 @@ onMounted(() => {
           <div class="f-s-b" v-else>
             <div class="mb-6 w-50%">
               <div class="mb-4 font-bold title">项目经历</div>
-              <div class="hover mb-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.experience" :key="index">
+              <div class="hover mb-2" v-for="item in __LITE_CONFIG__.nameplate.experience">
                 <div class="mb-1">{{ item.date }}</div>
                 <div>
                   {{ item.text }}
@@ -102,7 +102,7 @@ onMounted(() => {
             <div class="mb-6 w-50%">
               <div class="mb-4 font-bold title">精选仓库</div>
               <div>
-                <div class="hover mb-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.warehouse" :key="index">
+                <div class="hover mb-2" v-for="item in __LITE_CONFIG__.nameplate.warehouse">
                   <a :href="item.url" target="__blank">{{ item.text }}</a>
                 </div>
               </div>
@@ -122,7 +122,7 @@ onMounted(() => {
           <div class="f-s-b" v-if="!__LITE_CONFIG__.nameplate.photo.disabled">
             <div class="mb-6 w-50%">
               <div class="mb-4 font-bold title">项目经历</div>
-              <div class="hover mb-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.experience" :key="index">
+              <div class="hover mb-2" v-for="item in __LITE_CONFIG__.nameplate.experience">
                 <div class="mb-1">{{ item.date }}</div>
                 <div>
                   {{ item.text }}
@@ -132,7 +132,7 @@ onMounted(() => {
             <div class="mb-6 w-50%">
               <div class="mb-4 font-bold title">精选仓库</div>
               <div>
-                <div class="hover mb-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.warehouse" :key="index">
+                <div class="hover mb-2" v-for="item in __LITE_CONFIG__.nameplate.warehouse">
                   <a :href="item.url" target="__blank">{{ item.text }}</a>
                 </div>
               </div>
@@ -149,7 +149,7 @@ onMounted(() => {
         <div class="mb-6">
           <div class="mb-2 font-bold title">联系方式</div>
           <div class="f-s-s">
-            <div class="mr-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.connection" :key="index">
+            <div class="mr-2" v-for="item in __LITE_CONFIG__.nameplate.connection">
               <el-tooltip :content="item.name + ': ' + item.text">
                 <svg v-if="item.svg" class="w-6 h-6" viewBox="0 0 1024 1024" v-html="item.svg"></svg>
                 <template v-else>
@@ -176,14 +176,14 @@ onMounted(() => {
           <div class="mb-6 w-50%">
             <div class="mb-4 font-bold title">精选仓库</div>
             <div>
-              <div class="hover mb-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.warehouse" :key="index">
+              <div class="hover mb-2" v-for="item in __LITE_CONFIG__.nameplate.warehouse">
                 <a :href="item.url" target="__blank">{{ item.text }}</a>
               </div>
             </div>
           </div>
           <div class="mb-6 w-50%">
             <div class="mb-4 font-bold title">项目经历</div>
-            <div class="hover mb-2" v-for="(item, index) in __LITE_CONFIG__.nameplate.experience" :key="index">
+            <div class="hover mb-2" v-for="item in __LITE_CONFIG__.nameplate.experience">
               <div class="mb-1">{{ item.date }}</div>
               <div>
                 {{ item.text }}
@@ -194,7 +194,7 @@ onMounted(() => {
         <div class="mb-6" v-if="!__LITE_CONFIG__.nameplate.photo.disabled">
           <div class="mb-4 font-bold title">精选图片</div>
           <div class="f-s-b flex-wrap noscroll ofw-auto">
-            <div v-for="(item, i) in __LITE_CONFIG__.nameplate.photo.src" :key="i" :class="{ ' h-28': i < 3 }" style="width: 32%">
+            <div v-for="(item, i) in __LITE_CONFIG__.nameplate.photo.src" :class="{ ' h-28': i < 3 }" style="width: 32%">
               <el-image
                 v-if="i < 3"
                 class="w-100% h-100%"

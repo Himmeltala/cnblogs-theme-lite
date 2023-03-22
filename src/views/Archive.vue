@@ -10,7 +10,7 @@ const router = useRouter();
 const date = ref(route.params.date);
 const mode = ref(route.params.mode);
 const setting = getSetting();
-const archive = ref();
+const archive = shallowRef();
 
 async function fetchData() {
   startLoading();

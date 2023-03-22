@@ -256,7 +256,6 @@ export interface ISetting {
     toggles?: ToggleType;
     width?: number;
     break?: boolean;
-    remote?: boolean;
   };
   other?: {
     github?: {

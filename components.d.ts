@@ -123,7 +123,6 @@ declare module '@vue/runtime-core' {
     RightCabinet: typeof import('./src/views/cabinet/RightCabinet.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SecrecySetting: typeof import('./src/views/common/toolkits/SecrecySetting.vue')['default']
     SkillGraph: typeof import('./src/views/common/skillgraph/SkillGraph.vue')['default']
     Sort: typeof import('./src/views/Sort.vue')['default']
     ThemeSetting: typeof import('./src/views/common/toolkits/ThemeSetting.vue')['default']

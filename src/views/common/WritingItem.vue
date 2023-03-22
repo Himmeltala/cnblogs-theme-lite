@@ -32,7 +32,7 @@ defineProps({
 </script>
 
 <template>
-  <Card v-for="(item, index) in data" :key="index" line :padding="padding" :margin="margin">
+  <Card v-for="(item, index) in data" line :padding="padding" :margin="margin">
     <div class="l-article-item__head f-c-b" :class="{ 'mb-5': item.surface }">
       <el-image v-if="index % 2 !== 0 && item.surface" class="cover h-35 rd-2" :src="item.surface" fit="cover" />
       <div :class="{ 'w-100%': !item.surface, 'has-cover w-60%': item.surface }">

@@ -5,7 +5,7 @@ import { getSetting, startLoading, endLoading } from "@/utils/common";
 startLoading();
 
 const setting = getSetting();
-const listing = ref(await getHomeWritingList(1));
+const listing = shallowRef(await getHomeWritingList(1));
 
 async function next(e: any) {
   startLoading();

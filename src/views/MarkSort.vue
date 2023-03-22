@@ -7,7 +7,7 @@ startLoading();
 
 const route = useRoute();
 const router = useRouter();
-const listing = ref(await getWritingMark(`${route.params.tag}`));
+const listing = shallowRef(await getWritingMark(`${route.params.tag}`));
 const setting = getSetting();
 
 document.querySelector("title").innerText = `${listing.value.hint} - ${blogApp} - 博客园`;
@@ -39,12 +39,7 @@ watch(route, async () => {
           <div class="l-sec-size mb-5 mt-4">{{ listing.hint }}</div>
         </template>
       </el-page-header>
-      <Card
-        line
-        v-for="(item, index) in listing.data"
-        :key="index"
-        :padding="setting.pages.markSort.padding"
-        :margin="setting.pages.markSort.margin">
+      <Card line v-for="item of listing.data" :padding="setting.pages.markSort.padding" :margin="setting.pages.markSort.margin">
         <div class="l-sec-size">
           <router-link class="hover" :to="'/p/' + item.id">
             {{ item.text }}

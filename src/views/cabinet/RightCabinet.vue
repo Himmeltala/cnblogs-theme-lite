@@ -51,7 +51,7 @@ const fixed = computed(() => {
         <template #icon>
           <i-ep-link />
         </template>
-        <a class="hover block mb-3" v-for="(item, index) in __LITE_CONFIG__.links" :key="index" :href="item.href" target="_blank">
+        <a class="hover block mb-3" v-for="item in __LITE_CONFIG__.links" :href="item.href" target="_blank">
           {{ item.text }}
         </a>
       </ExpandableBox>
@@ -59,7 +59,7 @@ const fixed = computed(() => {
         <template #icon>
           <i-ep-notebook />
         </template>
-        <div class="mb-3 f-c-b" v-for="(item, index) in __LITE_CONFIG__.books" :key="index">
+        <div class="mb-3 f-c-b" v-for="item in __LITE_CONFIG__.books">
           <img class="h-25 w-20" :src="item.img" alt="FAILED" />
           <div style="width: calc(100% - 6rem)">
             <div class="mb-1" v-if="!item.href">

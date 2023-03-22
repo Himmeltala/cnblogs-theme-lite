@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { genFileId } from "element-plus";
 import type { UploadInstance, UploadProps, UploadRawFile } from "element-plus";
-import { getSetting, refactorObjProps, getSettingTemp } from "@/utils/common";
+import { getSetting, reloadObjProps, getSettingTemp } from "@/utils/common";
 
 const upload = ref<UploadInstance>();
 const setting = getSetting();
@@ -19,7 +19,7 @@ function exportJson() {
 }
 
 function confirm() {
-  setting.value = refactorObjProps(JSON.parse(readerResult.value), getSettingTemp());
+  setting.value = reloadObjProps(JSON.parse(readerResult.value), getSettingTemp());
   uploadDialog.value = !uploadDialog.value;
   ElMessage({ message: "导入成功！", type: "success" });
 }

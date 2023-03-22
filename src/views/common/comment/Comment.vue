@@ -43,7 +43,7 @@ function onEdFinish(response: any) {
     <PostComment :post-id="postId" @on-post="onPost" />
     <h3>评论列表</h3>
     <div class="l-comment__list mt-10" v-if="isLogin && comments?.length">
-      <div class="l-comment__main clearfix mb-12" v-for="(item, index) in comments" :key="index">
+      <div class="l-comment__main clearfix mb-12" v-for="(item, index) in comments" :key="item.commentId">
         <div class="l-comment__head f-c-s">
           <el-image class="l-comment__avatar mr-4 rd-50 w-14 h-14" :src="item.avatar" fit="fill" />
           <div>
