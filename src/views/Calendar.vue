@@ -8,7 +8,7 @@ const router = useRouter();
 const date = new Date();
 const calendar = shallowRef(await getCalendar(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`));
 const dateModel = ref(date);
-const currMonth = ref(dateModel.value.getMonth());
+let currMonth = dateModel.value.getMonth();
 
 const findDate = (data: any) =>
   computed(() => {
@@ -17,8 +17,8 @@ const findDate = (data: any) =>
   });
 
 watch(dateModel, async () => {
-  if (dateModel.value.getMonth() != currMonth.value) {
-    currMonth.value = dateModel.value.getMonth();
+  if (dateModel.value.getMonth() != currMonth) {
+    currMonth = dateModel.value.getMonth();
     calendar.value = await getCalendar(`${dateModel.value.getFullYear()}/${dateModel.value.getMonth() + 1}/${dateModel.value.getDate()}`);
   }
 });

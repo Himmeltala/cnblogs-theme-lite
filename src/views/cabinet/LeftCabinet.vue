@@ -19,10 +19,10 @@ const tabActive = ref("first");
 const commonCollActive = ref("1");
 const topListCollActive = ref("1");
 const settingCollActive = ref("1");
-const authorData = ref();
-const masterData = ref();
-const columnData = ref();
-const topListData = ref();
+const authorData = shallowRef();
+const masterData = shallowRef();
+const columnData = shallowRef();
+const topListData = shallowRef();
 
 store.$onAction(({ args }) => {
   authorData.value = args[0].author;

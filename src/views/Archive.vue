@@ -7,19 +7,19 @@ startLoading();
 
 const route = useRoute();
 const router = useRouter();
-const date = ref(route.params.date);
-const mode = ref(route.params.mode);
+let date = route.params.date;
+let mode = route.params.mode;
 const setting = getSetting();
 const archive = shallowRef();
 
 async function fetchData() {
   startLoading();
-  if (mode.value === "a") {
-    archive.value = await getWritingArchive(`${date.value}`, "article");
-  } else if (mode.value === "p") {
-    archive.value = await getWritingArchive(`${date.value}`, "essay");
-  } else if (mode.value === "d") {
-    archive.value = await getDayArchive(`${String(date.value).replaceAll("-", "/")}`);
+  if (mode === "a") {
+    archive.value = await getWritingArchive(`${date}`, "article");
+  } else if (mode === "p") {
+    archive.value = await getWritingArchive(`${date}`, "essay");
+  } else if (mode === "d") {
+    archive.value = await getDayArchive(`${String(date).replaceAll("-", "/")}`);
   }
   document.querySelector("title").innerText = `${archive.value.hint} - ${blogApp} - 博客园`;
   endLoading();
@@ -41,8 +41,8 @@ async function prev(e: any) {
 
 watch(route, async () => {
   if (route.name === "Archive") {
-    mode.value = route.params.mode;
-    date.value = route.params.date;
+    mode = route.params.mode;
+    date = route.params.date;
     await fetchData();
   }
 });

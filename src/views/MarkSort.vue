@@ -12,10 +12,6 @@ const setting = getSetting();
 
 document.querySelector("title").innerText = `${listing.value.hint} - ${blogApp} - 博客园`;
 
-onMounted(() => {
-  endLoading();
-});
-
 watch(route, async () => {
   if (route.name === "MarkSort") {
     startLoading();
@@ -23,6 +19,10 @@ watch(route, async () => {
     document.querySelector("title").innerText = `${listing.value.hint} - ${blogApp} - 博客园`;
     endLoading();
   }
+});
+
+onMounted(() => {
+  endLoading();
 });
 </script>
 

@@ -5,19 +5,19 @@ import { endLoading, startLoading, nav, getSetting } from "@/utils/common";
 
 const route = useRoute();
 const router = useRouter();
-const id = ref(route.params.id);
-const mode = ref(route.params.mode);
+let id = route.params.id;
+let mode = route.params.mode;
 const setting = getSetting();
 const child = shallowRef();
 const sort = shallowRef();
 
 async function fetchData(index?: number) {
   startLoading();
-  sort.value = await getWritingSort(`${id.value}`, index || 1);
-  if (mode.value === "a") {
-    child.value = await getWritingSortChild(`${id.value}`, "2");
-  } else if (mode.value === "p") {
-    child.value = await getWritingSortChild(`${id.value}`);
+  sort.value = await getWritingSort(`${id}`, index || 1);
+  if (mode === "a") {
+    child.value = await getWritingSortChild(`${id}`, "2");
+  } else if (mode === "p") {
+    child.value = await getWritingSortChild(`${id}`);
   }
   document.querySelector("title").innerText = `${sort.value.hint} - ${blogApp} - 博客园`;
   endLoading();
@@ -39,8 +39,8 @@ async function prev(e: any) {
 
 watch(route, async () => {
   if (route.name === "Sort") {
-    id.value = route.params.id;
-    mode.value = route.params.mode;
+    id = route.params.id;
+    mode = route.params.mode;
     await fetchData();
   }
 });

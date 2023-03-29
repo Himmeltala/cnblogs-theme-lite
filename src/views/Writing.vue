@@ -17,11 +17,11 @@ startLoading();
 const route = useRoute();
 const router = useRouter();
 const setting = getSetting();
-const postId = ref(`${route.params.id}`);
-const writing = shallowRef(await getWriting(postId.value));
-const prevNext = shallowRef(await getWritingPrevNext(postId.value));
-const writingProps = shallowRef(await getWritingProps(postId.value));
-const viewPoint = ref(await getWritingViewPoint(postId.value));
+let postId = `${route.params.id}`;
+const writing = shallowRef(await getWriting(postId));
+const prevNext = shallowRef(await getWritingPrevNext(postId));
+const writingProps = shallowRef(await getWritingProps(postId));
+const viewPoint = shallowRef(await getWritingViewPoint(postId));
 const isLock = ref(false);
 const pwd = ref("");
 
@@ -40,16 +40,16 @@ onMounted(() => {
 });
 
 async function submit() {
-  const data = await getIsUnlock(pwd.value, postId.value + "");
+  const data = await getIsUnlock(pwd.value, postId + "");
   if (data) {
-    writing.value = await getLockedWriting(pwd.value, postId.value);
+    writing.value = await getLockedWriting(pwd.value, postId);
     isLock.value = false;
   }
   ElMessage({ message: data ? "密码输入正确！" : "密码错误！", grouping: true, type: data ? "success" : "error" });
 }
 
 async function vote(voteType: BlogType.VoteType) {
-  const data = await voteWriting({ postId: postId.value, isAbandoned: false, voteType });
+  const data = await voteWriting({ postId: postId, isAbandoned: false, voteType });
   if (data) {
     if (data.isSuccess)
       if (voteType == "Bury") viewPoint.value.buryCount = viewPoint.value.buryCount + 1;
@@ -62,11 +62,11 @@ watch(route, async () => {
   if (route.name === "Writing") {
     startLoading();
 
-    postId.value = `${route.params.id}`;
-    writing.value = await getWriting(postId.value);
-    writingProps.value = await getWritingProps(postId.value);
-    prevNext.value = await getWritingPrevNext(postId.value);
-    viewPoint.value = await getWritingViewPoint(postId.value);
+    postId = `${route.params.id}`;
+    writing.value = await getWriting(postId);
+    writingProps.value = await getWritingProps(postId);
+    prevNext.value = await getWritingPrevNext(postId);
+    viewPoint.value = await getWritingViewPoint(postId);
     isLock.value = false;
 
     if (!(writing.value.content && writing.value.text)) isLock.value = true;

@@ -7,7 +7,7 @@ const upload = ref<UploadInstance>();
 const setting = getSetting();
 const uploadDialog = ref(false);
 const resetDialog = ref(false);
-const readerResult = ref();
+const readerResult = shallowRef();
 
 function exportJson() {
   const blob = new Blob([JSON.stringify(setting.value, null, 2)], { type: "text/json" });

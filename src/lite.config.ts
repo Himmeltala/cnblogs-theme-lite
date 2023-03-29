@@ -87,11 +87,6 @@ export function useLite(dev: Function, pro: Function) {
             name: "Email",
             text: "zhengrenfu@outllok.com",
             img: "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2281365/o_230306161009_wechat.png"
-          },
-          {
-            name: "WeChat",
-            text: "Himmelbleu",
-            img: "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2281365/o_230306161002_outlook.png"
           }
         ],
         intro: "平时喜欢逛 B站，刷短视频、看 Vtuber（DD），如果有喜欢的电视剧就会狂刷。",
@@ -100,10 +95,7 @@ export function useLite(dev: Function, pro: Function) {
         gossip: "抽到水神！",
         photo: {
           disabled: true,
-          src: [
-            "https://img2.baidu.com/it/u=803568479,1965819057&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=281",
-            "https://img2.baidu.com/it/u=4148750470,234532345&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=834"
-          ]
+          src: ["https://img2.baidu.com/it/u=803568479,1965819057&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=281"]
         }
       }
     };

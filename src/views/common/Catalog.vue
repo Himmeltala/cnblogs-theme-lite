@@ -5,7 +5,7 @@ import { getSetting } from "@/utils/common";
 const setting = getSetting();
 const route = useRoute();
 const store = useCatalogStore();
-const anchors = ref();
+const anchors = shallowRef();
 const movbox = ref();
 const disabled = ref();
 

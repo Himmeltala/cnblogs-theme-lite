@@ -12,10 +12,6 @@ const srcList = shallowRef(albumn.value.data.map(i => i.src));
 
 document.querySelector("title").innerText = `相册 - ${blogApp} - 博客园`;
 
-onMounted(() => {
-  endLoading();
-});
-
 watch(route, async () => {
   if (route.name === "Albumn") {
     startLoading();
@@ -23,6 +19,10 @@ watch(route, async () => {
     srcList.value = albumn.value.data.map(i => i.src);
     endLoading();
   }
+});
+
+onMounted(() => {
+  endLoading();
 });
 </script>
 
