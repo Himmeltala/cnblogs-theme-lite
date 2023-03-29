@@ -13,26 +13,27 @@ const rules = <Rule<any>[]>[
   [/^l-([a-z]*)-bg$/, ([, d]) => ({ "background-color": `var(--l-${d}-bg) !important` })]
 ];
 
+const matches = [
+  { prefix: "c", value: "center" },
+  { prefix: "s", value: "start" },
+  { prefix: "e", value: "end" },
+  { prefix: "b", value: "between" }
+];
+
 const shortcuts = <UserShortcuts>[
   [
     /^f-((c|s|e)(-(c|s|e|b))*)$/,
-    ([, g1, g2, g3, g4]) => {
-      const matches = [
-        { prefix: "c", value: "center" },
-        { prefix: "s", value: "start" },
-        { prefix: "e", value: "end" },
-        { prefix: "b", value: "between" }
-      ];
-
+    ([, , p1, , p2]) => {
       let style = ``;
 
-      let corr = matches.find(ele => ele.prefix === g2);
-      style += `flex items-${corr.value} content-${corr.value}`;
+      let val = matches.find(e => e.prefix === p1);
+      style += `flex items-${val.value} content-${val.value}`;
 
-      if (g4) {
-        corr = matches.find(ele => ele.prefix === g4);
-        style += ` justify-${corr.value}`;
+      if (p2) {
+        val = matches.find(e => e.prefix === p2);
+        style += ` justify-${val.value}`;
       }
+
       return style;
     }
   ]
