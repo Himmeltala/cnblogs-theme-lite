@@ -8,7 +8,6 @@
 
 import $ from "jquery";
 import axios from "axios";
-import { BlogType } from "@/types/data-type";
 import * as Parser from "@/services/parse-html";
 import { baseAPI, blogId, userGuid } from "@/lite.config";
 

@@ -1,5 +1,4 @@
 import $ from "jquery";
-import { CustType } from "@/types/data-type";
 import { preLog, reloadObjProps, getSetting, getSettingTemp } from "@/utils/common";
 
 export let __LITE_CONFIG__: CustType.ILite;

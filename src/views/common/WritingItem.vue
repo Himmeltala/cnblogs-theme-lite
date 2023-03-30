@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { PropType } from "vue";
-import { CustType } from "@/types/data-type";
 import { nav } from "@/utils/common";
 
 const router = useRouter();
@@ -52,8 +51,8 @@ defineProps({
     <WritingSynopsis :align="'flex-end'" :data="{ date: item.date, comm: item.comm, digg: item.digg, view: item.view }" />
     <div class="l-article-item__bottom" :class="{ 'mt-4': item.isTop || item.isOnlyMe || item.isLocked }">
       <LTag round plain v-if="item.isTop" class="mr-2">置顶随笔</LTag>
-      <LTag round plain v-if="item.isOnlyMe" class="mr-2">仅自己可见</LTag>
-      <LTag round plain v-if="item.isLocked" class="mr-2">被密码锁定</LTag>
+      <LTag round plain v-else-if="item.isOnlyMe" class="mr-2">自己可见</LTag>
+      <LTag round plain v-else-if="item.isLocked" class="mr-2">密码锁定</LTag>
     </div>
   </Card>
 </template>

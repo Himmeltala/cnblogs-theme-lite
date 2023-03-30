@@ -7,7 +7,6 @@
  */
 
 import $ from "jquery";
-import { CustType } from "@/types/data-type";
 import { replaceText, parseUnit } from "@/utils/common";
 
 /**

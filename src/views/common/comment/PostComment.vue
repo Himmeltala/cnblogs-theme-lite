@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { isLogin } from "@/lite.config";
-import { BlogType } from "@/types/data-type";
 import { openImageUploadWindow } from "@/utils/common";
 import { setComment, getCommentCount, getCommentList } from "@/apis/remote-api";
 

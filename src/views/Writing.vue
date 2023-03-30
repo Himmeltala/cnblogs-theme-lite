@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { BlogType } from "@/types/data-type";
 import { isOwner, blogApp } from "@/lite.config";
 import { endLoading, startLoading, getSetting, nav } from "@/utils/common";
 import {

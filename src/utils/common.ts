@@ -9,7 +9,6 @@
 import $ from "jquery";
 import { Router } from "vue-router";
 import { useStorage } from "@vueuse/core";
-import { CustType } from "@/types/data-type";
 import { __LITE_CONFIG__, blogApp } from "@/lite.config";
 
 /**
