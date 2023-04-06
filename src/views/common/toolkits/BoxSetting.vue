@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { PropType } from "vue";
-
 defineProps({
   margin: {
     type: Object as PropType<any>,

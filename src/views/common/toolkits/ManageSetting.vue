@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { genFileId } from "element-plus";
 import type { UploadInstance, UploadProps, UploadRawFile } from "element-plus";
-import { getSetting, reloadObjProps, getSettingTemp } from "@/utils/common";
 
 const upload = ref<UploadInstance>();
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 const uploadDialog = ref(false);
 const resetDialog = ref(false);
 const readerResult = shallowRef();
@@ -19,7 +18,7 @@ function exportJson() {
 }
 
 function confirm() {
-  setting.value = reloadObjProps(JSON.parse(readerResult.value), getSettingTemp());
+  setting.value = LiteUtils.reloadObjProps(JSON.parse(readerResult.value), LiteUtils.getSettingTemp());
   uploadDialog.value = !uploadDialog.value;
   ElMessage({ message: "导入成功！", type: "success" });
 }
@@ -43,7 +42,7 @@ const importJson: UploadProps["onChange"] = async file => {
 };
 
 function reset() {
-  setting.value = getSettingTemp();
+  setting.value = LiteUtils.getSettingTemp();
   ElMessage({ message: "成功恢复默认设置！", type: "success" });
   resetDialog.value = !resetDialog.value;
 }

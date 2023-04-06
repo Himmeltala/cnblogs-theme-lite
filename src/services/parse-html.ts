@@ -7,7 +7,6 @@
  */
 
 import $ from "jquery";
-import { replaceText, parseUnit } from "@/utils/common";
 
 /**
  * 把字符串转换为 DOM
@@ -49,8 +48,8 @@ export function parseWritingList(dom: any): CustType.IWritingList {
       id: $(id[i])
         .attr("href")
         .match(/[0-9]+/g)[0],
-      text: replaceText($(head[i]).text().trim(), [/\[置顶\]/g]),
-      desc: replaceText($(desc[i]).text(), [/阅读全文/g]),
+      text: LiteUtils.Text.replace($(head[i]).text().trim(), [/\[置顶\]/g]),
+      desc: LiteUtils.Text.replace($(desc[i]).text(), [/阅读全文/g]),
       date: date[i],
       view: view[i],
       comm: comm[i],
@@ -387,7 +386,7 @@ export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
         } else if ($(e).attr("class") === "recent_comment_body") {
           comment.content = $(e).text();
         } else if ($(e).attr("class") === "recent_comment_author") {
-          comment.author = replaceText($(e).text(), [/--/g]);
+          comment.author = LiteUtils.Text.replace($(e).text(), [/--/g]);
         }
       }
 
@@ -429,7 +428,7 @@ export function parseMasterData(dom: string): Array<CustType.ICabinetItemData> {
         const t = $(d).text();
         const text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
         let digg = t.match(/\d+/g)[0];
-        if (i === 3) digg = parseUnit(digg);
+        if (i === 3) digg = LiteUtils.Parser.unit(digg);
         data.push({ text, digg });
       }
     });

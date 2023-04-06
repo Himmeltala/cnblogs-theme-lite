@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useCatalogStore } from "@/store";
-import { getSetting } from "@/utils/common";
 
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 const route = useRoute();
 const store = useCatalogStore();
 const anchors = shallowRef();

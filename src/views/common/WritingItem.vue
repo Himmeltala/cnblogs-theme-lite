@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { PropType } from "vue";
-import { nav } from "@/utils/common";
-
 const router = useRouter();
 
 defineProps({
@@ -35,7 +32,7 @@ defineProps({
     <div class="l-article-item__head f-c-b" :class="{ 'mb-5': item.surface }">
       <el-image v-if="index % 2 !== 0 && item.surface" class="cover h-35 rd-2" :src="item.surface" fit="cover" />
       <div :class="{ 'w-100%': !item.surface, 'has-cover w-60%': item.surface }">
-        <div class="l-article-item__title hover f-c-s mb-5 l-pri-size" @click="nav({ path: '/p/' + item.id, router })">
+        <div class="l-article-item__title hover f-c-s mb-5 l-pri-size" @click="LiteUtils.Router.go({ path: '/p/' + item.id, router })">
           {{ item.text }}
         </div>
         <div class="l-article-item__desc l-thr-color" :class="{ 'mb-5': !item.surface, 'f-c-s': item.isLocked }">

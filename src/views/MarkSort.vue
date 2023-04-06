@@ -1,35 +1,34 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
 import { getWritingMark } from "@/apis/remote-api";
-import { endLoading, startLoading, getSetting, nav } from "@/utils/common";
 
-startLoading();
+LiteUtils.startLoading();
 
 const route = useRoute();
 const router = useRouter();
 const listing = shallowRef(await getWritingMark(`${route.params.tag}`));
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 
 document.querySelector("title").innerText = `${listing.value.hint} - ${blogApp} - 博客园`;
 
 watch(route, async () => {
   if (route.name === "MarkSort") {
-    startLoading();
+    LiteUtils.startLoading();
     listing.value = await getWritingMark(`${route.params.tag}`);
     document.querySelector("title").innerText = `${listing.value.hint} - ${blogApp} - 博客园`;
-    endLoading();
+    LiteUtils.endLoading();
   }
 });
 
 onMounted(() => {
-  endLoading();
+  LiteUtils.endLoading();
 });
 </script>
 
 <template>
   <ContextMenu>
     <div id="l-tagcoll" class="min-height">
-      <el-page-header :icon="null" @back="nav({ path: 'back', router })">
+      <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router })">
         <template #title>
           <div class="f-c-c">
             <i-ep-back />

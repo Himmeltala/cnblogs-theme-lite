@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
 import { getAlbumn } from "@/apis/remote-api";
-import { startLoading, endLoading, nav } from "@/utils/common";
 
-startLoading();
+LiteUtils.startLoading();
 
 const route = useRoute();
 const router = useRouter();
@@ -14,21 +13,21 @@ document.querySelector("title").innerText = `相册 - ${blogApp} - 博客园`;
 
 watch(route, async () => {
   if (route.name === "Albumn") {
-    startLoading();
+    LiteUtils.startLoading();
     albumn.value = await getAlbumn(`${route.params.id}`);
     srcList.value = albumn.value.data.map(i => i.src);
-    endLoading();
+    LiteUtils.endLoading();
   }
 });
 
 onMounted(() => {
-  endLoading();
+  LiteUtils.endLoading();
 });
 </script>
 
 <template>
   <div id="l-albumn" class="min-height">
-    <el-page-header :icon="null" @back="nav({ path: 'back', router })">
+    <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router })">
       <template #title>
         <div class="f-c-c">
           <i-ep-back />

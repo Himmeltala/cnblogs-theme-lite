@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
 import { getAlbumnItem } from "@/apis/remote-api";
-import { endLoading, startLoading, nav } from "@/utils/common";
 
-startLoading();
+LiteUtils.startLoading();
 
 const route = useRoute();
 const router = useRouter();
@@ -12,13 +11,13 @@ const imgUrl = shallowRef(await getAlbumnItem(`${route.params.id}`));
 document.querySelector("title").innerText = `相册照片 - ${blogApp} - 博客园`;
 
 onMounted(() => {
-  endLoading();
+  LiteUtils.endLoading();
 });
 </script>
 
 <template>
   <div id="l-albumn-item" class="min-height">
-    <el-page-header :icon="null" @back="nav({ path: 'back', router })">
+    <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router })">
       <template #title>
         <div class="f-c-c">
           <i-ep-back />

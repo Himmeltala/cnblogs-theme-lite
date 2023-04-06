@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { isOwner, blogApp } from "@/lite.config";
-import { endLoading, startLoading, getSetting, nav } from "@/utils/common";
 import {
   getLockedWriting,
   getIsUnlock,
@@ -11,11 +10,11 @@ import {
   voteWriting
 } from "@/apis/remote-api";
 
-startLoading();
+LiteUtils.startLoading();
 
 const route = useRoute();
 const router = useRouter();
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 let postId = `${route.params.id}`;
 const writing = shallowRef(await getWriting(postId));
 const prevNext = shallowRef(await getWritingPrevNext(postId));
@@ -28,14 +27,14 @@ if (!(writing.value.content && writing.value.text)) isLock.value = true;
 document.querySelector("title").innerText = `${writing.value.text} - ${blogApp} - 博客园`;
 
 onMounted(() => {
-  endLoading();
   const anchor = route.hash.match(/#.+/g);
-
   if (anchor) {
     setTimeout(() => {
       document.querySelector(`#${anchor[0].replace("#", "")}`).scrollIntoView();
     }, 500);
   }
+
+  LiteUtils.endLoading();
 });
 
 async function submit() {
@@ -59,7 +58,7 @@ async function vote(voteType: BlogType.VoteType) {
 
 watch(route, async () => {
   if (route.name === "Writing") {
-    startLoading();
+    LiteUtils.startLoading();
 
     postId = `${route.params.id}`;
     writing.value = await getWriting(postId);
@@ -70,7 +69,7 @@ watch(route, async () => {
 
     if (!(writing.value.content && writing.value.text)) isLock.value = true;
     document.querySelector("title").innerText = `${writing.value.text} - ${blogApp} - 博客园`;
-    endLoading();
+    LiteUtils.endLoading();
   }
 });
 </script>
@@ -79,7 +78,7 @@ watch(route, async () => {
   <ContextMenu id="l-writing" class="min-height">
     <Card :padding="setting.pages.writing.padding" :margin="setting.pages.writing.margin">
       <template v-if="!isLock">
-        <el-page-header :icon="null" @back="nav({ path: 'back', router })">
+        <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router })">
           <template #title>
             <div class="f-c-c">
               <i-ep-back />
@@ -102,7 +101,10 @@ watch(route, async () => {
             <i-ep-chat-line-square class="mr-1" />
             <span>{{ writing.comm }}条评论</span>
           </div>
-          <div v-if="isOwner" class="f-c-c hover" @click="nav({ path: 'https://i.cnblogs.com/EditPosts.aspx?postid=' + postId })">
+          <div
+            v-if="isOwner"
+            class="f-c-c hover"
+            @click="LiteUtils.Router.go({ path: 'https://i.cnblogs.com/EditPosts.aspx?postid=' + postId })">
             <i-ep-edit-pen class="mr-1" />
             <span>编辑</span>
           </div>
@@ -117,7 +119,7 @@ watch(route, async () => {
               v-for="(item, index) in writingProps.sorts"
               class="l-fiv-size"
               :class="{ 'mr-2': index !== writingProps.sorts.length - 1 }">
-              <LTag line="dotted" hover round @click="nav({ path: '/sort/p/' + item.href, router })">
+              <LTag line="dotted" hover round @click="LiteUtils.Router.go({ path: '/sort/p/' + item.href, router })">
                 {{ item.text }}
               </LTag>
             </div>
@@ -128,7 +130,7 @@ watch(route, async () => {
               <span>标签：</span>
             </div>
             <div v-for="(item, index) in writingProps.tags" class="l-fiv-size" :class="{ 'mr-2': index !== writingProps.tags.length - 1 }">
-              <LTag line="dotted" hover round @click="nav({ path: '/mark/' + item.text, router })">
+              <LTag line="dotted" hover round @click="LiteUtils.Router.go({ path: '/mark/' + item.text, router })">
                 {{ item.text }}
               </LTag>
             </div>

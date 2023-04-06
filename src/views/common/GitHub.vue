@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { getSetting } from "@/utils/common";
 import { __LITE_CONFIG__ } from "@/lite.config";
 
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 </script>
 
 <template>

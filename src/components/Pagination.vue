@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { getSetting } from "@/utils/common";
-
 const props = defineProps({
   count: {
     type: Number,
@@ -14,7 +12,7 @@ const props = defineProps({
 
 const emits = defineEmits(["next", "prev", "nexpr"]);
 
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 const index = ref(1);
 
 function nextChange() {

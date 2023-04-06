@@ -1,5 +1,4 @@
 import $ from "jquery";
-import { preLog, reloadObjProps, getSetting, getSettingTemp } from "@/utils/common";
 
 export let __LITE_CONFIG__: CustType.ILite;
 export let blogId = 0;
@@ -29,8 +28,8 @@ function getIsFollow() {
  * 初始化自定义博客设置
  */
 function initSetting() {
-  const setting = getSetting().value;
-  localStorage.setItem(`l-${blogApp}-setting`, JSON.stringify(reloadObjProps(setting, getSettingTemp())));
+  const setting = LiteUtils.getSetting().value;
+  localStorage.setItem(`l-${blogApp}-setting`, JSON.stringify(LiteUtils.reloadObjProps(setting, LiteUtils.getSettingTemp())));
 
   $("html").attr("class", setting.theme.mode);
   $("html").css({
@@ -103,6 +102,6 @@ export function useLite(dev: Function, pro: Function) {
   }
 
   $("head").append(`<link rel="shortcut icon" href="${__LITE_CONFIG__.icon}">`);
-  preLog("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
-  preLog("v1.5.1", "Powered By Himmelbleu using Vue3 & Vite.");
+  LiteUtils.Log.primary("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
+  LiteUtils.Log.primary("v1.5.1", "Powered By Himmelbleu using Vue3 & Vite.");
 }

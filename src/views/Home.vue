@@ -1,39 +1,31 @@
 <script setup lang="ts">
 import { getHomeWritingList } from "@/apis/remote-api";
-import { getSetting, startLoading, endLoading } from "@/utils/common";
 
-startLoading();
+LiteUtils.startLoading();
 
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 const listing = shallowRef(await getHomeWritingList(1));
 
-async function next(e: any) {
-  startLoading();
+async function fetchData(e: any) {
+  LiteUtils.startLoading();
   listing.value = await getHomeWritingList(e.currentIndex);
-  endLoading();
-}
-
-async function prev(e: any) {
-  startLoading();
-  listing.value = await getHomeWritingList(e.currentIndex);
-  endLoading();
-}
-
-async function nexpr(e: any) {
-  startLoading();
-  listing.value = await getHomeWritingList(e.currentIndex);
-  endLoading();
+  LiteUtils.endLoading();
 }
 
 onMounted(() => {
-  endLoading();
+  LiteUtils.endLoading();
 });
 </script>
 
 <template>
   <ContextMenu>
     <div id="l-home" class="min-height">
-      <Pagination @prev="prev" @next="next" @nexpr="nexpr" :count="listing.page" :disabled="setting.other.pagation.pin">
+      <Pagination
+        @prev="(e: any) => fetchData(e)"
+        @next="(e: any) => fetchData(e)"
+        @nexpr="(e: any) => fetchData(e)"
+        :count="listing.page"
+        :disabled="setting.other.pagation.pin">
         <template #content>
           <WritingItem
             v-if="listing.data.length > 0"

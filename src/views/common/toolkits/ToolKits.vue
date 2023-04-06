@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { pcDevice } from "@/lite.config";
-import { getSetting, nav } from "@/utils/common";
 
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 const router = useRouter();
 const active = ref("1");
 const dialog = ref(false);
@@ -33,7 +32,7 @@ function changeDayTime() {
       <Card
         :class="{ 'l-box-bg': !setting.card.open, 'show-0': setting.toolkits.pin, 'close-0': !setting.toolkits.pin }"
         class="back-home absolute hover left-0 rd-2"
-        @click="nav({ path: '/home', router })">
+        @click="LiteUtils.Router.go({ path: '/home', router })">
         <div class="f-c-c w-8 h-8">
           <i-ep-house />
         </div>

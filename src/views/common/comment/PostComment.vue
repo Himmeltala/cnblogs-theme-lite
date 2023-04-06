@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { isLogin } from "@/lite.config";
-import { openImageUploadWindow } from "@/utils/common";
 import { setComment, getCommentCount, getCommentList } from "@/apis/remote-api";
 
 const props = defineProps({
@@ -18,7 +17,7 @@ const comment = ref<BlogType.IComment>({
 const loading = ref(false);
 
 function uploadImage(el: string) {
-  openImageUploadWindow(el, (imgUrl: any) => {
+  LiteUtils.openImageUploadWindow(el, (imgUrl: any) => {
     comment.value.body += `\n\n${imgUrl}\n\n`;
   });
 }

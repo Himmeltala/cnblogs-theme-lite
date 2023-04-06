@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { PropType } from "vue";
-import { openImageUploadWindow } from "@/utils/common";
 import { updateComment, getComment, getCommentCount, getCommentList } from "@/apis/remote-api";
 
 const props = defineProps({
@@ -24,7 +22,7 @@ let htmlContent = "";
 const content = ref("");
 
 function uploadImage(el: string) {
-  openImageUploadWindow(el, (imgUrl: any) => {
+  LiteUtils.openImageUploadWindow(el, (imgUrl: any) => {
     content.value += `\n${imgUrl}\n`;
   });
 }

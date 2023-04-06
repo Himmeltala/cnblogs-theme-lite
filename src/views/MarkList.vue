@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
 import { getMarkList } from "@/apis/remote-api";
-import { endLoading, startLoading, getSetting } from "@/utils/common";
 
-startLoading();
+LiteUtils.startLoading();
 
 const markList = await getMarkList();
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 
 document.querySelector("title").innerText = `标签 - ${blogApp} - 博客园`;
 
 onMounted(() => {
-  endLoading();
+  LiteUtils.endLoading();
 });
 </script>
 

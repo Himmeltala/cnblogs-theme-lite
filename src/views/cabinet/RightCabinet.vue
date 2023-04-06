@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { getSetting } from "@/utils/common";
 import { __LITE_CONFIG__ } from "@/lite.config";
 
 const props = defineProps({
@@ -9,7 +8,7 @@ const props = defineProps({
   }
 });
 
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 const collapseActive = ref("1");
 
 const right = computed(() => {

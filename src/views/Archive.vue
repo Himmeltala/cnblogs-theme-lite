@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
 import { getWritingArchive, getDayArchive } from "@/apis/remote-api";
-import { endLoading, startLoading, nav, getSetting } from "@/utils/common";
 
-startLoading();
+LiteUtils.startLoading();
 
 const route = useRoute();
 const router = useRouter();
 let date = route.params.date;
 let mode = route.params.mode;
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 const archive = shallowRef();
 
 async function fetchData() {
-  startLoading();
+  LiteUtils.startLoading();
   if (mode === "a") {
     archive.value = await getWritingArchive(`${date}`, "article");
   } else if (mode === "p") {
@@ -22,7 +21,7 @@ async function fetchData() {
     archive.value = await getDayArchive(`${String(date).replaceAll("-", "/")}`);
   }
   document.querySelector("title").innerText = `${archive.value.hint} - ${blogApp} - 博客园`;
-  endLoading();
+  LiteUtils.endLoading();
 }
 
 await fetchData();
@@ -54,7 +53,7 @@ watch(route, async () => {
       <Pagination @nexpr="nexpr" @next="next" @prev="prev" :count="archive.page" :disabled="setting.other.pagation.pin">
         <template #content>
           <Card>
-            <el-page-header :icon="null" @back="nav({ path: 'back', router })">
+            <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router })">
               <template #title>
                 <div class="f-c-c">
                   <i-ep-back />

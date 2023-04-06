@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { PropType } from "vue";
-import { getSetting } from "@/utils/common";
+const setting = LiteUtils.getSetting();
 
-const setting = getSetting();
 defineProps({
   line: {
     type: Boolean,

@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { useBaseAuthorData } from "@/store";
-import { startLoading, endLoading, nav } from "@/utils/common";
 import { blogApp, __LITE_CONFIG__, pcDevice } from "@/lite.config";
 
-startLoading();
+LiteUtils.startLoading();
 
 const store = useBaseAuthorData();
 const authorData = shallowRef();
@@ -17,7 +16,7 @@ store.$onAction(({ args }) => {
 const router = useRouter();
 
 onMounted(() => {
-  endLoading();
+  LiteUtils.endLoading();
 });
 </script>
 
@@ -109,9 +108,9 @@ onMounted(() => {
             </div>
           </div>
           <div v-if="!__LITE_CONFIG__.nameplate.photo.disabled">
-            <el-button type="primary" @click="nav({ router, path: '/home' })">Get Started</el-button>
-            <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
-            <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
+            <el-button type="primary" @click="LiteUtils.Router.go({ router, path: '/home' })">Get Started</el-button>
+            <el-button text type="primary" @click="LiteUtils.Router.go({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
+            <el-button text type="primary" @click="LiteUtils.Router.go({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
           </div>
         </div>
         <div class="w-48%">
@@ -139,9 +138,9 @@ onMounted(() => {
             </div>
           </div>
           <div v-else>
-            <el-button type="primary" @click="nav({ router, path: '/home' })">Get Started</el-button>
-            <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
-            <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
+            <el-button type="primary" @click="LiteUtils.Router.go({ router, path: '/home' })">Get Started</el-button>
+            <el-button text type="primary" @click="LiteUtils.Router.go({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
+            <el-button text type="primary" @click="LiteUtils.Router.go({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
           </div>
         </div>
       </div>
@@ -160,9 +159,9 @@ onMounted(() => {
           </div>
         </div>
         <div class="mb-6">
-          <el-button type="primary" @click="nav({ router, path: '/home' })">Get Started</el-button>
-          <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
-          <el-button text type="primary" @click="nav({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
+          <el-button type="primary" @click="LiteUtils.Router.go({ router, path: '/home' })">Get Started</el-button>
+          <el-button text type="primary" @click="LiteUtils.Router.go({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
+          <el-button text type="primary" @click="LiteUtils.Router.go({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
         </div>
         <div class="mb-6">
           <div class="mb-2 font-bold title">闲言碎语</div>

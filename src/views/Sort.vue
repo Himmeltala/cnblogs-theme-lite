@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { blogApp } from "@/lite.config";
 import { getWritingSort, getWritingSortChild } from "@/apis/remote-api";
-import { endLoading, startLoading, nav, getSetting } from "@/utils/common";
 
 const route = useRoute();
 const router = useRouter();
 let id = route.params.id;
 let mode = route.params.mode;
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 const child = shallowRef();
 const sort = shallowRef();
 
 async function fetchData(index?: number) {
-  startLoading();
+  LiteUtils.startLoading();
   sort.value = await getWritingSort(`${id}`, index || 1);
   if (mode === "a") {
     child.value = await getWritingSortChild(`${id}`, "2");
@@ -20,7 +19,7 @@ async function fetchData(index?: number) {
     child.value = await getWritingSortChild(`${id}`);
   }
   document.querySelector("title").innerText = `${sort.value.hint} - ${blogApp} - 博客园`;
-  endLoading();
+  LiteUtils.endLoading();
 }
 
 await fetchData();
@@ -52,7 +51,7 @@ watch(route, async () => {
       <Pagination @nexpr="nexpr" @next="next" @prev="prev" :count="sort.page" :disabled="setting.other.pagation.pin">
         <template #content>
           <Card :padding="{ left: 1, right: 1, bottom: 1 }" :margin="{ bottom: 1 }">
-            <el-page-header :icon="null" @back="nav({ path: 'back', router })">
+            <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router })">
               <template #title>
                 <div class="f-c-c">
                   <i-ep-back />

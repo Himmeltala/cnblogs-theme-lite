@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { PropType } from "vue";
 import { deleteComment } from "@/apis/remote-api";
 
 const props = defineProps({

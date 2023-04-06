@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useBaseAuthorData } from "@/store";
-import { getSetting } from "@/utils/common";
 import { blogApp, pcDevice } from "@/lite.config";
 import { getMasterData, getAuthorData } from "@/apis/remote-api";
 
 const route = useRoute();
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 const ldisabled = ref(true);
 const rdisabled = ref(true);
 const { setBaseAuthorData } = useBaseAuthorData();

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { getSetting } from "@/utils/common";
-
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 const menu = ref<HTMLElement>();
 const movbox = ref();
 const disabled = ref(true);

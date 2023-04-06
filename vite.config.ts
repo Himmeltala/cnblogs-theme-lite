@@ -22,19 +22,44 @@ export default defineConfig(({ command, mode }) => {
         shortcuts,
         transformers: [
           transformerDirectives({
-            applyVariable: ["--at-apply", "--uno-apply", "--uno"]
+            applyVariable: ["--uno"]
           })
         ],
         presets: [presetAttributify({}), presetUno()]
       }),
       AutoImport({
-        imports: ["vue", "vue-router", "pinia", "@vueuse/core"],
+        include: [
+          /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+          /\.vue$/,
+          /\.vue\?vue/ // .vue
+        ],
+        imports: [
+          "vue",
+          "pinia",
+          "vue-router",
+          "@vueuse/core",
+          {
+            "@/utils/common": ["LiteUtils"]
+          },
+          {
+            from: "vue-router",
+            imports: ["Router"],
+            type: true
+          },
+          {
+            from: "vue",
+            imports: ["PropType"],
+            type: true
+          }
+        ],
         resolvers: [
           ElementPlusResolver(),
           IconsResolver({
             prefix: "Icon"
           })
-        ]
+        ],
+        vueTemplate: true,
+        dts: "./auto-imports.d.ts"
       }),
       Components({
         resolvers: [

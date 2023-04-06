@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { nav } from "@/utils/common";
 import { isLogin } from "@/lite.config";
 import { useAnchorStore } from "@/store";
 import { getCommentCount, getCommentList } from "@/apis/remote-api";
@@ -47,7 +46,7 @@ function onEdFinish(response: any) {
         <div class="l-comment__head f-c-s">
           <el-image class="l-comment__avatar mr-4 rd-50 w-14 h-14" :src="item.avatar" fit="fill" />
           <div>
-            <div class="l-comment__author hover cursor-pointer" @click="nav({ path: item.space })">
+            <div class="l-comment__author hover cursor-pointer" @click="LiteUtils.Router.go({ path: item.space })">
               {{ item.author }}
             </div>
             <div class="l-comment__data l-fiv-size l-sec-color mt-2 f-c-c">

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import $ from "jquery";
-import { getSetting } from "@/utils/common";
 
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 const props = defineProps({
   text: {
     type: String,

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { getCalendar } from "@/apis/remote-api";
-import { startLoading, endLoading, nav } from "@/utils/common";
 
-startLoading();
+LiteUtils.startLoading();
 
 const router = useRouter();
 const date = new Date();
@@ -24,13 +23,13 @@ watch(dateModel, async () => {
 });
 
 onMounted(() => {
-  endLoading();
+  LiteUtils.endLoading();
 });
 </script>
 
 <template>
   <div class="l-calendar min-height f-s-s flex-col">
-    <el-page-header class="mt-4" :icon="null" @back="nav({ path: 'back', router })">
+    <el-page-header class="mt-4" :icon="null" @back="LiteUtils.Router.go({ path: 'back', router })">
       <template #title>
         <div class="f-c-c">
           <i-ep-back />
@@ -42,7 +41,7 @@ onMounted(() => {
     </el-page-header>
     <el-calendar v-model="dateModel">
       <template #date-cell="{ data }">
-        <div class="w-100% h-100%" @click="nav({ path: '/archive/d/' + data.day, router })" v-if="findDate(data).value">
+        <div class="w-100% h-100%" @click="LiteUtils.Router.go({ path: '/archive/d/' + data.day, router })" v-if="findDate(data).value">
           <u>
             {{ data.day.split("-")[2] }}
           </u>

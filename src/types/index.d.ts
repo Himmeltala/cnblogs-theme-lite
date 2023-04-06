@@ -1,5 +1,5 @@
 declare namespace BlogType {
-  declare type VoteType = "Bury" | "Digg";
+  type VoteType = "Bury" | "Digg";
 
   /**
    * 博客园评论和随笔的基础字段，一般是调用接口之后返回过来的字段
@@ -327,5 +327,31 @@ declare namespace CustType {
         pin?: boolean;
       };
     };
+  }
+}
+
+declare namespace LiteUtils {
+  function getSetting(): RemovableRef<CustType.ISetting>;
+  function endLoading(): void;
+  function startLoading(): void;
+  function openImageUploadWindow(el: string, onUploaded: (img: string) => void): void;
+  function getSettingTemp(): CustType.ISetting;
+  function reloadObjProps(source: CustType.ISetting, template: CustType.ISetting): CustType.ISetting;
+
+  namespace Log {
+    function primary(title: string, msg: string): void;
+    function warning(title: string, msg: string): void;
+  }
+
+  namespace Parser {
+    function unit(num: string): string;
+  }
+
+  namespace Text {
+    function replace(source: string, regExps: RegExp[], replacement?: string[]): string;
+  }
+
+  namespace Router {
+    function go(params: { path: string; router?: Router }): void;
   }
 }

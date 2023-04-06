@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { PropType } from "vue";
-
 defineProps({
   data: {
     type: Object as PropType<{

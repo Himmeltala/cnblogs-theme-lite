@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { pcDevice } from "@/lite.config";
-import { getSetting } from "@/utils/common";
 
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 const positions = [
   {
     label: "靠左",

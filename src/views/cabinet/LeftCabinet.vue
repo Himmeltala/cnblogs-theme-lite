@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useBaseAuthorData } from "@/store";
-import { getSetting, nav } from "@/utils/common";
 import { __LITE_CONFIG__, blogApp, isFollow, isOwner } from "@/lite.config";
 import { follow, unfollow, getCabinetColumn, getCabinetTopList } from "@/apis/remote-api";
 
@@ -13,7 +12,7 @@ const props = defineProps({
 
 const cabinet = __LITE_CONFIG__.cabinet;
 const store = useBaseAuthorData();
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 const searchVal = ref("");
 const tabActive = ref("first");
 const commonCollActive = ref("1");
@@ -104,7 +103,7 @@ const fixed = computed(() => {
             </el-popconfirm>
             <el-button @click="subscribe" v-if="!isFollow" type="primary" text bg> +关注博主 </el-button>
           </div>
-          <div class="hover mb-4" v-if="authorData" v-for="(item, index) in authorData" @click="nav({ path: item.href })">
+          <div class="hover mb-4" v-if="authorData" v-for="(item, index) in authorData" @click="LiteUtils.Router.go({ path: item.href })">
             <div class="f-c-s" v-if="index === 0">
               <i-ep-user-filled class="mr-2" />
               昵称：{{ item.text }}

@@ -1,6 +1,3 @@
-import { ref } from "vue";
-import { defineStore } from "pinia";
-
 export const useCatalogStore = defineStore("catalogStore", () => {
   let _catalog = ref();
 

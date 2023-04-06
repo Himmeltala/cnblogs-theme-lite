@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { getSetting } from "@/utils/common";
-
-const setting = getSetting();
+const setting = LiteUtils.getSetting();
 const collapseActive = ref("1");
 const disabled = ref(inspect());
 
