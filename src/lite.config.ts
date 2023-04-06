@@ -64,7 +64,6 @@ export namespace LiteConfig {
 
     if (import.meta.env.PROD) {
       blogId = currentBlogId;
-      LiteConfig.blogApp = currentBlogApp;
       blogApp = currentBlogApp;
       isLogin = isLogined;
       isOwner = isBlogOwner;
@@ -109,6 +108,6 @@ export namespace LiteConfig {
 
     $("head").append(`<link rel="shortcut icon" href="${__LITE_CONFIG__.icon}">`);
     LiteUtils.Log.primary("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
-    LiteUtils.Log.primary("v1.5.1", "Powered By Himmelbleu using Vue3 & Vite.");
+    LiteUtils.Log.primary("v1.4.9", "Powered By Himmelbleu using Vue3 & Vite.");
   }
 }
