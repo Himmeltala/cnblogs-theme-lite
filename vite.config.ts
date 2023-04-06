@@ -42,6 +42,9 @@ export default defineConfig(({ command, mode }) => {
             "@/utils/common": ["LiteUtils"]
           },
           {
+            "@/lite.config": ["LiteConfig"]
+          },
+          {
             from: "vue-router",
             imports: ["Router"],
             type: true

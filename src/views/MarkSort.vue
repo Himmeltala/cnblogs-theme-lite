@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { blogApp } from "@/lite.config";
 import { getWritingMark } from "@/apis/remote-api";
 
 LiteUtils.startLoading();
@@ -9,13 +8,13 @@ const router = useRouter();
 const listing = shallowRef(await getWritingMark(`${route.params.tag}`));
 const setting = LiteUtils.getSetting();
 
-document.querySelector("title").innerText = `${listing.value.hint} - ${blogApp} - 博客园`;
+document.querySelector("title").innerText = `${listing.value.hint} - ${LiteConfig.blogApp} - 博客园`;
 
 watch(route, async () => {
   if (route.name === "MarkSort") {
     LiteUtils.startLoading();
     listing.value = await getWritingMark(`${route.params.tag}`);
-    document.querySelector("title").innerText = `${listing.value.hint} - ${blogApp} - 博客园`;
+    document.querySelector("title").innerText = `${listing.value.hint} - ${LiteConfig.blogApp} - 博客园`;
     LiteUtils.endLoading();
   }
 });

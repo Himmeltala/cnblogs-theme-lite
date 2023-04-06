@@ -12,7 +12,6 @@ import "./style.scss";
 
 /* Import Lite */
 import { useDirective } from "./directive";
-import { useLite } from "./lite.config";
 
 /* Start */
 const app = createApp(App);
@@ -21,7 +20,7 @@ app.use(router);
 app.use(createPinia());
 
 useDirective(app);
-useLite(
+LiteConfig.useLite(
   () => app.mount("#app"),
   () => {
     // initLiteVars();

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { __LITE_CONFIG__ } from "@/lite.config";
-
 const props = defineProps({
   disabled: {
     type: Boolean,
@@ -40,25 +38,25 @@ const fixed = computed(() => {
       :class="{ 'l-box-bg px-2': !setting.card.open }"
       :padding="setting.cabinet.right.padding"
       :margin="setting.cabinet.right.margin">
-      <ExpandableBox text="我的技术栈" v-if="__LITE_CONFIG__.graph">
+      <ExpandableBox text="我的技术栈" v-if="LiteConfig.__LITE_CONFIG__.graph">
         <template #icon>
           <i-ep-aim />
         </template>
         <SkillGraph />
       </ExpandableBox>
-      <ExpandableBox text="常用链接" v-if="__LITE_CONFIG__.links && __LITE_CONFIG__.links.length">
+      <ExpandableBox text="常用链接" v-if="LiteConfig.__LITE_CONFIG__.links && LiteConfig.__LITE_CONFIG__.links.length">
         <template #icon>
           <i-ep-link />
         </template>
-        <a class="hover block mb-3" v-for="item in __LITE_CONFIG__.links" :href="item.href" target="_blank">
+        <a class="hover block mb-3" v-for="item in LiteConfig.__LITE_CONFIG__.links" :href="item.href" target="_blank">
           {{ item.text }}
         </a>
       </ExpandableBox>
-      <ExpandableBox text="推荐书籍" v-if="__LITE_CONFIG__.books && __LITE_CONFIG__.books.length">
+      <ExpandableBox text="推荐书籍" v-if="LiteConfig.__LITE_CONFIG__.books && LiteConfig.__LITE_CONFIG__.books.length">
         <template #icon>
           <i-ep-notebook />
         </template>
-        <div class="mb-3 f-c-b" v-for="item in __LITE_CONFIG__.books">
+        <div class="mb-3 f-c-b" v-for="item in LiteConfig.__LITE_CONFIG__.books">
           <img class="h-25 w-20" :src="item.img" alt="FAILED" />
           <div style="width: calc(100% - 6rem)">
             <div class="mb-1" v-if="!item.href">

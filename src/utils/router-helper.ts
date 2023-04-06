@@ -6,7 +6,6 @@
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */
 
-import { blogApp } from "@/lite.config";
 import { useAnchorStore } from "@/store";
 
 export enum name {
@@ -31,8 +30,6 @@ export enum name {
   // 博客日历
   Calendar = "Calendar"
 }
-
-export type routePath = "/p/";
 
 const regexp = {
   EssayList: /\/p\/\d+.html/g,
@@ -107,5 +104,5 @@ export function redirect(next: any): () => void {
 }
 
 function push() {
-  window.history.pushState("", "", `${window.location.protocol}//${window.location.host}/${blogApp}/#/`);
+  window.history.pushState("", "", `${window.location.protocol}//${window.location.host}/${LiteConfig.blogApp}/#/`);
 }

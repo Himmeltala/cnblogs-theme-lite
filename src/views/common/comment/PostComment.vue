@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { isLogin } from "@/lite.config";
 import { setComment, getCommentCount, getCommentList } from "@/apis/remote-api";
 
 const props = defineProps({
@@ -57,7 +56,7 @@ async function AddComment() {
       <div class="z--1 opacity-0 absolute top-0 left-0">
         <textarea id="main-upload-img" />
       </div>
-      <el-button plain :disabled="!isLogin" :loading="loading" @click="AddComment"> 发送评论 </el-button>
+      <el-button plain :disabled="!LiteConfig.isLogin" :loading="loading" @click="AddComment"> 发送评论 </el-button>
     </div>
   </div>
 </template>

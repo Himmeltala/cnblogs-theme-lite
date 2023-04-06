@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { __LITE_CONFIG__ } from "@/lite.config";
-
 const setting = LiteUtils.getSetting();
 </script>
 
@@ -10,7 +8,7 @@ const setting = LiteUtils.getSetting();
     class="fixed top-0 w-15 h-15 border-0 z-1"
     :style="{ transform: setting.other.github.position === 'right' ? 'rotate(90deg)' : 'rotate(0deg)' }"
     :class="{ 'left-0': setting.other.github.position === 'left', 'right-0': setting.other.github.position === 'right' }"
-    :href="__LITE_CONFIG__.github"
+    :href="LiteConfig.__LITE_CONFIG__.github"
     target="_blank">
     <svg viewBox="0 0 250 250" style="color: #fff">
       <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>

@@ -9,7 +9,6 @@
 import $ from "jquery";
 import axios from "axios";
 import * as Parser from "@/services/parse-html";
-import { baseAPI, blogId, userGuid } from "@/lite.config";
 
 /**
  * 以 async/await 风格写异步请求，代码更加简洁，逻辑更加清晰
@@ -20,7 +19,7 @@ import { baseAPI, blogId, userGuid } from "@/lite.config";
 async function sendAwaitGet(url: string): Promise<any> {
   let awt;
   try {
-    awt = await axios.get(`${baseAPI}${url}`, { timeout: 5000 });
+    awt = await axios.get(`${LiteConfig.baseAPI}${url}`, { timeout: 5000 });
   } catch (e) {
     console.error(e);
   }
@@ -37,7 +36,7 @@ async function sendAwaitGet(url: string): Promise<any> {
 async function sendAwaitPost(url: string, data: any): Promise<any> {
   let awt;
   try {
-    awt = await axios.post(`${baseAPI}${url}`, data, {
+    awt = await axios.post(`${LiteConfig.baseAPI}${url}`, data, {
       timeout: 5000,
       headers: { RequestVerificationToken: $("#antiforgery_token").attr("value") }
     });
@@ -71,7 +70,7 @@ export async function getWriting(id: string) {
  * 获取随笔、文章的标签和分类
  */
 export async function getWritingProps(id: string) {
-  const { data } = await sendAwaitGet(`/ajax/CategoriesTags.aspx?blogId=${blogId}&postId=${id}`);
+  const { data } = await sendAwaitGet(`/ajax/CategoriesTags.aspx?blogId=${LiteConfig.blogId}&postId=${id}`);
   return Parser.parseWritingProps(data);
 }
 
@@ -305,7 +304,7 @@ export async function getCabinetTopList() {
  */
 export async function follow() {
   const { data } = await sendAwaitPost(`/ajax/Follow/FollowBlogger.aspx`, {
-    blogUserGuid: userGuid
+    blogUserGuid: LiteConfig.userGuid
   });
   return data === "关注成功" ?? false;
 }
@@ -315,7 +314,7 @@ export async function follow() {
  */
 export async function unfollow() {
   const { data } = await sendAwaitPost(`/ajax/Follow/RemoveFollow.aspx`, {
-    blogUserGuid: userGuid
+    blogUserGuid: LiteConfig.userGuid
   });
   return data === "取消成功" ?? false;
 }

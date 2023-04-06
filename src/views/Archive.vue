@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { blogApp } from "@/lite.config";
 import { getWritingArchive, getDayArchive } from "@/apis/remote-api";
 
 LiteUtils.startLoading();
@@ -20,7 +19,7 @@ async function fetchData() {
   } else if (mode === "d") {
     archive.value = await getDayArchive(`${String(date).replaceAll("-", "/")}`);
   }
-  document.querySelector("title").innerText = `${archive.value.hint} - ${blogApp} - 博客园`;
+  document.querySelector("title").innerText = `${archive.value.hint} - ${LiteConfig.blogApp} - 博客园`;
   LiteUtils.endLoading();
 }
 

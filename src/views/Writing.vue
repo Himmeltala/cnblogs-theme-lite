@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { isOwner, blogApp } from "@/lite.config";
 import {
   getLockedWriting,
   getIsUnlock,
@@ -24,7 +23,7 @@ const isLock = ref(false);
 const pwd = ref("");
 
 if (!(writing.value.content && writing.value.text)) isLock.value = true;
-document.querySelector("title").innerText = `${writing.value.text} - ${blogApp} - 博客园`;
+document.querySelector("title").innerText = `${writing.value.text} - ${LiteConfig.blogApp} - 博客园`;
 
 onMounted(() => {
   const anchor = route.hash.match(/#.+/g);
@@ -68,7 +67,7 @@ watch(route, async () => {
     isLock.value = false;
 
     if (!(writing.value.content && writing.value.text)) isLock.value = true;
-    document.querySelector("title").innerText = `${writing.value.text} - ${blogApp} - 博客园`;
+    document.querySelector("title").innerText = `${writing.value.text} - ${LiteConfig.blogApp} - 博客园`;
     LiteUtils.endLoading();
   }
 });
@@ -102,7 +101,7 @@ watch(route, async () => {
             <span>{{ writing.comm }}条评论</span>
           </div>
           <div
-            v-if="isOwner"
+            v-if="LiteConfig.isOwner"
             class="f-c-c hover"
             @click="LiteUtils.Router.go({ path: 'https://i.cnblogs.com/EditPosts.aspx?postid=' + postId })">
             <i-ep-edit-pen class="mr-1" />

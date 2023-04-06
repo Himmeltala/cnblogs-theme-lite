@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { pcDevice } from "@/lite.config";
-
 const setting = LiteUtils.getSetting();
 const positions = [
   {
@@ -15,11 +13,11 @@ const positions = [
 </script>
 
 <template>
-  <div v-if="pcDevice">
+  <div v-if="LiteConfig.pcDevice">
     <span><span v-show="!setting.other.pagation.pin">隐藏</span><span v-show="setting.other.pagation.pin">开启</span>翻页按钮</span>
     <el-switch v-model="setting.other.pagation.pin" size="small" class="ml-2" style="--el-switch-on-color: var(--l-theme-color)" />
   </div>
-  <div v-if="pcDevice" class="mt-4 f-c-s">
+  <div v-if="LiteConfig.pcDevice" class="mt-4 f-c-s">
     <div>GitHub 角标</div>
     <el-select size="small" v-model="setting.other.github.position" class="ml-2">
       <el-option v-for="item in positions" :key="item.value" :label="item.label" :value="item.value" />

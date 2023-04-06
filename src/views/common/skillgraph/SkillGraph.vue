@@ -1,24 +1,23 @@
 <script setup lang="ts">
 import { useSkillGraph } from "./index";
-import { __LITE_CONFIG__ } from "@/lite.config";
 
 const setting = LiteUtils.getSetting();
 
 watch(setting, (val, old) => {
   if (val.theme.color != old.theme.color) {
-    useSkillGraph(110, setting.value.theme.color, __LITE_CONFIG__.graph);
+    useSkillGraph(110, setting.value.theme.color, LiteConfig.__LITE_CONFIG__.graph);
   }
 });
 
 onMounted(() => {
-  if (__LITE_CONFIG__.graph) {
-    useSkillGraph(110, setting.value.theme.color, __LITE_CONFIG__.graph);
+  if (LiteConfig.__LITE_CONFIG__.graph) {
+    useSkillGraph(110, setting.value.theme.color, LiteConfig.__LITE_CONFIG__.graph);
   }
 });
 </script>
 
 <template>
-  <div class="skillgraph" v-if="__LITE_CONFIG__.graph">
+  <div class="skillgraph" v-if="LiteConfig.__LITE_CONFIG__.graph">
     <canvas id="graph" width="220" height="220"></canvas>
     <div id="floating"></div>
   </div>

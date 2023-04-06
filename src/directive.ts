@@ -1,7 +1,6 @@
 import $ from "jquery";
 import hljs from "highlight.js";
 import { useCatalogStore } from "@/store";
-import { __LITE_CONFIG__ } from "@/lite.config";
 
 function useCodeFolder(ele: JQuery<HTMLElement>) {
   const height = ele.height();
@@ -125,7 +124,7 @@ export function useDirective(Vue: any) {
         .each((i, e) => {
           const id = $(e).attr("id");
           const type: string = $(e)[0].localName;
-          const level = __LITE_CONFIG__.catalog?.level;
+          const level = LiteConfig.__LITE_CONFIG__.catalog?.level;
           let content = ``;
           item = `${$(e).text()}`;
 

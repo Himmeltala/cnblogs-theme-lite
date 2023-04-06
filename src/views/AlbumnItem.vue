@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { blogApp } from "@/lite.config";
 import { getAlbumnItem } from "@/apis/remote-api";
 
 LiteUtils.startLoading();
@@ -8,7 +7,7 @@ const route = useRoute();
 const router = useRouter();
 const imgUrl = shallowRef(await getAlbumnItem(`${route.params.id}`));
 
-document.querySelector("title").innerText = `相册照片 - ${blogApp} - 博客园`;
+document.querySelector("title").innerText = `相册照片 - ${LiteConfig.blogApp} - 博客园`;
 
 onMounted(() => {
   LiteUtils.endLoading();

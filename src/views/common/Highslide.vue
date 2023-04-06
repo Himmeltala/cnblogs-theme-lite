@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import $ from "jquery";
-import { pcDevice } from "@/lite.config";
 
 const highslide = ref<HTMLElement>();
 const image = ref<HTMLElement>();
@@ -86,7 +85,7 @@ onMounted(() => {
             style="max-width: initial"
             class="l-highslide__img noselect cursor-move"
             :class="{
-              fixed: x && y && pcDevice ? true : false,
+              fixed: x && y && LiteConfig.pcDevice ? true : false,
               transition: transition
             }"
             :style="{

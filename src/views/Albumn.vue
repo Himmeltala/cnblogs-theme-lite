@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { blogApp } from "@/lite.config";
 import { getAlbumn } from "@/apis/remote-api";
 
 LiteUtils.startLoading();
@@ -9,7 +8,7 @@ const router = useRouter();
 const albumn = shallowRef(await getAlbumn(`${route.params.id}`));
 const srcList = shallowRef(albumn.value.data.map(i => i.src));
 
-document.querySelector("title").innerText = `相册 - ${blogApp} - 博客园`;
+document.querySelector("title").innerText = `相册 - ${LiteConfig.blogApp} - 博客园`;
 
 watch(route, async () => {
   if (route.name === "Albumn") {

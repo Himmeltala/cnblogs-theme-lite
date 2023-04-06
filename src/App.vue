@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useBaseAuthorData } from "@/store";
-import { blogApp, pcDevice } from "@/lite.config";
 import { getMasterData, getAuthorData } from "@/apis/remote-api";
 
 const route = useRoute();
@@ -35,7 +34,7 @@ onMounted(() => {
 
 watch(route, async () => {
   if (route.name === "Index" || route.name === "EssayList") {
-    document.querySelector("title").innerText = `${blogApp} - 博客园`;
+    document.querySelector("title").innerText = `${LiteConfig.blogApp} - 博客园`;
   }
 });
 </script>
@@ -67,7 +66,7 @@ watch(route, async () => {
   </div>
   <div id="l-content" class="z-1 l-transition">
     <div id="l-top-nail"></div>
-    <div :class="{ 'l-box-bg': !setting.card.open, 'py-2 px-4': !pcDevice }">
+    <div :class="{ 'l-box-bg': !setting.card.open, 'py-2 px-4': !LiteConfig.pcDevice }">
       <div id="l-main">
         <RouterView v-slot="{ Component }">
           <template v-if="Component">
@@ -84,7 +83,9 @@ watch(route, async () => {
     <div class="l-copyright f-c-c my-2 l-six-size l-sec-color h-8">
       <div class="l-copyright__content">
         <div class="f-c-c">
-          <div>Powered by <a class="hover" href="https://www.cnblogs.com" target="__blank">博客园</a> Copyright © {{ blogApp }}</div>
+          <div>
+            Powered by <a class="hover" href="https://www.cnblogs.com" target="__blank">博客园</a> Copyright © {{ LiteConfig.blogApp }}
+          </div>
         </div>
         <div class="f-c-c mt-1">
           <div>

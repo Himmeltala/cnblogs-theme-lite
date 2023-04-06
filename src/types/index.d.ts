@@ -1,3 +1,6 @@
+/**
+ * 博客园类型
+ */
 declare namespace BlogType {
   type VoteType = "Bury" | "Digg";
 
@@ -59,6 +62,9 @@ declare namespace BlogType {
   }
 }
 
+/**
+ * Lite 类型
+ */
 declare namespace CustType {
   /**
    * 随笔/文章
@@ -330,6 +336,9 @@ declare namespace CustType {
   }
 }
 
+/**
+ * Lite 工具
+ */
 declare namespace LiteUtils {
   function getSetting(): RemovableRef<CustType.ISetting>;
   function endLoading(): void;
@@ -355,3 +364,43 @@ declare namespace LiteUtils {
     function go(params: { path: string; router?: Router }): void;
   }
 }
+
+/**
+ * Lite 配置
+ */
+declare namespace LiteConfig {
+  /**
+   * 博客配置项
+   */
+  let __LITE_CONFIG__: CustType.ILite;
+  let blogId: number;
+  /**
+   * axios API URL 前缀
+   */
+  let baseAPI: string;
+  /**
+   * 博客域名
+   */
+  let blogApp: string;
+  let isLogin: boolean;
+  let isOwner: boolean;
+  let userGuid: string;
+  let isFollow: boolean;
+  let pcDevice: boolean;
+
+  /**
+   * 定义 Lite
+   *
+   * @param dev 开发模式
+   * @param pro 生产模式
+   */
+  function useLite(dev: Function, pro: Function);
+}
+
+declare const isLogined: boolean;
+declare const isBlogOwner: boolean;
+declare const currentBlogId: number;
+/**
+ * 博客域名
+ */
+declare const currentBlogApp: string;

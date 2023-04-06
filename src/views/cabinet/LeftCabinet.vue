@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useBaseAuthorData } from "@/store";
-import { __LITE_CONFIG__, blogApp, isFollow, isOwner } from "@/lite.config";
 import { follow, unfollow, getCabinetColumn, getCabinetTopList } from "@/apis/remote-api";
 
 const props = defineProps({
@@ -10,7 +9,7 @@ const props = defineProps({
   }
 });
 
-const cabinet = __LITE_CONFIG__.cabinet;
+const cabinet = LiteConfig.__LITE_CONFIG__.cabinet;
 const store = useBaseAuthorData();
 const setting = LiteUtils.getSetting();
 const searchVal = ref("");
@@ -37,7 +36,7 @@ getCabinetTopList().then(res => {
 });
 
 function search() {
-  window.open(`https://zzk.cnblogs.com/s?w=blog:${blogApp}%${searchVal.value}`, "__blank");
+  window.open(`https://zzk.cnblogs.com/s?w=blog:${LiteConfig.blogApp}%${searchVal.value}`, "__blank");
 }
 
 async function subscribe() {
@@ -95,13 +94,13 @@ const fixed = computed(() => {
               </template>
             </el-tooltip>
           </div>
-          <div class="f-c-c mb-4" v-if="!isOwner">
+          <div class="f-c-c mb-4" v-if="!LiteConfig.isOwner">
             <el-popconfirm @confirm="unsubscribe" confirm-button-text="确定" cancel-button-text="取消" title="确定取消关注？">
               <template #reference>
-                <el-button v-if="isFollow" type="danger" text bg> -取消关注 </el-button>
+                <el-button v-if="LiteConfig.isFollow" type="danger" text bg> -取消关注 </el-button>
               </template>
             </el-popconfirm>
-            <el-button @click="subscribe" v-if="!isFollow" type="primary" text bg> +关注博主 </el-button>
+            <el-button @click="subscribe" v-if="!LiteConfig.isFollow" type="primary" text bg> +关注博主 </el-button>
           </div>
           <div class="hover mb-4" v-if="authorData" v-for="(item, index) in authorData" @click="LiteUtils.Router.go({ path: item.href })">
             <div class="f-c-s" v-if="index === 0">

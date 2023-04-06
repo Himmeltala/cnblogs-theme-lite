@@ -7,7 +7,6 @@
  */
 
 import $ from "jquery";
-import { __LITE_CONFIG__, blogApp } from "@/lite.config";
 
 export namespace LiteUtils {
   /**
@@ -16,7 +15,7 @@ export namespace LiteUtils {
    * @returns 博客设置
    */
   export function getSetting() {
-    return useStorage<CustType.ISetting>(`l-${blogApp}-setting`, {});
+    return useStorage<CustType.ISetting>(`l-${LiteConfig.blogApp}-setting`, {});
   }
 
   /**

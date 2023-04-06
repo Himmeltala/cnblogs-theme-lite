@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { blogApp } from "@/lite.config";
 import { getWritingSort, getWritingSortChild } from "@/apis/remote-api";
 
 const route = useRoute();
@@ -18,7 +17,7 @@ async function fetchData(index?: number) {
   } else if (mode === "p") {
     child.value = await getWritingSortChild(`${id}`);
   }
-  document.querySelector("title").innerText = `${sort.value.hint} - ${blogApp} - 博客园`;
+  document.querySelector("title").innerText = `${sort.value.hint} - ${LiteConfig.blogApp} - 博客园`;
   LiteUtils.endLoading();
 }
 

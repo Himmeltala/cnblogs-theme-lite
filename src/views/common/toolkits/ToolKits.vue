@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { pcDevice } from "@/lite.config";
-
 const setting = LiteUtils.getSetting();
 const router = useRouter();
 const active = ref("1");
@@ -86,7 +84,7 @@ function changeDayTime() {
   </div>
   <el-dialog draggable v-model="dialog" title="自定义博客" align-center width="25rem">
     <el-collapse v-model="active" accordion>
-      <el-collapse-item v-if="pcDevice">
+      <el-collapse-item v-if="LiteConfig.pcDevice">
         <template #title>
           <span class="l-for-size">陈列柜设置</span>
         </template>
@@ -100,7 +98,7 @@ function changeDayTime() {
         </template>
         <ThemeSetting />
       </el-collapse-item>
-      <el-collapse-item v-if="pcDevice">
+      <el-collapse-item v-if="LiteConfig.pcDevice">
         <template #title>
           <span class="l-for-size">其他设置</span>
         </template>
