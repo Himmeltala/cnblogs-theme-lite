@@ -3,7 +3,7 @@ import { genFileId } from "element-plus";
 import type { UploadInstance, UploadProps, UploadRawFile } from "element-plus";
 
 const upload = ref<UploadInstance>();
-const setting = LiteUtils.getSetting();
+const setting = LiteUtils.getLocalSetting();
 const uploadDialog = ref(false);
 const resetDialog = ref(false);
 const readerResult = shallowRef();

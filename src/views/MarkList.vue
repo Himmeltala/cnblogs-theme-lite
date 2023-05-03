@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getMarkList } from "@/apis/remote-api";
+import { getMarkList } from "@/apis";
 
 LiteUtils.startLoading();
 

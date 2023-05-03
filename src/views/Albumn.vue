@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getAlbumn } from "@/apis/remote-api";
+import { getAlbumn } from "@/apis";
 
 LiteUtils.startLoading();
 

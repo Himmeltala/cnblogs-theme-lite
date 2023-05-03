@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { getHomeWritingList } from "@/apis/remote-api";
+import { WorksApi } from "@/apis";
 
 LiteUtils.startLoading();
 
 const setting = LiteUtils.getLocalSetting();
-const listing = shallowRef(await getHomeWritingList(1));
+const listing = shallowRef(await WorksApi.getList(1));
 
 async function fetchData(e: any) {
   LiteUtils.startLoading();
-  listing.value = await getHomeWritingList(e.currentIndex);
+  listing.value = await WorksApi.getList(e.currentIndex);
   LiteUtils.endLoading();
 }
 
