@@ -1,24 +1,15 @@
 <script setup lang="ts">
-import {
-  getLockedWriting,
-  getIsUnlock,
-  getWriting,
-  getWritingProps,
-  getWritingPrevNext,
-  getWritingViewPoint,
-  voteWriting
-} from "@/apis/remote-api";
+import { WorksApi } from "@/apis";
 
 LiteUtils.startLoading();
 
 const route = useRoute();
-const router = useRouter();
 const setting = LiteUtils.getLocalSetting();
-let postId = `${route.params.id}`;
-const writing = shallowRef(await getWriting(postId));
-const prevNext = shallowRef(await getWritingPrevNext(postId));
-const writingProps = shallowRef(await getWritingProps(postId));
-const viewPoint = shallowRef(await getWritingViewPoint(postId));
+let postId = route.params.id as string;
+const writing = shallowRef(await WorksApi.getWorks(postId));
+const prevNext = shallowRef(await WorksApi.getPrevNext(postId));
+const writingProps = shallowRef(await WorksApi.getProps(postId));
+const viewPoint = shallowRef(await WorksApi.getViewPoint(postId));
 const isLock = ref(false);
 const pwd = ref("");
 
@@ -37,16 +28,16 @@ onMounted(() => {
 });
 
 async function submit() {
-  const data = await getIsUnlock(pwd.value, postId + "");
+  const data = await WorksApi.isPassed(pwd.value, postId + "");
   if (data) {
-    writing.value = await getLockedWriting(pwd.value, postId);
+    writing.value = await WorksApi.getLockedWorks(pwd.value, postId);
     isLock.value = false;
   }
   ElMessage({ message: data ? "密码输入正确！" : "密码错误！", grouping: true, type: data ? "success" : "error" });
 }
 
 async function vote(voteType: BlogType.VoteType) {
-  const data = await voteWriting({ postId: postId, isAbandoned: false, voteType });
+  const data = await WorksApi.vote({ postId: parseInt(postId), isAbandoned: false, voteType });
   if (data) {
     if (data.isSuccess)
       if (voteType == "Bury") viewPoint.value.buryCount = viewPoint.value.buryCount + 1;
@@ -60,10 +51,10 @@ watch(route, async () => {
     LiteUtils.startLoading();
 
     postId = `${route.params.id}`;
-    writing.value = await getWriting(postId);
-    writingProps.value = await getWritingProps(postId);
-    prevNext.value = await getWritingPrevNext(postId);
-    viewPoint.value = await getWritingViewPoint(postId);
+    writing.value = await WorksApi.getWorks(postId);
+    writingProps.value = await WorksApi.getProps(postId);
+    prevNext.value = await WorksApi.getPrevNext(postId);
+    viewPoint.value = await WorksApi.getViewPoint(postId);
     isLock.value = false;
 
     if (!(writing.value.content && writing.value.text)) isLock.value = true;

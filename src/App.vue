@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useBaseAuthorData } from "@/store";
-
 const route = useRoute();
 const setting = LiteUtils.getLocalSetting();
 const ldisabled = ref(true);
@@ -29,7 +27,7 @@ onMounted(() => {
 });
 
 watch(route, async () => {
-  if (route.name === "Index" || route.name === "EssayList") {
+  if (route.name === RouterName.INDEX) {
     document.querySelector("title").innerText = `${LiteConfig.blogApp} - 博客园`;
   }
 });
@@ -61,13 +59,13 @@ watch(route, async () => {
       </div>
     </div>
   </div>
-  <div id="l-content" class="z-1 l-transition">
+  <div id="l-content" class="z-1 fade-in-out">
     <div id="l-top-nail"></div>
     <div :class="{ 'l-box-bg': !setting.card.open, 'py-2 px-4': !LiteConfig.pcDevice }">
       <div id="l-main">
         <RouterView v-slot="{ Component }">
           <template v-if="Component">
-            <KeepAlive :include="['Home', 'MarkList', 'Index', 'Calendar']">
+            <KeepAlive :include="[RouterName.INDEX, RouterName.MARK_LIST, RouterName.PROFILE, RouterName.WORKS_BY_CALENDAR]">
               <Suspense>
                 <component :is="Component" />
               </Suspense>
@@ -77,24 +75,6 @@ watch(route, async () => {
       </div>
     </div>
     <div id="l-bottom-nail"></div>
-    <div class="l-copyright f-c-c my-2 l-six-size l-sec-color h-8">
-      <div class="l-copyright__content">
-        <div class="f-c-c">
-          <div>
-            Powered by <a class="hover" href="https://www.cnblogs.com" target="__blank">博客园</a> Copyright © {{ LiteConfig.blogApp }}
-          </div>
-        </div>
-        <div class="f-c-c mt-1">
-          <div>
-            Powered by
-            <a class="hover" href="https://github.com/Himmelbleu/cnblogs-theme-lite" target="__blank"> Himmelbleu </a>
-            <a class="hover" href="https://v3.cn.vuejs.org/" target="__blank"> Vue3 </a>
-            on
-            <a class="hover" href="https://vitejs.cn/vite3-cn/" target="__blank"> Vite.</a>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
   <div id="l-right">
     <div id="l-matte" class="fixed top-0 left-0 z-3 l-matee-bg" :class="{ 'w-100% h-100vh': !rdisabled || !ldisabled }"></div>
@@ -111,27 +91,18 @@ watch(route, async () => {
 #l-progress {
   height: 0.15rem;
 
-  .l-pro__bar,
-  .l-pro__track {
+  .bar,
+  .track {
     height: 100%;
     background: var(--l-theme-color);
   }
 
-  .l-pro__bar.bar-active {
-    animation: active-animation 3s infinite ease-in-out;
+  .bar.bar-active {
     width: 3rem;
   }
 
-  .l-pro__track.track-active {
+  .track.track-active {
     animation: track-active-animation 4s infinite ease-in;
-  }
-
-  @keyframes active-animation {
-    @for $index from 0 to 10 {
-      #{$index * 10%} {
-        width: 3rem + $index * 0.2rem;
-      }
-    }
   }
 
   @keyframes track-active-animation {
@@ -142,11 +113,11 @@ watch(route, async () => {
     }
   }
 
-  .l-pro__bar.static {
-    width: 0vw;
+  .bar.static {
+    width: 0;
   }
 
-  .l-pro__track.static {
+  .track.static {
     left: 0;
   }
 }
@@ -173,17 +144,5 @@ watch(route, async () => {
   left: 0;
   top: 0;
   backdrop-filter: blur(var(--l-bg-filter));
-}
-
-.l-transition {
-  animation: transition-animation 0.5s ease-in;
-
-  @keyframes transition-animation {
-    @for $index from 0 to 10 {
-      #{$index * 10%} {
-        opacity: math.div($index, 10);
-      }
-    }
-  }
 }
 </style>

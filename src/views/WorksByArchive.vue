@@ -63,7 +63,7 @@ watch(route, async () => {
               </template>
             </el-page-header>
           </Card>
-          <WritingItem
+          <WorksItem
             v-if="archive.data.length > 0"
             :padding="setting.pages.sort.padding"
             :margin="setting.pages.sort.margin"

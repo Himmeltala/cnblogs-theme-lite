@@ -68,7 +68,7 @@ watch(route, async () => {
               </div>
             </div>
           </Card>
-          <WritingItem :padding="setting.pages.sort.padding" :margin="setting.pages.sort.margin" :data="sort.data" />
+          <WorksItem :padding="setting.pages.sort.padding" :margin="setting.pages.sort.margin" :data="sort.data" />
         </template>
       </Pagination>
     </div>

@@ -136,6 +136,7 @@ declare module '@vue/runtime-core' {
     WorksByCalendar: typeof import('./src/views/WorksByCalendar.vue')['default']
     WorksByMark: typeof import('./src/views/WorksByMark.vue')['default']
     WorksBySort: typeof import('./src/views/WorksBySort.vue')['default']
+    WorksItem: typeof import('./src/views/common/WorksItem.vue')['default']
     Writing: typeof import('./src/views/Writing.vue')['default']
     WritingItem: typeof import('./src/views/common/WritingItem.vue')['default']
     WritingSynopsis: typeof import('./src/views/common/WritingSynopsis.vue')['default']

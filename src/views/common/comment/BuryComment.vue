@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { voteComment } from "@/apis";
+import { CommentApi } from "@/apis";
 
 const props = defineProps({
   comment: {
@@ -13,10 +13,10 @@ const props = defineProps({
 });
 
 async function buryComment() {
-  const data = await voteComment({
+  const data = await CommentApi.vote({
     isAbandoned: false,
     commentId: props.comment.commentId,
-    postId: props.postId,
+    postId: parseInt(props.postId),
     voteType: "Bury"
   });
   if (data.isSuccess) {

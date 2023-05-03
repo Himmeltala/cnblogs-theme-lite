@@ -32,20 +32,37 @@ defineProps({
     <div class="l-article-item__head f-c-b" :class="{ 'mb-5': item.surface }">
       <el-image v-if="index % 2 !== 0 && item.surface" class="cover h-35 rd-2" :src="item.surface" fit="cover" />
       <div :class="{ 'w-100%': !item.surface, 'has-cover w-60%': item.surface }">
-        <div class="l-article-item__title hover f-c-s mb-5 l-pri-size" @click="LiteUtils.Router.go({ path: '/p/' + item.id, router })">
+        <div class="l-article-item__title hover f-c-s mb-5 l-size-5" @click="LiteUtils.Router.go({ path: '/p/' + item.id, router })">
           {{ item.text }}
         </div>
-        <div class="l-article-item__desc l-thr-color" :class="{ 'mb-5': !item.surface, 'f-c-s': item.isLocked }">
+        <div class="l-article-item__desc l-color-3" :class="{ 'mb-5': !item.surface, 'f-c-s': item.isLocked }">
           {{ item.desc }}
         </div>
       </div>
       <el-image v-if="index % 2 === 0 && item.surface" class="cover h-35 rd-2" :src="item.surface" fit="cover" />
     </div>
-    <div class="l-article-item__read hover f-c-s mb-4 l-fiv-size">
+    <div class="l-article-item__read hover f-c-s mb-4 l-size-2">
       <i-ep-caret-right />
       <router-link class="ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id"> 阅读全文 </router-link>
     </div>
-    <WritingSynopsis :align="'flex-end'" :data="{ date: item.date, comm: item.comm, digg: item.digg, view: item.view }" />
+    <div class="l-article-item__synopsis f-c-e l-size-2 l-color-2">
+      <div class="mr-3 f-c-c">
+        <i-ep-clock class="mr-1" />
+        {{ item.date }}
+      </div>
+      <div class="mr-3 f-c-c">
+        <i-ep-view class="mr-1" />
+        {{ item.view }}
+      </div>
+      <div class="mr-3 f-c-c">
+        <i-ep-chat-line-square class="mr-1" />
+        {{ item.comm }}
+      </div>
+      <div class="f-c-c">
+        <i-ep-star class="mr-1" />
+        {{ item.digg }}
+      </div>
+    </div>
     <div class="l-article-item__bottom" :class="{ 'mt-4': item.isTop || item.isOnlyMe || item.isLocked }">
       <LTag round plain v-if="item.isTop" class="mr-2">置顶随笔</LTag>
       <LTag round plain v-else-if="item.isOnlyMe" class="mr-2">自己可见</LTag>

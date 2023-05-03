@@ -47,7 +47,24 @@ onMounted(() => {
           <i-ep-caret-right />
           <router-link class="hover ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id"> 阅读全文 </router-link>
         </div>
-        <WritingSynopsis class="mt-4" :data="{ date: item.date, view: item.view, comm: item.comm, digg: item.digg }" />
+        <div class="l-article-item__synopsis f-c-s l-size-2 l-color-2">
+          <div class="mr-3 f-c-c">
+            <i-ep-clock class="mr-1" />
+            {{ item.date }}
+          </div>
+          <div class="mr-3 f-c-c">
+            <i-ep-view class="mr-1" />
+            {{ item.view }}
+          </div>
+          <div class="mr-3 f-c-c">
+            <i-ep-chat-line-square class="mr-1" />
+            {{ item.comm }}
+          </div>
+          <div class="f-c-c">
+            <i-ep-star class="mr-1" />
+            {{ item.digg }}
+          </div>
+        </div>
       </Card>
     </div>
     <template #title>盒子模型设置</template>

@@ -27,7 +27,7 @@ onMounted(() => {
         :count="listing.page"
         :disabled="setting.other.pagation.pin">
         <template #content>
-          <WritingItem
+          <WorksItem
             v-if="listing.data.length > 0"
             :padding="setting.pages.sort.padding"
             :margin="setting.pages.sort.margin"
