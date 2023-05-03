@@ -12,7 +12,7 @@ const props = defineProps({
 
 const emits = defineEmits(["next", "prev", "nexpr"]);
 
-const setting = LiteUtils.getSetting();
+const setting = LiteUtils.getLocalSetting();
 const index = ref(1);
 
 function nextChange() {

@@ -11,7 +11,7 @@ const props = defineProps({
     required: true
   },
   postId: {
-    type: String,
+    type: Number,
     required: true
   }
 });

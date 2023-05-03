@@ -13,7 +13,7 @@ LiteUtils.startLoading();
 
 const route = useRoute();
 const router = useRouter();
-const setting = LiteUtils.getSetting();
+const setting = LiteUtils.getLocalSetting();
 let postId = `${route.params.id}`;
 const writing = shallowRef(await getWriting(postId));
 const prevNext = shallowRef(await getWritingPrevNext(postId));
@@ -77,7 +77,7 @@ watch(route, async () => {
   <ContextMenu id="l-writing" class="min-height">
     <Card :padding="setting.pages.writing.padding" :margin="setting.pages.writing.margin">
       <template v-if="!isLock">
-        <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router })">
+        <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router: $router })">
           <template #title>
             <div class="f-c-c">
               <i-ep-back />
@@ -118,7 +118,7 @@ watch(route, async () => {
               v-for="(item, index) in writingProps.sorts"
               class="l-fiv-size"
               :class="{ 'mr-2': index !== writingProps.sorts.length - 1 }">
-              <LTag line="dotted" hover round @click="LiteUtils.Router.go({ path: '/sort/p/' + item.href, router })">
+              <LTag line="dotted" hover round @click="LiteUtils.Router.go({ path: RouterPath.WORKS_BY_SORT(item.id), router: $router })">
                 {{ item.text }}
               </LTag>
             </div>
@@ -129,7 +129,7 @@ watch(route, async () => {
               <span>标签：</span>
             </div>
             <div v-for="(item, index) in writingProps.tags" class="l-fiv-size" :class="{ 'mr-2': index !== writingProps.tags.length - 1 }">
-              <LTag line="dotted" hover round @click="LiteUtils.Router.go({ path: '/mark/' + item.text, router })">
+              <LTag line="dotted" hover round @click="LiteUtils.Router.go({ path: RouterPath.WORKS_BY_MARK(item.text), router: $router })">
                 {{ item.text }}
               </LTag>
             </div>

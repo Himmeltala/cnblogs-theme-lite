@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const setting = LiteUtils.getSetting();
+const setting = LiteUtils.getLocalSetting();
 
 defineProps({
   line: {

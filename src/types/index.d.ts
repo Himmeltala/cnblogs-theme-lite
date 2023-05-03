@@ -7,10 +7,8 @@ declare namespace BlogType {
   /**
    * 博客园评论和随笔的基础字段，一般是调用接口之后返回过来的字段
    */
-  interface IBlog {
-    // 随笔 ID
-    postId?: string;
-    // 投票类型，反对或赞成
+  interface IBasic {
+    postId?: number;
     voteType?: VoteType;
     isAbandoned?: boolean;
   }
@@ -18,48 +16,44 @@ declare namespace BlogType {
   /**
    * 博客园评论实体，区别于上面定义的评论实体，这个实体是根据博客园的数据库字段而来
    */
-  interface IComment extends IBlog {
+  interface IComment extends IBasic {
     // 评论 ID
-    commentId?: string;
+    commentId?: number;
     // 评论内容
     body?: string;
     // 回复的评论 ID
-    parentId?: string;
+    parentId?: number;
     // 当前页面的 index
-    pageIndex?: string;
+    pageIndex?: number;
     // 回复评论的 ID
-    parentCommentId?: string;
+    parentCommentId?: number;
   }
 
   /**
    * 获取随笔，返回的博客园接口的字段
    */
-  interface IEssay extends IBlog {}
+  interface IWorks extends IBasic {}
 
   /**
    * 随笔投票，博客园接口需要的正确字段
    */
-  interface IEssayViewPoint {
-    // 反对数量
+  interface IWorksViewPoint {
     buryCount: number;
-    // 点赞数量
     diggCount: number;
     feedbackCount: number;
-    // 随笔 ID
     postId: string;
-    // 阅读数量
     viewCount: number;
   }
 
   /**
    * 有些接口返回的数据类型是博客园的字段，需要该类型进行约束
    */
-  interface AjaxType {
-    id?: number;
-    isSuccess?: boolean;
-    message?: string;
-    data?: any;
-  }
+  type AjaxType = Partial<{
+    id: number;
+    isSuccess: boolean;
+    message: string;
+    data: any;
+  }>;
 }
 
 /**
@@ -69,66 +63,51 @@ declare namespace CustType {
   /**
    * 随笔/文章
    */
-  interface IWriting {
-    // 随笔 ID
-    id?: string;
+  type IWorks = Partial<{
+    id: string;
     // 随笔标题
-    text?: string;
-    // 随笔内容
-    content?: string;
-    // 随笔摘要
-    desc?: string;
-    // 随笔发表日期
-    date?: string;
-    // 随笔阅读数量
-    view?: string;
-    // 随笔评论数量
-    comm?: string;
-    // 随笔点赞数量
-    digg?: string;
-    // 随笔封面
-    surface?: string;
+    text: string;
+    content: string;
+    desc: string;
+    date: string;
+    view: string;
+    comm: string;
+    digg: string;
+    surface: string;
     // 文章是否被密码锁定
-    isLocked?: boolean;
+    isLocked: boolean;
     // 是否仅限于自己可见
-    isOnlyMe?: boolean;
+    isOnlyMe: boolean;
     // 是否置顶
-    isTop?: boolean;
-  }
+    isTop: boolean;
+  }>;
 
   /**
    * 评论
    */
-  interface IComment {
+  type IComment = Partial<{
     // 是否正在编辑
-    isEditing?: boolean;
+    isEditing: boolean;
     // 是否正在回复
-    isAnsling?: boolean;
+    isAnsling: boolean;
     // 评论 ID
-    commentId?: string;
+    commentId: string;
     // 个人主页地址
-    space?: string;
+    space: string;
     // 楼层
-    layer?: string;
-    // 发表日期
-    date?: string;
-    // 发表人
-    author?: string;
-    // 点赞数量
-    digg?: string;
-    // 反对数量
-    bury?: string;
-    // 头像地址
-    avatar?: string;
-    // 随笔 ID
-    postId?: string;
-    // 评论内容
-    content?: string;
+    layer: string;
+    date: string;
+    author: string;
+    digg: string;
+    bury: string;
+    avatar: string;
+    postId: string;
+    content: string;
     // 回复评论 ID
-    parentCommentId?: number;
+    parentCommentId: number;
     // 当前评论所在评论列表的页数
-    pageIndex?: number;
-  }
+    pageIndex: number;
+  }>;
 
   /**
    * 标签
@@ -142,37 +121,34 @@ declare namespace CustType {
   /**
    * 随笔列表
    */
-  interface IWritingList {
-    // 页数
-    page?: number;
-    // 提示
-    hint?: string;
-    // 数据
-    data?: IWriting[];
-  }
+  type IWorksList = Partial<{
+    page: number;
+    hint: string;
+    data: IWorks[];
+  }>;
 
   /**
    * 随笔列表，用于分类或标签区分的随笔列表
    */
-  interface IWritingList2 extends IWritingList {
-    // 分类描述
+  interface IWorksList2 extends IWorksList {
     desc?: string;
     // 子分类描述
     desc2?: string;
+    isArticle?: boolean;
   }
 
   /**
    * 随笔的分类和标签数组
    */
-  interface IWritingProps {
+  interface IWorksProps {
     tags: { text: string }[];
     sorts: { href: string; text: string }[];
   }
 
   /**
-   * 分类子分类
+   * 二级分类
    */
-  interface IWritingSortChild {
+  interface IWorksL2 {
     id: string;
     text: string;
   }
@@ -180,7 +156,7 @@ declare namespace CustType {
   /**
    * 侧边栏标签和分类数组
    */
-  interface ICabinetColumn {
+  interface IMenuColumn {
     essaySort: { id: string; text: string }[];
     essayArchive: { id: string; text: string }[];
     articleSort: { id: string; text: string }[];
@@ -202,32 +178,29 @@ declare namespace CustType {
    * 第三种：
    * 随笔上一篇或下一篇随笔数据类型
    */
-  interface ICabinetItemData {
-    // id
-    id?: string;
+  type IMenuItemData = Partial<{
+    id: string;
     // 文本描述
-    text?: string;
-    // 数量
-    digg?: string;
-    // 链接
-    href?: string;
-  }
+    text: string;
+    digg: string;
+    href: string;
+  }>;
 
   /**
    * 侧边栏阅读排行榜
    */
-  interface ICabinetTopList {
-    topView: ICabinetItemData[];
-    topComments: ICabinetItemData[];
-    topDigg: ICabinetItemData[];
+  interface ITopList {
+    topView: IMenuItemData[];
+    topComments: IMenuItemData[];
+    topDigg: IMenuItemData[];
   }
 
   /**
    * 上一篇或下一篇随笔
    */
   interface IPrevNext {
-    prev: ICabinetItemData;
-    next: ICabinetItemData;
+    prev: IMenuItemData;
+    next: IMenuItemData;
   }
 
   interface AlbumnItem {
@@ -286,7 +259,7 @@ declare namespace CustType {
   /**
    * Lite 主题设置数据类型
    */
-  interface ISetting {
+  interface ILocalSetting {
     // 主题
     theme?: { color?: string; mode?: string };
     // 字体
@@ -340,12 +313,18 @@ declare namespace CustType {
  * Lite 工具
  */
 declare namespace LiteUtils {
-  function getSetting(): RemovableRef<CustType.ISetting>;
+  function getLocalSetting(): RemovableRef<CustType.ILocalSetting>;
+  function getLocalSettingTemp(): CustType.ILocalSetting;
   function endLoading(): void;
   function startLoading(): void;
   function openImageUploadWindow(el: string, onUploaded: (img: string) => void): void;
-  function getSettingTemp(): CustType.ISetting;
-  function reloadObjProps(source: CustType.ISetting, template: CustType.ISetting): CustType.ISetting;
+  function reloadObjProps(source: CustType.ILocalSetting, template: CustType.ILocalSetting): CustType.ILocalSetting;
+  function setTitle(title?: string);
+  function scrollIntoView(selector: string);
+
+  namespace Random {
+    function get(src: string[], max?: number): number[];
+  }
 
   namespace Log {
     function primary(title: string, msg: string): void;
@@ -358,6 +337,7 @@ declare namespace LiteUtils {
 
   namespace Text {
     function replace(source: string, regExps: RegExp[], replacement?: string[]): string;
+    function split(str: string, regex: RegExp, keys: number[], values: string[]): string;
   }
 
   namespace Router {
@@ -388,19 +368,10 @@ declare namespace LiteConfig {
   let isFollow: boolean;
   let pcDevice: boolean;
 
-  /**
-   * 定义 Lite
-   *
-   * @param dev 开发模式
-   * @param pro 生产模式
-   */
   function useLite(dev: Function, pro: Function);
 }
 
 declare const isLogined: boolean;
 declare const isBlogOwner: boolean;
 declare const currentBlogId: number;
-/**
- * 博客域名
- */
 declare const currentBlogApp: string;

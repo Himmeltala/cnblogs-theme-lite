@@ -7,7 +7,7 @@ const route = useRoute();
 const router = useRouter();
 let date = route.params.date;
 let mode = route.params.mode;
-const setting = LiteUtils.getSetting();
+const setting = LiteUtils.getLocalSetting();
 const archive = shallowRef();
 
 async function fetchData() {

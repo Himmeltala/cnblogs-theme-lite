@@ -3,7 +3,7 @@ const router = useRouter();
 
 defineProps({
   data: {
-    type: Array as PropType<CustType.IWriting[]>,
+    type: Array as PropType<CustType.IWorks[]>,
     required: true
   },
   margin: {

@@ -5,7 +5,7 @@ const route = useRoute();
 const router = useRouter();
 let id = route.params.id;
 let mode = route.params.mode;
-const setting = LiteUtils.getSetting();
+const setting = LiteUtils.getLocalSetting();
 const child = shallowRef();
 const sort = shallowRef();
 

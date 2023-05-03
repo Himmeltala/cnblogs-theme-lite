@@ -1,14 +1,18 @@
 import { Rule, UserShortcuts } from "unocss";
 
 const rules = <Rule<any>[]>[
-  // fon size
-  [/^l-([a-z]*)-size$/, ([, d]) => ({ "font-size": `var(--l-${d}-size) !important` })],
-  // overflow
-  [/^ofw-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/, ([, d]) => ({ overflow: `${d}` })],
-  // white-space
-  [/^wce-(normal|pre|nowrap|pre-wrap|pre-line)$/, ([, d]) => ({ "white-space": `${d} !important` })],
+  // font size
+  [/^l-size-(\d*)$/, ([, d]) => ({ "font-size": `var(--l-size-${d}) !important` })],
   // font color
-  [/^l-([a-z]*)-color$/, ([, d]) => ({ color: `var(--l-${d}-color) !important` })],
+  [/^l-color-(\d*)$/, ([, d]) => ({ color: `var(--l-color-${d}) !important` })],
+  // hight color
+  [/^l-hight-color-(\d*)$/, ([, d]) => ({ color: `var(--l-hight-color-${d}) !important` })],
+  // flow
+  [/^flow-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/, ([, d]) => ({ overflow: `${d}` })],
+  // flow x
+  [/^flow-x-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/, ([, d]) => ({ overflow: `${d}` })],
+  // flow y
+  [/^flow-y-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/, ([, d]) => ({ overflow: `${d}` })],
   // background color
   [/^l-([a-z]*)-bg$/, ([, d]) => ({ "background-color": `var(--l-${d}-bg) !important` })]
 ];
@@ -20,18 +24,33 @@ const matches = [
   { prefix: "b", value: "between" }
 ];
 
+function getMatches(prefix: string) {
+  return matches.find(e => e.prefix === prefix);
+}
+
+function addItem(value: string) {
+  return ` ${value}`;
+}
+
+function addFlexItemsAndContent(p1: string) {
+  const val = getMatches(p1);
+  return addItem(`flex items-${val.value} content-${val.value}`);
+}
+
+function addFlexJustify(p2: string) {
+  const val = getMatches(p2);
+  return addItem(`justify-${val.value}`);
+}
+
 const shortcuts = <UserShortcuts>[
   [
     /^f-((c|s|e)(-(c|s|e|b))*)$/,
     ([, , p1, , p2]) => {
       let style = ``;
 
-      let val = matches.find(e => e.prefix === p1);
-      style += `flex items-${val.value} content-${val.value}`;
-
+      style = addFlexItemsAndContent(p1);
       if (p2) {
-        val = matches.find(e => e.prefix === p2);
-        style += ` justify-${val.value}`;
+        style += addFlexJustify(p2);
       }
 
       return style;

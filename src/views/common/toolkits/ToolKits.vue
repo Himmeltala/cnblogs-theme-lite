@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const setting = LiteUtils.getSetting();
+const setting = LiteUtils.getLocalSetting();
 const router = useRouter();
 const active = ref("1");
 const dialog = ref(false);

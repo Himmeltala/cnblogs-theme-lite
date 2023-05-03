@@ -4,7 +4,7 @@ import { getMarkList } from "@/apis/remote-api";
 LiteUtils.startLoading();
 
 const markList = await getMarkList();
-const setting = LiteUtils.getSetting();
+const setting = LiteUtils.getLocalSetting();
 
 document.querySelector("title").innerText = `标签 - ${LiteConfig.blogApp} - 博客园`;
 

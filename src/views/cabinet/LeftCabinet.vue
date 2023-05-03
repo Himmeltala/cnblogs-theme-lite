@@ -11,7 +11,7 @@ const props = defineProps({
 
 const cabinet = LiteConfig.__LITE_CONFIG__.cabinet;
 const store = useBaseAuthorData();
-const setting = LiteUtils.getSetting();
+const setting = LiteUtils.getLocalSetting();
 const searchVal = ref("");
 const tabActive = ref("first");
 const commonCollActive = ref("1");
@@ -137,7 +137,7 @@ const fixed = computed(() => {
             <el-tab-pane label="博客常用项" name="first">
               <template v-if="columnData">
                 <div class="mb-2" v-for="item in columnData.rankings">{{ item.text }}</div>
-                <router-link to="/calendar">
+                <router-link :to="RouterPath.WORKS_BY_CALENDAR()">
                   <div class="my-4 f-c-s hover l-pri-color">
                     <i-ep-calendar class="mr-2" />
                     博客日历
@@ -153,7 +153,7 @@ const fixed = computed(() => {
                       class="hover"
                       :class="{ 'mb-1': index != columnData.essaySort.length - 1 }"
                       v-for="(item, index) in columnData.essaySort">
-                      <router-link :to="'/sort/p/' + item.id">
+                      <router-link :to="RouterPath.WORKS_BY_SORT(item.id)">
                         {{ item.text }}
                       </router-link>
                     </div>
@@ -167,7 +167,7 @@ const fixed = computed(() => {
                       class="hover"
                       :class="{ 'mb-1': index != columnData.essayArchive.length - 1 }"
                       v-for="(item, index) in columnData.essayArchive">
-                      <router-link :to="'/archive/p/' + item.id">
+                      <router-link :to="RouterPath.WORKS_BY_ARCHIVE('p', item.id)">
                         {{ item.text }}
                       </router-link>
                     </div>
@@ -181,7 +181,7 @@ const fixed = computed(() => {
                       class="hover"
                       :class="{ 'mb-1': index != columnData.articleSort.length - 1 }"
                       v-for="(item, index) in columnData.articleSort">
-                      <router-link :to="'/sort/a/' + item.id">
+                      <router-link :to="RouterPath.WORKS_BY_SORT(item.id)">
                         {{ item.text }}
                       </router-link>
                     </div>
@@ -195,7 +195,7 @@ const fixed = computed(() => {
                       class="hover"
                       :class="{ 'mb-1': index != columnData.articleArchive.length - 1 }"
                       v-for="(item, index) in columnData.articleArchive">
-                      <router-link :to="'/archive/a/' + item.id">
+                      <router-link :to="RouterPath.WORKS_BY_ARCHIVE('a', item.id)">
                         {{ item.text }}
                       </router-link>
                     </div>
@@ -209,12 +209,12 @@ const fixed = computed(() => {
                       class="hover"
                       :class="{ 'mb-1': index != columnData.tagList.length - 1 }"
                       v-for="(item, index) in columnData.tagList">
-                      <router-link :to="'/mark/' + item.id">
+                      <router-link :to="RouterPath.WORKS_BY_MARK(item.id)">
                         {{ item.text }}
                       </router-link>
                     </div>
                     <div>
-                      <router-link to="/marks">更多...</router-link>
+                      <router-link :to="RouterPath.MARK_LIST()">更多...</router-link>
                     </div>
                   </el-collapse-item>
                   <el-collapse-item title="最新随笔" v-if="columnData.latestEssayList.length">
@@ -226,7 +226,7 @@ const fixed = computed(() => {
                       class="hover"
                       :class="{ 'mb-4': index != columnData.latestEssayList.length - 1 }"
                       v-for="(item, index) in columnData.latestEssayList">
-                      <router-link :to="'/p/' + item.id">
+                      <router-link :to="RouterPath.WORKS(item.id)">
                         {{ item.text }}
                       </router-link>
                     </div>
@@ -240,7 +240,7 @@ const fixed = computed(() => {
                       :class="{ 'mb-4': index != columnData.latestComments.length - 1 }"
                       v-for="(item, index) in columnData.latestComments">
                       <div class="hover">
-                        <router-link :to="'/p/' + item.id">
+                        <router-link :to="RouterPath.WORKS(item.id)">
                           {{ item.title }}
                         </router-link>
                       </div>
@@ -271,7 +271,7 @@ const fixed = computed(() => {
                       评论排行榜
                     </template>
                     <div class="mb-2 hover" v-for="item in topListData.topComments">
-                      <router-link :to="'/p/' + item.id">
+                      <router-link :to="RouterPath.WORKS(item.id)">
                         {{ item.text }}
                       </router-link>
                     </div>
@@ -282,7 +282,7 @@ const fixed = computed(() => {
                       点赞排行榜
                     </template>
                     <div class="mb-2 hover" v-for="item in topListData.topDigg">
-                      <router-link :to="'/p/' + item.id">
+                      <router-link :to="RouterPath.WORKS(item.id)">
                         {{ item.text }}
                       </router-link>
                     </div>
@@ -293,7 +293,7 @@ const fixed = computed(() => {
                       阅读排行榜
                     </template>
                     <div class="mb-2 hover" v-for="item in topListData.topView">
-                      <router-link :to="'/p/' + item.id">
+                      <router-link :to="RouterPath.WORKS(item.id)">
                         {{ item.text }}
                       </router-link>
                     </div>

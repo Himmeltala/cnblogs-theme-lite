@@ -3,7 +3,7 @@ import { useBaseAuthorData } from "@/store";
 import { getMasterData, getAuthorData } from "@/apis/remote-api";
 
 const route = useRoute();
-const setting = LiteUtils.getSetting();
+const setting = LiteUtils.getLocalSetting();
 const ldisabled = ref(true);
 const rdisabled = ref(true);
 const { setBaseAuthorData } = useBaseAuthorData();
@@ -15,15 +15,19 @@ getAuthorData().then(author => {
 });
 
 onMounted(() => {
-  document.getElementById("l-lstrip").onclick = () => {
+  const eleL = document.getElementById("l-lstrip");
+  const eleR = document.getElementById("l-rstrip");
+  const eleMatte = document.getElementById("l-matte");
+
+  eleL.onclick = () => {
     ldisabled.value = !ldisabled.value;
   };
 
-  document.getElementById("l-rstrip").onclick = () => {
+  eleR.onclick = () => {
     rdisabled.value = !rdisabled.value;
   };
 
-  document.getElementById("l-matte").onclick = () => {
+  eleMatte.onclick = () => {
     if (!ldisabled.value) ldisabled.value = true;
     else if (!rdisabled.value) rdisabled.value = true;
   };
@@ -40,6 +44,7 @@ watch(route, async () => {
 </script>
 
 <template>
+  <div id="l-menu-container"></div>
   <div id="l-left">
     <GitHub />
     <ContextMenu>
@@ -59,8 +64,8 @@ watch(route, async () => {
       <LeftCabinet :disabled="ldisabled" />
     </Suspense>
     <div id="l-progress" class="z-99 fixed left-0 top-0 w-100vw">
-      <div class="l-pro__track absolute top-0">
-        <div class="l-pro__bar rd-2"></div>
+      <div class="track absolute top-0">
+        <div class="bar rd-2"></div>
       </div>
     </div>
   </div>

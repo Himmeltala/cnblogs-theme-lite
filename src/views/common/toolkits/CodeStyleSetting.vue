@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const setting = LiteUtils.getSetting();
+const setting = LiteUtils.getLocalSetting();
 const colors = [
   "#ff4500",
   "#ff8c00",

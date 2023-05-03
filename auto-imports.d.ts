@@ -6,8 +6,12 @@ export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const ElMessage: typeof import('element-plus/es')['ElMessage']
-  const LiteConfig: typeof import('@/lite.config')['LiteConfig']
+  const LiteConfig: typeof import('@/utils/common')['LiteConfig']
   const LiteUtils: typeof import('@/utils/common')['LiteUtils']
+  const ProvideKey: typeof import('@/constants/index')['ProvideKey']
+  const RouterName: typeof import('@/constants/index')['RouterName']
+  const RouterPath: typeof import('@/constants/index')['RouterPath']
+  const RouterRegx: typeof import('@/constants/index')['RouterRegx']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
@@ -290,7 +294,7 @@ declare global {
   // @ts-ignore
   export type { Component, ComponentPublicInstance, ComputedRef, InjectionKey, PropType, Ref, VNode } from 'vue'
   // @ts-ignore
-  export type { Router } from 'vue-router'
+  export type { Router, NavigationGuardNext } from 'vue-router'
 }
 // for vue template auto import
 import { UnwrapRef } from 'vue'
@@ -298,8 +302,12 @@ declare module 'vue' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
-    readonly LiteConfig: UnwrapRef<typeof import('@/lite.config')['LiteConfig']>
+    readonly LiteConfig: UnwrapRef<typeof import('@/utils/common')['LiteConfig']>
     readonly LiteUtils: UnwrapRef<typeof import('@/utils/common')['LiteUtils']>
+    readonly ProvideKey: UnwrapRef<typeof import('@/constants/index')['ProvideKey']>
+    readonly RouterName: UnwrapRef<typeof import('@/constants/index')['RouterName']>
+    readonly RouterPath: UnwrapRef<typeof import('@/constants/index')['RouterPath']>
+    readonly RouterRegx: UnwrapRef<typeof import('@/constants/index')['RouterRegx']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>

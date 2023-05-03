@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const setting = LiteUtils.getSetting();
+const setting = LiteUtils.getLocalSetting();
 const menu = ref<HTMLElement>();
 const movbox = ref();
 const disabled = ref(true);

@@ -6,7 +6,7 @@ const props = defineProps({
   }
 });
 
-const setting = LiteUtils.getSetting();
+const setting = LiteUtils.getLocalSetting();
 const collapseActive = ref("1");
 
 const right = computed(() => {

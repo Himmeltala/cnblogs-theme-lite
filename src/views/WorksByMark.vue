@@ -6,7 +6,7 @@ LiteUtils.startLoading();
 const route = useRoute();
 const router = useRouter();
 const listing = shallowRef(await getWritingMark(`${route.params.tag}`));
-const setting = LiteUtils.getSetting();
+const setting = LiteUtils.getLocalSetting();
 
 document.querySelector("title").innerText = `${listing.value.hint} - ${LiteConfig.blogApp} - 博客园`;
 

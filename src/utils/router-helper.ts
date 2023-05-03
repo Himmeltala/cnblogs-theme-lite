@@ -3,106 +3,127 @@
  *
  * @author Himmelbleu
  * @date 2022 年 12 月 1 日
- * @url https://www.cnblogs.com/Himmelbleu/#/
  */
 
 import { useAnchorStore } from "@/store";
 
-export enum name {
-  // 铭牌
-  Index = "Index",
-  // 文章或随笔
-  Writing = "Writing",
-  // 分类
-  Sort = "Sort",
-  // 档案
-  Archive = "Archive",
-  // 随笔列表，即首页
-  Home = "Home",
-  // 标签随笔列表
-  MarkSort = "MarkSort",
-  // 标签列表
-  MarkList = "MarkList",
-  // 相册
-  Albumn = "Albumn",
-  // 相册项
-  AlbumnItem = "AlbunItem",
-  // 博客日历
-  Calendar = "Calendar"
-}
+export const routes = [
+  {
+    name: RouterName.INDEX,
+    path: RouterPath.INDEX(),
+    component: () => import("@/views/Index.vue")
+  },
+  {
+    name: RouterName.PROFILE,
+    path: RouterPath.PROFILE(),
+    component: () => import("@/views/Profile.vue")
+  },
+  {
+    name: RouterName.WORKS,
+    path: RouterPath.WORKS(),
+    component: () => import("@/views/Works.vue")
+  },
+  {
+    name: RouterName.WORKS_BY_MARK,
+    path: RouterPath.WORKS_BY_MARK(),
+    component: () => import("@/views/WorksByMark.vue")
+  },
+  {
+    name: RouterName.WORKS_BY_SORT,
+    path: RouterPath.WORKS_BY_SORT(),
+    component: () => import("@/views/WorksBySort.vue")
+  },
+  {
+    name: RouterName.WORKS_BY_ARCHIVE,
+    path: RouterPath.WORKS_BY_ARCHIVE(),
+    component: () => import("@/views/WorksByArchive.vue")
+  },
+  {
+    name: RouterName.WORKS_BY_CALENDAR,
+    path: RouterPath.WORKS_BY_CALENDAR(),
+    component: () => import("@/views/WorksByCalendar.vue")
+  },
+  {
+    name: RouterName.MARK_LIST,
+    path: RouterPath.MARK_LIST(),
+    component: () => import("@/views/MarkList.vue")
+  },
+  {
+    name: RouterName.ALBUMN,
+    path: RouterPath.ALBUMN(),
+    component: () => import("@/views/Albumn.vue")
+  },
+  {
+    name: RouterName.ALBUMN_ITEM,
+    path: RouterPath.ALBUMN_ITEM(),
+    component: () => import("@/views/AlbumnItem.vue")
+  }
+];
 
-const regexp = {
-  EssayList: /\/p\/\d+.html/g,
-  EssaySort: /\/category\/\d+/g,
-  EssayMark: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
-  AlbumnItem: /\/gallery\/image\/\d+/g
-};
+/**
+ * 针对于博客园的路由匹配规则
+ */
+const blogRoutingRules = [
+  {
+    regex: RouterRegx.WORKS,
+    name: RouterName.WORKS,
+    params: { id: LiteUtils.Text.split(window.location.href, RouterRegx.WORKS, [2, 0], ["/", "."]) },
+    before: addWorksAnchors
+  },
+  {
+    regex: RouterRegx.WORKS_BY_SORT,
+    name: RouterName.WORKS_BY_SORT,
+    params: { id: LiteUtils.Text.split(window.location.href, RouterRegx.WORKS_BY_SORT, [2, 0], ["/", "."]) }
+  },
+  {
+    regex: RouterRegx.WORKS_BY_MARK,
+    name: RouterName.WORKS_BY_MARK,
+    params: { tag: LiteUtils.Text.split(decodeURI(window.location.href), RouterRegx.WORKS_BY_MARK, [2], ["/"]) }
+  },
+  {
+    regex: RouterRegx.ALBUMN_ITEM,
+    name: RouterName.ALBUMN_ITEM,
+    params: { id: LiteUtils.Text.split(window.location.href, RouterRegx.ALBUMN_ITEM, [3], ["/"]) }
+  },
+  {
+    regex: RouterRegx.ARTICLES,
+    name: RouterName.WORKS,
+    params: { id: LiteUtils.Text.split(window.location.href, RouterRegx.ARTICLES, [2, 0], ["/", "."]) }
+  }
+];
 
 /**
  * 从评论链接点击进入时，获取其携带的评论锚点位置
- * @param URL 从评论点击过来的链接
  */
-function setCommentAnchor(URL: string) {
-  try {
-    const anchor = URL.match(/#\/\d+/g)[0].split("#/")[1];
-    if (anchor) {
-      useAnchorStore().setAnchor(anchor);
-    }
-  } catch (e) {}
+function addWorksAnchors(URL: string) {
+  const result = /#\/\d+/g.exec(URL);
+  if (result !== null) {
+    const anchor = result[0].split("#/")[1];
+    useAnchorStore().setAnchor(anchor);
+  }
+}
+
+function push() {
+  window.history.pushState("", "", `${window.location.protocol}//${window.location.host}/${LiteConfig.blogApp}/#/`);
 }
 
 /**
  * 对原博客链接进行重写并提取重要信息。
  *
- * 比如文章页，地址是 https://www.cnblogs.com/Himmelbleu/p/11111.html。Vue Router 要的不是这样的 URL，而是 hash URL，
- * 提取该 URL 中重要信息，如随笔的 ID：11111，得到之后创建 guardNext，让 next 函数导入对应的路由组件。
- *
- * 如果进入的就是路由组件的 URL，则不需要进行上诉操作。
+ * 比如，https://www.cnblogs.com/Himmelbleu/p/11111.html。要对该地址进行转换，得到一个 Vue Router 认识的 hash URL，
+ * 需要该地址中 11111，即作品的 ID，通过 blogRoutingRules 博客园路由匹配规则获取。
  *
  * @param next NavigationGuardNext
- * @returns 返回一个函数，在合适的时候执行，而非调用该函数就执行后续操作
  */
-export function redirect(next: any): () => void {
-  let nextParam: any;
-  const URL = window.location.href;
+export function redirect(next: NavigationGuardNext) {
+  const matched = blogRoutingRules.find(router => router.regex.test(window.location.href));
 
-  if (regexp.EssayList.test(URL)) {
-    const postId = URL.match(regexp.EssayList)[0].split("/")[2].split(".")[0];
-    setCommentAnchor(URL);
-    nextParam = {
-      name: name.Writing,
-      params: { id: postId }
-    };
-  } else if (regexp.EssaySort.test(URL)) {
-    const sortId = URL.match(regexp.EssaySort)[0].split("/")[2].split(",")[0];
-    nextParam = {
-      name: name.Sort,
-      params: { id: sortId }
-    };
-  } else if (regexp.EssayMark.test(URL)) {
-    const tag = decodeURI(URL).match(regexp.EssayMark)[0].split("/")[2];
-    nextParam = {
-      name: name.MarkSort,
-      params: { tag }
-    };
-  } else if (regexp.AlbumnItem.test(URL)) {
-    const id = URL.match(regexp.AlbumnItem)[0].split("/")[3];
-    nextParam = {
-      name: name.AlbumnItem,
-      params: { id }
-    };
-  }
-
-  return function () {
-    if (nextParam && Object.keys(nextParam).length > 0) {
-      push();
-      next(nextParam);
-    } else {
-      next();
-    }
-  };
-}
-
-function push() {
-  window.history.pushState("", "", `${window.location.protocol}//${window.location.host}/${LiteConfig.blogApp}/#/`);
+  if (matched) {
+    matched.before && matched.before(window.location.href);
+    push();
+    next({
+      name: matched.name,
+      params: matched.params
+    });
+  } else next();
 }

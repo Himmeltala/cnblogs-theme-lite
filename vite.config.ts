@@ -39,14 +39,14 @@ export default defineConfig(({ command, mode }) => {
           "vue-router",
           "@vueuse/core",
           {
-            "@/utils/common": ["LiteUtils"]
+            "@/constants/index": ["RouterName", "RouterPath", "RouterRegx", "ProvideKey"]
           },
           {
-            "@/lite.config": ["LiteConfig"]
+            "@/utils/common": ["LiteUtils", "LiteConfig"]
           },
           {
             from: "vue-router",
-            imports: ["Router"],
+            imports: ["Router", "NavigationGuardNext"],
             type: true
           },
           {
