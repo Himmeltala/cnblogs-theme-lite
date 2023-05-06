@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const setting = LiteUtils.getLocalSetting();
 const colors = [
   "#ff4500",
   "#ff8c00",
@@ -34,16 +33,16 @@ function setFontColor() {
 
   if (mode.value.name === "dark") {
     // @ts-ignore
-    mode.value.dom.style.setProperty("--l-code-bg", setting.value.pages.writing.code.dark.color);
+    mode.value.dom.style.setProperty("--l-code-bg", LiteConfig.localSetting.pages.writing.code.dark.color);
   } else if (mode.value.name === "light") {
     // @ts-ignore
-    mode.value.dom.style.setProperty("--l-code-bg", setting.value.pages.writing.code.light.color);
+    mode.value.dom.style.setProperty("--l-code-bg", LiteConfig.localSetting.pages.writing.code.light.color);
   }
 }
 
 setFontColor();
 
-watch(setting, val => {
+watch(LiteConfig.localSetting, val => {
   setFontColor();
 });
 </script>
@@ -51,11 +50,11 @@ watch(setting, val => {
 <template>
   <div class="mb-4" v-show="mode.name === 'dark'">
     <span class="mr-2">设置黑夜代码块颜色</span>
-    <el-color-picker size="small" :predefine="colors" show-alpha v-model="setting.pages.writing.code.dark.color" />
+    <el-color-picker size="small" :predefine="colors" show-alpha v-model="LiteConfig.localSetting.pages.writing.code.dark.color" />
   </div>
   <div class="mb-4" v-show="mode.name === 'light'">
     <span class="mr-2">设置白天代码块颜色</span>
-    <el-color-picker size="small" :predefine="colors" show-alpha v-model="setting.pages.writing.code.light.color" />
+    <el-color-picker size="small" :predefine="colors" show-alpha v-model="LiteConfig.localSetting.pages.writing.code.light.color" />
   </div>
 </template>
 

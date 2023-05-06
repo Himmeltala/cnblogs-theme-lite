@@ -12,7 +12,6 @@ const props = defineProps({
 
 const emits = defineEmits(["next", "prev", "nexpr"]);
 
-const setting = LiteUtils.getLocalSetting();
 const index = ref(1);
 
 function nextChange() {
@@ -46,7 +45,7 @@ function nexprChange(elIndex: number) {
     <div v-if="count" class="sorter hover right z-1 f-c-c rd-l-4" @click="nextChange" v-show="disabled && index !== count">
       <i-ep-arrow-right-bold />
     </div>
-    <div class="l-pagination__bottom f-c-e my-4" :class="{ 'l-box-bg': !setting.card.open }">
+    <div class="l-pagination__bottom f-c-e my-4" :class="{ 'l-box-bg': !LiteConfig.localSetting.card.open }">
       <Card v-if="count">
         <el-pagination layout="pager, next" :page-count="count" v-model:current-page="index" @current-change="nexprChange" />
       </Card>

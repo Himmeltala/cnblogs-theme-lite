@@ -261,7 +261,7 @@ declare namespace CustType {
    */
   interface ILocalSetting {
     // 主题
-    theme?: { color?: string; mode?: string };
+    theme?: { color?: string; mode?: string; codeFont?: string; mainFont?: string };
     // 字体
     font?: {
       size?: { level1?: number; level2?: number; level3?: number; level4?: number; level5?: number; level6?: number };
@@ -367,8 +367,11 @@ declare namespace LiteConfig {
   let userGuid: string;
   let isFollow: boolean;
   let pcDevice: boolean;
+  let localSetting: CustType.ILocalSetting;
+  const localSettingTemp: CustType.ILocalSetting;
+  const eleHtml: HTMLHtmlElement;
 
-  function useLite(dev: Function, pro: Function);
+  function useLite(dev?: Function, pro?: Function);
 }
 
 declare const isLogined: boolean;

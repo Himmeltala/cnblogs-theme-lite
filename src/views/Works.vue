@@ -4,7 +4,6 @@ import { WorksApi } from "@/apis";
 LiteUtils.startLoading();
 
 const route = useRoute();
-const setting = LiteUtils.getLocalSetting();
 let postId = route.params.id as string;
 const writing = shallowRef(await WorksApi.getWorks(postId));
 const prevNext = shallowRef(await WorksApi.getPrevNext(postId));
@@ -47,7 +46,7 @@ async function vote(voteType: BlogType.VoteType) {
 }
 
 watch(route, async () => {
-  if (route.name === "Writing") {
+  if (route.name === RouterName.WORKS) {
     LiteUtils.startLoading();
 
     postId = `${route.params.id}`;
@@ -66,7 +65,7 @@ watch(route, async () => {
 
 <template>
   <ContextMenu id="l-writing" class="min-height">
-    <Card :padding="setting.pages.writing.padding" :margin="setting.pages.writing.margin">
+    <Card :padding="LiteConfig.localSetting.pages.writing.padding" :margin="LiteConfig.localSetting.pages.writing.margin">
       <template v-if="!isLock">
         <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router: $router })">
           <template #title>
@@ -193,7 +192,7 @@ watch(route, async () => {
     <template #title>盒子模型设置</template>
     <template #content>
       <CodeStyleSetting />
-      <BoxSetting :padding="setting.pages.writing.padding" :margin="setting.pages.writing.margin" />
+      <BoxSetting :padding="LiteConfig.localSetting.pages.writing.padding" :margin="LiteConfig.localSetting.pages.writing.margin" />
     </template>
   </ContextMenu>
 </template>

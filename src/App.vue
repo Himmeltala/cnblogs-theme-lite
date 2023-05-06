@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const route = useRoute();
-const setting = LiteUtils.getLocalSetting();
 const ldisabled = ref(true);
 const rdisabled = ref(true);
 const catalogDisabled = ref(!LiteConfig.pcDevice);
@@ -20,7 +19,7 @@ onMounted(() => {
     else rdisabled.value = true;
   };
 
-  document.getElementById("l-background__img").setAttribute("src", setting.value.background.src);
+  document.getElementById("l-background__img").setAttribute("src", LiteConfig.localSetting.background.src);
 });
 
 watch(route, async () => {
@@ -46,7 +45,7 @@ watch(route, async () => {
   </div>
   <div id="l-content" class="z-1 fade-in-out">
     <div id="l-top-nail"></div>
-    <div :class="{ 'l-box-bg': !setting.card.open, 'py-2 px-4': !LiteConfig.pcDevice }">
+    <div :class="{ 'l-box-bg': !LiteConfig.localSetting.card.open, 'py-2 px-4': !LiteConfig.pcDevice }">
       <div id="l-main">
         <RouterView v-slot="{ Component }">
           <template v-if="Component">
@@ -64,11 +63,12 @@ watch(route, async () => {
   <div id="l-right">
     <div id="l-rstrip" class="fixed z-2 right-0 top-20vh w-2 h-20vh"></div>
     <RightCabinet :disabled="rdisabled" />
-    <ToolKits />
-    <GitHub />
     <ContextMenu>
       <div id="l-background" class="fixed left-0 top-0 w-100vw h-100vw">
-        <img v-show="setting.background.src && setting.background.open" id="l-background__img" class="w-100% h-100%" />
+        <img
+          v-show="LiteConfig.localSetting.background.src && LiteConfig.localSetting.background.open"
+          id="l-background__img"
+          class="w-100% h-100%" />
       </div>
       <template #title> 主题设置 </template>
       <template #content>
@@ -78,8 +78,11 @@ watch(route, async () => {
     <a
       id="l-github"
       class="fixed top-0 w-15 h-15 border-0 z-1"
-      :style="{ transform: setting.other.github.position === 'right' ? 'rotate(90deg)' : 'rotate(0deg)' }"
-      :class="{ 'left-0': setting.other.github.position === 'left', 'right-0': setting.other.github.position === 'right' }"
+      :style="{ transform: LiteConfig.localSetting.other.github.position === 'right' ? 'rotate(90deg)' : 'rotate(0deg)' }"
+      :class="{
+        'left-0': LiteConfig.localSetting.other.github.position === 'left',
+        'right-0': LiteConfig.localSetting.other.github.position === 'right'
+      }"
       :href="LiteConfig.__LITE_CONFIG__.github"
       target="_blank">
       <svg viewBox="0 0 250 250" style="color: #fff">
@@ -94,6 +97,7 @@ watch(route, async () => {
           fill="currentColor"></path>
       </svg>
     </a>
+    <ToolKits />
   </div>
 </template>
 

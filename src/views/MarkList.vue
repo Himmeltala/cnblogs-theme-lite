@@ -4,7 +4,6 @@ import { getMarkList } from "@/apis";
 LiteUtils.startLoading();
 
 const markList = await getMarkList();
-const setting = LiteUtils.getLocalSetting();
 
 document.querySelector("title").innerText = `标签 - ${LiteConfig.blogApp} - 博客园`;
 
@@ -15,7 +14,7 @@ onMounted(() => {
 
 <template>
   <ContextMenu>
-    <Card border :padding="setting.pages.markList.padding" :margin="setting.pages.markList.margin">
+    <Card border :padding="LiteConfig.localSetting.pages.markList.padding" :margin="LiteConfig.localSetting.pages.markList.margin">
       <div id="l-tags" class="min-height">
         <LTag round hover line="dotted" class="item mb-4" v-for="item of markList">
           <div class="f-c-c w-100% h-100%">
@@ -26,7 +25,7 @@ onMounted(() => {
     </Card>
     <template #title>盒子模型设置</template>
     <template #content>
-      <BoxSetting :padding="setting.pages.markList.padding" :margin="setting.pages.markList.margin" />
+      <BoxSetting :padding="LiteConfig.localSetting.pages.markList.padding" :margin="LiteConfig.localSetting.pages.markList.margin" />
     </template>
   </ContextMenu>
 </template>

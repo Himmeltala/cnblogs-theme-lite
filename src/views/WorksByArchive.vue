@@ -6,7 +6,6 @@ LiteUtils.startLoading();
 const route = useRoute();
 let archiveDate = route.params.date;
 let archiveMode = route.params.mode;
-const setting = LiteUtils.getLocalSetting();
 const archiveWorks = shallowRef();
 
 async function fetchData() {
@@ -39,18 +38,6 @@ async function fetchData() {
 
 await fetchData();
 
-async function nexpr(e: any) {
-  // await fetchData();
-}
-
-async function next(e: any) {
-  // await fetchData();
-}
-
-async function prev(e: any) {
-  // await fetchData();
-}
-
 watch(route, async () => {
   if (route.name === RouterName.WORKS_BY_ARCHIVE) {
     archiveMode = route.params.mode;
@@ -63,7 +50,12 @@ watch(route, async () => {
 <template>
   <ContextMenu>
     <div id="l-archive" class="min-height">
-      <Pagination @nexpr="nexpr" @next="next" @prev="prev" :count="archiveWorks.page" :disabled="setting.other.pagation.pin">
+      <Pagination
+        @nexpr="fetchData"
+        @next="fetchData"
+        @prev="fetchData"
+        :count="archiveWorks.page"
+        :disabled="LiteConfig.localSetting.other.pagation.pin">
         <template #content>
           <Card>
             <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router: $router })">
@@ -79,15 +71,15 @@ watch(route, async () => {
           </Card>
           <WorksItem
             v-if="archiveWorks.data.length > 0"
-            :padding="setting.pages.sort.padding"
-            :margin="setting.pages.sort.margin"
+            :padding="LiteConfig.localSetting.pages.sort.padding"
+            :margin="LiteConfig.localSetting.pages.sort.margin"
             :data="archiveWorks.data" />
         </template>
       </Pagination>
     </div>
     <template #title>盒子模型设置</template>
     <template #content>
-      <BoxSetting :padding="setting.pages.sort.padding" :margin="setting.pages.sort.margin" />
+      <BoxSetting :padding="LiteConfig.localSetting.pages.sort.padding" :margin="LiteConfig.localSetting.pages.sort.margin" />
     </template>
   </ContextMenu>
 </template>

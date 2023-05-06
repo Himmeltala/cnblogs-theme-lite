@@ -295,6 +295,8 @@ declare global {
   export type { Component, ComponentPublicInstance, ComputedRef, InjectionKey, PropType, Ref, VNode } from 'vue'
   // @ts-ignore
   export type { Router, NavigationGuardNext } from 'vue-router'
+  // @ts-ignore
+  export type { RemovableRef } from '@vueuse/core'
 }
 // for vue template auto import
 import { UnwrapRef } from 'vue'

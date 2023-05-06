@@ -9,7 +9,6 @@ const props = defineProps({
 });
 
 const cabinet = LiteConfig.__LITE_CONFIG__.cabinet;
-const setting = LiteUtils.getLocalSetting();
 const searchVal = ref("");
 const tabActive = ref("first");
 const commonCollActive = ref("1");
@@ -51,19 +50,21 @@ async function unsubscribe() {
 }
 
 const left = computed(() => {
-  return setting.value.cabinet.left.pin && setting.value.cabinet.position.break ? setting.value.cabinet.position.left + "vw" : 0;
+  return LiteConfig.localSetting.cabinet.left.pin && LiteConfig.localSetting.cabinet.position.break
+    ? LiteConfig.localSetting.cabinet.position.left + "vw"
+    : 0;
 });
 
 const block = computed(() => {
-  return !props.disabled && !setting.value.cabinet.left.pin;
+  return !props.disabled && !LiteConfig.localSetting.cabinet.left.pin;
 });
 
 const hidden = computed(() => {
-  return props.disabled && !setting.value.cabinet.left.pin;
+  return props.disabled && !LiteConfig.localSetting.cabinet.left.pin;
 });
 
 const fixed = computed(() => {
-  return setting.value.cabinet.left.pin && !setting.value.cabinet.position.break;
+  return LiteConfig.localSetting.cabinet.left.pin && !LiteConfig.localSetting.cabinet.position.break;
 });
 </script>
 
@@ -76,9 +77,9 @@ const fixed = computed(() => {
     style="width: var(--cabinet-width)">
     <Card
       class="l-size-2"
-      :class="{ 'l-box-bg px-2': !setting.card.open }"
-      :padding="setting.cabinet.left.padding"
-      :margin="setting.cabinet.left.margin">
+      :class="{ 'l-box-bg px-2': !LiteConfig.localSetting.card.open }"
+      :padding="LiteConfig.localSetting.cabinet.left.padding"
+      :margin="LiteConfig.localSetting.cabinet.left.margin">
       <div class="noscroll overflow-auto h-100vh">
         <ExpandableBox text="博客信息" disabled>
           <template #icon>
@@ -316,7 +317,7 @@ const fixed = computed(() => {
         </el-collapse-item>
         <el-collapse-item title="盒子模型">
           <div class="ml-4">
-            <BoxSetting :padding="setting.cabinet.left.padding" :margin="setting.cabinet.left.margin" />
+            <BoxSetting :padding="LiteConfig.localSetting.cabinet.left.padding" :margin="LiteConfig.localSetting.cabinet.left.margin" />
           </div>
         </el-collapse-item>
       </el-collapse>

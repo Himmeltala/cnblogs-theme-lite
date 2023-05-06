@@ -53,6 +53,11 @@ export default defineConfig(({ command, mode }) => {
             from: "vue",
             imports: ["PropType"],
             type: true
+          },
+          {
+            from: "@vueuse/core",
+            imports: ["RemovableRef"],
+            type: true
           }
         ],
         resolvers: [

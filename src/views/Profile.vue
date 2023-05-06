@@ -12,8 +12,6 @@ store.$onAction(({ args }) => {
   masterData.value = args[0].master;
 });
 
-const router = useRouter();
-
 onMounted(() => {
   LiteUtils.endLoading();
 });
@@ -110,7 +108,7 @@ onMounted(() => {
             </div>
           </div>
           <div v-if="!LiteConfig.__LITE_CONFIG__.nameplate.photo.disabled">
-            <el-button type="primary" @click="LiteUtils.Router.go({ router, path: '/home' })">Get Started</el-button>
+            <el-button type="primary" @click="LiteUtils.Router.go({ router: $router, path: RouterPath.INDEX() })">Get Started</el-button>
             <el-button text type="primary" @click="LiteUtils.Router.go({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
             <el-button text type="primary" @click="LiteUtils.Router.go({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
           </div>
@@ -140,7 +138,7 @@ onMounted(() => {
             </div>
           </div>
           <div v-else>
-            <el-button type="primary" @click="LiteUtils.Router.go({ router, path: '/home' })">Get Started</el-button>
+            <el-button type="primary" @click="LiteUtils.Router.go({ router: $router, path: RouterPath.INDEX() })">Get Started</el-button>
             <el-button text type="primary" @click="LiteUtils.Router.go({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
             <el-button text type="primary" @click="LiteUtils.Router.go({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
           </div>
@@ -161,7 +159,7 @@ onMounted(() => {
           </div>
         </div>
         <div class="mb-6">
-          <el-button type="primary" @click="LiteUtils.Router.go({ router, path: '/home' })">Get Started</el-button>
+          <el-button type="primary" @click="LiteUtils.Router.go({ router: $router, path: RouterPath.INDEX() })">Get Started</el-button>
           <el-button text type="primary" @click="LiteUtils.Router.go({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
           <el-button text type="primary" @click="LiteUtils.Router.go({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
         </div>

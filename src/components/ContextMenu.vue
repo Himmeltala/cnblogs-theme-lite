@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const setting = LiteUtils.getLocalSetting();
 const menu = ref<HTMLElement>();
 const movbox = ref();
 const disabled = ref(true);
@@ -17,20 +16,20 @@ onMounted(() => {
 
 <template>
   <div ref="menu" class="l-menu">
-    <slot />
+    <slot></slot>
     <Teleport to="#l-menu-container">
-      <MovableBox ref="movbox" :disabled="disabled" :class="{ 'l-box-bg': !setting.card.open }">
+      <MovableBox ref="movbox" :disabled="disabled" :class="{ 'l-box-bg': !LiteConfig.localSetting.card.open }">
         <template #head>
           <div class="f-c-b">
-            <div class="headtip mr-4">
-              <slot name="title" />
+            <div class="headtip mr-4 l-size-5">
+              <slot name="title"></slot>
             </div>
             <div class="hover f-c-c" @click="disabled = !disabled">
               <i-ep-close />
             </div>
           </div>
         </template>
-        <slot name="content" />
+        <slot name="content"></slot>
       </MovableBox>
     </Teleport>
   </div>

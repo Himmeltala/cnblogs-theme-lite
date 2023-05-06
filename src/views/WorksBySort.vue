@@ -3,7 +3,6 @@ import { WorksApi } from "@/apis";
 
 const route = useRoute();
 let sortId = route.params.id as string;
-const setting = LiteUtils.getLocalSetting();
 const typeL2Works = shallowRef();
 const typeL1Works = shallowRef();
 
@@ -28,7 +27,12 @@ watch(route, async () => {
 <template>
   <ContextMenu>
     <div id="l-sort" class="min-height">
-      <Pagination @nexpr="fetchData" @next="fetchData" @prev="fetchData" :count="typeL1Works.page" :disabled="setting.other.pagation.pin">
+      <Pagination
+        @nexpr="fetchData"
+        @next="fetchData"
+        @prev="fetchData"
+        :count="typeL1Works.page"
+        :disabled="LiteConfig.localSetting.other.pagation.pin">
         <template #content>
           <Card :padding="{ left: 1, right: 1, bottom: 1 }" :margin="{ bottom: 1 }">
             <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router: $router })">
@@ -49,13 +53,16 @@ watch(route, async () => {
               </div>
             </div>
           </Card>
-          <WorksItem :padding="setting.pages.sort.padding" :margin="setting.pages.sort.margin" :data="typeL1Works.data" />
+          <WorksItem
+            :padding="LiteConfig.localSetting.pages.sort.padding"
+            :margin="LiteConfig.localSetting.pages.sort.margin"
+            :data="typeL1Works.data" />
         </template>
       </Pagination>
     </div>
     <template #title>盒子模型设置</template>
     <template #content>
-      <BoxSetting :padding="setting.pages.sort.padding" :margin="setting.pages.sort.margin" />
+      <BoxSetting :padding="LiteConfig.localSetting.pages.sort.padding" :margin="LiteConfig.localSetting.pages.sort.margin" />
     </template>
   </ContextMenu>
 </template>

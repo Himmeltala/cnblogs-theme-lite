@@ -11,7 +11,7 @@ const srcList = shallowRef(albumn.value.data.map(i => i.src));
 document.querySelector("title").innerText = `相册 - ${LiteConfig.blogApp} - 博客园`;
 
 watch(route, async () => {
-  if (route.name === "Albumn") {
+  if (route.name === RouterName.ALBUMN) {
     LiteUtils.startLoading();
     albumn.value = await getAlbumn(`${route.params.id}`);
     srcList.value = albumn.value.data.map(i => i.src);

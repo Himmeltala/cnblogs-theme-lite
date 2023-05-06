@@ -3,7 +3,6 @@ import { WorksApi } from "@/apis";
 
 LiteUtils.startLoading();
 
-const setting = LiteUtils.getLocalSetting();
 const listing = shallowRef(await WorksApi.getList(1));
 
 async function fetchData(index: any) {
@@ -20,19 +19,24 @@ onMounted(() => {
 <template>
   <ContextMenu>
     <div id="l-home" class="min-height">
-      <Pagination @prev="fetchData" @next="fetchData" @nexpr="fetchData" :count="listing.page" :disabled="setting.other.pagation.pin">
+      <Pagination
+        @prev="fetchData"
+        @next="fetchData"
+        @nexpr="fetchData"
+        :count="listing.page"
+        :disabled="LiteConfig.localSetting.other.pagation.pin">
         <template #content>
           <WorksItem
             v-if="listing.data.length > 0"
-            :padding="setting.pages.sort.padding"
-            :margin="setting.pages.sort.margin"
+            :padding="LiteConfig.localSetting.pages.sort.padding"
+            :margin="LiteConfig.localSetting.pages.sort.margin"
             :data="listing.data" />
         </template>
       </Pagination>
     </div>
     <template #title>盒子模型设置</template>
     <template #content>
-      <BoxSetting :padding="setting.pages.home.padding" :margin="setting.pages.home.margin" />
+      <BoxSetting :padding="LiteConfig.localSetting.pages.home.padding" :margin="LiteConfig.localSetting.pages.home.margin" />
     </template>
   </ContextMenu>
 </template>

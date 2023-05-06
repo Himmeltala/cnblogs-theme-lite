@@ -13,7 +13,7 @@ export namespace LiteUtils {
 
   export function getLocalSettingTemp(): CustType.ILocalSetting {
     return {
-      theme: { mode: "dark", color: "#409eff" },
+      theme: { mode: "dark", color: "#409eff", codeFont: "Hack", mainFont: "" },
       toolkits: { pin: true },
       pages: {
         home: {
@@ -334,7 +334,9 @@ export namespace LiteConfig {
   export let userGuid = "";
   export let isFollow = false;
   export const pcDevice = isPcDevice();
-
+  export let localSetting: CustType.ILocalSetting;
+  export const localSettingTemp = LiteUtils.getLocalSettingTemp();
+  export const eleHtml = document.querySelector("html");
   /**
    * 判断设备是否是 PC 端
    */
@@ -363,28 +365,27 @@ export namespace LiteConfig {
     } else return false;
   }
 
-  function initSetting() {
-    const setting = LiteUtils.getLocalSetting().value;
-    localStorage.setItem(`l-${blogApp}-setting`, JSON.stringify(LiteUtils.reloadObjProps(setting, LiteUtils.getLocalSettingTemp())));
+  function loadedLite() {
+    localSetting = LiteUtils.getLocalSetting().value;
+    localStorage.setItem(`l-${blogApp}-setting`, JSON.stringify(LiteUtils.reloadObjProps(localSetting, localSettingTemp)));
 
-    const eleHtml = document.querySelector("html");
-    eleHtml.setAttribute("class", setting.theme.mode);
-    eleHtml.setAttribute(
-      "style",
-      `
-        --l-theme-color: ${setting.theme.color}; --cabinet-width: ${setting.cabinet.width}rem;
-        --content-width: ${setting.content.width}vw; --l-bg-filter: ${setting.background.filter}px;
-      `
-    );
+    eleHtml.setAttribute("class", localSetting.theme.mode);
+    eleHtml.style.setProperty("--l-font-family", localSetting.theme.mainFont || `var(--el-font-family)`);
+    eleHtml.style.setProperty("--l-theme-color", localSetting.theme.color);
+    eleHtml.style.setProperty("--cabinet-width", `${localSetting.cabinet.width}rem`);
+    eleHtml.style.setProperty("--content-width", `${localSetting.content.width}vw`);
+    eleHtml.style.setProperty("--l-bg-filter", `${localSetting.background.filter}px`);
   }
 
-  function beforeUseLiteInsertElement() {
+  function beforeUseLite() {
     const eleApp = document.createElement("div");
     eleApp.setAttribute("id", "app");
     document.body.append(eleApp);
+
+    window.oncontextmenu = () => false;
   }
 
-  function afterUseLiteInsertElement() {
+  function afterUseLite() {
     const eleIconLink = document.createElement("link");
     eleIconLink.rel = "shortcut icon";
     eleIconLink.href = __LITE_CONFIG__.icon;
@@ -396,12 +397,8 @@ export namespace LiteConfig {
    * @param dev 开发模式下直接挂载 app
    * @param pro 生产模式下，打包部署之后，给 window 注册一个函数，等待博客园资源加载完成之后再挂载 app。
    */
-  export function useLite(dev: Function, pro: Function) {
-    beforeUseLiteInsertElement();
-
-    window.oncontextmenu = () => {
-      return false;
-    };
+  export function useLite(dev?: Function, pro?: Function) {
+    beforeUseLite();
 
     if (import.meta.env.PROD) {
       blogId = currentBlogId;
@@ -412,18 +409,54 @@ export namespace LiteConfig {
       userGuid = getUserGuid();
       isFollow = getIsFollow();
       // @ts-ignore
-      __ECY_CONFIG__ = window["__LITE_CONFIG__"];
-      initSetting();
-      pro();
+      __LITE_CONFIG__ = window["__LITE_CONFIG__"];
+      loadedLite();
+      pro && pro();
     } else if (import.meta.env.DEV) {
       blogId = import.meta.env.VITE_BLOG_ID;
       blogApp = import.meta.env.VITE_BLOG_APP;
-      LiteConfig.blogApp = import.meta.env.VITE_BLOG_APP;
       baseAPI = "/api";
       __LITE_CONFIG__ = {
-        cabinet: {
-          signature: "Time tick away, dream faded away!"
-        },
+        links: [
+          {
+            href: "https://ts.xcatliu.com/index.html",
+            text: "TypeScript 入门教程"
+          },
+          { href: "https://zh.javascript.info/", text: "现代 JavaScript 教程" },
+          { href: "https://ts.yayujs.com/", text: "TypeScript 中文文档" },
+          {
+            href: "https://niceboybao.github.io/2019/03/05/others/books/",
+            text: "前端免费高清电子书"
+          },
+          { href: "https://zhongguose.com/", text: "Chinese Colors" },
+          {
+            href: "https://www.webfx.com/tools/emoji-cheat-sheet/",
+            text: "Emoji Cheat Sheet"
+          }
+        ],
+        books: [
+          {
+            href: "https://wangdoc.com/es6/",
+            text: "ECMAScript 6 教程",
+            img: "https://t15.baidu.com/it/u=2492671040,2684713126&fm=224&app=112&f=JPEG?w=500&h=500",
+            author: "阮一峰",
+            rate: 5
+          },
+          {
+            href: "https://baike.baidu.com/item/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3JavaScript/19848692",
+            text: "深入理解 JavaScript",
+            img: "https://img3m1.ddimg.cn/85/1/11120396251-1_w_1.jpg",
+            author: "[美]罗彻麦尔",
+            rate: 4.5
+          },
+          {
+            href: "https://baike.baidu.com/item/JavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%EF%BC%88%E5%8E%9F%E4%B9%A6%E7%AC%AC7%E7%89%88%EF%BC%89/57640300",
+            text: "JavaScript 权威指南",
+            img: "https://img3m0.ddimg.cn/13/17/22722790-1_w_33.jpg",
+            author: "[美]弗兰纳根",
+            rate: 4
+          }
+        ],
         nameplate: {
           tags: ["Web 前端", "二次元", "简约", "拖延症", "吸猫"],
           connection: [
@@ -443,11 +476,11 @@ export namespace LiteConfig {
           }
         }
       };
-      initSetting();
-      dev();
+      loadedLite();
+      dev && dev();
     }
 
-    afterUseLiteInsertElement();
+    afterUseLite();
     LiteUtils.Log.primary("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-lite");
     LiteUtils.Log.primary("v1.5.0", "The Theme was Created By Himmelbleu, and Powered By Vue3 & Vite.");
   }
