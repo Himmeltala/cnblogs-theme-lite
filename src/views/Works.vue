@@ -75,10 +75,10 @@ watch(route, async () => {
             </div>
           </template>
           <template #content>
-            <div class="l-pri-size">{{ writing.text }}</div>
+            <div class="l-size-6">{{ writing.text }}</div>
           </template>
         </el-page-header>
-        <div class="l-writing__tdesc l-sec-color f-c-s mt-4 l-fiv-size">
+        <div class="l-writing__tdesc l-color-2 f-c-s mt-4 l-size-2">
           <div class="f-c-c mr-4">
             <i-ep-clock class="mr-1" />
             <span>{{ writing.date }}</span>
@@ -99,38 +99,41 @@ watch(route, async () => {
             <span>编辑</span>
           </div>
         </div>
-        <div class="l-writing__props l-sec-color mt-4">
+        <div class="l-writing__props l-color-2 mt-4">
           <div class="mb-4 flex-wrap f-c-s" v-if="writingProps.sorts.length > 0">
-            <div class="f-c-c l-fiv-size">
+            <div class="f-c-c l-size-2">
               <i-ep-folder-opened class="mr-1" />
               <span>分类：</span>
             </div>
-            <div
-              v-for="(item, index) in writingProps.sorts"
-              class="l-fiv-size"
-              :class="{ 'mr-2': index !== writingProps.sorts.length - 1 }">
-              <LTag line="dotted" hover round @click="LiteUtils.Router.go({ path: RouterPath.WORKS_BY_SORT(item.id), router: $router })">
+            <div v-for="(item, index) in writingProps.sorts" class="l-size-2" :class="{ 'mr-2': index !== writingProps.sorts.length - 1 }">
+              <LTag line="dotted" hover round @click="LiteUtils.Router.go({ path: RouterPath.WORKS_BY_SORT(item.href), router: $router })">
                 {{ item.text }}
               </LTag>
             </div>
           </div>
           <div class="f-c-s flex-wrap" v-if="writingProps.tags.length > 0">
-            <div class="f-c-c l-fiv-size">
+            <div class="f-c-c l-size-2">
               <i-ep-price-tag class="mr-1" />
               <span>标签：</span>
             </div>
-            <div v-for="(item, index) in writingProps.tags" class="l-fiv-size" :class="{ 'mr-2': index !== writingProps.tags.length - 1 }">
+            <div v-for="(item, index) in writingProps.tags" class="l-size-2" :class="{ 'mr-2': index !== writingProps.tags.length - 1 }">
               <LTag line="dotted" hover round @click="LiteUtils.Router.go({ path: RouterPath.WORKS_BY_MARK(item.text), router: $router })">
                 {{ item.text }}
               </LTag>
             </div>
           </div>
         </div>
-        <div class="l-writing__content mt-8 l-thr-size" v-html="writing.content" v-hljs v-catalog v-mathjax></div>
+        <div
+          class="l-writing__content mt-8 l-thr-size"
+          v-html="writing.content"
+          v-hljs="writing.text"
+          v-highslide="writing.text"
+          v-mathjax="writing.text"
+          v-catalog></div>
         <Highslide />
         <Catalog />
         <div class="divider flex-col"></div>
-        <div class="l-writing__bdesc l-sec-color f-c-e l-fiv-size">
+        <div class="l-writing__bdesc l-color-2 f-c-e l-size-2">
           <div class="f-c-c mr-4">
             <i-ep-clock class="mr-1" />
             <span>{{ writing.date }}</span>
@@ -144,14 +147,14 @@ watch(route, async () => {
             <span>{{ writing.comm }}条评论</span>
           </div>
         </div>
-        <div class="l-writing__prev-next mt-10 l-fiv-size">
+        <div class="l-writing__prev-next mt-10 l-size-2">
           <div class="prev hover f-c-s mb-2" v-if="prevNext.prev.href">
             <i-ep-d-arrow-left />
-            <a class="hover l-pri-color" :href="prevNext.prev.href"> 上一篇：{{ prevNext.prev.text }} </a>
+            <a class="hover l-color-1" :href="prevNext.prev.href"> 上一篇：{{ prevNext.prev.text }} </a>
           </div>
           <div class="next hover f-c-s" v-if="prevNext.next.href">
             <i-ep-d-arrow-right />
-            <a class="hover l-pri-color" :href="prevNext.next.href"> 下一篇：{{ prevNext.next.text }} </a>
+            <a class="hover l-color-1" :href="prevNext.next.href"> 下一篇：{{ prevNext.next.text }} </a>
           </div>
         </div>
         <div class="l-writing__viewpoint my-10 f-c-e">
@@ -265,7 +268,7 @@ pre {
 
     blockquote {
       background-color: var(--l-code-bg);
-      color: var(--l-sec-color);
+      color: var(--l-color-2);
       margin: 0;
       padding: {
         left: 0.5rem;
@@ -285,7 +288,7 @@ pre {
     u {
       text-decoration: none;
       padding-bottom: 1px;
-      border-bottom: 1px dotted var(--l-pri-color);
+      border-bottom: 1px dotted var(--l-color-1);
     }
 
     a {

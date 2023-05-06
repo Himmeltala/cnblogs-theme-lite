@@ -75,11 +75,11 @@ const fixed = computed(() => {
     :class="{ 'show-lcabinet z-4': block, 'hidden-lcabinet': hidden, 'fixed-lcabinet': fixed }"
     style="width: var(--cabinet-width)">
     <Card
-      class="l-fiv-size"
+      class="l-size-2"
       :class="{ 'l-box-bg px-2': !setting.card.open }"
       :padding="setting.cabinet.left.padding"
       :margin="setting.cabinet.left.margin">
-      <div class="noscroll ofw-auto h-100vh">
+      <div class="noscroll overflow-auto h-100vh">
         <ExpandableBox text="博客信息" disabled>
           <template #icon>
             <i-ep-house />
@@ -139,7 +139,7 @@ const fixed = computed(() => {
               <template v-if="columnList">
                 <div class="mb-2" v-for="item in columnList.rankings">{{ item.text }}</div>
                 <router-link :to="RouterPath.WORKS_BY_CALENDAR()">
-                  <div class="my-4 f-c-s hover l-pri-color">
+                  <div class="my-4 f-c-s hover l-color-1">
                     <i-ep-calendar class="mr-2" />
                     博客日历
                   </div>

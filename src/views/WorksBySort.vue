@@ -1,44 +1,25 @@
 <script setup lang="ts">
-import { getWritingSort, getWritingSortChild } from "@/apis/remote-api";
+import { WorksApi } from "@/apis";
 
 const route = useRoute();
-const router = useRouter();
-let id = route.params.id;
-let mode = route.params.mode;
+let sortId = route.params.id as string;
 const setting = LiteUtils.getLocalSetting();
-const child = shallowRef();
-const sort = shallowRef();
+const typeL2Works = shallowRef();
+const typeL1Works = shallowRef();
 
-async function fetchData(index?: number) {
+async function fetchData(index?: any) {
   LiteUtils.startLoading();
-  sort.value = await getWritingSort(`${id}`, index || 1);
-  if (mode === "a") {
-    child.value = await getWritingSortChild(`${id}`, "2");
-  } else if (mode === "p") {
-    child.value = await getWritingSortChild(`${id}`);
-  }
-  document.querySelector("title").innerText = `${sort.value.hint} - ${LiteConfig.blogApp} - 博客园`;
+  typeL1Works.value = await WorksApi.getByL1(`${sortId}`, index);
   LiteUtils.endLoading();
+  typeL2Works.value = await WorksApi.getByL2(`${sortId}`, typeL1Works.value.isArticle);
+  LiteUtils.setTitle(typeL1Works.value.hint);
 }
 
 await fetchData();
 
-async function nexpr(e: any) {
-  await fetchData(e.currentIndex);
-}
-
-async function next(e: any) {
-  await fetchData(e.currentIndex);
-}
-
-async function prev(e: any) {
-  await fetchData(e.currentIndex);
-}
-
 watch(route, async () => {
-  if (route.name === "Sort") {
-    id = route.params.id;
-    mode = route.params.mode;
+  if (route.name === RouterName.WORKS_BY_SORT) {
+    sortId = route.params.id as string;
     await fetchData();
   }
 });
@@ -47,28 +28,28 @@ watch(route, async () => {
 <template>
   <ContextMenu>
     <div id="l-sort" class="min-height">
-      <Pagination @nexpr="nexpr" @next="next" @prev="prev" :count="sort.page" :disabled="setting.other.pagation.pin">
+      <Pagination @nexpr="fetchData" @next="fetchData" @prev="fetchData" :count="typeL1Works.page" :disabled="setting.other.pagation.pin">
         <template #content>
           <Card :padding="{ left: 1, right: 1, bottom: 1 }" :margin="{ bottom: 1 }">
-            <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router })">
+            <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router: $router })">
               <template #title>
                 <div class="f-c-c">
                   <i-ep-back />
                 </div>
               </template>
               <template #content>
-                <div class="l-sec-size mb-5 mt-4">{{ sort.hint }}</div>
+                <div class="l-size-3 mb-5 mt-4">{{ typeL1Works.hint }}</div>
               </template>
             </el-page-header>
-            <div class="l-sort__desc mb-4 l-for-size l-sec-color" v-html="sort.desc2 || sort.desc"></div>
-            <div class="l-sort__child l-fiv-size" v-if="child.length > 0">
-              <div class="hover f-c-s" v-for="(item, index) in child" :class="{ 'mb-4': index != child.length - 1 }">
+            <div class="l-sort__desc mb-4 l-for-size l-color-2" v-html="typeL1Works.desc2 || typeL1Works.desc"></div>
+            <div class="l-sort__child l-size-2" v-if="typeL2Works.length > 0">
+              <div class="hover f-c-s" v-for="(item, index) in typeL2Works" :class="{ 'mb-4': index != typeL2Works.length - 1 }">
                 <span class="mr-2">-</span>
-                <router-link :to="'/sort/p/' + item.id">{{ item.text }}</router-link>
+                <router-link :to="RouterPath.WORKS_BY_SORT(item.id)">{{ item.text }}</router-link>
               </div>
             </div>
           </Card>
-          <WorksItem :padding="setting.pages.sort.padding" :margin="setting.pages.sort.margin" :data="sort.data" />
+          <WorksItem :padding="setting.pages.sort.padding" :margin="setting.pages.sort.margin" :data="typeL1Works.data" />
         </template>
       </Pagination>
     </div>

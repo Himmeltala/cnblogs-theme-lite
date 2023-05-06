@@ -20,7 +20,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Card class="l-index min-height l-fiv-size">
+  <Card class="l-index min-height l-size-2">
     <div class="l-index__content">
       <div class="mb-6 f-s-c">
         <div class="w-40%">

@@ -6,9 +6,9 @@ LiteUtils.startLoading();
 const setting = LiteUtils.getLocalSetting();
 const listing = shallowRef(await WorksApi.getList(1));
 
-async function fetchData(e: any) {
+async function fetchData(index: any) {
   LiteUtils.startLoading();
-  listing.value = await WorksApi.getList(e.currentIndex);
+  listing.value = await WorksApi.getList(index);
   LiteUtils.endLoading();
 }
 
@@ -20,12 +20,7 @@ onMounted(() => {
 <template>
   <ContextMenu>
     <div id="l-home" class="min-height">
-      <Pagination
-        @prev="(e: any) => fetchData(e)"
-        @next="(e: any) => fetchData(e)"
-        @nexpr="(e: any) => fetchData(e)"
-        :count="listing.page"
-        :disabled="setting.other.pagation.pin">
+      <Pagination @prev="fetchData" @next="fetchData" @nexpr="fetchData" :count="listing.page" :disabled="setting.other.pagation.pin">
         <template #content>
           <WorksItem
             v-if="listing.data.length > 0"

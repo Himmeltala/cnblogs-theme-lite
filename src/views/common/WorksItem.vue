@@ -32,7 +32,9 @@ defineProps({
     <div class="l-article-item__head f-c-b" :class="{ 'mb-5': item.surface }">
       <el-image v-if="index % 2 !== 0 && item.surface" class="cover h-35 rd-2" :src="item.surface" fit="cover" />
       <div :class="{ 'w-100%': !item.surface, 'has-cover w-60%': item.surface }">
-        <div class="l-article-item__title hover f-c-s mb-5 l-size-5" @click="LiteUtils.Router.go({ path: '/p/' + item.id, router })">
+        <div
+          class="l-article-item__title hover f-c-s mb-5 l-size-5 l-color-1"
+          @click="LiteUtils.Router.go({ path: '/p/' + item.id, router })">
           {{ item.text }}
         </div>
         <div class="l-article-item__desc l-color-3" :class="{ 'mb-5': !item.surface, 'f-c-s': item.isLocked }">
@@ -41,7 +43,7 @@ defineProps({
       </div>
       <el-image v-if="index % 2 === 0 && item.surface" class="cover h-35 rd-2" :src="item.surface" fit="cover" />
     </div>
-    <div class="l-article-item__read hover f-c-s mb-4 l-size-2">
+    <div class="l-article-item__read hover f-c-s mb-4 l-size-2 l-color-2">
       <i-ep-caret-right />
       <router-link class="ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id"> 阅读全文 </router-link>
     </div>

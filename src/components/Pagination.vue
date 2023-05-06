@@ -18,20 +18,20 @@ const index = ref(1);
 function nextChange() {
   if (index.value < props.count) {
     index.value++;
-    emits("next", { elIndex: index.value, pageCount: props.count, currentIndex: index.value });
+    emits("next", index.value);
   }
 }
 
 function prevChange() {
   if (index.value > 1) {
     index.value--;
-    emits("prev", { elIndex: index.value, pageCount: props.count, currentIndex: index.value });
+    emits("prev", index.value);
   }
 }
 
 function nexprChange(elIndex: number) {
   index.value = elIndex;
-  emits("nexpr", { elIndex: index.value, pageCount: props.count, currentIndex: index.value });
+  emits("nexpr", index.value);
 }
 </script>
 

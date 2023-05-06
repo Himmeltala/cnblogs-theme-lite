@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { getWritingMark } from "@/apis/remote-api";
-
-LiteUtils.startLoading();
+import { WorksApi } from "@/apis";
 
 const route = useRoute();
 const router = useRouter();
-const listing = shallowRef(await getWritingMark(`${route.params.tag}`));
+const listing = shallowRef(await WorksApi.getListByMark(`${route.params.tag}`));
 const setting = LiteUtils.getLocalSetting();
 
-document.querySelector("title").innerText = `${listing.value.hint} - ${LiteConfig.blogApp} - 博客园`;
+LiteUtils.setTitle(listing.value.hint);
+
+async function fetchData(index?: any) {
+  LiteUtils.startLoading();
+  listing.value = await WorksApi.getListByMark(`${route.params.tag}`, index);
+  LiteUtils.setTitle(listing.value.hint);
+  LiteUtils.endLoading();
+}
 
 watch(route, async () => {
-  if (route.name === "MarkSort") {
-    LiteUtils.startLoading();
-    listing.value = await getWritingMark(`${route.params.tag}`);
-    document.querySelector("title").innerText = `${listing.value.hint} - ${LiteConfig.blogApp} - 博客园`;
-    LiteUtils.endLoading();
-  }
+  if (route.name === RouterName.WORKS_BY_MARK) await fetchData();
 });
 
 onMounted(() => {
@@ -34,16 +34,16 @@ onMounted(() => {
           </div>
         </template>
         <template #content>
-          <div class="l-sec-size mb-5 mt-4">{{ listing.hint }}</div>
+          <div class="l-size-3 mb-5 mt-4">{{ listing.hint }}</div>
         </template>
       </el-page-header>
       <Card line v-for="item of listing.data" :padding="setting.pages.markSort.padding" :margin="setting.pages.markSort.margin">
-        <div class="l-sec-size">
+        <div class="l-size-3">
           <router-link class="hover" :to="'/p/' + item.id">
             {{ item.text }}
           </router-link>
         </div>
-        <div class="f-c-s l-fiv-size mt-4">
+        <div class="f-c-s l-size-2 mt-4">
           <i-ep-caret-right />
           <router-link class="hover ml-0.5 b-b-1 b-b-dotted p-b-0.3" :to="'/p/' + item.id"> 阅读全文 </router-link>
         </div>

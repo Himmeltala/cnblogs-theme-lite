@@ -34,7 +34,7 @@ const fixed = computed(() => {
     :class="{ 'show-rcabinet z-4': block, 'hidden-rcabinet': hidden, 'fixed-rcabinet': fixed }"
     style="width: var(--cabinet-width)">
     <Card
-      class="noscroll l-fiv-size h-100vh ofw-auto"
+      class="noscroll l-size-2 h-100vh ofw-auto"
       :class="{ 'l-box-bg px-2': !setting.card.open }"
       :padding="setting.cabinet.right.padding"
       :margin="setting.cabinet.right.margin">

@@ -1,26 +1,40 @@
 <script setup lang="ts">
-import { getWritingArchive, getDayArchive } from "@/apis/remote-api";
+import { WorksApi } from "@/apis";
 
 LiteUtils.startLoading();
 
 const route = useRoute();
-const router = useRouter();
-let date = route.params.date;
-let mode = route.params.mode;
+let archiveDate = route.params.date;
+let archiveMode = route.params.mode;
 const setting = LiteUtils.getLocalSetting();
-const archive = shallowRef();
+const archiveWorks = shallowRef();
 
 async function fetchData() {
+  let fetchDataPromise;
   LiteUtils.startLoading();
-  if (mode === "a") {
-    archive.value = await getWritingArchive(`${date}`, "article");
-  } else if (mode === "p") {
-    archive.value = await getWritingArchive(`${date}`, "essay");
-  } else if (mode === "d") {
-    archive.value = await getDayArchive(`${String(date).replaceAll("-", "/")}`);
+
+  switch (archiveMode) {
+    case "a":
+      fetchDataPromise = WorksApi.getListByArchive(`${archiveDate}`, "article");
+      break;
+    case "p":
+      fetchDataPromise = WorksApi.getListByArchive(`${archiveDate}`, "works");
+      break;
+    case "d":
+      fetchDataPromise = WorksApi.getListByDay(`${String(archiveDate).replaceAll("-", "/")}`);
+      break;
+    default:
+      fetchDataPromise = Promise.reject(new Error("Invalid archive mode provided."));
   }
-  document.querySelector("title").innerText = `${archive.value.hint} - ${LiteConfig.blogApp} - 博客园`;
-  LiteUtils.endLoading();
+
+  try {
+    archiveWorks.value = await fetchDataPromise;
+    LiteUtils.setTitle(archiveWorks.value.hint);
+  } catch (error) {
+    ElMessage.error(error);
+  } finally {
+    LiteUtils.endLoading();
+  }
 }
 
 await fetchData();
@@ -38,9 +52,9 @@ async function prev(e: any) {
 }
 
 watch(route, async () => {
-  if (route.name === "Archive") {
-    mode = route.params.mode;
-    date = route.params.date;
+  if (route.name === RouterName.WORKS_BY_ARCHIVE) {
+    archiveMode = route.params.mode;
+    archiveDate = route.params.date;
     await fetchData();
   }
 });
@@ -49,25 +63,25 @@ watch(route, async () => {
 <template>
   <ContextMenu>
     <div id="l-archive" class="min-height">
-      <Pagination @nexpr="nexpr" @next="next" @prev="prev" :count="archive.page" :disabled="setting.other.pagation.pin">
+      <Pagination @nexpr="nexpr" @next="next" @prev="prev" :count="archiveWorks.page" :disabled="setting.other.pagation.pin">
         <template #content>
           <Card>
-            <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router })">
+            <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router: $router })">
               <template #title>
                 <div class="f-c-c">
                   <i-ep-back />
                 </div>
               </template>
               <template #content>
-                <div class="l-sec-size mb-5 mt-4">{{ archive.hint }}</div>
+                <div class="l-size-3 mb-5 mt-4">{{ archiveWorks.hint }}</div>
               </template>
             </el-page-header>
           </Card>
           <WorksItem
-            v-if="archive.data.length > 0"
+            v-if="archiveWorks.data.length > 0"
             :padding="setting.pages.sort.padding"
             :margin="setting.pages.sort.margin"
-            :data="archive.data" />
+            :data="archiveWorks.data" />
         </template>
       </Pagination>
     </div>

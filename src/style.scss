@@ -119,12 +119,12 @@ html {
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */
 :root {
-  --el-text-color-regular: var(--l-pri-color) !important;
-  --el-text-color-primary: var(--l-pri-color) !important;
+  --el-text-color-regular: var(--l-color-1) !important;
+  --el-text-color-primary: var(--l-color-1) !important;
   --el-color-primary: var(--l-theme-color) !important;
   --el-border-radius-base: 0.5rem !important;
   --el-color-primary-light-5: var(--l-theme-color) !important;
-  --el-font-size-base: var(--l-fiv-size) !important;
+  --el-font-size-base: var(--l-size-2) !important;
   --el-fill-color-blank: transparent !important;
   --el-text-color-placeholder: var(--l-thr-color) !important;
 }
@@ -145,7 +145,7 @@ html {
   display: block;
   overflow-x: auto;
   overflow-y: hidden;
-  color: var(--l-pri-color);
+  color: var(--l-color-1);
   transition: var(--l-transition);
   background: var(--l-code-bg) !important;
 

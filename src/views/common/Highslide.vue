@@ -1,74 +1,61 @@
 <script setup lang="ts">
-import $ from "jquery";
+const eleHighslide = ref<HTMLElement>();
+const eleImage = ref<HTMLElement>();
+const positionX = ref(0);
+const positionY = ref(0);
+const imgDegree = ref(0);
+const imgWidth = ref(0);
+const imgHeight = ref(0);
+const animationOpened = ref(false);
 
-const highslide = ref<HTMLElement>();
-const image = ref<HTMLElement>();
-const angle = ref(0);
-const x = ref(0);
-const y = ref(0);
-const width = ref(0);
-const height = ref(0);
-const transition = ref(false);
-
-useDraggable(image, {
+useDraggable(eleImage, {
   onMove(position) {
-    x.value = position.x;
-    y.value = position.y;
+    positionX.value = position.x;
+    positionY.value = position.y;
   },
   onStart() {
-    transition.value = false;
-    width.value = $(image.value).width();
-    height.value = $(image.value).height();
+    imgWidth.value = parseInt(eleImage.value.style.width);
+    imgHeight.value = parseInt(eleImage.value.style.height);
+    animationOpened.value = false;
   }
 });
 
 function close() {
-  $(highslide.value).removeClass("active").addClass("noactive");
-  $("body").css({ overflow: "auto" });
-  angle.value = 0;
-  x.value = 0;
-  y.value = 0;
-}
-
-function zoom() {
-  transition.value = true;
-  width.value = $(image.value).width();
-  height.value = $(image.value).height();
+  eleHighslide.value.classList.toggle("active");
+  eleHighslide.value.classList.toggle("noactive");
+  document.documentElement.style.overflow = "auto";
+  imgDegree.value = 0;
+  positionX.value = 0;
+  positionY.value = 0;
 }
 
 function zoomIn() {
-  zoom();
-  height.value += height.value * 0.15;
-  width.value += width.value * 0.15;
+  imgWidth.value = parseInt(eleImage.value.style.width);
+  imgHeight.value = parseInt(eleImage.value.style.height);
+  animationOpened.value = true;
+  imgHeight.value += imgHeight.value * 0.15;
+  imgWidth.value += imgWidth.value * 0.15;
 }
 
 function zoomOut() {
-  zoom();
-  height.value -= height.value * 0.15;
-  width.value -= width.value * 0.15;
-}
-
-function rotate(direction: "right" | "left") {
-  transition.value = true;
-  if (direction === "left") {
-    angle.value += 90;
-  } else {
-    angle.value -= 90;
-  }
+  imgWidth.value = parseInt(eleImage.value.style.width);
+  imgHeight.value = parseInt(eleImage.value.style.height);
+  animationOpened.value = true;
+  imgHeight.value -= imgHeight.value * 0.15;
+  imgWidth.value -= imgWidth.value * 0.15;
 }
 
 onMounted(() => {
-  image.value.addEventListener("mousewheel", e => {
-    transition.value = false;
-    width.value = $(image.value).width();
-    height.value = $(image.value).height();
+  eleImage.value.addEventListener("mousewheel", e => {
+    imgWidth.value = parseInt(eleImage.value.style.width);
+    imgHeight.value = parseInt(eleImage.value.style.height);
     // @ts-ignore
     if (e.deltaY < 0) {
-      height.value += height.value * 0.15;
-      width.value += width.value * 0.15;
+      imgHeight.value += imgHeight.value * 0.15;
+      imgWidth.value += imgWidth.value * 0.15;
     } else {
-      height.value -= height.value * 0.15;
-      width.value -= width.value * 0.15;
+      imgHeight.value -= imgHeight.value * 0.15;
+      imgWidth.value -= imgWidth.value * 0.15;
     }
   });
 });
@@ -76,24 +63,22 @@ onMounted(() => {
 
 <template>
   <Teleport to="body">
-    <div class="l-highslide l-matee-bg noactive" ref="highslide">
+    <div class="l-highslide l-matee-bg noactive" ref="eleHighslide">
       <div class="relative w-100% h-100%">
         <div class="l-highslide__box w-100% h-100% f-c-c">
           <img
-            ref="image"
+            ref="eleImage"
             draggable="false"
-            style="max-width: initial"
             class="l-highslide__img noselect cursor-move"
             :class="{
-              fixed: x && y && LiteConfig.pcDevice ? true : false,
-              transition: transition
+              fixed: positionX && positionY && !!LiteConfig.pcDevice,
+              transition: animationOpened
             }"
             :style="{
-              transform: 'rotate(' + angle + 'deg)',
-              left: x + 'px',
-              top: y + 'px',
-              width: width + 'px',
-              height: height + 'px'
+              left: positionX + 'px',
+              top: positionY + 'px',
+              width: imgWidth + 'px',
+              height: imgHeight + 'px'
             }" />
         </div>
         <div class="l-highslide__close f-c-c z-99 hover absolute top-2 right-2" @click="close">
@@ -101,17 +86,11 @@ onMounted(() => {
         </div>
         <div class="z-99 f-c-c absolute bottom-4 left-0 w-100%">
           <div class="l-highslide__tool f-c-c">
-            <div class="mr-4 f-c-c hover" @click="zoomIn">
+            <div class="mr-6 f-c-c hover" @click="zoomIn">
               <i-ep-zoom-in />
             </div>
-            <div class="mr-4 f-c-c hover" @click="zoomOut">
+            <div class="f-c-c hover" @click="zoomOut">
               <i-ep-zoom-out />
-            </div>
-            <div class="mr-4 f-c-c hover" @click="rotate('right')">
-              <i-ep-refresh-left />
-            </div>
-            <div class="f-c-c hover" @click="rotate('left')">
-              <i-ep-refresh-right />
             </div>
           </div>
         </div>
@@ -123,7 +102,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .l-highslide {
   position: fixed;
-  z-index: 9;
+  z-index: 999999;
   top: 0;
   left: 0;
   width: 100vw;
@@ -143,9 +122,9 @@ onMounted(() => {
   transition: all 0.3s ease-in-out;
 }
 
-.highslide__img {
-  max-height: 100%;
-  max-width: 100%;
+.l-highslide__img {
+  max-width: initial !important;
+  max-height: initial !important;
 }
 
 .l-highslide__close {
@@ -162,6 +141,6 @@ onMounted(() => {
   font-size: 1.5rem;
   color: #fff;
   opacity: 0.7;
-  background-color: var(--l-pri-color);
+  background-color: var(--l-color-1);
 }
 </style>

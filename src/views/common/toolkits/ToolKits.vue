@@ -58,72 +58,72 @@ watch(route, () => {
 
 <template>
   <div id="l-toolkits" class="fixed z-99 right-20 top-55vh l-size-4">
-    <div
+    <Card
       v-show="isShowGuide"
       :class="{ 'show-0': setting.toolkits.pin, 'close-0': !setting.toolkits.pin }"
-      class="absolute hover left-0 rd-2 l-back-bg"
+      class="absolute hover left-0 rd-2"
       @click="catalogDisabled = !catalogDisabled">
       <div class="f-c-c w-8 h-8">
         <i-ep-guide />
       </div>
-    </div>
-    <div
+    </Card>
+    <Card
       :class="{ 'show-1': setting.toolkits.pin, 'close-1': !setting.toolkits.pin }"
-      class="absolute hover left-0 rd-2 l-back-bg"
+      class="absolute hover left-0 rd-2"
       @click="LiteUtils.Router.go({ path: RouterPath.INDEX(), router: $router })">
       <div class="f-c-c w-8 h-8">
         <i-ep-house />
       </div>
-    </div>
-    <div
+    </Card>
+    <Card
       :class="{ 'show-2': setting.toolkits.pin, 'close-2': !setting.toolkits.pin }"
-      class="absolute hover left-0 rd-2 l-back-bg"
+      class="absolute hover left-0 rd-2"
       @click="LiteUtils.Router.go({ path: 'back', router: $router })">
       <div class="f-c-c w-8 h-8">
         <i-ep-location />
       </div>
-    </div>
-    <div
+    </Card>
+    <Card
       :class="{ 'show-3': setting.toolkits.pin, 'close-3': !setting.toolkits.pin }"
-      class="absolute hover left-0 rd-2 l-back-bg"
+      class="absolute hover left-0 rd-2"
       @click="isToTop ? moveScroll(topNail) : moveScroll(bottomNail)">
       <div class="f-c-c w-8 h-8">
         <i-ep-upload :class="{ 'top-nav': isToTop, 'bottom-nav': isToBottom }" />
       </div>
-    </div>
-    <div
+    </Card>
+    <Card
       :class="{ 'show-4': setting.toolkits.pin, 'close-4': !setting.toolkits.pin }"
-      class="absolute hover left-0 rd-2 l-back-bg"
+      class="absolute hover left-0 rd-2"
       @click="LiteUtils.Router.go({ path: RouterPath.PROFILE(), router: $router })">
       <div class="f-c-c w-8 h-8">
         <i-ep-warning />
       </div>
-    </div>
-    <div
+    </Card>
+    <Card
       :class="{ 'show-5': setting.toolkits.pin, 'close-5': !setting.toolkits.pin }"
-      class="absolute hover left-0 rd-2 l-back-bg"
+      class="absolute hover left-0 rd-2"
       @click="toggleMode">
       <div class="f-c-c w-8 h-8">
         <i-ep-moon v-show="setting.theme.mode === 'dark'" />
         <i-ep-sunny v-show="setting.theme.mode === 'light'" />
       </div>
-    </div>
-    <div
+    </Card>
+    <Card
       :class="{ 'show-6': setting.toolkits.pin, 'close-6': !setting.toolkits.pin }"
-      class="absolute hover left-0 rd-2 l-back-bg"
+      class="absolute hover left-0 rd-2"
       @click="dialog = !dialog">
       <div class="f-c-c w-8 h-8">
         <i-ep-setting />
       </div>
-    </div>
-    <div
+    </Card>
+    <Card
       @click="setting.toolkits.pin = !setting.toolkits.pin"
       :class="{ 'show-toolkits': setting.toolkits.pin, 'close-toolkits': !setting.toolkits.pin }"
-      class="kits-box absolute hover top-70 left-0 rd-2 l-back-bg">
+      class="kits-box absolute hover top-70 left-0 rd-2">
       <div class="f-c-c w-8 h-8">
         <i-ep-more />
       </div>
-    </div>
+    </Card>
   </div>
   <el-dialog draggable v-model="dialog" title="自定义博客" align-center width="25rem">
     <el-collapse v-model="active" accordion>
