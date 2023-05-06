@@ -10,9 +10,11 @@ const props = defineProps({
   }
 });
 
+const localSetting = LiteConfig.getLocalSetting();
 const title = `${props.text}`;
-if (!LiteConfig.localSetting.cabinet.toggles[title]) {
-  LiteConfig.localSetting.cabinet.toggles[title] = {
+
+if (!localSetting.value.cabinet.toggles[title]) {
+  localSetting.value.cabinet.toggles[title] = {
     open: true,
     show: true
   };
@@ -23,16 +25,16 @@ const height = ref();
 
 function toggleClose() {
   content.value.style.height = `${0}px`;
-  LiteConfig.localSetting.cabinet.toggles[title].open = !LiteConfig.localSetting.cabinet.toggles[title].open;
+  localSetting.value.cabinet.toggles[title].open = !localSetting.value.cabinet.toggles[title].open;
 }
 
 function toggleOpen() {
   content.value.style.height = `${height.value}px`;
-  LiteConfig.localSetting.cabinet.toggles[title].open = !LiteConfig.localSetting.cabinet.toggles[title].open;
+  localSetting.value.cabinet.toggles[title].open = !localSetting.value.cabinet.toggles[title].open;
 }
 
 function toggle() {
-  if (LiteConfig.localSetting.cabinet.toggles[title]?.open) {
+  if (localSetting.value.cabinet.toggles[title]?.open) {
     toggleClose();
   } else {
     toggleOpen();
@@ -43,7 +45,7 @@ function initHeight() {
   height.value = content.value.offsetHeight;
 
   if (!props.disabled) {
-    if (!LiteConfig.localSetting.cabinet.toggles[title]?.open) {
+    if (!localSetting.value.cabinet.toggles[title]?.open) {
       content.value.style.height = `${0}px`;
     } else {
       content.value.style.height = `${height.value}px`;
@@ -57,7 +59,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="l-expbox mb-6 l-thr-color" v-show="LiteConfig.localSetting.cabinet.toggles[title]?.show">
+  <div class="l-expbox mb-6 l-thr-color" v-show="localSetting.cabinet.toggles[title]?.show">
     <div class="l-expbox__title headtip mb-4 f-c-b l-size-5">
       <div class="f-c-s">
         <div class="f-c-c mr-1">
@@ -70,8 +72,8 @@ onMounted(() => {
         @click="toggle"
         class="f-c-c opacity-70 hover"
         :class="{
-          'arrow-up': !LiteConfig.localSetting.cabinet.toggles[title]?.open,
-          'arrow-down': LiteConfig.localSetting.cabinet.toggles[title]?.open
+          'arrow-up': !localSetting.cabinet.toggles[title]?.open,
+          'arrow-down': localSetting.cabinet.toggles[title]?.open
         }">
         <div class="arrow f-c-c">
           <i-ep-arrow-down />

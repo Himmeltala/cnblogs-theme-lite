@@ -2,6 +2,7 @@
 const route = useRoute();
 const ldisabled = ref(true);
 const rdisabled = ref(true);
+const localSetting = LiteConfig.getLocalSetting();
 const catalogDisabled = ref(!LiteConfig.pcDevice);
 provide(ProvideKey.CATALOG_DISABLED, catalogDisabled);
 
@@ -19,7 +20,7 @@ onMounted(() => {
     else rdisabled.value = true;
   };
 
-  document.getElementById("l-background__img").setAttribute("src", LiteConfig.localSetting.background.src);
+  document.getElementById("l-background__img").setAttribute("src", localSetting.value.background.src);
 });
 
 watch(route, async () => {
@@ -45,7 +46,7 @@ watch(route, async () => {
   </div>
   <div id="l-content" class="z-1 fade-in-out">
     <div id="l-top-nail"></div>
-    <div :class="{ 'l-box-bg': !LiteConfig.localSetting.card.open, 'py-2 px-4': !LiteConfig.pcDevice }">
+    <div :class="{ 'l-box-bg': !localSetting.card.open, 'py-2 px-4': !LiteConfig.pcDevice }">
       <div id="l-main">
         <RouterView v-slot="{ Component }">
           <template v-if="Component">
@@ -65,10 +66,7 @@ watch(route, async () => {
     <RightCabinet :disabled="rdisabled" />
     <ContextMenu>
       <div id="l-background" class="fixed left-0 top-0 w-100vw h-100vw">
-        <img
-          v-show="LiteConfig.localSetting.background.src && LiteConfig.localSetting.background.open"
-          id="l-background__img"
-          class="w-100% h-100%" />
+        <img v-show="localSetting.background.src && localSetting.background.open" id="l-background__img" class="w-100% h-100%" />
       </div>
       <template #title> 主题设置 </template>
       <template #content>
@@ -78,10 +76,10 @@ watch(route, async () => {
     <a
       id="l-github"
       class="fixed top-0 w-15 h-15 border-0 z-1"
-      :style="{ transform: LiteConfig.localSetting.other.github.position === 'right' ? 'rotate(90deg)' : 'rotate(0deg)' }"
+      :style="{ transform: localSetting.other.github.position === 'right' ? 'rotate(90deg)' : 'rotate(0deg)' }"
       :class="{
-        'left-0': LiteConfig.localSetting.other.github.position === 'left',
-        'right-0': LiteConfig.localSetting.other.github.position === 'right'
+        'left-0': localSetting.other.github.position === 'left',
+        'right-0': localSetting.other.github.position === 'right'
       }"
       :href="LiteConfig.__LITE_CONFIG__.github"
       target="_blank">
@@ -140,7 +138,7 @@ watch(route, async () => {
 <style scoped lang="scss">
 @include pc() {
   #l-content {
-    width: var(--content-width);
+    width: var(--l-content-width);
   }
 }
 

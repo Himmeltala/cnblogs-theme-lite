@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const localSetting = LiteConfig.getLocalSetting();
 const colors = [
   "#ff4500",
   "#ff8c00",
@@ -16,45 +17,32 @@ const colors = [
   "#c7158577"
 ];
 
-const mode = ref(inspectMode());
-
-function inspectMode() {
+function setFontColor() {
   const dark = document.querySelector("html[class='dark']");
   const light = document.querySelector("html[class='light']");
+
   if (dark) {
-    return { name: "dark", dom: dark };
+    // @ts-ignore
+    dark.style.setProperty(LiteCssVars.codeBg, localSetting.value.pages.writing.code.dark.color);
   } else if (light) {
-    return { name: "light", dom: light };
+    // @ts-ignore
+    light.style.setProperty(LiteCssVars.codeBg, localSetting.value.pages.writing.code.light.color);
   }
 }
 
-function setFontColor() {
-  mode.value = inspectMode();
-
-  if (mode.value.name === "dark") {
-    // @ts-ignore
-    mode.value.dom.style.setProperty("--l-code-bg", LiteConfig.localSetting.pages.writing.code.dark.color);
-  } else if (mode.value.name === "light") {
-    // @ts-ignore
-    mode.value.dom.style.setProperty("--l-code-bg", LiteConfig.localSetting.pages.writing.code.light.color);
-  }
-}
-
-setFontColor();
-
-watch(LiteConfig.localSetting, val => {
+watch(localSetting, () => {
   setFontColor();
 });
 </script>
 
 <template>
-  <div class="mb-4" v-show="mode.name === 'dark'">
+  <div class="mb-4">
     <span class="mr-2">设置黑夜代码块颜色</span>
-    <el-color-picker size="small" :predefine="colors" show-alpha v-model="LiteConfig.localSetting.pages.writing.code.dark.color" />
+    <el-color-picker size="small" :predefine="colors" show-alpha v-model="localSetting.pages.writing.code.dark.color" />
   </div>
-  <div class="mb-4" v-show="mode.name === 'light'">
+  <div class="mb-4">
     <span class="mr-2">设置白天代码块颜色</span>
-    <el-color-picker size="small" :predefine="colors" show-alpha v-model="LiteConfig.localSetting.pages.writing.code.light.color" />
+    <el-color-picker size="small" :predefine="colors" show-alpha v-model="localSetting.pages.writing.code.light.color" />
   </div>
 </template>
 

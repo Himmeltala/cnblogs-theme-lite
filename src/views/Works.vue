@@ -11,6 +11,7 @@ const writingProps = shallowRef(await WorksApi.getProps(postId));
 const viewPoint = shallowRef(await WorksApi.getViewPoint(postId));
 const isLock = ref(false);
 const pwd = ref("");
+const localSetting = LiteConfig.getLocalSetting();
 
 if (!(writing.value.content && writing.value.text)) isLock.value = true;
 document.querySelector("title").innerText = `${writing.value.text} - ${LiteConfig.blogApp} - 博客园`;
@@ -65,7 +66,7 @@ watch(route, async () => {
 
 <template>
   <ContextMenu id="l-writing" class="min-height">
-    <Card :padding="LiteConfig.localSetting.pages.writing.padding" :margin="LiteConfig.localSetting.pages.writing.margin">
+    <Card :padding="localSetting.pages.writing.padding" :margin="localSetting.pages.writing.margin">
       <template v-if="!isLock">
         <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router: $router })">
           <template #title>
@@ -123,7 +124,7 @@ watch(route, async () => {
           </div>
         </div>
         <div
-          class="l-writing__content mt-8 l-thr-size"
+          class="content mt-8 l-thr-size"
           v-html="writing.content"
           v-hljs="writing.text"
           v-highslide="writing.text"
@@ -192,46 +193,57 @@ watch(route, async () => {
     <template #title>盒子模型设置</template>
     <template #content>
       <CodeStyleSetting />
-      <BoxSetting :padding="LiteConfig.localSetting.pages.writing.padding" :margin="LiteConfig.localSetting.pages.writing.margin" />
+      <BoxSetting :padding="localSetting.pages.writing.padding" :margin="localSetting.pages.writing.margin" />
     </template>
   </ContextMenu>
 </template>
 
 <style lang="scss">
 code {
-  --uno: rd-2;
-  background: var(--l-code-bg);
-  color: var(--el-color-danger-light-3);
-  padding: 0.15rem 0.4rem;
   margin: 0;
-}
+  --uno: rd-2 l-size-3;
+  letter-spacing: 1.2px;
+  color: var(--el-color-danger-light-3);
+  font-family: var(--l-code-font-family);
 
-a > code {
-  color: var(--l-theme-color) !important;
+  span {
+    line-height: 1.6;
+    font-family: var(--l-code-font-family);
+  }
 }
 
 pre {
   --uno: rd-2;
   position: relative;
 
-  .code-block {
+  code {
+    background: var(--l-block-code-bg);
+  }
+
+  .code-tools {
     position: absolute;
     top: 0.2rem;
     right: 0.2rem;
   }
 
-  .hight-code-modal {
+  .modal {
     width: 100%;
     height: 3rem;
     position: absolute;
     bottom: 0;
     left: 0;
-    background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, var(--l-code-hidden) 100%);
+    background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, var(--l-code-modal-bg) 100%);
   }
 }
 
-#l-writing {
-  .l-writing__content {
+a > code {
+  color: var(--l-theme-color) !important;
+}
+
+#l-works {
+  .content {
+    z-index: 9;
+
     h1,
     h2,
     h3,
@@ -266,14 +278,10 @@ pre {
     }
 
     blockquote {
-      background-color: var(--l-code-bg);
+      --uno: l-size-3;
+      background-color: var(--l-blockquote-bg);
       color: var(--l-color-2);
       margin: 0;
-      padding: {
-        left: 0.5rem;
-        top: 0.1rem;
-        bottom: 0.1rem;
-      }
       border: {
         radius: 0.25rem;
         left: {
@@ -281,6 +289,15 @@ pre {
           color: var(--l-theme-color);
           style: solid;
         }
+      }
+      padding: {
+        top: 0.8rem;
+        bottom: 0.8rem;
+      }
+
+      p {
+        margin: 0 !important;
+        padding-left: 0.5rem;
       }
     }
 
@@ -296,7 +313,6 @@ pre {
 
     p {
       line-height: 1.7;
-      margin: 0.7rem 0 !important;
     }
 
     img {
@@ -322,7 +338,7 @@ pre {
       th,
       td {
         padding: 0.7rem 1.5rem;
-        border: 1px dotted var(--l-divider-bg);
+        border: 1px dotted #464646;
         border-radius: 0.5rem;
       }
     }

@@ -2,6 +2,7 @@
 import { WorksApi } from "@/apis";
 
 const route = useRoute();
+const localSetting = LiteConfig.getLocalSetting();
 let sortId = route.params.id as string;
 const typeL2Works = shallowRef();
 const typeL1Works = shallowRef();
@@ -32,7 +33,7 @@ watch(route, async () => {
         @next="fetchData"
         @prev="fetchData"
         :count="typeL1Works.page"
-        :disabled="LiteConfig.localSetting.other.pagation.pin">
+        :disabled="localSetting.other.pagation.pin">
         <template #content>
           <Card :padding="{ left: 1, right: 1, bottom: 1 }" :margin="{ bottom: 1 }">
             <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router: $router })">
@@ -53,16 +54,13 @@ watch(route, async () => {
               </div>
             </div>
           </Card>
-          <WorksItem
-            :padding="LiteConfig.localSetting.pages.sort.padding"
-            :margin="LiteConfig.localSetting.pages.sort.margin"
-            :data="typeL1Works.data" />
+          <WorksItem :padding="localSetting.pages.sort.padding" :margin="localSetting.pages.sort.margin" :data="typeL1Works.data" />
         </template>
       </Pagination>
     </div>
     <template #title>盒子模型设置</template>
     <template #content>
-      <BoxSetting :padding="LiteConfig.localSetting.pages.sort.padding" :margin="LiteConfig.localSetting.pages.sort.margin" />
+      <BoxSetting :padding="localSetting.pages.sort.padding" :margin="localSetting.pages.sort.margin" />
     </template>
   </ContextMenu>
 </template>

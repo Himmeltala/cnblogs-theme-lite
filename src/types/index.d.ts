@@ -313,8 +313,6 @@ declare namespace CustType {
  * Lite 工具
  */
 declare namespace LiteUtils {
-  function getLocalSetting(): RemovableRef<CustType.ILocalSetting>;
-  function getLocalSettingTemp(): CustType.ILocalSetting;
   function endLoading(): void;
   function startLoading(): void;
   function openImageUploadWindow(el: string, onUploaded: (img: string) => void): void;
@@ -367,10 +365,10 @@ declare namespace LiteConfig {
   let userGuid: string;
   let isFollow: boolean;
   let pcDevice: boolean;
-  let localSetting: CustType.ILocalSetting;
   const localSettingTemp: CustType.ILocalSetting;
   const eleHtml: HTMLHtmlElement;
 
+  function getLocalSetting(): RemovableRef<CustType.ILocalSetting>;
   function useLite(dev?: Function, pro?: Function);
 }
 

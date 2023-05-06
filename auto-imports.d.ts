@@ -7,6 +7,7 @@ declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const ElMessage: typeof import('element-plus/es')['ElMessage']
   const LiteConfig: typeof import('@/utils/common')['LiteConfig']
+  const LiteCssVars: typeof import('@/constants/index')['LiteCssVars']
   const LiteUtils: typeof import('@/utils/common')['LiteUtils']
   const ProvideKey: typeof import('@/constants/index')['ProvideKey']
   const RouterName: typeof import('@/constants/index')['RouterName']
@@ -305,6 +306,7 @@ declare module 'vue' {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
     readonly LiteConfig: UnwrapRef<typeof import('@/utils/common')['LiteConfig']>
+    readonly LiteCssVars: UnwrapRef<typeof import('@/constants/index')['LiteCssVars']>
     readonly LiteUtils: UnwrapRef<typeof import('@/utils/common')['LiteUtils']>
     readonly ProvideKey: UnwrapRef<typeof import('@/constants/index')['ProvideKey']>
     readonly RouterName: UnwrapRef<typeof import('@/constants/index')['RouterName']>

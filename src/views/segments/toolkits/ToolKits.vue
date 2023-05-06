@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const localSetting = LiteConfig.getLocalSetting();
 const route = useRoute();
 const isToTop = ref(false);
 const isToBottom = ref(true);
@@ -35,12 +36,12 @@ function moveScroll(dom: HTMLElement) {
 }
 
 function toggleMode() {
-  if (LiteConfig.localSetting.theme.mode === "dark") {
+  if (localSetting.value.theme.mode === "dark") {
     LiteConfig.eleHtml.className = "light";
-    LiteConfig.localSetting.theme.mode = "light";
+    localSetting.value.theme.mode = "light";
   } else {
     LiteConfig.eleHtml.className = "dark";
-    LiteConfig.localSetting.theme.mode = "dark";
+    localSetting.value.theme.mode = "dark";
   }
 }
 
@@ -57,7 +58,7 @@ watch(route, () => {
   <div id="l-toolkits" class="fixed z-99 right-20 top-55vh l-size-4">
     <Card
       v-show="isShowGuide"
-      :class="{ 'show-0': LiteConfig.localSetting.toolkits.pin, 'close-0': !LiteConfig.localSetting.toolkits.pin }"
+      :class="{ 'show-0': localSetting.toolkits.pin, 'close-0': !localSetting.toolkits.pin }"
       class="absolute hover left-0 rd-2"
       @click="catalogDisabled = !catalogDisabled">
       <div class="f-c-c w-8 h-8">
@@ -65,7 +66,7 @@ watch(route, () => {
       </div>
     </Card>
     <Card
-      :class="{ 'show-1': LiteConfig.localSetting.toolkits.pin, 'close-1': !LiteConfig.localSetting.toolkits.pin }"
+      :class="{ 'show-1': localSetting.toolkits.pin, 'close-1': !localSetting.toolkits.pin }"
       class="absolute hover left-0 rd-2"
       @click="LiteUtils.Router.go({ path: RouterPath.INDEX(), router: $router })">
       <div class="f-c-c w-8 h-8">
@@ -73,7 +74,7 @@ watch(route, () => {
       </div>
     </Card>
     <Card
-      :class="{ 'show-2': LiteConfig.localSetting.toolkits.pin, 'close-2': !LiteConfig.localSetting.toolkits.pin }"
+      :class="{ 'show-2': localSetting.toolkits.pin, 'close-2': !localSetting.toolkits.pin }"
       class="absolute hover left-0 rd-2"
       @click="LiteUtils.Router.go({ path: 'back', router: $router })">
       <div class="f-c-c w-8 h-8">
@@ -81,7 +82,7 @@ watch(route, () => {
       </div>
     </Card>
     <Card
-      :class="{ 'show-3': LiteConfig.localSetting.toolkits.pin, 'close-3': !LiteConfig.localSetting.toolkits.pin }"
+      :class="{ 'show-3': localSetting.toolkits.pin, 'close-3': !localSetting.toolkits.pin }"
       class="absolute hover left-0 rd-2"
       @click="isToTop ? moveScroll(topNail) : moveScroll(bottomNail)">
       <div class="f-c-c w-8 h-8">
@@ -89,7 +90,7 @@ watch(route, () => {
       </div>
     </Card>
     <Card
-      :class="{ 'show-4': LiteConfig.localSetting.toolkits.pin, 'close-4': !LiteConfig.localSetting.toolkits.pin }"
+      :class="{ 'show-4': localSetting.toolkits.pin, 'close-4': !localSetting.toolkits.pin }"
       class="absolute hover left-0 rd-2"
       @click="LiteUtils.Router.go({ path: RouterPath.PROFILE(), router: $router })">
       <div class="f-c-c w-8 h-8">
@@ -97,16 +98,16 @@ watch(route, () => {
       </div>
     </Card>
     <Card
-      :class="{ 'show-5': LiteConfig.localSetting.toolkits.pin, 'close-5': !LiteConfig.localSetting.toolkits.pin }"
+      :class="{ 'show-5': localSetting.toolkits.pin, 'close-5': !localSetting.toolkits.pin }"
       class="absolute hover left-0 rd-2"
       @click="toggleMode">
       <div class="f-c-c w-8 h-8">
-        <i-ep-moon v-show="LiteConfig.localSetting.theme.mode === 'dark'" />
-        <i-ep-sunny v-show="LiteConfig.localSetting.theme.mode === 'light'" />
+        <i-ep-moon v-show="localSetting.theme.mode === 'dark'" />
+        <i-ep-sunny v-show="localSetting.theme.mode === 'light'" />
       </div>
     </Card>
     <Card
-      :class="{ 'show-6': LiteConfig.localSetting.toolkits.pin, 'close-6': !LiteConfig.localSetting.toolkits.pin }"
+      :class="{ 'show-6': localSetting.toolkits.pin, 'close-6': !localSetting.toolkits.pin }"
       class="absolute hover left-0 rd-2"
       @click="dialog = !dialog">
       <div class="f-c-c w-8 h-8">
@@ -114,8 +115,8 @@ watch(route, () => {
       </div>
     </Card>
     <Card
-      @click="LiteConfig.localSetting.toolkits.pin = !LiteConfig.localSetting.toolkits.pin"
-      :class="{ 'show-toolkits': LiteConfig.localSetting.toolkits.pin, 'close-toolkits': !LiteConfig.localSetting.toolkits.pin }"
+      @click="localSetting.toolkits.pin = !localSetting.toolkits.pin"
+      :class="{ 'show-toolkits': localSetting.toolkits.pin, 'close-toolkits': !localSetting.toolkits.pin }"
       class="kits-box absolute hover top-70 left-0 rd-2">
       <div class="f-c-c w-8 h-8">
         <i-ep-more />

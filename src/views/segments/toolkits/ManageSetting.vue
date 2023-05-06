@@ -2,22 +2,23 @@
 import { genFileId } from "element-plus";
 import type { UploadInstance, UploadProps, UploadRawFile } from "element-plus";
 
+const localSetting = LiteConfig.getLocalSetting();
 const upload = ref<UploadInstance>();
 const uploadDialog = ref(false);
 const resetDialog = ref(false);
 const readerResult = shallowRef();
 
 function exportJson() {
-  const blob = new Blob([JSON.stringify(LiteConfig.localSetting, null, 2)], { type: "text/json" });
+  const blob = new Blob([JSON.stringify(localSetting.value, null, 2)], { type: "text/json" });
   const a = document.createElement("a");
   const timestamp = useDateFormat(useNow(), "YYYYMMDDHHmmss");
-  a.download = `LiteConfig.localSetting-${timestamp.value}.json`;
+  a.download = `localSetting-${timestamp.value}.json`;
   a.href = URL.createObjectURL(blob);
   a.click();
 }
 
 function confirm() {
-  LiteConfig.localSetting = LiteUtils.reloadObjProps(JSON.parse(readerResult.value), LiteConfig.localSettingTemp);
+  localSetting.value = LiteUtils.reloadObjProps(JSON.parse(readerResult.value), LiteConfig.localSettingTemp);
   uploadDialog.value = !uploadDialog.value;
   ElMessage({ message: "导入成功！", type: "success" });
 }
@@ -41,7 +42,7 @@ const importJson: UploadProps["onChange"] = async file => {
 };
 
 function reset() {
-  LiteConfig.localSetting = LiteConfig.localSettingTemp;
+  localSetting.value = LiteConfig.localSettingTemp;
   ElMessage({ message: "成功恢复默认设置！", type: "success" });
   resetDialog.value = !resetDialog.value;
 }

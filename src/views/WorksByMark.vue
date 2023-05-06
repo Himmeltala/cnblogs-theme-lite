@@ -3,6 +3,7 @@ import { WorksApi } from "@/apis";
 
 const route = useRoute();
 const router = useRouter();
+const localSetting = LiteConfig.getLocalSetting();
 const listing = shallowRef(await WorksApi.getListByMark(`${route.params.tag}`));
 
 LiteUtils.setTitle(listing.value.hint);
@@ -36,11 +37,7 @@ onMounted(() => {
           <div class="l-size-3 mb-5 mt-4">{{ listing.hint }}</div>
         </template>
       </el-page-header>
-      <Card
-        line
-        v-for="item of listing.data"
-        :padding="LiteConfig.localSetting.pages.markSort.padding"
-        :margin="LiteConfig.localSetting.pages.markSort.margin">
+      <Card line v-for="item of listing.data" :padding="localSetting.pages.markSort.padding" :margin="localSetting.pages.markSort.margin">
         <div class="l-size-3">
           <router-link class="hover" :to="'/p/' + item.id">
             {{ item.text }}
@@ -72,7 +69,7 @@ onMounted(() => {
     </div>
     <template #title>盒子模型设置</template>
     <template #content>
-      <BoxSetting :padding="LiteConfig.localSetting.pages.markSort.padding" :margin="LiteConfig.localSetting.pages.markSort.margin" />
+      <BoxSetting :padding="localSetting.pages.markSort.padding" :margin="localSetting.pages.markSort.margin" />
     </template>
   </ContextMenu>
 </template>

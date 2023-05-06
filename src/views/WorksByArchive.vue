@@ -4,6 +4,7 @@ import { WorksApi } from "@/apis";
 LiteUtils.startLoading();
 
 const route = useRoute();
+const localSetting = LiteConfig.getLocalSetting();
 let archiveDate = route.params.date;
 let archiveMode = route.params.mode;
 const archiveWorks = shallowRef();
@@ -55,7 +56,7 @@ watch(route, async () => {
         @next="fetchData"
         @prev="fetchData"
         :count="archiveWorks.page"
-        :disabled="LiteConfig.localSetting.other.pagation.pin">
+        :disabled="localSetting.other.pagation.pin">
         <template #content>
           <Card>
             <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router: $router })">
@@ -71,15 +72,15 @@ watch(route, async () => {
           </Card>
           <WorksItem
             v-if="archiveWorks.data.length > 0"
-            :padding="LiteConfig.localSetting.pages.sort.padding"
-            :margin="LiteConfig.localSetting.pages.sort.margin"
+            :padding="localSetting.pages.sort.padding"
+            :margin="localSetting.pages.sort.margin"
             :data="archiveWorks.data" />
         </template>
       </Pagination>
     </div>
     <template #title>盒子模型设置</template>
     <template #content>
-      <BoxSetting :padding="LiteConfig.localSetting.pages.sort.padding" :margin="LiteConfig.localSetting.pages.sort.margin" />
+      <BoxSetting :padding="localSetting.pages.sort.padding" :margin="localSetting.pages.sort.margin" />
     </template>
   </ContextMenu>
 </template>

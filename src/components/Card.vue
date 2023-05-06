@@ -23,14 +23,16 @@ defineProps({
     }
   }
 });
+
+const localSetting = LiteConfig.getLocalSetting();
 </script>
 
 <template>
   <div
     class="l-card"
     :style="{
-      'background-color': LiteConfig.localSetting.card?.open ? LiteConfig.localSetting.card.color : 'initial',
-      'border-radius': LiteConfig.localSetting.card?.open ? LiteConfig.localSetting.card.radius + 'px' : 'initial',
+      'background-color': localSetting.card?.open ? localSetting.card.color : 'initial',
+      'border-radius': localSetting.card?.open ? localSetting.card.radius + 'px' : 'initial',
       'margin-left': margin.left + 'rem',
       'margin-right': margin.right + 'rem',
       'margin-top': margin.top + 'rem',
@@ -39,10 +41,10 @@ defineProps({
     <div
       class="l-card__content"
       :style="{
-        'padding-left': LiteConfig.localSetting.card?.open ? padding.left + 'rem' : 0,
-        'padding-right': LiteConfig.localSetting.card?.open ? padding.right + 'rem' : 0,
+        'padding-left': localSetting.card?.open ? padding.left + 'rem' : 0,
+        'padding-right': localSetting.card?.open ? padding.right + 'rem' : 0,
         'padding-top': padding.top + 'rem',
-        'padding-bottom': LiteConfig.localSetting.card?.open ? padding.bottom + 'rem' : 0
+        'padding-bottom': localSetting.card?.open ? padding.bottom + 'rem' : 0
       }">
       <div class="l-card__main">
         <slot />
@@ -50,8 +52,8 @@ defineProps({
       <div
         class="l-card__border"
         v-if="line"
-        :style="{ 'margin-top': !LiteConfig.localSetting.card?.open ? padding.bottom + 'rem' : 0 }"
-        :class="{ border: !LiteConfig.localSetting.card?.open }"></div>
+        :style="{ 'margin-top': !localSetting.card?.open ? padding.bottom + 'rem' : 0 }"
+        :class="{ border: !localSetting.card?.open }"></div>
     </div>
   </div>
 </template>

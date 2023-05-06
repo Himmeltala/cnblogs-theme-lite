@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { useSkillGraph } from "./index";
 
-watch(LiteConfig.localSetting, (val, old) => {
+const localSetting = LiteConfig.getLocalSetting();
+
+watch(localSetting, (val, old) => {
   if (val.theme.color != old.theme.color) {
-    useSkillGraph(110, LiteConfig.localSetting.theme.color, LiteConfig.__LITE_CONFIG__.graph);
+    useSkillGraph(110, localSetting.value.theme.color, LiteConfig.__LITE_CONFIG__.graph);
   }
 });
 
 onMounted(() => {
   if (LiteConfig.__LITE_CONFIG__.graph) {
-    useSkillGraph(110, LiteConfig.localSetting.theme.color, LiteConfig.__LITE_CONFIG__.graph);
+    useSkillGraph(110, localSetting.value.theme.color, LiteConfig.__LITE_CONFIG__.graph);
   }
 });
 </script>

@@ -8,6 +8,7 @@ const props = defineProps({
   }
 });
 
+const localSetting = LiteConfig.getLocalSetting();
 const cabinet = LiteConfig.__LITE_CONFIG__.cabinet;
 const searchVal = ref("");
 const tabActive = ref("first");
@@ -50,21 +51,21 @@ async function unsubscribe() {
 }
 
 const left = computed(() => {
-  return LiteConfig.localSetting.cabinet.left.pin && LiteConfig.localSetting.cabinet.position.break
-    ? LiteConfig.localSetting.cabinet.position.left + "vw"
+  return localSetting.value.cabinet.left.pin && localSetting.value.cabinet.position.break
+    ? localSetting.value.cabinet.position.left + "vw"
     : 0;
 });
 
 const block = computed(() => {
-  return !props.disabled && !LiteConfig.localSetting.cabinet.left.pin;
+  return !props.disabled && !localSetting.value.cabinet.left.pin;
 });
 
 const hidden = computed(() => {
-  return props.disabled && !LiteConfig.localSetting.cabinet.left.pin;
+  return props.disabled && !localSetting.value.cabinet.left.pin;
 });
 
 const fixed = computed(() => {
-  return LiteConfig.localSetting.cabinet.left.pin && !LiteConfig.localSetting.cabinet.position.break;
+  return localSetting.value.cabinet.left.pin && !localSetting.value.cabinet.position.break;
 });
 </script>
 
@@ -74,12 +75,12 @@ const fixed = computed(() => {
     class="fixed top-0 left-0"
     :style="{ left: left }"
     :class="{ 'show-lcabinet z-4': block, 'hidden-lcabinet': hidden, 'fixed-lcabinet': fixed }"
-    style="width: var(--cabinet-width)">
+    style="width: var(--l-cabinet-width)">
     <Card
       class="l-size-2"
-      :class="{ 'l-box-bg px-2': !LiteConfig.localSetting.card.open }"
-      :padding="LiteConfig.localSetting.cabinet.left.padding"
-      :margin="LiteConfig.localSetting.cabinet.left.margin">
+      :class="{ 'l-box-bg px-2': !localSetting.card.open }"
+      :padding="localSetting.cabinet.left.padding"
+      :margin="localSetting.cabinet.left.margin">
       <div class="noscroll overflow-auto h-100vh">
         <ExpandableBox text="博客信息" disabled>
           <template #icon>
@@ -317,7 +318,7 @@ const fixed = computed(() => {
         </el-collapse-item>
         <el-collapse-item title="盒子模型">
           <div class="ml-4">
-            <BoxSetting :padding="LiteConfig.localSetting.cabinet.left.padding" :margin="LiteConfig.localSetting.cabinet.left.margin" />
+            <BoxSetting :padding="localSetting.cabinet.left.padding" :margin="localSetting.cabinet.left.margin" />
           </div>
         </el-collapse-item>
       </el-collapse>
@@ -333,7 +334,7 @@ $quota: 10;
 }
 
 .fixed-lcabinet {
-  left: calc(calc(var(--content-width) / 2) - calc(var(--cabinet-width) + 2rem)) !important;
+  left: calc(calc(var(--l-content-width) / 2) - calc(var(--l-cabinet-width) + 2rem)) !important;
 }
 
 .show-lcabinet {
@@ -344,20 +345,20 @@ $quota: 10;
 @keyframes showlcabinet {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateX(calc(calc(-1 * var(--cabinet-width)) + calc($i * calc(var(--cabinet-width) / 10))));
+      transform: translateX(calc(calc(-1 * var(--l-cabinet-width)) + calc($i * calc(var(--l-cabinet-width) / 10))));
     }
   }
 }
 
 .hidden-lcabinet {
   animation: hiddenlcabinet 0.2s ease-out;
-  transform: translateX(calc(-1 * var(--cabinet-width)));
+  transform: translateX(calc(-1 * var(--l-cabinet-width)));
 }
 
 @keyframes hiddenlcabinet {
   @for $i from 0 to $quota {
     #{$i * 10%} {
-      transform: translateX(calc($i * calc(calc(-1 * var(--cabinet-width)) / 10)));
+      transform: translateX(calc($i * calc(calc(-1 * var(--l-cabinet-width)) / 10)));
     }
   }
 }

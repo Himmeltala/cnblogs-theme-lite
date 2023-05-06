@@ -114,3 +114,13 @@ export namespace RouterRegx {
   export const ARTICLES = /\/articles\/\d+.html/g;
   export const ALBUMN_ITEM = /\/gallery\/image\/\d+/g;
 }
+
+export namespace LiteCssVars {
+  export const themeColor = "--l-theme-color";
+  export const bgFilter = "--l-bg-filter";
+  export const mainFont = "--l-main-font-family";
+  export const codeFont = "--l-code-font-family";
+  export const cabinetWidth = "--l-cabinet-width";
+  export const contentWidth = "--l-content-width";
+  export const codeBg = "--l-code-bg";
+}

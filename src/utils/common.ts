@@ -7,76 +7,6 @@
  */
 
 export namespace LiteUtils {
-  export function getLocalSetting() {
-    return useStorage<CustType.ILocalSetting>(`l-${LiteConfig.blogApp}-setting`, getLocalSettingTemp());
-  }
-
-  export function getLocalSettingTemp(): CustType.ILocalSetting {
-    return {
-      theme: { mode: "dark", color: "#409eff", codeFont: "Hack", mainFont: "" },
-      toolkits: { pin: true },
-      pages: {
-        home: {
-          padding: { left: 1, right: 1, top: 1, bottom: 1 },
-          margin: { left: 0, right: 0, top: 0, bottom: 1 }
-        },
-        writing: {
-          code: { light: { color: "#f2f2f2" }, dark: { color: "#222222" } },
-          padding: { left: 1, right: 1, top: 1, bottom: 1 },
-          margin: { left: 0, right: 0, top: 0, bottom: 1 }
-        },
-        markList: {
-          padding: { left: 0, right: 0, top: 0, bottom: 0 },
-          margin: { left: 0, right: 0, top: 0, bottom: 0 }
-        },
-        markSort: {
-          padding: { left: 1, right: 1, top: 1, bottom: 1 },
-          margin: { left: 0, right: 0, top: 0, bottom: 1 }
-        },
-        gallery: {
-          padding: { left: 1, right: 1, top: 1, bottom: 1 },
-          margin: { left: 0, right: 0, top: 0, bottom: 0 }
-        },
-        sort: {
-          padding: { left: 1, right: 1, top: 1, bottom: 1 },
-          margin: { left: 0, right: 0, top: 0, bottom: 1 }
-        }
-      },
-      font: {
-        size: { level1: 1.3, level2: 1.2, level3: 1.1, level4: 1, level5: 0.9, level6: 0.8 },
-        light: { color: { level1: "#393939", level2: "#4e4e4e", level3: "#707070" } },
-        dark: { color: { level1: "#a7a7a7", level2: "#8d9095", level3: "#878787" } }
-      },
-      content: {
-        width: 50,
-        padding: { left: 0, right: 0, top: 0, bottom: 0 },
-        margin: { left: 0, right: 0, top: 0, bottom: 0 }
-      },
-      cabinet: {
-        position: { left: 0, right: 0, break: false },
-        left: { pin: false, padding: { left: 1, right: 1, top: 1, bottom: 1 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
-        right: { pin: false, padding: { left: 1, right: 1, top: 1, bottom: 1 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
-        toggles: {
-          我的技术栈: { open: true, show: true },
-          博客信息: { open: true, show: true },
-          常用链接: { open: true, show: true },
-          博客数据: { open: true, show: true },
-          推荐书籍: { open: true, show: true }
-        },
-        width: 17.5
-      },
-      background: { open: false, filter: 6, src: "" },
-      card: {
-        color: "rgba(31, 31, 31, 1)",
-        open: false,
-        radius: 10,
-        padding: { left: 1, right: 1, top: 1, bottom: 1 },
-        margin: { left: 0, right: 1, top: 0, bottom: 1 }
-      },
-      other: { github: { position: "left" }, pagation: { pin: true } }
-    };
-  }
-
   /**
    * 对一个对象的字段进行裁剪或添加
    *
@@ -334,9 +264,8 @@ export namespace LiteConfig {
   export let userGuid = "";
   export let isFollow = false;
   export const pcDevice = isPcDevice();
-  export let localSetting: CustType.ILocalSetting;
-  export const localSettingTemp = LiteUtils.getLocalSettingTemp();
   export const eleHtml = document.querySelector("html");
+
   /**
    * 判断设备是否是 PC 端
    */
@@ -365,16 +294,96 @@ export namespace LiteConfig {
     } else return false;
   }
 
+  export const localSettingTemp: CustType.ILocalSetting = {
+    theme: { mode: "dark", color: "#409eff", codeFont: "Hack", mainFont: "" },
+    toolkits: { pin: true },
+    pages: {
+      home: {
+        padding: { left: 1, right: 1, top: 1, bottom: 1 },
+        margin: { left: 0, right: 0, top: 0, bottom: 1 }
+      },
+      writing: {
+        code: { light: { color: "#f2f2f2" }, dark: { color: "#222222" } },
+        padding: { left: 1, right: 1, top: 1, bottom: 1 },
+        margin: { left: 0, right: 0, top: 0, bottom: 1 }
+      },
+      markList: {
+        padding: { left: 0, right: 0, top: 0, bottom: 0 },
+        margin: { left: 0, right: 0, top: 0, bottom: 0 }
+      },
+      markSort: {
+        padding: { left: 1, right: 1, top: 1, bottom: 1 },
+        margin: { left: 0, right: 0, top: 0, bottom: 1 }
+      },
+      gallery: {
+        padding: { left: 1, right: 1, top: 1, bottom: 1 },
+        margin: { left: 0, right: 0, top: 0, bottom: 0 }
+      },
+      sort: {
+        padding: { left: 1, right: 1, top: 1, bottom: 1 },
+        margin: { left: 0, right: 0, top: 0, bottom: 1 }
+      }
+    },
+    font: {
+      size: { level1: 1.3, level2: 1.2, level3: 1.1, level4: 1, level5: 0.9, level6: 0.8 },
+      light: { color: { level1: "#393939", level2: "#4e4e4e", level3: "#707070" } },
+      dark: { color: { level1: "#a7a7a7", level2: "#8d9095", level3: "#878787" } }
+    },
+    content: {
+      width: 50,
+      padding: { left: 0, right: 0, top: 0, bottom: 0 },
+      margin: { left: 0, right: 0, top: 0, bottom: 0 }
+    },
+    cabinet: {
+      position: { left: 0, right: 0, break: false },
+      left: { pin: false, padding: { left: 1, right: 1, top: 1, bottom: 1 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
+      right: { pin: false, padding: { left: 1, right: 1, top: 1, bottom: 1 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
+      toggles: {
+        我的技术栈: { open: true, show: true },
+        博客信息: { open: true, show: true },
+        常用链接: { open: true, show: true },
+        博客数据: { open: true, show: true },
+        推荐书籍: { open: true, show: true }
+      },
+      width: 17.5
+    },
+    background: { open: false, filter: 6, src: "" },
+    card: {
+      color: "rgba(31, 31, 31, 1)",
+      open: false,
+      radius: 10,
+      padding: { left: 1, right: 1, top: 1, bottom: 1 },
+      margin: { left: 0, right: 1, top: 0, bottom: 1 }
+    },
+    other: { github: { position: "left" }, pagation: { pin: true } }
+  };
+
+  export function getLocalSetting() {
+    return useStorage(`l-${LiteConfig.blogApp}-setting`, localSettingTemp);
+  }
+
   function loadedLite() {
-    localSetting = LiteUtils.getLocalSetting().value;
+    const localSetting = getLocalSetting().value;
     localStorage.setItem(`l-${blogApp}-setting`, JSON.stringify(LiteUtils.reloadObjProps(localSetting, localSettingTemp)));
 
     eleHtml.setAttribute("class", localSetting.theme.mode);
-    eleHtml.style.setProperty("--l-font-family", localSetting.theme.mainFont || `var(--el-font-family)`);
-    eleHtml.style.setProperty("--l-theme-color", localSetting.theme.color);
-    eleHtml.style.setProperty("--cabinet-width", `${localSetting.cabinet.width}rem`);
-    eleHtml.style.setProperty("--content-width", `${localSetting.content.width}vw`);
-    eleHtml.style.setProperty("--l-bg-filter", `${localSetting.background.filter}px`);
+    eleHtml.style.setProperty(LiteCssVars.mainFont, localSetting.theme.mainFont || `var(--el-main-font-family)`);
+    eleHtml.style.setProperty(LiteCssVars.codeFont, localSetting.theme.codeFont || `var(--el-code-font-family)`);
+    eleHtml.style.setProperty(LiteCssVars.themeColor, localSetting.theme.color);
+    eleHtml.style.setProperty(LiteCssVars.cabinetWidth, `${localSetting.cabinet.width}rem`);
+    eleHtml.style.setProperty(LiteCssVars.contentWidth, `${localSetting.content.width}vw`);
+    eleHtml.style.setProperty(LiteCssVars.bgFilter, `${localSetting.background.filter}px`);
+
+    const dark = document.querySelector("html[class='dark']");
+    const light = document.querySelector("html[class='light']");
+
+    if (dark) {
+      // @ts-ignore
+      dark.style.setProperty(LiteCssVars.codeBg, localSetting.pages.writing.code.dark.color);
+    } else if (light) {
+      // @ts-ignore
+      light.style.setProperty(LiteCssVars.codeBg, localSetting.pages.writing.code.light.color);
+    }
   }
 
   function beforeUseLite() {
