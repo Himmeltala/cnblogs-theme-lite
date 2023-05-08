@@ -101,7 +101,6 @@ declare module '@vue/runtime-core' {
     IEpUpload: typeof import('~icons/ep/upload')['default']
     IEpUserFilled: typeof import('~icons/ep/user-filled')['default']
     IEpView: typeof import('~icons/ep/view')['default']
-    IEpWarning: typeof import('~icons/ep/warning')['default']
     IEpZoomIn: typeof import('~icons/ep/zoom-in')['default']
     IEpZoomOut: typeof import('~icons/ep/zoom-out')['default']
     Index: typeof import('./src/views/Index.vue')['default']

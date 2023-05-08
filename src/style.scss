@@ -120,7 +120,7 @@ html {
   overflow-x: auto;
   overflow-y: hidden;
   color: var(--l-color-1);
-  transition: var(--l-transition);
+  transition: var(--l-animation-effect);
   background: var(--l-code-bg) !important;
 
   &::-webkit-scrollbar {

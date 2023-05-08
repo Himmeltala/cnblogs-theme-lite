@@ -79,7 +79,7 @@ watch(route, async () => {
             <div class="l-size-6">{{ works.text }}</div>
           </template>
         </el-page-header>
-        <div class="l-writing__tdesc l-color-2 f-c-s mt-4 l-size-2">
+        <div class="l-color-2 f-c-s mt-4 l-size-2">
           <div class="f-c-c mr-4">
             <i-ep-clock class="mr-1" />
             <span>{{ works.date }}</span>
@@ -100,7 +100,7 @@ watch(route, async () => {
             <span>编辑</span>
           </div>
         </div>
-        <div class="l-writing__props l-color-2 mt-4">
+        <div class="l-color-2 mt-4">
           <div class="mb-4 flex-wrap f-c-s" v-if="worksProps.sorts.length > 0">
             <div class="f-c-c l-size-2">
               <i-ep-folder-opened class="mr-1" />
@@ -133,7 +133,7 @@ watch(route, async () => {
           </div>
         </div>
         <div
-          class="content mt-8 l-thr-size"
+          class="content mt-8 l-size-3"
           v-html="works.content"
           v-hljs="works.text"
           v-highslide="works.text"
@@ -141,7 +141,7 @@ watch(route, async () => {
           v-catalog></div>
         <Highslide />
         <div class="divider flex-col"></div>
-        <div class="l-writing__bdesc l-color-2 f-c-e l-size-2">
+        <div class="l-color-2 f-c-e l-size-2">
           <div class="f-c-c mr-4">
             <i-ep-clock class="mr-1" />
             <span>{{ works.date }}</span>
@@ -155,7 +155,7 @@ watch(route, async () => {
             <span>{{ works.comm }}条评论</span>
           </div>
         </div>
-        <div class="l-writing__prev-next mt-10 l-size-2">
+        <div class="mt-10 l-size-2">
           <div class="prev hover f-c-s mb-2" v-if="prevNext.prev.href">
             <i-ep-d-arrow-left />
             <a class="hover l-color-1" :href="prevNext.prev.href"> 上一篇：{{ prevNext.prev.text }} </a>
@@ -165,7 +165,7 @@ watch(route, async () => {
             <a class="hover l-color-1" :href="prevNext.next.href"> 下一篇：{{ prevNext.next.text }} </a>
           </div>
         </div>
-        <div class="l-writing__viewpoint my-10 f-c-e">
+        <div class="my-10 f-c-e">
           <div class="mr-5">
             <el-button plain @click="vote('Digg')">
               点赞 {{ viewPoint.diggCount }}
@@ -225,10 +225,6 @@ pre {
   --uno: rd-2;
   position: relative;
 
-  code {
-    background: var(--l-block-code-bg);
-  }
-
   .code-tools {
     position: absolute;
     top: 0.2rem;
@@ -241,7 +237,7 @@ pre {
     position: absolute;
     bottom: 0;
     left: 0;
-    background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, var(--l-code-modal-bg) 100%);
+    background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, var(--l-code-hidden) 100%);
   }
 }
 
@@ -287,7 +283,6 @@ a > code {
     }
 
     blockquote {
-      --uno: l-size-3;
       background-color: var(--l-blockquote-bg);
       color: var(--l-color-2);
       margin: 0;
