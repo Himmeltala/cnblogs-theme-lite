@@ -5,19 +5,20 @@ LiteUtils.startLoading();
 
 const route = useRoute();
 let postId = route.params.id as string;
-const writing = shallowRef(await WorksApi.getWorks(postId));
+const works = shallowRef(await WorksApi.getWorks(postId));
 const prevNext = shallowRef(await WorksApi.getPrevNext(postId));
-const writingProps = shallowRef(await WorksApi.getProps(postId));
+const worksProps = shallowRef(await WorksApi.getProps(postId));
 const viewPoint = shallowRef(await WorksApi.getViewPoint(postId));
 const isLock = ref(false);
 const pwd = ref("");
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 
-if (!(writing.value.content && writing.value.text)) isLock.value = true;
-document.querySelector("title").innerText = `${writing.value.text} - ${LiteConfig.blogApp} - 博客园`;
+if (!(works.value.content && works.value.text)) isLock.value = true;
+LiteUtils.setTitle(works.value.text);
 
 onMounted(() => {
   const anchor = route.hash.match(/#.+/g);
+
   if (anchor) {
     setTimeout(() => {
       document.querySelector(`#${anchor[0].replace("#", "")}`).scrollIntoView();
@@ -30,7 +31,7 @@ onMounted(() => {
 async function submit() {
   const data = await WorksApi.isPassed(pwd.value, postId + "");
   if (data) {
-    writing.value = await WorksApi.getLockedWorks(pwd.value, postId);
+    works.value = await WorksApi.getLockedWorks(pwd.value, postId);
     isLock.value = false;
   }
   ElMessage({ message: data ? "密码输入正确！" : "密码错误！", grouping: true, type: data ? "success" : "error" });
@@ -47,25 +48,25 @@ async function vote(voteType: BlogType.VoteType) {
 }
 
 watch(route, async () => {
-  if (route.name === RouterName.WORKS) {
+  if (route.name === RouterConstants.Name.WORKS) {
     LiteUtils.startLoading();
 
     postId = `${route.params.id}`;
-    writing.value = await WorksApi.getWorks(postId);
-    writingProps.value = await WorksApi.getProps(postId);
+    works.value = await WorksApi.getWorks(postId);
+    worksProps.value = await WorksApi.getProps(postId);
     prevNext.value = await WorksApi.getPrevNext(postId);
     viewPoint.value = await WorksApi.getViewPoint(postId);
     isLock.value = false;
 
-    if (!(writing.value.content && writing.value.text)) isLock.value = true;
-    document.querySelector("title").innerText = `${writing.value.text} - ${LiteConfig.blogApp} - 博客园`;
+    if (!(works.value.content && works.value.text)) isLock.value = true;
+    LiteUtils.setTitle(works.value.text);
     LiteUtils.endLoading();
   }
 });
 </script>
 
 <template>
-  <ContextMenu id="l-writing" class="min-height">
+  <ContextMenu id="l-works" class="min-height">
     <Card :padding="localSetting.pages.writing.padding" :margin="localSetting.pages.writing.margin">
       <template v-if="!isLock">
         <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router: $router })">
@@ -75,21 +76,21 @@ watch(route, async () => {
             </div>
           </template>
           <template #content>
-            <div class="l-size-6">{{ writing.text }}</div>
+            <div class="l-size-6">{{ works.text }}</div>
           </template>
         </el-page-header>
         <div class="l-writing__tdesc l-color-2 f-c-s mt-4 l-size-2">
           <div class="f-c-c mr-4">
             <i-ep-clock class="mr-1" />
-            <span>{{ writing.date }}</span>
+            <span>{{ works.date }}</span>
           </div>
           <div class="f-c-c mr-4">
             <i-ep-view class="mr-1" />
-            <span>{{ writing.view }}次阅读</span>
+            <span>{{ works.view }}次阅读</span>
           </div>
           <div class="f-c-c mr-4">
             <i-ep-chat-line-square class="mr-1" />
-            <span>{{ writing.comm }}条评论</span>
+            <span>{{ works.comm }}条评论</span>
           </div>
           <div
             v-if="LiteConfig.isOwner"
@@ -100,24 +101,32 @@ watch(route, async () => {
           </div>
         </div>
         <div class="l-writing__props l-color-2 mt-4">
-          <div class="mb-4 flex-wrap f-c-s" v-if="writingProps.sorts.length > 0">
+          <div class="mb-4 flex-wrap f-c-s" v-if="worksProps.sorts.length > 0">
             <div class="f-c-c l-size-2">
               <i-ep-folder-opened class="mr-1" />
               <span>分类：</span>
             </div>
-            <div v-for="(item, index) in writingProps.sorts" class="l-size-2" :class="{ 'mr-2': index !== writingProps.sorts.length - 1 }">
-              <LTag line="dotted" hover round @click="LiteUtils.Router.go({ path: RouterPath.WORKS_BY_SORT(item.href), router: $router })">
+            <div v-for="(item, index) in worksProps.sorts" class="l-size-2" :class="{ 'mr-2': index !== worksProps.sorts.length - 1 }">
+              <LTag
+                line="dotted"
+                hover
+                round
+                @click="LiteUtils.Router.go({ path: RouterConstants.Path.WORKS_BY_SORT(item.href), router: $router })">
                 {{ item.text }}
               </LTag>
             </div>
           </div>
-          <div class="f-c-s flex-wrap" v-if="writingProps.tags.length > 0">
+          <div class="f-c-s flex-wrap" v-if="worksProps.tags.length > 0">
             <div class="f-c-c l-size-2">
               <i-ep-price-tag class="mr-1" />
               <span>标签：</span>
             </div>
-            <div v-for="(item, index) in writingProps.tags" class="l-size-2" :class="{ 'mr-2': index !== writingProps.tags.length - 1 }">
-              <LTag line="dotted" hover round @click="LiteUtils.Router.go({ path: RouterPath.WORKS_BY_MARK(item.text), router: $router })">
+            <div v-for="(item, index) in worksProps.tags" class="l-size-2" :class="{ 'mr-2': index !== worksProps.tags.length - 1 }">
+              <LTag
+                line="dotted"
+                hover
+                round
+                @click="LiteUtils.Router.go({ path: RouterConstants.Path.WORKS_BY_MARK(item.text), router: $router })">
                 {{ item.text }}
               </LTag>
             </div>
@@ -125,26 +134,25 @@ watch(route, async () => {
         </div>
         <div
           class="content mt-8 l-thr-size"
-          v-html="writing.content"
-          v-hljs="writing.text"
-          v-highslide="writing.text"
-          v-mathjax="writing.text"
+          v-html="works.content"
+          v-hljs="works.text"
+          v-highslide="works.text"
+          v-mathjax="works.text"
           v-catalog></div>
         <Highslide />
-        <Catalog />
         <div class="divider flex-col"></div>
         <div class="l-writing__bdesc l-color-2 f-c-e l-size-2">
           <div class="f-c-c mr-4">
             <i-ep-clock class="mr-1" />
-            <span>{{ writing.date }}</span>
+            <span>{{ works.date }}</span>
           </div>
           <div class="f-c-c mr-4">
             <i-ep-view class="mr-1" />
-            <span>{{ writing.view }}次阅读</span>
+            <span>{{ works.view }}次阅读</span>
           </div>
           <div class="f-c-c">
             <i-ep-chat-line-square class="mr-1" />
-            <span>{{ writing.comm }}条评论</span>
+            <span>{{ works.comm }}条评论</span>
           </div>
         </div>
         <div class="l-writing__prev-next mt-10 l-size-2">
@@ -190,6 +198,7 @@ watch(route, async () => {
         </div>
       </template>
     </Card>
+    <Catalog />
     <template #title>盒子模型设置</template>
     <template #content>
       <CodeStyleSetting />

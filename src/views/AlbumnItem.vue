@@ -7,7 +7,7 @@ const route = useRoute();
 const router = useRouter();
 const imgUrl = shallowRef(await getAlbumnItem(`${route.params.id}`));
 
-document.querySelector("title").innerText = `相册照片 - ${LiteConfig.blogApp} - 博客园`;
+LiteUtils.setTitle("相册照片");
 
 onMounted(() => {
   LiteUtils.endLoading();
@@ -15,7 +15,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="l-albumn-item" class="min-height">
+  <Card id="l-albumn-item" class="min-height" :padding="{ left: 2, right: 2 }">
     <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router })">
       <template #title>
         <div class="f-c-c">
@@ -34,7 +34,7 @@ onMounted(() => {
         </template>
       </el-result>
     </div>
-  </div>
+  </Card>
 </template>
 
 <style lang="scss">

@@ -4,7 +4,7 @@ import { WorksApi } from "@/apis";
 LiteUtils.startLoading();
 
 const route = useRoute();
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 let archiveDate = route.params.date;
 let archiveMode = route.params.mode;
 const archiveWorks = shallowRef();
@@ -40,7 +40,7 @@ async function fetchData() {
 await fetchData();
 
 watch(route, async () => {
-  if (route.name === RouterName.WORKS_BY_ARCHIVE) {
+  if (route.name === RouterConstants.Name.WORKS_BY_ARCHIVE) {
     archiveMode = route.params.mode;
     archiveDate = route.params.date;
     await fetchData();
@@ -58,7 +58,7 @@ watch(route, async () => {
         :count="archiveWorks.page"
         :disabled="localSetting.other.pagation.pin">
         <template #content>
-          <Card>
+          <Card :padding="{ left: 1, right: 1, bottom: 1 }" :margin="{ bottom: 1 }">
             <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router: $router })">
               <template #title>
                 <div class="f-c-c">

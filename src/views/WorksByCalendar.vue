@@ -24,24 +24,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="l-calendar min-height f-s-s flex-col">
-    <el-page-header class="mt-4" :icon="null" @back="LiteUtils.Router.go({ path: 'back', router: $router })">
-      <template #title>
-        <div class="f-c-c">
-          <i-ep-back />
-        </div>
-      </template>
-      <template #content>
-        <div class="l-size-3">博客日历</div>
-      </template>
-    </el-page-header>
+  <Card class="l-calendar min-height f-s-s flex-col">
     <el-calendar v-model="dateModel">
       <template #date-cell="{ data }">
         <div
           class="w-100% h-100%"
           @click="
             LiteUtils.Router.go({
-              path: RouterPath.WORKS_BY_ARCHIVE('d', data.day),
+              path: RouterConstants.Path.WORKS_BY_ARCHIVE('d', data.day),
               router: $router
             })
           "
@@ -54,7 +44,7 @@ onMounted(() => {
         <span v-else>{{ data.day.split("-")[2] }}</span>
       </template>
     </el-calendar>
-  </div>
+  </Card>
 </template>
 
 <style scoped lang="scss"></style>

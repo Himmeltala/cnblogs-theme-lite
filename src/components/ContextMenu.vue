@@ -2,7 +2,7 @@
 const menu = ref<HTMLElement>();
 const movbox = ref();
 const disabled = ref(true);
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 
 onMounted(() => {
   menu.value.onmouseup = e => {
@@ -22,7 +22,7 @@ onMounted(() => {
       <MovableBox ref="movbox" :disabled="disabled" :class="{ 'l-box-bg': !localSetting.card.open }">
         <template #head>
           <div class="f-c-b">
-            <div class="headtip mr-4 l-size-5">
+            <div class="headtip mr-4 l-size-3">
               <slot name="title"></slot>
             </div>
             <div class="hover f-c-c" @click="disabled = !disabled">

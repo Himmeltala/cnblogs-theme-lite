@@ -3,7 +3,7 @@ import { WorksApi } from "@/apis";
 
 LiteUtils.startLoading();
 
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 const listing = shallowRef(await WorksApi.getList(1));
 
 async function fetchData(index: any) {
@@ -24,8 +24,8 @@ onMounted(() => {
         <template #content>
           <WorksItem
             v-if="listing.data.length > 0"
-            :padding="localSetting.pages.sort.padding"
-            :margin="localSetting.pages.sort.margin"
+            :padding="localSetting.pages.home.padding"
+            :margin="localSetting.pages.home.margin"
             :data="listing.data" />
         </template>
       </Pagination>

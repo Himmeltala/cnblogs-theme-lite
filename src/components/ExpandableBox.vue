@@ -10,7 +10,7 @@ const props = defineProps({
   }
 });
 
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 const title = `${props.text}`;
 
 if (!localSetting.value.cabinet.toggles[title]) {

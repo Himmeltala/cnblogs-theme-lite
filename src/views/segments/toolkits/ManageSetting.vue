@@ -2,7 +2,7 @@
 import { genFileId } from "element-plus";
 import type { UploadInstance, UploadProps, UploadRawFile } from "element-plus";
 
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 const upload = ref<UploadInstance>();
 const uploadDialog = ref(false);
 const resetDialog = ref(false);

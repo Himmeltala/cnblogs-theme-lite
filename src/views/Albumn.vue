@@ -8,10 +8,10 @@ const router = useRouter();
 const albumn = shallowRef(await getAlbumn(`${route.params.id}`));
 const srcList = shallowRef(albumn.value.data.map(i => i.src));
 
-document.querySelector("title").innerText = `相册 - ${LiteConfig.blogApp} - 博客园`;
+LiteUtils.setTitle("相册");
 
 watch(route, async () => {
-  if (route.name === RouterName.ALBUMN) {
+  if (route.name === RouterConstants.Name.ALBUMN) {
     LiteUtils.startLoading();
     albumn.value = await getAlbumn(`${route.params.id}`);
     srcList.value = albumn.value.data.map(i => i.src);
@@ -25,7 +25,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="l-albumn" class="min-height">
+  <Card id="l-albumn" class="min-height" :padding="{ left: 2, right: 2 }">
     <el-page-header :icon="null" @back="LiteUtils.Router.go({ path: 'back', router })">
       <template #title>
         <div class="f-c-c">
@@ -45,5 +45,5 @@ onMounted(() => {
         </template>
       </el-result>
     </div>
-  </div>
+  </Card>
 </template>

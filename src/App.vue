@@ -2,9 +2,9 @@
 const route = useRoute();
 const ldisabled = ref(true);
 const rdisabled = ref(true);
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 const catalogDisabled = ref(!LiteConfig.pcDevice);
-provide(ProvideKey.CATALOG_DISABLED, catalogDisabled);
+provide(LiteConstants.ProvideKey.CATALOG_DISABLED, catalogDisabled);
 
 onMounted(() => {
   document.getElementById("l-lstrip").onmouseover = () => {
@@ -19,13 +19,11 @@ onMounted(() => {
     if (!ldisabled.value) ldisabled.value = true;
     else rdisabled.value = true;
   };
-
-  document.getElementById("l-background__img").setAttribute("src", localSetting.value.background.src);
 });
 
 watch(route, async () => {
-  if (route.name === RouterName.INDEX) {
-    document.querySelector("title").innerText = `${LiteConfig.blogApp} - 博客园`;
+  if (route.name === RouterConstants.Name.INDEX) {
+    LiteUtils.setTitle();
   }
 });
 </script>
@@ -34,7 +32,7 @@ watch(route, async () => {
   <div id="l-menu-container"></div>
   <div id="l-left">
     <div id="l-matte" class="fixed top-0 left-0 z-3 l-matee-bg" :class="{ 'w-100% h-100vh': !rdisabled || !ldisabled }"></div>
-    <div id="l-lstrip" class="fixed z-2 left-0 top-20vh w-2 h-20vh"></div>
+    <div id="l-lstrip" v-show="!localSetting.cabinet.left.pin" class="fixed z-2 left-0 top-20vh w-2 h-20vh"></div>
     <Suspense>
       <LeftCabinet :disabled="ldisabled" />
     </Suspense>
@@ -46,11 +44,16 @@ watch(route, async () => {
   </div>
   <div id="l-content" class="z-1 fade-in-out">
     <div id="l-top-nail"></div>
-    <div :class="{ 'l-box-bg': !localSetting.card.open, 'py-2 px-4': !LiteConfig.pcDevice }">
-      <div id="l-main">
+    <div :class="{ 'py-2 px-4': !LiteConfig.pcDevice }">
+      <div
+        id="l-main"
+        :style="{
+          'margin-top': localSetting.theme.margin.top + 'rem',
+          'padding-bottom': localSetting.theme.margin.bottom + 'rem'
+        }">
         <RouterView v-slot="{ Component }">
           <template v-if="Component">
-            <KeepAlive :include="[RouterName.INDEX, RouterName.MARK_LIST, RouterName.PROFILE, RouterName.WORKS_BY_CALENDAR]">
+            <KeepAlive :include="[RouterConstants.Name.INDEX, RouterConstants.Name.MARK_LIST, RouterConstants.Name.WORKS_BY_CALENDAR]">
               <Suspense>
                 <component :is="Component" />
               </Suspense>
@@ -62,7 +65,7 @@ watch(route, async () => {
     <div id="l-bottom-nail"></div>
   </div>
   <div id="l-right">
-    <div id="l-rstrip" class="fixed z-2 right-0 top-20vh w-2 h-20vh"></div>
+    <div id="l-rstrip" v-show="!localSetting.cabinet.right.pin" class="fixed z-2 right-0 top-20vh w-2 h-20vh"></div>
     <RightCabinet :disabled="rdisabled" />
     <ContextMenu>
       <div id="l-background" class="fixed left-0 top-0 w-100vw h-100vw">

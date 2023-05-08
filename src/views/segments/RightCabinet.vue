@@ -6,7 +6,7 @@ const props = defineProps({
   }
 });
 
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 const collapseActive = ref("1");
 
 const right = computed(() => {
@@ -32,8 +32,8 @@ const fixed = computed(() => {
   <ContextMenu
     id="l-rcabinet"
     :style="{ right: right }"
-    class="fixed top-0 right-0"
-    :class="{ 'show-rcabinet z-4': block, 'hidden-rcabinet': hidden, 'fixed-rcabinet': fixed }"
+    class="fixed top-0 right-0 z-4"
+    :class="{ 'show-rcabinet': block, 'hidden-rcabinet': hidden, 'fixed-rcabinet': fixed }"
     style="width: var(--l-cabinet-width)">
     <Card
       class="noscroll l-size-2 h-100vh ofw-auto"

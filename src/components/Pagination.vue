@@ -10,7 +10,7 @@ const props = defineProps({
   }
 });
 
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 const index = ref(1);
 const emits = defineEmits(["next", "prev", "nexpr"]);
 

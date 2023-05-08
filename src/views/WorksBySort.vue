@@ -2,7 +2,7 @@
 import { WorksApi } from "@/apis";
 
 const route = useRoute();
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 let sortId = route.params.id as string;
 const typeL2Works = shallowRef();
 const typeL1Works = shallowRef();
@@ -18,7 +18,7 @@ async function fetchData(index?: any) {
 await fetchData();
 
 watch(route, async () => {
-  if (route.name === RouterName.WORKS_BY_SORT) {
+  if (route.name === RouterConstants.Name.WORKS_BY_SORT) {
     sortId = route.params.id as string;
     await fetchData();
   }
@@ -49,8 +49,8 @@ watch(route, async () => {
             <div class="l-sort__desc mb-4 l-for-size l-color-2" v-html="typeL1Works.desc2 || typeL1Works.desc"></div>
             <div class="l-sort__child l-size-2" v-if="typeL2Works.length > 0">
               <div class="hover f-c-s" v-for="(item, index) in typeL2Works" :class="{ 'mb-4': index != typeL2Works.length - 1 }">
-                <span class="mr-2">-</span>
-                <router-link :to="RouterPath.WORKS_BY_SORT(item.id)">{{ item.text }}</router-link>
+                <span class="mr-2">📁</span>
+                <router-link :to="RouterConstants.Path.WORKS_BY_SORT(item.id)">{{ item.text }}</router-link>
               </div>
             </div>
           </Card>

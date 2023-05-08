@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 const positions = [
   {
     label: "靠左",

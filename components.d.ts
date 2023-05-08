@@ -113,7 +113,6 @@ declare module '@vue/runtime-core' {
     OtherSetting: typeof import('./src/views/segments/toolkits/OtherSetting.vue')['default']
     Pagination: typeof import('./src/components/Pagination.vue')['default']
     PostComment: typeof import('./src/views/segments/comment/PostComment.vue')['default']
-    Profile: typeof import('./src/views/Profile.vue')['default']
     RightCabinet: typeof import('./src/views/segments/RightCabinet.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

@@ -9,8 +9,6 @@
  * @url https://www.cnblogs.com/Himmelbleu/#/
  */
 html[class="dark"] {
-  // 盒子背景颜色
-  --l-box-bg: #191919;
   // 卡片背景颜色
   --l-card-bg: #222222;
   // 分界线背景颜色
@@ -21,10 +19,6 @@ html[class="dark"] {
   --l-strip-bg: #7f7f7f;
   // 隐藏代码块 modal
   --l-code-hidden: #2e2e2e;
-  // 主题规定的文字颜色
-  --l-color-1: #a7a7a7;
-  --l-color-2: #999999;
-  --l-color-3: #7c7c7c;
   // highlight
   --hljs-color: #abb2bf;
   --hljs-bg: #282c34;
@@ -39,8 +33,6 @@ html[class="dark"] {
 }
 
 html[class="light"] {
-  // 盒子背景颜色
-  --l-box-bg: #f9f9f9;
   // 卡片背景颜色
   --l-card-bg: #ffffff;
   // 分界线背景颜色
@@ -51,10 +43,6 @@ html[class="light"] {
   --l-strip-bg: #d5d5d5;
   // 隐藏代码块 modal
   --l-code-hidden: #e0e0e0;
-  // 主题规定的文字颜色
-  --l-color-1: #393939;
-  --l-color-2: #686868;
-  --l-color-3: #969696;
   // highlight
   --hljs-color: #383a42;
   --hljs-bg: #fafafa;
@@ -69,20 +57,6 @@ html[class="light"] {
 }
 
 html {
-  // 主题规定的文字大小
-  --l-size-13: 2rem;
-  --l-size-12: 1.9rem;
-  --l-size-11: 1.8rem;
-  --l-size-10: 1.7rem;
-  --l-size-9: 1.6rem;
-  --l-size-8: 1.5rem;
-  --l-size-7: 1.4rem;
-  --l-size-6: 1.3rem;
-  --l-size-5: 1.2rem;
-  --l-size-4: 1.1rem;
-  --l-size-3: 1rem;
-  --l-size-2: 0.9rem;
-  --l-size-1: 0.8rem;
   // 主题颜色
   --l-theme-color: #409eff;
   // 模态框背景颜色
@@ -251,9 +225,9 @@ body {
   margin: 0;
   padding: 0;
   width: 100% !important;
-  background-color: var(--l-back-bg);
+  background-color: var(--l-box-bg);
   color: var(--l-color-1);
-  font-size: var(--l-size-root);
+  font-size: var(--l-size-2);
   font-weight: 400;
 
   & {

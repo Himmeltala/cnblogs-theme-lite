@@ -5,7 +5,7 @@ const route = useRoute();
 const translate = shallowRef("");
 const anchors = shallowRef([]);
 const store = useCatalogStore();
-const catalogDisabled = inject<boolean>(ProvideKey.CATALOG_DISABLED);
+const catalogDisabled = inject<boolean>(LiteConstants.ProvideKey.CATALOG_DISABLED);
 let observer: IntersectionObserver;
 
 function moveSlider(entries: any) {
@@ -45,7 +45,7 @@ onUnmounted(() => {
 });
 
 watch(route, () => {
-  if (route.name !== RouterName.WORKS) {
+  if (route.name !== RouterConstants.Name.WORKS) {
     anchors.value = [];
     observer.disconnect();
   }
@@ -61,12 +61,12 @@ store.$onAction(({ args }) => {
 </script>
 
 <template>
-  <div
+  <Card
     id="l-catalog"
     :class="{ 'catalog-disable': catalogDisabled, 'catalog-show': !catalogDisabled }"
-    class="fixed top-4vh pl-4 py-6 w-16rem h-92vh l-back-bg rd-2 noscroll flow-auto z-90"
+    class="fixed top-4vh pl-4 py-6 w-16rem h-92vh rd-2 noscroll flow-auto z-90"
     v-show="anchors && anchors.length">
-    <div class="relative l-back-bg">
+    <div class="relative">
       <div class="ml-6 l-color-2">
         <div
           class="l-size-1 mb-4 h-1.5rem f-c-s text-ellipsis line-clamp-1"
@@ -77,7 +77,7 @@ store.$onAction(({ args }) => {
       <div class="absolute slider-track"></div>
       <div class="absolute slider" :style="{ transform: 'translate(0, ' + translate + 'rem)' }"></div>
     </div>
-  </div>
+  </Card>
 </template>
 
 <style lang="scss">

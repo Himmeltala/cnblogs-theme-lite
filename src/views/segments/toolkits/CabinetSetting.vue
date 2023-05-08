@@ -1,19 +1,35 @@
 <script setup lang="ts">
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 const collapseActive = ref("1");
 const disabled = ref(inspect());
 
 function inspect() {
   if (localSetting.value.cabinet.left.pin || localSetting.value.cabinet.right.pin) {
     localSetting.value.content.width = 50;
-    return false;
-  } else return true;
+    return true;
+  } else return false;
 }
 
-watch(localSetting, newVal => {
-  disabled.value = inspect();
-  LiteConfig.eleHtml.style.setProperty("--l-cabinet-width", newVal.cabinet.width + "rem");
-  LiteConfig.eleHtml.style.setProperty("--l-content-width", newVal.content.width + "vw");
+const computeCabinetWidth = computed({
+  get() {
+    return localSetting.value.cabinet.width;
+  },
+  set(value) {
+    disabled.value = inspect();
+    localSetting.value.cabinet.width = value;
+    LiteConfig.eleHtml.style.setProperty(LiteConstants.CssVars.cabinetWidth, value + "rem");
+  }
+});
+
+const computeContentWidth = computed({
+  get() {
+    return localSetting.value.content.width;
+  },
+  set(value) {
+    disabled.value = inspect();
+    localSetting.value.content.width = value;
+    LiteConfig.eleHtml.style.setProperty(LiteConstants.CssVars.contentWidth, value + "vw");
+  }
 });
 </script>
 
@@ -63,11 +79,11 @@ watch(localSetting, newVal => {
     <el-collapse-item title="宽度设置">
       <div class="mb-4">
         <div class="mb-2">设置陈列柜宽度</div>
-        <el-slider :min="13" :step="0.5" :max="20" v-model="localSetting.cabinet.width" size="small" />
+        <el-slider :min="13" :step="0.5" :max="20" v-model="computeCabinetWidth" size="small" />
       </div>
       <div>
         <div class="mb-2">设置中间内容宽度</div>
-        <el-slider :disabled="!disabled" :min="50" :step="1" :max="60" v-model="localSetting.content.width" size="small" />
+        <el-slider :disabled="disabled" :min="50" :step="1" :max="60" v-model="computeContentWidth" size="small" />
       </div>
     </el-collapse-item>
   </el-collapse>

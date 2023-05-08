@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useSkillGraph } from "./index";
 
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 
 watch(localSetting, (val, old) => {
   if (val.theme.color != old.theme.color) {

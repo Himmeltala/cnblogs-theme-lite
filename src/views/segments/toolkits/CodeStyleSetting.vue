@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 const colors = [
   "#ff4500",
   "#ff8c00",
@@ -17,32 +17,36 @@ const colors = [
   "#c7158577"
 ];
 
-function setFontColor() {
-  const dark = document.querySelector("html[class='dark']");
-  const light = document.querySelector("html[class='light']");
+const dark = document.querySelector("html[class='dark']");
+const light = document.querySelector("html[class='light']");
 
-  if (dark) {
+const computeDarkColor = computed({
+  get: () => localSetting.value.pages.writing.code.dark.color,
+  set(value) {
+    localSetting.value.pages.writing.code.dark.color = value;
     // @ts-ignore
-    dark.style.setProperty(LiteCssVars.codeBg, localSetting.value.pages.writing.code.dark.color);
-  } else if (light) {
-    // @ts-ignore
-    light.style.setProperty(LiteCssVars.codeBg, localSetting.value.pages.writing.code.light.color);
+    dark && dark.style.setProperty(LiteConstants.CssVars.codeBg, value);
   }
-}
+});
 
-watch(localSetting, () => {
-  setFontColor();
+const computeLightColor = computed({
+  get: () => localSetting.value.pages.writing.code.light.color,
+  set(value) {
+    localSetting.value.pages.writing.code.light.color = value;
+    // @ts-ignore
+    light && light.style.setProperty(LiteConstants.CssVars.codeBg, value);
+  }
 });
 </script>
 
 <template>
   <div class="mb-4">
     <span class="mr-2">设置黑夜代码块颜色</span>
-    <el-color-picker size="small" :predefine="colors" show-alpha v-model="localSetting.pages.writing.code.dark.color" />
+    <el-color-picker size="small" :predefine="colors" show-alpha v-model="computeDarkColor" />
   </div>
   <div class="mb-4">
     <span class="mr-2">设置白天代码块颜色</span>
-    <el-color-picker size="small" :predefine="colors" show-alpha v-model="localSetting.pages.writing.code.light.color" />
+    <el-color-picker size="small" :predefine="colors" show-alpha v-model="computeLightColor" />
   </div>
 </template>
 

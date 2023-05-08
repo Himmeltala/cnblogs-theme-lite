@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 const route = useRoute();
 const isToTop = ref(false);
 const isToBottom = ref(true);
@@ -8,7 +8,7 @@ const active = ref("1");
 const dialog = ref(false);
 let topNail: HTMLElement;
 let bottomNail: HTMLElement;
-const catalogDisabled = inject<boolean>(ProvideKey.CATALOG_DISABLED);
+const catalogDisabled = inject<boolean>(LiteConstants.ProvideKey.CATALOG_DISABLED);
 
 onMounted(() => {
   topNail = document.querySelector("#l-top-nail");
@@ -46,7 +46,7 @@ function toggleMode() {
 }
 
 watch(route, () => {
-  if (route.name !== RouterName.WORKS) {
+  if (route.name !== RouterConstants.Name.WORKS) {
     isShowGuide.value = false;
   } else {
     isShowGuide.value = true;
@@ -68,7 +68,7 @@ watch(route, () => {
     <Card
       :class="{ 'show-1': localSetting.toolkits.pin, 'close-1': !localSetting.toolkits.pin }"
       class="absolute hover left-0 rd-2"
-      @click="LiteUtils.Router.go({ path: RouterPath.INDEX(), router: $router })">
+      @click="LiteUtils.Router.go({ path: RouterConstants.Path.INDEX(), router: $router })">
       <div class="f-c-c w-8 h-8">
         <i-ep-house />
       </div>
@@ -92,14 +92,6 @@ watch(route, () => {
     <Card
       :class="{ 'show-4': localSetting.toolkits.pin, 'close-4': !localSetting.toolkits.pin }"
       class="absolute hover left-0 rd-2"
-      @click="LiteUtils.Router.go({ path: RouterPath.PROFILE(), router: $router })">
-      <div class="f-c-c w-8 h-8">
-        <i-ep-warning />
-      </div>
-    </Card>
-    <Card
-      :class="{ 'show-5': localSetting.toolkits.pin, 'close-5': !localSetting.toolkits.pin }"
-      class="absolute hover left-0 rd-2"
       @click="toggleMode">
       <div class="f-c-c w-8 h-8">
         <i-ep-moon v-show="localSetting.theme.mode === 'dark'" />
@@ -107,7 +99,7 @@ watch(route, () => {
       </div>
     </Card>
     <Card
-      :class="{ 'show-6': localSetting.toolkits.pin, 'close-6': !localSetting.toolkits.pin }"
+      :class="{ 'show-5': localSetting.toolkits.pin, 'close-5': !localSetting.toolkits.pin }"
       class="absolute hover left-0 rd-2"
       @click="dialog = !dialog">
       <div class="f-c-c w-8 h-8">
@@ -117,7 +109,7 @@ watch(route, () => {
     <Card
       @click="localSetting.toolkits.pin = !localSetting.toolkits.pin"
       :class="{ 'show-toolkits': localSetting.toolkits.pin, 'close-toolkits': !localSetting.toolkits.pin }"
-      class="kits-box absolute hover top-70 left-0 rd-2">
+      class="kits-box absolute hover top-60 left-0 rd-2">
       <div class="f-c-c w-8 h-8">
         <i-ep-more />
       </div>
@@ -158,11 +150,11 @@ watch(route, () => {
 <style scoped lang="scss">
 $show-top: 0;
 $show-anitime: 0.1s;
-$close-top: 17.5rem;
+$close-top: 15rem;
 $close-anitime: 0.7s;
 $move-step: 2.5rem;
 
-@for $index from 0 to 7 {
+@for $index from 0 to 6 {
   @if $index != 0 {
     $show-top: $show-top + $move-step;
   }

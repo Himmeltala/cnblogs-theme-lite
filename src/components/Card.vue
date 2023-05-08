@@ -24,7 +24,7 @@ defineProps({
   }
 });
 
-const localSetting = LiteConfig.getLocalSetting();
+const localSetting = LiteUtils.getLocalSetting();
 </script>
 
 <template>
