@@ -1,8 +1,14 @@
 # 主题说明
 
-这是一款高自定义的博客园主题 Lite，快速预览 [Himmelbleu 的 Lite 主题博客](https://www.cnblogs.com/Himmelbleu/#/)。
+<p align="center">CNBLOGS-THEME-LITE</p>
 
-主题几乎所有地方都可以配置：背景设置、卡片样式、盒子模型、字体相关等。右键随便任何一个区域都可以呼出设置面板，每个区域的设置面板都不一样，设置好了之后可以导出设置以作备份。
+<p align="center">
+一个高自定义的博客园主题。支持背景、卡片样式、盒子模型、字体等配置。
+</p>
+
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/himmelbleu/cnblogs-theme-lite?include_prereleases&style=flat-square)](https://github.com/himmelbleu/cnblogs-theme-lite/releases)
+
+本主题已不再维护，推荐您使用我开发的其他主题：[CNBLOGS-THEME-BLEU](https://github.com/Himmelbleu/cnblogs-theme-bleu)，界面更美观。
 
 # 部署说明
 
